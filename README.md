@@ -5,10 +5,10 @@
 
 ## Usage
 
-- Run the application with the expression you wish to parse as the first argument, e.g.:
+- Run the application with a file, e.g.:
 
   ```bash
-  go run main.go "1 + 1"
+  go run main.go examples/00_simple/main.dl
   ```
 
 ## Supported constants

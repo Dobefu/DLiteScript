@@ -26,12 +26,20 @@ type Main struct {
 // Run actually runs the application.
 func (m *Main) Run() {
 	if len(m.args) <= 1 {
-		m.onError(errors.New("usage: go run main.go <expression>"))
+		m.onError(errors.New("usage: go run main.go <file>"))
 
 		return
 	}
 
-	t := tokenizer.NewTokenizer(m.args[1])
+	fileContent, err := os.ReadFile(m.args[1])
+
+	if err != nil {
+		m.onError(err)
+
+		return
+	}
+
+	t := tokenizer.NewTokenizer(string(fileContent))
 	tokens, err := t.Tokenize()
 
 	if err != nil {

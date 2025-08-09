@@ -5,20 +5,23 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-func TestMain(t *testing.T) {
-	t.Parallel()
+func createTmpFile(t testing.TB, content string) string {
+	t.Helper()
 
-	originalOsArgs := os.Args
-	os.Args = []string{os.Args[0], "1 + 1"}
+	dir := t.TempDir()
+	path := filepath.Join(dir, "tmp.dl")
 
-	main()
+	if err := os.WriteFile(path, []byte(content), 0o600); err != nil {
+		t.Fatalf("error creating tmp file: %v", err)
+	}
 
-	os.Args = originalOsArgs
+	return path
 }
 
 func TestMainRun(t *testing.T) {
@@ -60,7 +63,7 @@ func TestMainRun(t *testing.T) {
 
 	for _, test := range tests {
 		main := &Main{
-			args:    []string{os.Args[0], test.input},
+			args:    []string{os.Args[0], createTmpFile(t, test.input)},
 			outFile: io.Discard,
 			onError: func(err error) {
 				t.Errorf("expected no error, got '%s'", err.Error())
@@ -72,7 +75,7 @@ func TestMainRun(t *testing.T) {
 		main.Run()
 
 		if main.result != test.expected {
-			t.Errorf("expected %f, got %f", test.expected, main.result)
+			t.Errorf("expected '%f', got '%f'", test.expected, main.result)
 		}
 	}
 }
@@ -86,7 +89,7 @@ func TestMainErr(t *testing.T) {
 	}{
 		{
 			input:    "",
-			expected: "usage: go run main.go <expression>",
+			expected: "usage: go run main.go <file>",
 		},
 		{
 			input:    "1 +",
@@ -111,7 +114,7 @@ func TestMainErr(t *testing.T) {
 		args := []string{os.Args[0]}
 
 		if test.input != "" {
-			args = append(args, test.input)
+			args = append(args, createTmpFile(t, test.input))
 		}
 
 		main := &Main{
@@ -152,8 +155,10 @@ func TestMainWriteError(t *testing.T) {
 
 	var mainErr error
 
+	filePath := createTmpFile(t, "1 + 1")
+
 	main := &Main{
-		args:    []string{os.Args[0], "1 + 1"},
+		args:    []string{os.Args[0], filePath},
 		outFile: buf,
 		onError: func(err error) {
 			mainErr = errors.Unwrap(err)
@@ -173,9 +178,11 @@ func TestMainWriteError(t *testing.T) {
 }
 
 func BenchmarkMain(b *testing.B) {
+	filePath := createTmpFile(b, "1 + -2 * 3 / 4")
+
 	for b.Loop() {
 		main := &Main{
-			args:    []string{os.Args[0], "1 + -2 * 3 / 4"},
+			args:    []string{os.Args[0], filePath},
 			outFile: io.Discard,
 			onError: func(err error) {
 				b.Errorf("expected no error, got '%s'", err.Error())
