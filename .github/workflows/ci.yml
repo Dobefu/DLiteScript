@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: ['*']
+    tags: ['v*']
+  pull_request:
+    branches: ['*']
+
+permissions:
+  contents: write
+
+jobs:
+  build-test:
+    name: 'Build and Lint'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+          cache-dependency-path: |
+            **/go.sum
+            **/go.mod
+
+      - name: Install Go dependencies
+        run: go get .
+
+      - name: Build the application
+        run: go build
+
+      - name: Lint the code
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1
