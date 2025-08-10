@@ -23,6 +23,9 @@ func (p *Parser) parsePrefixExpr(
 	case token.TokenTypeIdentifier:
 		return p.parseFunctionCallOrIdentifier(currentToken, recursionDepth)
 
+	case token.TokenTypeString:
+		return p.parseStringLiteral(currentToken)
+
 	default:
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnexpectedToken,
@@ -110,4 +113,11 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 	}
 
 	return p.parseIdentifier(functionCallOrIdentifierToken)
+}
+
+func (p *Parser) parseStringLiteral(token *token.Token) (ast.ExprNode, error) {
+	return &ast.StringLiteral{
+		Value: token.Atom,
+		Pos:   p.tokenIdx - 1,
+	}, nil
 }

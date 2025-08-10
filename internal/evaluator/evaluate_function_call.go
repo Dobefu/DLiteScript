@@ -30,7 +30,7 @@ func (e *Evaluator) evaluateFunctionCall(
 		return datavalue.Null(), err
 	}
 
-	return function.handler(argValues)
+	return function.handler(e, argValues)
 }
 
 func (e *Evaluator) evaluateArguments(

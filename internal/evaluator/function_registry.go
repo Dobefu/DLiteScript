@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
@@ -8,7 +9,10 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-type functionHandler func([]datavalue.Value) (datavalue.Value, error)
+type functionHandler func(
+	e *Evaluator,
+	args []datavalue.Value,
+) (datavalue.Value, error)
 
 type functionInfo struct {
 	handler  functionHandler
@@ -18,9 +22,12 @@ type functionInfo struct {
 
 func makeFunction(
 	argKinds []datatype.DataType,
-	impl func([]datavalue.Value) datavalue.Value,
+	impl func(e *Evaluator, args []datavalue.Value) datavalue.Value,
 ) functionInfo {
-	handler := func(args []datavalue.Value) (datavalue.Value, error) {
+	handler := func(
+		e *Evaluator,
+		args []datavalue.Value,
+	) (datavalue.Value, error) {
 		for i, arg := range args {
 			if arg.DataType() == argKinds[i] {
 				continue
@@ -32,7 +39,7 @@ func makeFunction(
 			)
 		}
 
-		return impl(args), nil
+		return impl(e, args), nil
 	}
 
 	return functionInfo{
@@ -43,9 +50,20 @@ func makeFunction(
 }
 
 var functionRegistry = map[string]functionInfo{
+	"println": makeFunction(
+		[]datatype.DataType{datatype.DataTypeString},
+		func(e *Evaluator, args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsString()
+
+			fmt.Fprintf(&e.buf, "%s", arg0)
+
+			return datavalue.Null()
+		},
+	),
+
 	"abs": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Abs(arg0))
@@ -53,7 +71,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"sin": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Sin(arg0))
@@ -61,7 +79,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"cos": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Cos(arg0))
@@ -69,7 +87,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"tan": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Tan(arg0))
@@ -77,7 +95,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"sqrt": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Sqrt(arg0))
@@ -85,7 +103,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"round": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Round(arg0))
@@ -93,7 +111,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"floor": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Floor(arg0))
@@ -101,7 +119,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"ceil": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
 			return datavalue.Number(math.Ceil(arg0))
@@ -109,7 +127,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"min": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 			arg1, _ := args[1].AsNumber()
 
@@ -118,7 +136,7 @@ var functionRegistry = map[string]functionInfo{
 	),
 	"max": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
-		func(args []datavalue.Value) datavalue.Value {
+		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 			arg1, _ := args[1].AsNumber()
 

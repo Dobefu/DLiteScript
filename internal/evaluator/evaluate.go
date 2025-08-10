@@ -24,6 +24,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.Identifier:
 		return e.evaluateIdentifier(node)
 
+	case *ast.StringLiteral:
+		return e.evaluateStringLiteral(node)
+
 	default:
 		pos := -1
 
