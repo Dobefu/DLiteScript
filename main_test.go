@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
@@ -70,19 +69,13 @@ func TestMainRun(t *testing.T) {
 				t.Errorf("expected no error, got '%s'", err.Error())
 			},
 
-			result: datavalue.Null(),
+			result: "",
 		}
 
 		main.Run()
 
-		result, err := main.result.AsNumber()
-
-		if err != nil {
-			t.Fatalf("expected numeric result, got type error: %v", err)
-		}
-
-		if result != test.expected {
-			t.Errorf("expected '%f', got '%f'", test.expected, result)
+		if main.result != "" {
+			t.Errorf("expected empty output, got '%s'", main.result)
 		}
 	}
 }
@@ -135,7 +128,7 @@ func TestMainErr(t *testing.T) {
 				}
 			},
 
-			result: datavalue.Null(),
+			result: "",
 		}
 
 		main.Run()
@@ -174,7 +167,7 @@ func TestMainWriteError(t *testing.T) {
 				mainErr = err
 			}
 		},
-		result: datavalue.Null(),
+		result: "",
 	}
 
 	main.Run()
@@ -194,7 +187,7 @@ func BenchmarkMain(b *testing.B) {
 			onError: func(err error) {
 				b.Errorf("expected no error, got '%s'", err.Error())
 			},
-			result: datavalue.Null(),
+			result: "",
 		}
 
 		main.Run()

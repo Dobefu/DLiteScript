@@ -8,7 +8,6 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/evaluator"
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
@@ -20,7 +19,7 @@ type Main struct {
 	onError func(error)
 	outFile io.Writer
 
-	result datavalue.Value
+	result string
 }
 
 // Run actually runs the application.
@@ -58,7 +57,7 @@ func (m *Main) Run() {
 	}
 
 	e := evaluator.NewEvaluator()
-	result, err := e.Evaluate(ast)
+	_, err = e.Evaluate(ast)
 
 	if err != nil {
 		m.onError(err)
@@ -66,14 +65,14 @@ func (m *Main) Run() {
 		return
 	}
 
-	m.result = result
+	m.result = e.Output()
 
 	// If the output file is io.Discard, we don't need to format the result.
 	if m.outFile == io.Discard {
 		return
 	}
 
-	_, err = fmt.Fprintln(m.outFile, m.result.ToString())
+	_, err = fmt.Fprint(m.outFile, m.result)
 
 	if err != nil {
 		m.onError(err)
@@ -90,6 +89,6 @@ func main() {
 			os.Exit(1)
 		},
 
-		result: datavalue.Null(),
+		result: "",
 	}).Run()
 }

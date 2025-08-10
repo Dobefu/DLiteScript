@@ -38,3 +38,8 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 		)
 	}
 }
+
+// Output returns the current output buffer contents.
+func (e *Evaluator) Output() string {
+	return e.buf.String()
+}
