@@ -164,12 +164,12 @@ func (t *Tokenizer) parseUnknownChar(next rune) (*token.Token, error) {
 	)
 }
 
-// TODO: Add support for escape characters beyond just \".
 func (t *Tokenizer) handleString() (*token.Token, error) {
 	var str strings.Builder
 	str.Grow(16)
 
 	var lastChar rune
+	isEscaping := false
 
 	for !t.isEOF {
 		next, err := t.GetNext()
@@ -178,12 +178,35 @@ func (t *Tokenizer) handleString() (*token.Token, error) {
 			return nil, err
 		}
 
-		if next == '"' && lastChar != '\\' {
+		if isEscaping {
+			switch next {
+			case 'n':
+				str.WriteRune('\n')
+			case 't':
+				str.WriteRune('\t')
+			case 'r':
+				str.WriteRune('\r')
+			default:
+				str.WriteRune(next)
+			}
+
+			isEscaping = false
+
+			continue
+		}
+
+		if next == '"' {
 			return t.tokenPool.GetToken(str.String(), token.TokenTypeString), nil
 		}
 
-		str.WriteRune(next)
 		lastChar = next
+
+		if lastChar == '\\' {
+			isEscaping = true
+			continue
+		}
+
+		str.WriteRune(next)
 	}
 
 	return nil, errorutil.NewErrorAt(errorutil.ErrorMsgUnexpectedEOF, t.byteIdx)

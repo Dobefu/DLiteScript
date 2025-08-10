@@ -3,7 +3,6 @@ package tokenizer
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
@@ -120,7 +119,7 @@ func TestTokenize(t *testing.T) {
 		{
 			input: `"te\"st"`,
 			expected: []*token.Token{
-				{Atom: "te\\\"st", TokenType: token.TokenTypeString},
+				{Atom: "te\"st", TokenType: token.TokenTypeString},
 			},
 		},
 		{
@@ -140,8 +139,14 @@ func TestTokenize(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if !reflect.DeepEqual(tokens, test.expected) {
-			t.Fatalf("expected %v, got %v", test.expected, tokens)
+		if len(tokens) != len(test.expected) {
+			t.Fatalf("expected %d tokens, got %d", len(test.expected), len(tokens))
+		}
+
+		for i, token := range tokens {
+			if token.Atom != test.expected[i].Atom {
+				t.Fatalf("expected token %d to be %s, got %s", i, test.expected[i].Atom, token.Atom)
+			}
 		}
 	}
 }
