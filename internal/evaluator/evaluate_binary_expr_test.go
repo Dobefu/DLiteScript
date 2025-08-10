@@ -127,7 +127,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 				Pos: 1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownNodeType, nil),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
 			input: &ast.BinaryExpr{
@@ -139,7 +139,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 				Pos: 1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownNodeType, nil),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
 			input: &ast.BinaryExpr{

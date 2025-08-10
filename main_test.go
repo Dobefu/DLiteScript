@@ -96,10 +96,6 @@ func TestMainErr(t *testing.T) {
 			expected: errorutil.ErrorMsgUnexpectedEOF,
 		},
 		{
-			input:    " ",
-			expected: errorutil.ErrorMsgEmptyExpression,
-		},
-		{
 			input:    "\x80",
 			expected: string(errorutil.ErrorMsgInvalidUTF8Char),
 		},

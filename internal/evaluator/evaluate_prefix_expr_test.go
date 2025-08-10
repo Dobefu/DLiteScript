@@ -76,7 +76,7 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 				Operand: nil,
 				Pos:     0,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownNodeType, nil),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 	}
 

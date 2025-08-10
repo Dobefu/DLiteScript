@@ -83,16 +83,6 @@ func TestParseErr(t *testing.T) {
 		expected string
 	}{
 		{
-			input:    []*token.Token{},
-			expected: errorutil.ErrorMsgEmptyExpression,
-		},
-		{
-			input: []*token.Token{
-				{Atom: "_", TokenType: token.TokenTypeNumber},
-			},
-			expected: errorutil.ErrorMsgEmptyExpression,
-		},
-		{
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},

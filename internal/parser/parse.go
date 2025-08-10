@@ -9,7 +9,7 @@ import (
 // Parse parses the expression string supplied in the struct.
 func (p *Parser) Parse() (ast.ExprNode, error) {
 	if len(p.tokens) <= 0 {
-		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgEmptyExpression, 0)
+		return nil, nil
 	}
 
 	statements := []ast.ExprNode{}
@@ -31,7 +31,7 @@ func (p *Parser) Parse() (ast.ExprNode, error) {
 	}
 
 	if len(statements) == 0 {
-		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgEmptyExpression, 0)
+		return nil, nil
 	}
 
 	if len(statements) == 1 {

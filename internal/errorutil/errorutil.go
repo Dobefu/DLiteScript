@@ -10,8 +10,6 @@ import (
 type ErrorMsg string
 
 const (
-	// ErrorMsgEmptyExpression occurs when an expression is empty.
-	ErrorMsgEmptyExpression = "empty expression"
 	// ErrorMsgUnexpectedEOF occurs when EOF is reached while still parsing.
 	ErrorMsgUnexpectedEOF = "unexpected end of expression"
 	// ErrorMsgInvalidUTF8Char occurs when an invalid UTF-8 sequence is encountered.

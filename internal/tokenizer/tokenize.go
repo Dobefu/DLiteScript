@@ -45,7 +45,7 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken = t.tokenPool.GetToken("%", token.TokenTypeOperationMod)
 
 		case '/':
-			newToken = t.tokenPool.GetToken("/", token.TokenTypeOperationDiv)
+			newToken, err = t.handleDivisionOrComment()
 
 		case '(':
 			newToken = t.tokenPool.GetToken("(", token.TokenTypeLParen)
@@ -93,6 +93,32 @@ func (t *Tokenizer) handleAsterisk() (*token.Token, error) {
 	}
 
 	return t.tokenPool.GetToken("*", token.TokenTypeOperationMul), nil
+}
+
+func (t *Tokenizer) handleDivisionOrComment() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next != '/' {
+		return t.tokenPool.GetToken("/", token.TokenTypeOperationDiv), nil
+	}
+
+	for !t.isEOF {
+		next, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		if next == '\n' {
+			break
+		}
+	}
+
+	return nil, nil
 }
 
 func (t *Tokenizer) parseIdentifier(firstChar rune) (*token.Token, error) {

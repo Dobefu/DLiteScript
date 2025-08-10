@@ -8,6 +8,10 @@ import (
 
 // Evaluate runs the evaluation logic.
 func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
+	if currentAst == nil {
+		return datavalue.Null(), nil
+	}
+
 	switch node := currentAst.(type) {
 	case *ast.StatementList:
 		return e.evaluateStatementList(node)
@@ -31,15 +35,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 		return e.evaluateStringLiteral(node)
 
 	default:
-		pos := -1
-
-		if node != nil {
-			pos = node.Position()
-		}
-
 		return datavalue.Null(), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,
-			pos,
+			node.Position(),
 			node,
 		)
 	}
