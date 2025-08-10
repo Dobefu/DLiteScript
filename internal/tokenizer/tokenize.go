@@ -90,6 +90,15 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 				token.TokenTypeComma,
 			))
 
+		case '"':
+			token, err := t.handleString()
+
+			if err != nil {
+				return nil, err
+			}
+
+			tokens = append(tokens, token)
+
 		default:
 			newToken, err := t.parseUnknownChar(next)
 
@@ -165,4 +174,29 @@ func (t *Tokenizer) parseUnknownChar(next rune) (*token.Token, error) {
 		t.expIdx,
 		string(next),
 	)
+}
+
+// TODO: Add support for escape characters beyond just \".
+func (t *Tokenizer) handleString() (*token.Token, error) {
+	var str strings.Builder
+	str.Grow(16)
+
+	var lastChar rune
+
+	for !t.isEOF {
+		next, err := t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		if next == '"' && lastChar != '\\' {
+			return t.tokenPool.GetToken(str.String(), token.TokenTypeString), nil
+		}
+
+		str.WriteRune(next)
+		lastChar = next
+	}
+
+	return nil, errorutil.NewErrorAt(errorutil.ErrorMsgUnexpectedEOF, t.byteIdx)
 }
