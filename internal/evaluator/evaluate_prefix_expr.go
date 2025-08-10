@@ -2,21 +2,28 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
 func (e *Evaluator) evaluatePrefixExpr(
 	node *ast.PrefixExpr,
-) (float64, error) {
-	result, err := e.Evaluate(node.Operand)
+) (datavalue.Value, error) {
+	rawResult, err := e.Evaluate(node.Operand)
 
 	if err != nil {
-		return 0, err
+		return datavalue.Null(), err
 	}
 
 	if node.Operator.TokenType == token.TokenTypeOperationSub {
-		return -result, nil
+		number, err := rawResult.AsNumber()
+
+		if err != nil {
+			return datavalue.Null(), err
+		}
+
+		return datavalue.Number(-number), nil
 	}
 
-	return result, nil
+	return rawResult, nil
 }

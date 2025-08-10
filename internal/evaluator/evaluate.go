@@ -2,11 +2,12 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 // Evaluate runs the evaluation logic.
-func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (float64, error) {
+func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	switch node := currentAst.(type) {
 	case *ast.BinaryExpr:
 		return e.evaluateBinaryExpr(node)
@@ -30,6 +31,10 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (float64, error) {
 			pos = node.Position()
 		}
 
-		return 0, errorutil.NewErrorAt(errorutil.ErrorMsgUnknownNodeType, pos, node)
+		return datavalue.Null(), errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnknownNodeType,
+			pos,
+			node,
+		)
 	}
 }

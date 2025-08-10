@@ -2,41 +2,43 @@ package evaluator
 
 import (
 	"math"
+
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
 type identifierInfo struct {
-	handler func() (float64, error)
+	handler func() (datavalue.Value, error)
 }
 
 var identifierRegistry = map[string]identifierInfo{
 	"PI": {
-		handler: func() (float64, error) {
-			return math.Pi, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.Pi), nil
 		},
 	},
 	"TAU": {
-		handler: func() (float64, error) {
-			return math.Pi * 2, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.Pi * 2), nil
 		},
 	},
 	"E": {
-		handler: func() (float64, error) {
-			return math.E, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.E), nil
 		},
 	},
 	"PHI": {
-		handler: func() (float64, error) {
-			return math.Phi, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.Phi), nil
 		},
 	},
 	"LN2": {
-		handler: func() (float64, error) {
-			return math.Ln2, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.Ln2), nil
 		},
 	},
 	"LN10": {
-		handler: func() (float64, error) {
-			return math.Ln10, nil
+		handler: func() (datavalue.Value, error) {
+			return datavalue.Number(math.Ln10), nil
 		},
 	},
 }

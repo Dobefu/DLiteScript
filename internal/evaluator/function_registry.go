@@ -2,74 +2,127 @@ package evaluator
 
 import (
 	"math"
+
+	"github.com/Dobefu/DLiteScript/internal/datatype"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-type functionHandler func([]float64) (float64, error)
+type functionHandler func([]datavalue.Value) (datavalue.Value, error)
 
 type functionInfo struct {
 	handler  functionHandler
 	argCount int
+	argKinds []datatype.DataType
+}
+
+func makeFunction(
+	argKinds []datatype.DataType,
+	impl func([]datavalue.Value) datavalue.Value,
+) functionInfo {
+	handler := func(args []datavalue.Value) (datavalue.Value, error) {
+		for i, arg := range args {
+			if arg.DataType() == argKinds[i] {
+				continue
+			}
+
+			return datavalue.Null(), errorutil.NewError(
+				errorutil.ErrorMsgTypeUnknownDataType,
+				arg.DataType().AsString(),
+			)
+		}
+
+		return impl(args), nil
+	}
+
+	return functionInfo{
+		handler:  handler,
+		argCount: len(argKinds),
+		argKinds: argKinds,
+	}
 }
 
 var functionRegistry = map[string]functionInfo{
-	"abs": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Abs(args[0]), nil
+	"abs": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Abs(arg0))
 		},
-	},
-	"sin": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Sin(args[0]), nil
+	),
+	"sin": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Sin(arg0))
 		},
-	},
-	"cos": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Cos(args[0]), nil
+	),
+	"cos": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Cos(arg0))
 		},
-	},
-	"tan": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Tan(args[0]), nil
+	),
+	"tan": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Tan(arg0))
 		},
-	},
-	"sqrt": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Sqrt(args[0]), nil
+	),
+	"sqrt": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Sqrt(arg0))
 		},
-	},
-	"round": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Round(args[0]), nil
+	),
+	"round": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Round(arg0))
 		},
-	},
-	"floor": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Floor(args[0]), nil
+	),
+	"floor": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Floor(arg0))
 		},
-	},
-	"ceil": {
-		argCount: 1,
-		handler: func(args []float64) (float64, error) {
-			return math.Ceil(args[0]), nil
+	),
+	"ceil": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+
+			return datavalue.Number(math.Ceil(arg0))
 		},
-	},
-	"min": {
-		argCount: 2,
-		handler: func(args []float64) (float64, error) {
-			return math.Min(args[0], args[1]), nil
+	),
+	"min": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+			arg1, _ := args[1].AsNumber()
+
+			return datavalue.Number(math.Min(arg0, arg1))
 		},
-	},
-	"max": {
-		argCount: 2,
-		handler: func(args []float64) (float64, error) {
-			return math.Max(args[0], args[1]), nil
+	),
+	"max": makeFunction(
+		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
+		func(args []datavalue.Value) datavalue.Value {
+			arg0, _ := args[0].AsNumber()
+			arg1, _ := args[1].AsNumber()
+
+			return datavalue.Number(math.Max(arg0, arg1))
 		},
-	},
+	),
 }

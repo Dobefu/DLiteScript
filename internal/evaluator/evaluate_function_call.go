@@ -2,16 +2,17 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func (e *Evaluator) evaluateFunctionCall(
 	fc *ast.FunctionCall,
-) (float64, error) {
+) (datavalue.Value, error) {
 	function, ok := functionRegistry[fc.FunctionName]
 
 	if !ok {
-		return 0, errorutil.NewErrorAt(
+		return datavalue.Null(), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUndefinedFunction,
 			fc.Position(),
 			fc.FunctionName,
@@ -26,7 +27,7 @@ func (e *Evaluator) evaluateFunctionCall(
 	)
 
 	if err != nil {
-		return 0, err
+		return datavalue.Null(), err
 	}
 
 	return function.handler(argValues)
@@ -37,8 +38,8 @@ func (e *Evaluator) evaluateArguments(
 	expectedCount int,
 	functionName string,
 	fc *ast.FunctionCall,
-) ([]float64, error) {
-	argValues := make([]float64, len(args))
+) ([]datavalue.Value, error) {
+	argValues := make([]datavalue.Value, len(args))
 
 	for i, arg := range args {
 		val, err := e.Evaluate(arg)
@@ -50,6 +51,12 @@ func (e *Evaluator) evaluateArguments(
 		argValues[i] = val
 	}
 
+	function, hasFunction := functionRegistry[functionName]
+
+	if !hasFunction {
+		return argValues, nil
+	}
+
 	if expectedCount > 0 && len(argValues) != expectedCount {
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
@@ -58,6 +65,19 @@ func (e *Evaluator) evaluateArguments(
 			expectedCount,
 			len(argValues),
 		)
+	}
+
+	for i, expectedKind := range function.argKinds {
+		if argValues[i].DataType() != expectedKind {
+			return nil, errorutil.NewErrorAt(
+				errorutil.ErrorMsgFunctionArgType,
+				fc.Position(),
+				functionName,
+				i+1,
+				expectedKind.AsString(),
+				argValues[i].DataType().AsString(),
+			)
+		}
 	}
 
 	return argValues, nil

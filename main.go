@@ -7,8 +7,8 @@ import (
 	"io"
 	"log/slog"
 	"os"
-	"strconv"
 
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/evaluator"
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
@@ -20,7 +20,7 @@ type Main struct {
 	onError func(error)
 	outFile io.Writer
 
-	result float64
+	result datavalue.Value
 }
 
 // Run actually runs the application.
@@ -73,7 +73,7 @@ func (m *Main) Run() {
 		return
 	}
 
-	_, err = fmt.Fprintln(m.outFile, strconv.FormatFloat(m.result, 'f', -1, 64))
+	_, err = fmt.Fprintln(m.outFile, m.result.String())
 
 	if err != nil {
 		m.onError(err)
@@ -90,6 +90,6 @@ func main() {
 			os.Exit(1)
 		},
 
-		result: 0,
+		result: datavalue.Null(),
 	}).Run()
 }

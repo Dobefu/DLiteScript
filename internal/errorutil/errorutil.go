@@ -40,6 +40,8 @@ const (
 	ErrorMsgUnexpectedChar = "unexpected character: '%s'"
 	// ErrorMsgFunctionNumArgs occurs when a function receives the wrong number of arguments.
 	ErrorMsgFunctionNumArgs = "'%s()' expects exactly %d argument(s), but got %d"
+	// ErrorMsgFunctionArgType occurs when a function receives an argument of the wrong type.
+	ErrorMsgFunctionArgType = "'%s()' expects argument %d to be '%s', but got '%s'"
 	// ErrorMsgNumberTrailingChar occurs when a number has non-numeric trailing characters.
 	ErrorMsgNumberTrailingChar = "trailing character in number: '%s'"
 	// ErrorMsgNumberMultipleUnderscores occurs when a number has multiple consecutive underscores.
@@ -50,6 +52,12 @@ const (
 	ErrorMsgNumberMultipleExponentSigns = "multiple exponent signs in number: '%s'"
 	// ErrorMsgNumberMultipleConsecutiveExponentSigns occurs when an exponent has multiple consecutive signs.
 	ErrorMsgNumberMultipleConsecutiveExponentSigns = "multiple consecutive addition or subtraction signs in exponent: '%s'"
+	// ErrorMsgTypeUnknownDataType occurs when an unknown data type is encountered.
+	ErrorMsgTypeUnknownDataType = "type error: unknown data type: '%s'"
+	// ErrorMsgTypeExpectedNull occurs when a null type is expected but a different type is encountered.
+	ErrorMsgTypeExpectedNull = "type error: expected null"
+	// ErrorMsgTypeExpectedNumber occurs when a number type is expected but a different type is encountered.
+	ErrorMsgTypeExpectedNumber = "type error: expected number"
 )
 
 // Error represents an error with a message.

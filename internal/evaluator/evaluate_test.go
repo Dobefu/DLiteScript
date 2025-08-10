@@ -51,10 +51,16 @@ func TestEvaluate(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := NewEvaluator().Evaluate(test.input)
+		rawResult, err := NewEvaluator().Evaluate(test.input)
 
 		if err != nil {
-			t.Errorf("error evaluating %s: %v", test.input, err)
+			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+		}
+
+		result, err := rawResult.AsNumber()
+
+		if err != nil {
+			t.Fatalf("expected number, got type error: %s", err.Error())
 		}
 
 		if result != test.expected {

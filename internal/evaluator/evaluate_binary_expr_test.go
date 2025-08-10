@@ -92,10 +92,16 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := NewEvaluator().evaluateBinaryExpr(test.input)
+		rawResult, err := NewEvaluator().evaluateBinaryExpr(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating %s: %v", test.input.Expr(), err)
+		}
+
+		result, err := rawResult.AsNumber()
+
+		if err != nil {
+			t.Fatalf("expected number, got type error: %s", err.Error())
 		}
 
 		if result != test.expected {

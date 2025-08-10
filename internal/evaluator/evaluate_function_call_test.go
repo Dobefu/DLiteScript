@@ -103,15 +103,22 @@ func TestEvaluateFunctionCall(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := NewEvaluator().Evaluate(test.input)
-		result = math.Round(result*1000) / 1000
+		rawResult, err := NewEvaluator().Evaluate(test.input)
 
 		if err != nil {
-			t.Errorf("error evaluating %s: %v", test.input, err)
+			t.Errorf("error evaluating '%s': %s", test.input, err.Error())
 		}
 
+		resultNum, err := rawResult.AsNumber()
+
+		if err != nil {
+			t.Fatalf("expected number, got type error: %s", err.Error())
+		}
+
+		result := math.Round(resultNum*1000) / 1000
+
 		if result != test.expected {
-			t.Errorf("expected %f, got %f", test.expected, result)
+			t.Errorf("expected '%f', got '%f'", test.expected, result)
 		}
 	}
 }
