@@ -55,12 +55,11 @@ var functionRegistry = map[string]functionInfo{
 		func(e *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsString()
 
-			fmt.Fprintf(&e.buf, "%s", arg0)
+			fmt.Fprintf(&e.buf, "%s\n", arg0)
 
 			return datavalue.Null()
 		},
 	),
-
 	"abs": makeFunction(
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
