@@ -53,6 +53,17 @@ func TestParsePrefixExpr(t *testing.T) {
 				Pos:      0,
 			},
 		},
+		{
+			input: []*token.Token{
+				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+			expected: &ast.PrefixExpr{
+				Operator: token.Token{Atom: "+", TokenType: token.TokenTypeOperationAdd},
+				Operand:  &ast.StringLiteral{Value: "test", Pos: 4},
+				Pos:      0,
+			},
+		},
 	}
 
 	for _, test := range tests {
