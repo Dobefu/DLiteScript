@@ -1,6 +1,8 @@
 package ast
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestStringLiteral(t *testing.T) {
 	t.Parallel()
