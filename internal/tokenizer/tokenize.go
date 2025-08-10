@@ -186,6 +186,14 @@ func (t *Tokenizer) handleString() (*token.Token, error) {
 				str.WriteRune('\t')
 			case 'r':
 				str.WriteRune('\r')
+			case '0':
+				str.WriteRune('\000')
+			case 'b':
+				str.WriteRune('\b')
+			case 'f':
+				str.WriteRune('\f')
+			case 'v':
+				str.WriteRune('\v')
 			default:
 				str.WriteRune(next)
 			}
@@ -203,6 +211,7 @@ func (t *Tokenizer) handleString() (*token.Token, error) {
 
 		if lastChar == '\\' {
 			isEscaping = true
+
 			continue
 		}
 
