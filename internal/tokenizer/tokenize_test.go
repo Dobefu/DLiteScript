@@ -123,6 +123,48 @@ func TestTokenize(t *testing.T) {
 			},
 		},
 		{
+			input: `"\n"`,
+			expected: []*token.Token{
+				{Atom: "\n", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\t"`,
+			expected: []*token.Token{
+				{Atom: "\t", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\r"`,
+			expected: []*token.Token{
+				{Atom: "\r", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\0"`,
+			expected: []*token.Token{
+				{Atom: "\000", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\b"`,
+			expected: []*token.Token{
+				{Atom: "\b", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\f"`,
+			expected: []*token.Token{
+				{Atom: "\f", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"\v"`,
+			expected: []*token.Token{
+				{Atom: "\v", TokenType: token.TokenTypeString},
+			},
+		},
+		{
 			input:    "//\n",
 			expected: []*token.Token{},
 		},
