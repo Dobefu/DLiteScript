@@ -6,7 +6,14 @@ import (
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/errorutil"
+)
+
+type functionType int
+
+const (
+	functionTypeFixed functionType = iota
+	functionTypeVariadic
+	functionTypeMixedVariadic
 )
 
 type functionHandler func(
@@ -15,52 +22,61 @@ type functionHandler func(
 ) (datavalue.Value, error)
 
 type functionInfo struct {
-	handler  functionHandler
-	argCount int
-	argKinds []datatype.DataType
+	handler      functionHandler
+	functionType functionType
+	argKinds     []datatype.DataType
 }
 
 func makeFunction(
+	functionType functionType,
 	argKinds []datatype.DataType,
 	impl func(e *Evaluator, args []datavalue.Value) datavalue.Value,
 ) functionInfo {
-	handler := func(
-		e *Evaluator,
-		args []datavalue.Value,
-	) (datavalue.Value, error) {
-		for i, arg := range args {
-			if arg.DataType() == argKinds[i] {
-				continue
-			}
-
-			return datavalue.Null(), errorutil.NewError(
-				errorutil.ErrorMsgTypeUnknownDataType,
-				arg.DataType().AsString(),
-			)
-		}
-
+	handler := func(e *Evaluator, args []datavalue.Value) (datavalue.Value, error) {
 		return impl(e, args), nil
 	}
 
 	return functionInfo{
-		handler:  handler,
-		argCount: len(argKinds),
-		argKinds: argKinds,
+		handler:      handler,
+		functionType: functionType,
+		argKinds:     argKinds,
 	}
 }
 
 var functionRegistry = map[string]functionInfo{
 	"println": makeFunction(
+		functionTypeMixedVariadic,
 		[]datatype.DataType{datatype.DataTypeString},
 		func(e *Evaluator, args []datavalue.Value) datavalue.Value {
-			arg0, _ := args[0].AsString()
+			format, _ := args[0].AsString()
+			formatArgs := make([]any, len(args)-1)
 
-			fmt.Fprintf(&e.buf, "%s\n", arg0)
+			for i := 1; i < len(args); i++ {
+				switch args[i].DataType() {
+				case datatype.DataTypeString:
+					str, _ := args[i].AsString()
+					formatArgs[i-1] = str
+
+				case datatype.DataTypeNumber:
+					num, _ := args[i].AsNumber()
+					formatArgs[i-1] = num
+
+				case datatype.DataTypeNull:
+					formatArgs[i-1] = "null"
+
+				default:
+					formatArgs[i-1] = "unknown"
+				}
+			}
+
+			formatted := fmt.Sprintf(format, formatArgs...)
+			fmt.Fprintln(&e.buf, formatted)
 
 			return datavalue.Null()
 		},
 	),
 	"abs": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -69,6 +85,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"sin": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -77,6 +94,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"cos": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -85,6 +103,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"tan": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -93,6 +112,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"sqrt": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -101,6 +121,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"round": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -109,6 +130,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"floor": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -117,6 +139,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"ceil": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -125,6 +148,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"min": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
@@ -134,6 +158,7 @@ var functionRegistry = map[string]functionInfo{
 		},
 	),
 	"max": makeFunction(
+		functionTypeFixed,
 		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
 		func(_ *Evaluator, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
