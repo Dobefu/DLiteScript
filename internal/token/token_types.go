@@ -28,6 +28,8 @@ const (
 	TokenTypeFunction
 	// TokenTypeComma represents a comma separator.
 	TokenTypeComma
+	// TokenTypeString represents a string literal.
+	TokenTypeString
 	// TokenTypeNewline represents a newline separator.
 	TokenTypeNewline
 )
