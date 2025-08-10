@@ -1,2 +1,2 @@
-// println("%g", 1 + 1)
-println("// Hi!")
+// printf("%g\n", 1 + 1)
+printf("// Hi!\n")

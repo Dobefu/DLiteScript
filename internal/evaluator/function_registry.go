@@ -44,7 +44,7 @@ func makeFunction(
 }
 
 var functionRegistry = map[string]functionInfo{
-	"println": makeFunction(
+	"printf": makeFunction(
 		functionTypeMixedVariadic,
 		[]datatype.DataType{datatype.DataTypeString},
 		func(e *Evaluator, args []datavalue.Value) datavalue.Value {
@@ -69,8 +69,7 @@ var functionRegistry = map[string]functionInfo{
 				}
 			}
 
-			formatted := fmt.Sprintf(format, formatArgs...)
-			fmt.Fprintln(&e.buf, formatted)
+			fmt.Fprintf(&e.buf, format, formatArgs...)
 
 			return datavalue.Null()
 		},

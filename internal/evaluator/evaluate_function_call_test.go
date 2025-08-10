@@ -29,15 +29,15 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 	}{
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"println",
+				"printf",
 				&ast.StringLiteral{Value: "test", Pos: 0},
 			),
-			expected: "test\n",
+			expected: "test",
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"println",
-				&ast.StringLiteral{Value: "testing, %g %g %g", Pos: 0},
+				"printf",
+				&ast.StringLiteral{Value: "testing, %g %g %g\n", Pos: 0},
 				&ast.NumberLiteral{Value: "1", Pos: 10},
 				&ast.NumberLiteral{Value: "2", Pos: 12},
 				&ast.NumberLiteral{Value: "3", Pos: 14},
@@ -69,16 +69,16 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 	}{
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"println",
+				"printf",
 			),
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "println", 1, 0),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"println",
+				"printf",
 				&ast.NumberLiteral{Value: "1", Pos: 0},
 			),
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "println", 1, "string", "number"),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "printf", 1, "string", "number"),
 		},
 	}
 

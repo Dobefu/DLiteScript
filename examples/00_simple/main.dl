@@ -1,2 +1,2 @@
-println("%g", 1 + 1)
-println("String %s", "concatenation")
+printf("%g\n", 1 + 1)
+printf("String %s\n", "concatenation")

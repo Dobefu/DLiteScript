@@ -25,6 +25,7 @@
 
 ## Supported functions
 
+- `printf(format, args...)` - Print formatted output
 - `abs(x)` - Absolute value of `x`
 - `sin(x)` - Sine value of `x`
 - `cos(x)` - Cosine value of `x`
