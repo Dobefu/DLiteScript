@@ -17,6 +17,16 @@ func TestParse(t *testing.T) {
 		expected string
 	}{
 		{
+			input:    []*token.Token{},
+			expected: "",
+		},
+		{
+			input: []*token.Token{
+				{Atom: "_", TokenType: token.TokenTypeNumber},
+			},
+			expected: "_",
+		},
+		{
 			input: []*token.Token{
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
@@ -69,6 +79,14 @@ func TestParse(t *testing.T) {
 			continue
 		}
 
+		if len(test.input) == 0 {
+			if result != nil {
+				t.Errorf("expected nil result, got '%s'", result.Expr())
+			}
+
+			continue
+		}
+
 		if result.Expr() != test.expected {
 			t.Errorf("expected '%s', got '%s'", test.expected, result.Expr())
 		}
@@ -82,6 +100,10 @@ func TestParseErr(t *testing.T) {
 		input    []*token.Token
 		expected string
 	}{
+		{
+			input:    []*token.Token{{}},
+			expected: errorutil.ErrorMsgUnexpectedEOF,
+		},
 		{
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
