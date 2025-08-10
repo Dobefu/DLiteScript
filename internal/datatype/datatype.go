@@ -7,9 +7,10 @@ type DataType int
 const (
 	// DataTypeNull represents a null type.
 	DataTypeNull DataType = iota
-
 	// DataTypeNumber represents a number type.
 	DataTypeNumber
+	// DataTypeString represents a string type.
+	DataTypeString
 )
 
 // AsString provides the string representation of a DataType for error messages.
@@ -20,6 +21,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeNumber:
 		return "number"
+
+	case DataTypeString:
+		return "string"
 
 	default:
 		return "unknown"

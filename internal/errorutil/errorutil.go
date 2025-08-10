@@ -54,10 +54,8 @@ const (
 	ErrorMsgNumberMultipleConsecutiveExponentSigns = "multiple consecutive addition or subtraction signs in exponent: '%s'"
 	// ErrorMsgTypeUnknownDataType occurs when an unknown data type is encountered.
 	ErrorMsgTypeUnknownDataType = "type error: unknown data type: '%s'"
-	// ErrorMsgTypeExpectedNull occurs when a null type is expected but a different type is encountered.
-	ErrorMsgTypeExpectedNull = "type error: expected null"
-	// ErrorMsgTypeExpectedNumber occurs when a number type is expected but a different type is encountered.
-	ErrorMsgTypeExpectedNumber = "type error: expected number"
+	// ErrorMsgTypeExpected occurs when a type is expected but a different type is encountered.
+	ErrorMsgTypeExpected = "type error: expected %s, but got %s"
 )
 
 // Error represents an error with a message.

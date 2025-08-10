@@ -13,6 +13,7 @@ type Value struct {
 	dataType datatype.DataType
 
 	Num float64
+	Str string
 }
 
 // DataType returns the data type of the value.
@@ -20,30 +21,47 @@ func (v Value) DataType() datatype.DataType {
 	return v.dataType
 }
 
-// Number creates a new number value.
-func Number(n float64) Value {
-	return Value{
-		dataType: datatype.DataTypeNumber,
-		Num:      n,
-	}
-}
-
 // Null creates a new null value.
 func Null() Value {
 	return Value{
 		dataType: datatype.DataTypeNull,
-		Num:      0,
+
+		Num: 0,
+		Str: "",
 	}
 }
 
-// String returns the string representation of the value.
-func (v Value) String() string {
+// Number creates a new number value.
+func Number(n float64) Value {
+	return Value{
+		dataType: datatype.DataTypeNumber,
+
+		Num: n,
+		Str: "",
+	}
+}
+
+// String creates a new string value.
+func String(s string) Value {
+	return Value{
+		dataType: datatype.DataTypeString,
+
+		Num: 0,
+		Str: s,
+	}
+}
+
+// ToString returns the string representation of the value.
+func (v Value) ToString() string {
 	switch v.dataType {
+	case datatype.DataTypeNull:
+		return "null"
+
 	case datatype.DataTypeNumber:
 		return strconv.FormatFloat(v.Num, 'f', -1, 64)
 
-	case datatype.DataTypeNull:
-		return "null"
+	case datatype.DataTypeString:
+		return v.Str
 
 	default:
 		return "unknown type"
@@ -54,9 +72,24 @@ func (v Value) String() string {
 func (v Value) AsNumber() (float64, error) {
 	if v.dataType != datatype.DataTypeNumber {
 		return 0, errorutil.NewError(
-			errorutil.ErrorMsgTypeExpectedNumber,
+			errorutil.ErrorMsgTypeExpected,
+			datatype.DataTypeNumber.AsString(),
+			v.dataType.AsString(),
 		)
 	}
 
 	return v.Num, nil
+}
+
+// AsString returns the value as a string.
+func (v Value) AsString() (string, error) {
+	if v.dataType != datatype.DataTypeString {
+		return "", errorutil.NewError(
+			errorutil.ErrorMsgTypeExpected,
+			datatype.DataTypeString.AsString(),
+			v.dataType.AsString(),
+		)
+	}
+
+	return v.Str, nil
 }

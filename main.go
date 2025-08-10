@@ -73,7 +73,7 @@ func (m *Main) Run() {
 		return
 	}
 
-	_, err = fmt.Fprintln(m.outFile, m.result.String())
+	_, err = fmt.Fprintln(m.outFile, m.result.ToString())
 
 	if err != nil {
 		m.onError(err)
