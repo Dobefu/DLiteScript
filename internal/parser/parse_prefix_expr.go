@@ -65,6 +65,12 @@ func (p *Parser) parseUnaryOperator(
 func (p *Parser) parseParenthesizedExpr(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
+	err := p.handleOptionalNewlines()
+
+	if err != nil {
+		return nil, err
+	}
+
 	nextToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -72,6 +78,12 @@ func (p *Parser) parseParenthesizedExpr(
 	}
 
 	expr, err := p.parseExpr(nextToken, nil, 0, recursionDepth+1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = p.handleOptionalNewlines()
 
 	if err != nil {
 		return nil, err

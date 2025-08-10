@@ -9,6 +9,9 @@ import (
 // Evaluate runs the evaluation logic.
 func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	switch node := currentAst.(type) {
+	case *ast.StatementList:
+		return e.evaluateStatementList(node)
+
 	case *ast.BinaryExpr:
 		return e.evaluateBinaryExpr(node)
 

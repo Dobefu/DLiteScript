@@ -12,28 +12,85 @@ func (p *Parser) Parse() (ast.ExprNode, error) {
 		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgEmptyExpression, 0)
 	}
 
-	nextToken, err := p.GetNextToken()
+	statements := []ast.ExprNode{}
 
-	if err != nil {
-		return nil, err
+	for !p.isEOF {
+		statement, err := p.parseStatement()
+
+		if err != nil {
+			return nil, err
+		}
+
+		statements = append(statements, statement)
+
+		err = p.handleStatementEnd()
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	ast, err := p.parseExpr(nextToken, nil, 0, 0)
-
-	if err != nil {
-		return nil, err
+	if len(statements) == 0 {
+		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgEmptyExpression, 0)
 	}
 
-	err = p.checkTrailingTokens()
-
-	if err != nil {
-		return nil, err
+	if len(statements) == 1 {
+		return statements[0], nil
 	}
 
-	return ast, nil
+	return &ast.StatementList{
+		Statements: statements,
+		Pos:        statements[0].Position(),
+	}, nil
 }
 
-func (p *Parser) checkTrailingTokens() error {
+func (p *Parser) handleStatementEnd() error {
+	hasNewlines := false
+
+	for !p.isEOF {
+		nextToken, err := p.PeekNextToken()
+
+		if err != nil {
+			return err
+		}
+
+		if nextToken.TokenType == token.TokenTypeNewline {
+			_, err = p.GetNextToken()
+
+			if err != nil {
+				return err
+			}
+
+			hasNewlines = true
+
+			continue
+		}
+
+		if !hasNewlines {
+			return errorutil.NewErrorAt(
+				errorutil.ErrorMsgUnexpectedToken,
+				p.tokenIdx,
+				nextToken.Atom,
+			)
+		}
+
+		break
+	}
+
+	return nil
+}
+
+func (p *Parser) parseStatement() (ast.ExprNode, error) {
+	token, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return p.parseExpr(token, nil, 0, 0)
+}
+
+func (p *Parser) handleOptionalNewlines() error {
 	for !p.isEOF {
 		peek, err := p.PeekNextToken()
 
@@ -41,17 +98,15 @@ func (p *Parser) checkTrailingTokens() error {
 			return err
 		}
 
-		if peek.TokenType != token.TokenTypeNewline {
-			return errorutil.NewErrorAt(
-				errorutil.ErrorMsgUnexpectedToken,
-				p.tokenIdx,
-				peek.Atom,
-			)
+		if peek.TokenType == token.TokenTypeNewline {
+			if _, err := p.GetNextToken(); err != nil {
+				return err
+			}
+
+			continue
 		}
 
-		if _, err := p.GetNextToken(); err != nil {
-			return err
-		}
+		break
 	}
 
 	return nil

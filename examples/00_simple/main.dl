@@ -1,1 +1,2 @@
 println("%g", 1 + 1)
+println("String %s", "concatenation")

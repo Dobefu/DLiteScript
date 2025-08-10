@@ -90,7 +90,7 @@ func TestParseErr(t *testing.T) {
 			input: []*token.Token{
 				{Atom: "_", TokenType: token.TokenTypeNumber},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF,
+			expected: errorutil.ErrorMsgEmptyExpression,
 		},
 		{
 			input: []*token.Token{

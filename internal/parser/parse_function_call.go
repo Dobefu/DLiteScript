@@ -25,10 +25,19 @@ func (p *Parser) parseFunctionCall(
 		)
 	}
 
+	err = p.handleOptionalNewlines()
+
+	if err != nil {
+		return nil, err
+	}
+
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {
-		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgParenNotClosedAtEOF, p.tokenIdx)
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgParenNotClosedAtEOF,
+			p.tokenIdx,
+		)
 	}
 
 	var args []ast.ExprNode
@@ -41,14 +50,17 @@ func (p *Parser) parseFunctionCall(
 		}
 	}
 
-	rparenToken, err := p.GetNextToken()
+	nextToken, err = p.GetNextToken()
 
 	if err != nil {
 		return nil, err
 	}
 
-	if rparenToken.TokenType != token.TokenTypeRParen {
-		return nil, errorutil.NewErrorAt(errorutil.ErrorMsgParenNotClosedAtEOF, p.tokenIdx)
+	if nextToken.TokenType != token.TokenTypeRParen {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgParenNotClosedAtEOF,
+			p.tokenIdx,
+		)
 	}
 
 	return &ast.FunctionCall{
@@ -65,13 +77,7 @@ func (p *Parser) parseFunctionCallArguments(
 	args := make([]ast.ExprNode, 0, 4)
 
 	for {
-		argToken, err := p.GetNextToken()
-
-		if err != nil {
-			return nil, err
-		}
-
-		arg, err := p.parseExpr(argToken, nil, 0, recursionDepth+1)
+		arg, err := p.parseArgument(recursionDepth)
 
 		if err != nil {
 			return nil, err
@@ -79,30 +85,104 @@ func (p *Parser) parseFunctionCallArguments(
 
 		args = append(args, arg)
 
-		nextToken, err := p.PeekNextToken()
-
-		if err != nil {
-			return nil, errorutil.NewErrorAt(errorutil.ErrorMsgParenNotClosedAtEOF, p.tokenIdx)
-		}
-
-		if nextToken.TokenType == token.TokenTypeRParen {
-			break
-		}
-
-		if nextToken.TokenType != token.TokenTypeComma {
-			return nil, errorutil.NewErrorAt(
-				errorutil.ErrorMsgUnexpectedToken,
-				p.tokenIdx,
-				nextToken.Atom,
-			)
-		}
-
-		_, err = p.GetNextToken()
+		hasArgumentEnded, err := p.isEndOfArguments()
 
 		if err != nil {
 			return nil, err
 		}
+
+		if hasArgumentEnded {
+			break
+		}
+
+		if err := p.consumeComma(); err != nil {
+			return nil, err
+		}
+
+		isTrailingComma, err := p.isTrailingComma()
+
+		if err != nil {
+			return nil, err
+		}
+
+		if isTrailingComma {
+			break
+		}
 	}
 
 	return args, nil
+}
+
+func (p *Parser) isEndOfArguments() (bool, error) {
+	if err := p.handleOptionalNewlines(); err != nil {
+		return false, err
+	}
+
+	nextToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return false, errorutil.NewErrorAt(
+			errorutil.ErrorMsgParenNotClosedAtEOF,
+			p.tokenIdx,
+		)
+	}
+
+	return nextToken.TokenType == token.TokenTypeRParen, nil
+}
+
+func (p *Parser) consumeComma() error {
+	if err := p.handleOptionalNewlines(); err != nil {
+		return err
+	}
+
+	nextToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return errorutil.NewErrorAt(
+			errorutil.ErrorMsgParenNotClosedAtEOF,
+			p.tokenIdx,
+		)
+	}
+
+	if nextToken.TokenType != token.TokenTypeComma {
+		return errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedToken,
+			p.tokenIdx,
+			nextToken.Atom,
+		)
+	}
+
+	_, err = p.GetNextToken()
+
+	return err
+}
+
+func (p *Parser) isTrailingComma() (bool, error) {
+	if err := p.handleOptionalNewlines(); err != nil {
+		return false, err
+	}
+
+	nextToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return false, errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedEOF,
+			p.tokenIdx,
+		)
+	}
+
+	return nextToken.TokenType == token.TokenTypeRParen, nil
+}
+
+func (p *Parser) parseArgument(recursionDepth int) (ast.ExprNode, error) {
+	argToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedEOF,
+			p.tokenIdx,
+		)
+	}
+
+	return p.parseExpr(argToken, nil, 0, recursionDepth+1)
 }
