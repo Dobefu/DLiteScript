@@ -49,6 +49,10 @@ func TestGetNextErr(t *testing.T) {
 			input:    "\xFF",
 			expected: errorutil.ErrorMsgInvalidUTF8Char,
 		},
+		{
+			input:    "",
+			expected: errorutil.ErrorMsgUnexpectedEOF,
+		},
 	}
 
 	for _, test := range tests {
