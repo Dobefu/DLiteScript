@@ -20,92 +20,54 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			return tokens, err
 		}
 
+		var newToken *token.Token
+
 		switch next {
 		case ' ', '\t', '\r':
 			continue
 
 		case '\n':
-			tokens = append(tokens, t.tokenPool.GetToken("\n", token.TokenTypeNewline))
+			newToken = t.tokenPool.GetToken("\n", token.TokenTypeNewline)
 
-			continue
-
-		// Numeric characters.
 		case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			newToken, err := t.parseNumber(next)
-
-			if err != nil {
-				return nil, err
-			}
-
-			tokens = append(tokens, newToken)
+			newToken, err = t.parseNumber(next)
 
 		case '+':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				"+",
-				token.TokenTypeOperationAdd,
-			))
+			newToken = t.tokenPool.GetToken("+", token.TokenTypeOperationAdd)
 
 		case '-':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				"-",
-				token.TokenTypeOperationSub,
-			))
+			newToken = t.tokenPool.GetToken("-", token.TokenTypeOperationSub)
 
 		case '*':
-			token, err := t.handleAsterisk()
-
-			if err != nil {
-				return nil, err
-			}
-
-			tokens = append(tokens, token)
+			newToken, err = t.handleAsterisk()
 
 		case '%':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				"%",
-				token.TokenTypeOperationMod,
-			))
+			newToken = t.tokenPool.GetToken("%", token.TokenTypeOperationMod)
 
 		case '/':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				"/",
-				token.TokenTypeOperationDiv,
-			))
+			newToken = t.tokenPool.GetToken("/", token.TokenTypeOperationDiv)
 
 		case '(':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				"(",
-				token.TokenTypeLParen,
-			))
+			newToken = t.tokenPool.GetToken("(", token.TokenTypeLParen)
 
 		case ')':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				")",
-				token.TokenTypeRParen,
-			))
+			newToken = t.tokenPool.GetToken(")", token.TokenTypeRParen)
 
 		case ',':
-			tokens = append(tokens, t.tokenPool.GetToken(
-				",",
-				token.TokenTypeComma,
-			))
+			newToken = t.tokenPool.GetToken(",", token.TokenTypeComma)
 
 		case '"':
-			token, err := t.handleString()
-
-			if err != nil {
-				return nil, err
-			}
-
-			tokens = append(tokens, token)
+			newToken, err = t.handleString()
 
 		default:
-			newToken, err := t.parseUnknownChar(next)
+			newToken, err = t.parseUnknownChar(next)
+		}
 
-			if err != nil {
-				return nil, err
-			}
+		if err != nil {
+			return nil, err
+		}
 
+		if newToken != nil {
 			tokens = append(tokens, newToken)
 		}
 	}
