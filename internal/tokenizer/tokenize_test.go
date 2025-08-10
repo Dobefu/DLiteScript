@@ -111,6 +111,26 @@ func TestTokenize(t *testing.T) {
 				{Atom: ")", TokenType: token.TokenTypeRParen},
 			},
 		},
+		{
+			input: `"test"`,
+			expected: []*token.Token{
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input: `"te\"st"`,
+			expected: []*token.Token{
+				{Atom: "te\\\"st", TokenType: token.TokenTypeString},
+			},
+		},
+		{
+			input:    "//\n",
+			expected: []*token.Token{},
+		},
+		{
+			input:    "// Comment",
+			expected: []*token.Token{},
+		},
 	}
 
 	for _, test := range tests {
