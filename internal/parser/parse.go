@@ -81,13 +81,28 @@ func (p *Parser) handleStatementEnd() error {
 }
 
 func (p *Parser) parseStatement() (ast.ExprNode, error) {
-	token, err := p.GetNextToken()
+	nextToken, err := p.GetNextToken()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return p.parseExpr(token, nil, 0, 0)
+	switch nextToken.TokenType {
+	case token.TokenTypeVar:
+		return p.parseVariableDeclaration()
+	case token.TokenTypeConst:
+		return p.parseConstantDeclaration()
+
+	case token.TokenTypeLBrace:
+		return p.parseBlock()
+
+	default:
+		return p.parseExpr(nextToken, nil, 0, 0)
+	}
+}
+
+func (p *Parser) parseBlock() (ast.ExprNode, error) {
+	return nil, nil
 }
 
 func (p *Parser) handleOptionalNewlines() error {
