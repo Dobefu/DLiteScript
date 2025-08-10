@@ -3,7 +3,6 @@ package evaluator
 import (
 	"errors"
 	"fmt"
-	"math"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -21,109 +20,87 @@ func evaluateFunctionCallCreateFunctionCall(
 	}
 }
 
-func TestEvaluateFunctionCall(t *testing.T) {
+func TestEvaluateFunctionCallPrint(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		input    ast.ExprNode
-		expected float64
+		expected string
 	}{
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"abs",
-				&ast.NumberLiteral{Value: "5", Pos: 0},
+				"println",
+				&ast.StringLiteral{Value: "test", Pos: 0},
 			),
-			expected: 5,
+			expected: "test\n",
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
-				"sin",
-				&ast.NumberLiteral{Value: fmt.Sprintf("%f", math.Pi/2), Pos: 0},
+				"println",
+				&ast.StringLiteral{Value: "testing, %g %g %g", Pos: 0},
+				&ast.NumberLiteral{Value: "1", Pos: 10},
+				&ast.NumberLiteral{Value: "2", Pos: 12},
+				&ast.NumberLiteral{Value: "3", Pos: 14},
 			),
-			expected: 1,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"cos",
-				&ast.NumberLiteral{Value: fmt.Sprintf("%f", math.Pi), Pos: 0},
-			),
-			expected: -1,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"tan",
-				&ast.NumberLiteral{Value: fmt.Sprintf("%f", math.Pi/4), Pos: 0},
-			),
-			expected: 1,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"sqrt",
-				&ast.NumberLiteral{Value: "16", Pos: 0},
-			),
-			expected: 4,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"round",
-				&ast.NumberLiteral{Value: "3.14", Pos: 0},
-			),
-			expected: 3,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"floor",
-				&ast.NumberLiteral{Value: "6.9", Pos: 0},
-			),
-			expected: 6,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"ceil",
-				&ast.NumberLiteral{Value: "3.14", Pos: 0},
-			),
-			expected: 4,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"min",
-				&ast.NumberLiteral{Value: "1", Pos: 0},
-				&ast.NumberLiteral{Value: "2", Pos: 2},
-			),
-			expected: 1,
-		},
-		{
-			input: evaluateFunctionCallCreateFunctionCall(
-				"max",
-				&ast.NumberLiteral{Value: "1", Pos: 0},
-				&ast.NumberLiteral{Value: "2", Pos: 2},
-			),
-			expected: 2,
+			expected: "testing, 1 2 3\n",
 		},
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator().Evaluate(test.input)
+		ev := NewEvaluator()
+		_, err := ev.Evaluate(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating '%s': %s", test.input, err.Error())
 		}
 
-		resultNum, err := rawResult.AsNumber()
-
-		if err != nil {
-			t.Fatalf("expected number, got type error: %s", err.Error())
-		}
-
-		result := math.Round(resultNum*1000) / 1000
-
-		if result != test.expected {
-			t.Errorf("expected '%f', got '%f'", test.expected, result)
+		if ev.buf.String() != test.expected {
+			t.Errorf("expected '%s', got '%s'", test.expected, ev.buf.String())
 		}
 	}
 }
 
-func TestEvaluateFunctionCallErr(t *testing.T) {
+func TestEvaluateFunctionCallPrintErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		input    ast.ExprNode
+		expected string
+	}{
+		{
+			input: evaluateFunctionCallCreateFunctionCall(
+				"println",
+			),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "println", 1, 0),
+		},
+		{
+			input: evaluateFunctionCallCreateFunctionCall(
+				"println",
+				&ast.NumberLiteral{Value: "1", Pos: 0},
+			),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "println", 1, "string", "number"),
+		},
+	}
+
+	for _, test := range tests {
+		ev := NewEvaluator()
+		_, err := ev.Evaluate(test.input)
+
+		if err == nil {
+			t.Fatalf("expected error, got nil")
+		}
+
+		if errors.Unwrap(err).Error() != test.expected {
+			t.Errorf(
+				"expected error \"%s\", got \"%s\"",
+				test.expected,
+				errors.Unwrap(err).Error(),
+			)
+		}
+	}
+}
+
+func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
