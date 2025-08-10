@@ -31,6 +31,23 @@ func Null() Value {
 	}
 }
 
+// ToString returns the string representation of the value.
+func (v Value) ToString() string {
+	switch v.dataType {
+	case datatype.DataTypeNull:
+		return "null"
+
+	case datatype.DataTypeNumber:
+		return strconv.FormatFloat(v.Num, 'f', -1, 64)
+
+	case datatype.DataTypeString:
+		return v.Str
+
+	default:
+		return errorutil.ErrorMsgTypeUnknownDataType
+	}
+}
+
 // Number creates a new number value.
 func Number(n float64) Value {
 	return Value{
@@ -48,23 +65,6 @@ func String(s string) Value {
 
 		Num: 0,
 		Str: s,
-	}
-}
-
-// ToString returns the string representation of the value.
-func (v Value) ToString() string {
-	switch v.dataType {
-	case datatype.DataTypeNull:
-		return "null"
-
-	case datatype.DataTypeNumber:
-		return strconv.FormatFloat(v.Num, 'f', -1, 64)
-
-	case datatype.DataTypeString:
-		return v.Str
-
-	default:
-		return "unknown type"
 	}
 }
 
