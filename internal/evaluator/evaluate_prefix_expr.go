@@ -25,5 +25,15 @@ func (e *Evaluator) evaluatePrefixExpr(
 		return datavalue.Number(-number), nil
 	}
 
+	if node.Operator.TokenType == token.TokenTypeOperationAdd {
+		number, err := rawResult.AsNumber()
+
+		if err != nil {
+			return datavalue.Null(), err
+		}
+
+		return datavalue.Number(number), nil
+	}
+
 	return rawResult, nil
 }

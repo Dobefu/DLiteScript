@@ -78,6 +78,17 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
+		{
+			input: &ast.PrefixExpr{
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+				},
+				Operand: &ast.StringLiteral{Value: "test", Pos: 1},
+				Pos:     0,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
+		},
 	}
 
 	for _, test := range tests {
