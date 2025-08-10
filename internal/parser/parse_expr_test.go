@@ -20,6 +20,12 @@ func TestParseExpr(t *testing.T) {
 			},
 			expected: "1",
 		},
+		{
+			input: []*token.Token{
+				token.NewToken("PI", token.TokenTypeIdentifier),
+			},
+			expected: "PI",
+		},
 	}
 
 	for _, test := range tests {
