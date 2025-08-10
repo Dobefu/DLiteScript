@@ -9,6 +9,12 @@ import (
 func (e *Evaluator) evaluateIdentifier(
 	i *ast.Identifier,
 ) (datavalue.Value, error) {
+	scopedValue, hasScopedValue := e.outerScope[i.Value]
+
+	if hasScopedValue {
+		return scopedValue.GetValue(), nil
+	}
+
 	identifier, hasIdentifier := identifierRegistry[i.Value]
 
 	if !hasIdentifier {
