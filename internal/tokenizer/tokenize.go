@@ -53,6 +53,15 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 		case ')':
 			newToken = t.tokenPool.GetToken(")", token.TokenTypeRParen)
 
+		case '=':
+			newToken = t.tokenPool.GetToken("=", token.TokenTypeAssign)
+
+		case '{':
+			newToken = t.tokenPool.GetToken("{", token.TokenTypeLBrace)
+
+		case '}':
+			newToken = t.tokenPool.GetToken("}", token.TokenTypeRBrace)
+
 		case ',':
 			newToken = t.tokenPool.GetToken(",", token.TokenTypeComma)
 

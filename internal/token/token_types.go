@@ -32,4 +32,10 @@ const (
 	TokenTypeString
 	// TokenTypeNewline represents a newline separator.
 	TokenTypeNewline
+	// TokenTypeAssign represents the assignment operator.
+	TokenTypeAssign
+	// TokenTypeLBrace represents a left brace.
+	TokenTypeLBrace
+	// TokenTypeRBrace represents a right brace.
+	TokenTypeRBrace
 )
