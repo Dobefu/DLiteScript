@@ -38,4 +38,12 @@ const (
 	TokenTypeLBrace
 	// TokenTypeRBrace represents a right brace.
 	TokenTypeRBrace
+	// TokenTypeVar represents the 'var' keyword.
+	TokenTypeVar
+	// TokenTypeConst represents the 'const' keyword.
+	TokenTypeConst
+	// TokenTypeTypeNumber represents the 'number' type keyword.
+	TokenTypeTypeNumber
+	// TokenTypeTypeString represents the 'string' type keyword.
+	TokenTypeTypeString
 )

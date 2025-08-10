@@ -30,6 +30,11 @@ func NewPool() *Pool {
 		{"(", TokenTypeLParen},
 		{")", TokenTypeRParen},
 		{",", TokenTypeComma},
+		{"=", TokenTypeAssign},
+		{"{", TokenTypeLBrace},
+		{"}", TokenTypeRBrace},
+		{"var", TokenTypeVar},
+		{"const", TokenTypeConst},
 		{"\n", TokenTypeNewline},
 	}
 

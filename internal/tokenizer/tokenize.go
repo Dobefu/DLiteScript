@@ -8,6 +8,13 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
+var keywords = map[string]token.Type{
+	"var":    token.TokenTypeVar,
+	"const":  token.TokenTypeConst,
+	"number": token.TokenTypeTypeNumber,
+	"string": token.TokenTypeTypeString,
+}
+
 // Tokenize analyzes the expression string and turns it into tokens.
 func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 	approxNumTokens := (t.expLen / 3)
@@ -130,7 +137,7 @@ func (t *Tokenizer) handleDivisionOrComment() (*token.Token, error) {
 	return nil, nil
 }
 
-func (t *Tokenizer) parseIdentifier(firstChar rune) (*token.Token, error) {
+func (t *Tokenizer) parseKeywordOrIdentifier(firstChar rune) (*token.Token, error) {
 	var identifier strings.Builder
 	identifier.WriteRune(firstChar)
 
@@ -158,12 +165,18 @@ func (t *Tokenizer) parseIdentifier(firstChar rune) (*token.Token, error) {
 		break
 	}
 
-	return t.tokenPool.GetToken(identifier.String(), token.TokenTypeIdentifier), nil
+	identifierText := identifier.String()
+
+	if tokenType, isKeyword := keywords[identifierText]; isKeyword {
+		return t.tokenPool.GetToken(identifierText, tokenType), nil
+	}
+
+	return t.tokenPool.GetToken(identifierText, token.TokenTypeIdentifier), nil
 }
 
 func (t *Tokenizer) parseUnknownChar(next rune) (*token.Token, error) {
 	if unicode.IsLetter(rune(next)) || next == '_' {
-		return t.parseIdentifier(rune(next))
+		return t.parseKeywordOrIdentifier(rune(next))
 	}
 
 	return nil, errorutil.NewErrorAt(
