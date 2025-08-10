@@ -1,0 +1,90 @@
+package evaluator
+
+import (
+	"errors"
+	"fmt"
+	"testing"
+
+	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
+)
+
+func TestEvaluateStatementList(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		input    *ast.StatementList
+		expected string
+	}{
+		{
+			input:    &ast.StatementList{Statements: []ast.ExprNode{}, Pos: 0},
+			expected: "",
+		},
+		{
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.NumberLiteral{
+						Value: "1",
+						Pos:   0,
+					},
+				},
+				Pos: 0,
+			},
+			expected: "1",
+		},
+	}
+
+	for _, test := range tests {
+		ev := NewEvaluator()
+		_, err := ev.evaluateStatementList(test.input)
+
+		if err != nil {
+			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+		}
+	}
+}
+
+func TestEvaluateStatementListErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		input    *ast.StatementList
+		expected string
+	}{
+		{
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.FunctionCall{
+						FunctionName: "bogus",
+						Arguments: []ast.ExprNode{
+							&ast.NumberLiteral{
+								Value: "1",
+								Pos:   0,
+							},
+						},
+						Pos: 0,
+					},
+				},
+				Pos: 0,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
+		},
+	}
+
+	for _, test := range tests {
+		ev := NewEvaluator()
+		_, err := ev.evaluateStatementList(test.input)
+
+		if err == nil {
+			t.Fatalf("expected error, got nil")
+		}
+
+		if errors.Unwrap(err).Error() != test.expected {
+			t.Errorf(
+				"expected error \"%s\", got \"%s\"",
+				test.expected,
+				errors.Unwrap(err).Error(),
+			)
+		}
+	}
+}
