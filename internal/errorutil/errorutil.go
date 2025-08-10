@@ -58,6 +58,8 @@ const (
 	ErrorMsgUnexpectedIdentifier = "unexpected identifier: '%s'"
 	// ErrorMsgInvalidDataType occurs when an invalid data type is encountered.
 	ErrorMsgInvalidDataType = "invalid data type: '%s'"
+	// ErrorMsgConstantDeclarationWithNoValue occurs when a constant declaration has no value.
+	ErrorMsgConstantDeclarationWithNoValue = "constant declaration '%s' must have a value"
 )
 
 // Error represents an error with a message.

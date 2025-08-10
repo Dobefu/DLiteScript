@@ -7,12 +7,16 @@ import (
 
 // Evaluator defines the actual evaluator struct.
 type Evaluator struct {
-	buf strings.Builder
+	outerScope  map[string]ScopedValue
+	blockScopes []map[string]ScopedValue
+	buf         strings.Builder
 }
 
 // NewEvaluator creates a new evaluator.
 func NewEvaluator() *Evaluator {
 	return &Evaluator{
-		buf: strings.Builder{},
+		outerScope:  make(map[string]ScopedValue),
+		blockScopes: make([]map[string]ScopedValue, 0),
+		buf:         strings.Builder{},
 	}
 }

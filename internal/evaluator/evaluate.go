@@ -34,6 +34,12 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.StringLiteral:
 		return e.evaluateStringLiteral(node)
 
+	case *ast.VariableDeclaration:
+		return e.evaluateVariableDeclaration(node)
+
+	case *ast.ConstantDeclaration:
+		return e.evaluateConstantDeclaration(node)
+
 	default:
 		return datavalue.Null(), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,

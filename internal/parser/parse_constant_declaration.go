@@ -21,9 +21,9 @@ func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
 
 	if nextToken.TokenType != token.TokenTypeAssign {
 		return nil, errorutil.NewErrorAt(
-			errorutil.ErrorMsgUnexpectedToken,
+			errorutil.ErrorMsgConstantDeclarationWithNoValue,
 			p.tokenIdx,
-			nextToken.Atom,
+			varName,
 		)
 	}
 
