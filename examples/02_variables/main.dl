@@ -1,0 +1,22 @@
+var test1 string
+var test2 string = "test2"
+const test3 string = "test3"
+
+printf("%s\n", test1)
+printf("%s\n", test2)
+printf("%s\n", test3)
+
+{
+  var test4 string = "test4"
+  printf("%s\n", test4)
+}
+
+{
+  var test4 string = "test4"
+
+  {
+    printf("%s\n", test4)
+  }
+}
+
+// test1 = "test1"
