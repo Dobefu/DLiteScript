@@ -15,8 +15,8 @@ func (e *Evaluator) evaluateIdentifier(
 		return scopedValue.GetValue(), nil
 	}
 
-	if len(e.blockScopes) > 0 {
-		scopedValue, hasScopedValue = e.blockScopes[len(e.blockScopes)-1][i.Value]
+	if e.blockScopesLen > 0 {
+		scopedValue, hasScopedValue = e.blockScopes[e.blockScopesLen-1][i.Value]
 
 		if hasScopedValue {
 			return scopedValue.GetValue(), nil
