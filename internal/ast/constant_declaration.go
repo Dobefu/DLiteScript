@@ -14,10 +14,6 @@ type ConstantDeclaration struct {
 
 // Expr returns the expression of the constant declaration.
 func (c *ConstantDeclaration) Expr() string {
-	if c.Value == nil {
-		return fmt.Sprintf("const %s %s", c.Name, c.Type)
-	}
-
 	return fmt.Sprintf("const %s %s = %s", c.Name, c.Type, c.Value.Expr())
 }
 

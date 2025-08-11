@@ -32,5 +32,6 @@ func (e *Evaluator) pushBlockScope() {
 func (e *Evaluator) popBlockScope() {
 	if e.blockScopesLen > 0 {
 		e.blockScopes = e.blockScopes[:e.blockScopesLen-1]
+		e.blockScopesLen--
 	}
 }

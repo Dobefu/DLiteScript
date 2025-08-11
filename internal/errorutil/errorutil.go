@@ -60,6 +60,8 @@ const (
 	ErrorMsgInvalidDataType = "invalid data type: '%s'"
 	// ErrorMsgConstantDeclarationWithNoValue occurs when a constant declaration has no value.
 	ErrorMsgConstantDeclarationWithNoValue = "constant declaration '%s' must have a value"
+	// ErrorMsgReassignmentToConstant occurs when trying to re-assign a value to a constant.
+	ErrorMsgReassignmentToConstant = "cannot re-assign value to constant: '%s'"
 )
 
 // Error represents an error with a message.

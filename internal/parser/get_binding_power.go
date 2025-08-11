@@ -10,6 +10,7 @@ const (
 	bindingPowerUnary          = 300
 	bindingPowerMultiplicative = 200
 	bindingPowerAdditive       = 100
+	bindingPowerAssignment     = 10
 
 	// For right-hand associativity, a value of 1 is subtracted from the
 	// binding power of the next token.
@@ -43,6 +44,10 @@ func (p *Parser) getBindingPower(currentToken *token.Token, isUnary bool) int {
 		}
 
 		return bindingPowerAdditive
+
+	case
+		token.TokenTypeAssign:
+		return bindingPowerAssignment
 
 	default:
 		return bindingPowerDefault

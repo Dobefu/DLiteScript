@@ -43,6 +43,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.BlockStatement:
 		return e.evaluateBlockStatement(node)
 
+	case *ast.AssignmentStatement:
+		return e.evaluateAssignmentStatement(node)
+
 	default:
 		return datavalue.Null(), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,

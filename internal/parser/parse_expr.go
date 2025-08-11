@@ -57,6 +57,9 @@ func (p *Parser) parseExpr(
 	case token.TokenTypeOperationPow:
 		return p.handlePowToken(leftExpr, minPrecedence, recursionDepth)
 
+	case token.TokenTypeAssign:
+		return p.handleAssignmentToken(leftExpr, minPrecedence, recursionDepth)
+
 	default:
 		return leftExpr, nil
 	}
@@ -119,4 +122,12 @@ func (p *Parser) handlePowToken(
 	// For the power operator, we need to decrease the precedence by 1.
 	// This is because power should be right-associative.
 	return p.parseExpr(nil, expr, minPrecedence-1, recursionDepth+1)
+}
+
+func (p *Parser) handleAssignmentToken(
+	leftExpr ast.ExprNode,
+	minPrecedence int,
+	recursionDepth int,
+) (ast.ExprNode, error) {
+	return p.parseAssignmentExpr(leftExpr, minPrecedence, recursionDepth)
 }

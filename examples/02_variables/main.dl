@@ -19,4 +19,5 @@ printf("%s\n", test3)
   }
 }
 
-// test1 = "test1"
+test1 = "test1"
+printf("%s\n", test1)

@@ -9,18 +9,18 @@ import (
 func (e *Evaluator) evaluateIdentifier(
 	i *ast.Identifier,
 ) (datavalue.Value, error) {
-	scopedValue, hasScopedValue := e.outerScope[i.Value]
-
-	if hasScopedValue {
-		return scopedValue.GetValue(), nil
-	}
-
-	if e.blockScopesLen > 0 {
-		scopedValue, hasScopedValue = e.blockScopes[e.blockScopesLen-1][i.Value]
+	for idx := range e.blockScopesLen {
+		scopedValue, hasScopedValue := e.blockScopes[e.blockScopesLen-idx-1][i.Value]
 
 		if hasScopedValue {
 			return scopedValue.GetValue(), nil
 		}
+	}
+
+	scopedValue, hasScopedValue := e.outerScope[i.Value]
+
+	if hasScopedValue {
+		return scopedValue.GetValue(), nil
 	}
 
 	identifier, hasIdentifier := identifierRegistry[i.Value]
