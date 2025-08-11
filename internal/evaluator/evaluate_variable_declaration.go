@@ -25,6 +25,12 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		Type:  node.Type,
 	}
 
+	if len(e.blockScopes) > 0 {
+		e.blockScopes[len(e.blockScopes)-1][node.Name] = variable
+
+		return datavalue.Null(), nil
+	}
+
 	e.outerScope[node.Name] = variable
 
 	return datavalue.Null(), nil

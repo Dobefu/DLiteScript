@@ -20,3 +20,14 @@ func NewEvaluator() *Evaluator {
 		buf:         strings.Builder{},
 	}
 }
+
+func (e *Evaluator) pushBlockScope() {
+	newScope := make(map[string]ScopedValue)
+	e.blockScopes = append(e.blockScopes, newScope)
+}
+
+func (e *Evaluator) popBlockScope() {
+	if len(e.blockScopes) > 0 {
+		e.blockScopes = e.blockScopes[:len(e.blockScopes)-1]
+	}
+}

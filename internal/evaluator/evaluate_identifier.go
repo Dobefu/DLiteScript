@@ -15,6 +15,14 @@ func (e *Evaluator) evaluateIdentifier(
 		return scopedValue.GetValue(), nil
 	}
 
+	if len(e.blockScopes) > 0 {
+		scopedValue, hasScopedValue = e.blockScopes[len(e.blockScopes)-1][i.Value]
+
+		if hasScopedValue {
+			return scopedValue.GetValue(), nil
+		}
+	}
+
 	identifier, hasIdentifier := identifierRegistry[i.Value]
 
 	if !hasIdentifier {

@@ -40,6 +40,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.ConstantDeclaration:
 		return e.evaluateConstantDeclaration(node)
 
+	case *ast.BlockStatement:
+		return e.evaluateBlockStatement(node)
+
 	default:
 		return datavalue.Null(), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,
