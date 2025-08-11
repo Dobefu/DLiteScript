@@ -1,23 +1,31 @@
-var test1 string
-var test2 string = "test2"
-const test3 string = "test3"
+var string1 string
+var string2 string = "test2"
+const string3 string = "test3"
 
-printf("%s\n", test1)
-printf("%s\n", test2)
-printf("%s\n", test3)
+printf("%s\n", string1)
+printf("%s\n", string2)
+printf("%s\n", string3)
 
 {
-  var test4 string = "test4"
-  printf("%s\n", test4)
+  const string4 string = "test4"
+  printf("%s\n", string4)
 }
 
 {
-  var test4 string = "test4"
+  const string4 string = "test4"
 
   {
-    printf("%s\n", test4)
+    printf("%s\n", string4)
   }
 }
 
-test1 = "test1"
-printf("%s\n", test1)
+{
+  var num1 number = 0
+  printf("%g\n", num1)
+
+  num1 = num1 + 1
+  printf("%g\n", num1)
+}
+
+string1 = "test1"
+printf("%s\n", string1)
