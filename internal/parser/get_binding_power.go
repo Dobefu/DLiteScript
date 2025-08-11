@@ -6,8 +6,8 @@ import (
 
 const (
 	bindingPowerParentheses    = 1000
-	bindingPowerPower          = 400
-	bindingPowerUnary          = 300
+	bindingPowerUnary          = 400
+	bindingPowerPower          = 300
 	bindingPowerMultiplicative = 200
 	bindingPowerAdditive       = 100
 	bindingPowerAssignment     = 10
