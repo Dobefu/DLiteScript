@@ -5,7 +5,8 @@ func (t *Token) IsDataType() bool {
 	switch t.TokenType {
 	case
 		TokenTypeTypeNumber,
-		TokenTypeTypeString:
+		TokenTypeTypeString,
+		TokenTypeTypeBool:
 		return true
 
 	default:

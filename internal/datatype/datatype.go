@@ -11,6 +11,8 @@ const (
 	DataTypeNumber
 	// DataTypeString represents a string type.
 	DataTypeString
+	// DataTypeBool represents a boolean type.
+	DataTypeBool
 )
 
 // AsString provides the string representation of a DataType for error messages.
@@ -24,6 +26,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeString:
 		return "string"
+
+	case DataTypeBool:
+		return "bool"
 
 	default:
 		return "unknown"

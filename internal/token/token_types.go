@@ -30,6 +30,8 @@ const (
 	TokenTypeComma
 	// TokenTypeString represents a string literal.
 	TokenTypeString
+	// TokenTypeBool represents a boolean value.
+	TokenTypeBool
 	// TokenTypeNewline represents a newline separator.
 	TokenTypeNewline
 	// TokenTypeAssign represents the assignment operator.
@@ -46,4 +48,6 @@ const (
 	TokenTypeTypeNumber
 	// TokenTypeTypeString represents the 'string' type keyword.
 	TokenTypeTypeString
+	// TokenTypeTypeBool represents the 'bool' type keyword.
+	TokenTypeTypeBool
 )

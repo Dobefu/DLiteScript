@@ -22,6 +22,12 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.NumberLiteral:
 		return e.evaluateNumberLiteral(node)
 
+	case *ast.StringLiteral:
+		return e.evaluateStringLiteral(node)
+
+	case *ast.BoolLiteral:
+		return e.evaluateBoolLiteral(node)
+
 	case *ast.PrefixExpr:
 		return e.evaluatePrefixExpr(node)
 
@@ -30,9 +36,6 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 
 	case *ast.Identifier:
 		return e.evaluateIdentifier(node)
-
-	case *ast.StringLiteral:
-		return e.evaluateStringLiteral(node)
 
 	case *ast.VariableDeclaration:
 		return e.evaluateVariableDeclaration(node)

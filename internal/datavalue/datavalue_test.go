@@ -88,6 +88,7 @@ func TestDatavalueUnknown(t *testing.T) {
 		dataType: datatype.DataType(-1),
 		Num:      0,
 		Str:      "",
+		Bool:     false,
 	}
 
 	if val.DataType() != datatype.DataType(-1) {

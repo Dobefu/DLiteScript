@@ -61,6 +61,10 @@ var functionRegistry = map[string]functionInfo{
 					num, _ := args[i].AsNumber()
 					formatArgs[i-1] = num
 
+				case datatype.DataTypeBool:
+					num, _ := args[i].AsBool()
+					formatArgs[i-1] = num
+
 				case datatype.DataTypeNull:
 					formatArgs[i-1] = "null"
 

@@ -12,8 +12,9 @@ import (
 type Value struct {
 	dataType datatype.DataType
 
-	Num float64
-	Str string
+	Num  float64
+	Str  string
+	Bool bool
 }
 
 // DataType returns the data type of the value.
@@ -26,8 +27,9 @@ func Null() Value {
 	return Value{
 		dataType: datatype.DataTypeNull,
 
-		Num: 0,
-		Str: "",
+		Num:  0,
+		Str:  "",
+		Bool: false,
 	}
 }
 
@@ -43,6 +45,9 @@ func (v Value) ToString() string {
 	case datatype.DataTypeString:
 		return v.Str
 
+	case datatype.DataTypeBool:
+		return strconv.FormatBool(v.Bool)
+
 	default:
 		return errorutil.ErrorMsgTypeUnknownDataType
 	}
@@ -53,8 +58,9 @@ func Number(n float64) Value {
 	return Value{
 		dataType: datatype.DataTypeNumber,
 
-		Num: n,
-		Str: "",
+		Num:  n,
+		Str:  "",
+		Bool: false,
 	}
 }
 
@@ -63,8 +69,20 @@ func String(s string) Value {
 	return Value{
 		dataType: datatype.DataTypeString,
 
-		Num: 0,
-		Str: s,
+		Num:  0,
+		Str:  s,
+		Bool: false,
+	}
+}
+
+// Bool creates a new boolean value.
+func Bool(b bool) Value {
+	return Value{
+		dataType: datatype.DataTypeBool,
+
+		Num:  0,
+		Str:  "",
+		Bool: b,
 	}
 }
 
@@ -92,4 +110,17 @@ func (v Value) AsString() (string, error) {
 	}
 
 	return v.Str, nil
+}
+
+// AsBool returns the value as a boolean.
+func (v Value) AsBool() (bool, error) {
+	if v.dataType != datatype.DataTypeBool {
+		return false, errorutil.NewError(
+			errorutil.ErrorMsgTypeExpected,
+			datatype.DataTypeBool.AsString(),
+			v.dataType.AsString(),
+		)
+	}
+
+	return v.Bool, nil
 }

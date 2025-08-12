@@ -13,6 +13,9 @@ var keywords = map[string]token.Type{
 	"const":  token.TokenTypeConst,
 	"number": token.TokenTypeTypeNumber,
 	"string": token.TokenTypeTypeString,
+	"bool":   token.TokenTypeTypeBool,
+	"true":   token.TokenTypeBool,
+	"false":  token.TokenTypeBool,
 }
 
 // Tokenize analyzes the expression string and turns it into tokens.
