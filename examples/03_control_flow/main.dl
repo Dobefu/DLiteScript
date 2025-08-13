@@ -1,0 +1,13 @@
+var test1 bool = false
+var test2 bool = false
+var test3 bool = true
+
+if test1 {
+  printf("test1 is true\n")
+} else if test2 {
+  printf("test2 is true\n")
+} else if (test3) {
+  printf("test3 is true\n")
+} else {
+  printf("none of the conditions are true\n")
+}

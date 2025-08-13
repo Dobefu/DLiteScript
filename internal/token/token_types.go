@@ -18,6 +18,10 @@ const (
 	TokenTypeOperationMod
 	// TokenTypeNumber represents a number literal.
 	TokenTypeNumber
+	// TokenTypeString represents a string literal.
+	TokenTypeString
+	// TokenTypeBool represents a boolean value.
+	TokenTypeBool
 	// TokenTypeIdentifier represents an identifier.
 	TokenTypeIdentifier
 	// TokenTypeLParen represents a left parenthesis.
@@ -28,14 +32,14 @@ const (
 	TokenTypeFunction
 	// TokenTypeComma represents a comma separator.
 	TokenTypeComma
-	// TokenTypeString represents a string literal.
-	TokenTypeString
-	// TokenTypeBool represents a boolean value.
-	TokenTypeBool
 	// TokenTypeNewline represents a newline separator.
 	TokenTypeNewline
 	// TokenTypeAssign represents the assignment operator.
 	TokenTypeAssign
+	// TokenTypeIf represents the if keyword.
+	TokenTypeIf
+	// TokenTypeElse represents the else keyword.
+	TokenTypeElse
 	// TokenTypeLBrace represents a left brace.
 	TokenTypeLBrace
 	// TokenTypeRBrace represents a right brace.
@@ -44,6 +48,7 @@ const (
 	TokenTypeVar
 	// TokenTypeConst represents the 'const' keyword.
 	TokenTypeConst
+
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber
 	// TokenTypeTypeString represents the 'string' type keyword.

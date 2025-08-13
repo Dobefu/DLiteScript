@@ -62,6 +62,8 @@ const (
 	ErrorMsgConstantDeclarationWithNoValue = "constant declaration '%s' must have a value"
 	// ErrorMsgReassignmentToConstant occurs when trying to re-assign a value to a constant.
 	ErrorMsgReassignmentToConstant = "cannot re-assign value to constant: '%s'"
+	// ErrorMsgBlockStatementExpected occurs when a block statement is expected but a different type is encountered.
+	ErrorMsgBlockStatementExpected = "block statement expected, but got '%s'"
 )
 
 // Error represents an error with a message.
