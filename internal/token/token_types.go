@@ -24,6 +24,8 @@ const (
 	TokenTypeBool
 	// TokenTypeIdentifier represents an identifier.
 	TokenTypeIdentifier
+	// TokenTypeNull represents the null keyword.
+	TokenTypeNull
 	// TokenTypeLParen represents a left parenthesis.
 	TokenTypeLParen
 	// TokenTypeRParen represents a right parenthesis.

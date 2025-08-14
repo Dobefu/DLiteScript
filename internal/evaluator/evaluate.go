@@ -28,6 +28,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.BoolLiteral:
 		return e.evaluateBoolLiteral(node)
 
+	case *ast.NullLiteral:
+		return e.evaluateNullLiteral()
+
 	case *ast.PrefixExpr:
 		return e.evaluatePrefixExpr(node)
 

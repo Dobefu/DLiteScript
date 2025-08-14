@@ -35,5 +35,15 @@ func (e *Evaluator) evaluatePrefixExpr(
 		return datavalue.Number(number), nil
 	}
 
+	if node.Operator.TokenType == token.TokenTypeNot {
+		boolean, err := rawResult.AsBool()
+
+		if err != nil {
+			return datavalue.Null(), err
+		}
+
+		return datavalue.Bool(!boolean), nil
+	}
+
 	return rawResult, nil
 }
