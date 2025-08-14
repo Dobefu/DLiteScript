@@ -66,7 +66,22 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken = t.tokenPool.GetToken(")", token.TokenTypeRParen)
 
 		case '=':
-			newToken = t.tokenPool.GetToken("=", token.TokenTypeAssign)
+			newToken, err = t.handleEqual()
+
+		case '!':
+			newToken, err = t.handleExclamation()
+
+		case '>':
+			newToken, err = t.handleGreaterThan()
+
+		case '<':
+			newToken, err = t.handleLessThan()
+
+		case '&':
+			newToken, err = t.handleAmpersand()
+
+		case '|':
+			newToken, err = t.handlePipe()
 
 		case '{':
 			newToken = t.tokenPool.GetToken("{", token.TokenTypeLBrace)
@@ -94,6 +109,134 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 	}
 
 	return tokens, nil
+}
+
+func (t *Tokenizer) handleEqual() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '=' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken("==", token.TokenTypeEqual), nil
+	}
+
+	return t.tokenPool.GetToken("=", token.TokenTypeAssign), nil
+}
+
+func (t *Tokenizer) handleExclamation() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '=' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken("!=", token.TokenTypeNotEqual), nil
+	}
+
+	return t.tokenPool.GetToken("!", token.TokenTypeNot), nil
+}
+
+func (t *Tokenizer) handleGreaterThan() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '=' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken(">=", token.TokenTypeGreaterThanOrEqual), nil
+	}
+
+	return t.tokenPool.GetToken(">", token.TokenTypeGreaterThan), nil
+}
+
+func (t *Tokenizer) handleLessThan() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '=' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken("<=", token.TokenTypeLessThanOrEqual), nil
+	}
+
+	return t.tokenPool.GetToken("<", token.TokenTypeLessThan), nil
+}
+
+func (t *Tokenizer) handleAmpersand() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '&' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken("&&", token.TokenTypeLogicalAnd), nil
+	}
+
+	return nil, errorutil.NewErrorAt(
+		errorutil.ErrorMsgUnexpectedChar,
+		t.expIdx,
+		string(next),
+	)
+}
+
+func (t *Tokenizer) handlePipe() (*token.Token, error) {
+	next, err := t.Peek()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if next == '|' {
+		_, err = t.GetNext()
+
+		if err != nil {
+			return nil, err
+		}
+
+		return t.tokenPool.GetToken("||", token.TokenTypeLogicalOr), nil
+	}
+
+	return nil, errorutil.NewErrorAt(
+		errorutil.ErrorMsgUnexpectedChar,
+		t.expIdx,
+		string(next),
+	)
 }
 
 func (t *Tokenizer) handleAsterisk() (*token.Token, error) {
