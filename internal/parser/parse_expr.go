@@ -45,7 +45,15 @@ func (p *Parser) parseExpr(
 		token.TokenTypeOperationSub,
 		token.TokenTypeOperationMul,
 		token.TokenTypeOperationDiv,
-		token.TokenTypeOperationMod:
+		token.TokenTypeOperationMod,
+		token.TokenTypeEqual,
+		token.TokenTypeNotEqual,
+		token.TokenTypeGreaterThan,
+		token.TokenTypeGreaterThanOrEqual,
+		token.TokenTypeLessThan,
+		token.TokenTypeLessThanOrEqual,
+		token.TokenTypeLogicalAnd,
+		token.TokenTypeLogicalOr:
 
 		return p.handleBasicOperatorTokens(
 			nextToken,

@@ -59,10 +59,10 @@ func (p *Parser) getBindingPower(currentToken *token.Token, isUnary bool) int {
 	case
 		token.TokenTypeEqual,
 		token.TokenTypeNotEqual,
-		token.TokenTypeLessThan,
-		token.TokenTypeLessThanOrEqual,
 		token.TokenTypeGreaterThan,
-		token.TokenTypeGreaterThanOrEqual:
+		token.TokenTypeGreaterThanOrEqual,
+		token.TokenTypeLessThan,
+		token.TokenTypeLessThanOrEqual:
 		return bindingPowerComparison
 
 	case

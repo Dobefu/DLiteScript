@@ -11,22 +11,30 @@ func (p *Parser) parsePrefixExpr(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
 	switch currentToken.TokenType {
-	case token.TokenTypeNumber:
+	case
+		token.TokenTypeNumber:
 		return p.parseNumberLiteral(currentToken)
 
-	case token.TokenTypeOperationAdd, token.TokenTypeOperationSub:
+	case
+		token.TokenTypeOperationAdd,
+		token.TokenTypeOperationSub,
+		token.TokenTypeNot:
 		return p.parseUnaryOperator(currentToken, recursionDepth)
 
-	case token.TokenTypeLParen:
+	case
+		token.TokenTypeLParen:
 		return p.parseParenthesizedExpr(recursionDepth)
 
-	case token.TokenTypeIdentifier:
+	case
+		token.TokenTypeIdentifier:
 		return p.parseFunctionCallOrIdentifier(currentToken, recursionDepth)
 
-	case token.TokenTypeString:
+	case
+		token.TokenTypeString:
 		return p.parseStringLiteral(currentToken)
 
-	case token.TokenTypeBool:
+	case
+		token.TokenTypeBool:
 		return p.parseBoolLiteral(currentToken)
 
 	default:
