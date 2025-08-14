@@ -11,3 +11,19 @@ if test1 {
 } else {
   printf("none of the conditions are true\n")
 }
+
+printf("1 == 1 is %t\n", 1 == 1)
+printf("\"test\" == \"test\" is %t\n", "test" == "test")
+printf("null == null is %t\n", null == null)
+printf("1 != 2 is %t\n", 1 != 2)
+printf("1 != \"test\" is %t\n", 1 != "test")
+printf("true != \"test\" is %t\n", true != "test")
+printf("null != false is %t\n", null != false)
+printf("2 > 1 is %t\n", 2 > 1)
+printf("1 >= 1 is %t\n", 1 >= 1)
+printf("1 < 2 is %t\n", 1 < 2)
+printf("1 <= 1 is %t\n", 1 <= 1)
+printf("true && true is %t\n", true && true)
+printf("true || false is %t\n", true || false)
+printf("!false is %t\n", !false)
+printf("test1 == test2 is %t\n", test1 == test2)
