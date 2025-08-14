@@ -36,6 +36,24 @@ const (
 	TokenTypeNewline
 	// TokenTypeAssign represents the assignment operator.
 	TokenTypeAssign
+	// TokenTypeEqual represents the equality operator.
+	TokenTypeEqual
+	// TokenTypeNotEqual represents the inequality operator.
+	TokenTypeNotEqual
+	// TokenTypeGreaterThan represents the greater than operator.
+	TokenTypeGreaterThan
+	// TokenTypeGreaterThanOrEqual represents the greater than or equal to operator.
+	TokenTypeGreaterThanOrEqual
+	// TokenTypeLessThan represents the less than operator.
+	TokenTypeLessThan
+	// TokenTypeLessThanOrEqual represents the less than or equal to operator.
+	TokenTypeLessThanOrEqual
+	// TokenTypeLogicalAnd represents the logical and operator.
+	TokenTypeLogicalAnd
+	// TokenTypeLogicalOr represents the logical or operator.
+	TokenTypeLogicalOr
+	// TokenTypeNot represents the logical not operator.
+	TokenTypeNot
 	// TokenTypeIf represents the if keyword.
 	TokenTypeIf
 	// TokenTypeElse represents the else keyword.
