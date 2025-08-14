@@ -1,10 +1,6 @@
 package tokenizer
 
 import (
-	"strings"
-	"unicode"
-
-	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -51,13 +47,13 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken = t.tokenPool.GetToken("-", token.TokenTypeOperationSub)
 
 		case '*':
-			newToken, err = t.handleAsterisk()
+			newToken, err = t.handleAsteriskSign()
 
 		case '%':
 			newToken = t.tokenPool.GetToken("%", token.TokenTypeOperationMod)
 
 		case '/':
-			newToken, err = t.handleDivisionOrComment()
+			newToken, err = t.handleSlashSign()
 
 		case '(':
 			newToken = t.tokenPool.GetToken("(", token.TokenTypeLParen)
@@ -66,22 +62,22 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken = t.tokenPool.GetToken(")", token.TokenTypeRParen)
 
 		case '=':
-			newToken, err = t.handleEqual()
+			newToken, err = t.handleEqualSign()
 
 		case '!':
-			newToken, err = t.handleExclamation()
+			newToken, err = t.handleExclamationSign()
 
 		case '>':
-			newToken, err = t.handleGreaterThan()
+			newToken, err = t.handleGreaterThanSign()
 
 		case '<':
-			newToken, err = t.handleLessThan()
+			newToken, err = t.handleLessThanSign()
 
 		case '&':
-			newToken, err = t.handleAmpersand()
+			newToken, err = t.handleAmpersandSign()
 
 		case '|':
-			newToken, err = t.handlePipe()
+			newToken, err = t.handlePipeSign()
 
 		case '{':
 			newToken = t.tokenPool.GetToken("{", token.TokenTypeLBrace)
@@ -96,7 +92,7 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken, err = t.handleString()
 
 		default:
-			newToken, err = t.parseUnknownChar(next)
+			newToken, err = t.handleUnknownChar(next)
 		}
 
 		if err != nil {
@@ -109,284 +105,4 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 	}
 
 	return tokens, nil
-}
-
-func (t *Tokenizer) handleEqual() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '=' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("==", token.TokenTypeEqual), nil
-	}
-
-	return t.tokenPool.GetToken("=", token.TokenTypeAssign), nil
-}
-
-func (t *Tokenizer) handleExclamation() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '=' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("!=", token.TokenTypeNotEqual), nil
-	}
-
-	return t.tokenPool.GetToken("!", token.TokenTypeNot), nil
-}
-
-func (t *Tokenizer) handleGreaterThan() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '=' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken(">=", token.TokenTypeGreaterThanOrEqual), nil
-	}
-
-	return t.tokenPool.GetToken(">", token.TokenTypeGreaterThan), nil
-}
-
-func (t *Tokenizer) handleLessThan() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '=' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("<=", token.TokenTypeLessThanOrEqual), nil
-	}
-
-	return t.tokenPool.GetToken("<", token.TokenTypeLessThan), nil
-}
-
-func (t *Tokenizer) handleAmpersand() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '&' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("&&", token.TokenTypeLogicalAnd), nil
-	}
-
-	return nil, errorutil.NewErrorAt(
-		errorutil.ErrorMsgUnexpectedChar,
-		t.expIdx,
-		string(next),
-	)
-}
-
-func (t *Tokenizer) handlePipe() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '|' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("||", token.TokenTypeLogicalOr), nil
-	}
-
-	return nil, errorutil.NewErrorAt(
-		errorutil.ErrorMsgUnexpectedChar,
-		t.expIdx,
-		string(next),
-	)
-}
-
-func (t *Tokenizer) handleAsterisk() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next == '*' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		return t.tokenPool.GetToken("**", token.TokenTypeOperationPow), nil
-	}
-
-	return t.tokenPool.GetToken("*", token.TokenTypeOperationMul), nil
-}
-
-func (t *Tokenizer) handleDivisionOrComment() (*token.Token, error) {
-	next, err := t.Peek()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if next != '/' {
-		return t.tokenPool.GetToken("/", token.TokenTypeOperationDiv), nil
-	}
-
-	for !t.isEOF {
-		next, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		if next == '\n' {
-			break
-		}
-	}
-
-	return nil, nil
-}
-
-func (t *Tokenizer) parseKeywordOrIdentifier(firstChar rune) (*token.Token, error) {
-	var identifier strings.Builder
-	identifier.WriteRune(firstChar)
-
-	for !t.isEOF {
-		next, err := t.Peek()
-
-		if err != nil {
-			break
-		}
-
-		if unicode.IsLetter(rune(next)) ||
-			next == '_' ||
-			unicode.IsDigit(rune(next)) {
-			_, err = t.GetNext()
-
-			if err != nil {
-				return nil, err
-			}
-
-			identifier.WriteRune(next)
-
-			continue
-		}
-
-		break
-	}
-
-	identifierText := identifier.String()
-
-	if tokenType, isKeyword := keywords[identifierText]; isKeyword {
-		return t.tokenPool.GetToken(identifierText, tokenType), nil
-	}
-
-	return t.tokenPool.GetToken(identifierText, token.TokenTypeIdentifier), nil
-}
-
-func (t *Tokenizer) parseUnknownChar(next rune) (*token.Token, error) {
-	if unicode.IsLetter(rune(next)) || next == '_' {
-		return t.parseKeywordOrIdentifier(rune(next))
-	}
-
-	return nil, errorutil.NewErrorAt(
-		errorutil.ErrorMsgUnexpectedChar,
-		t.expIdx,
-		string(next),
-	)
-}
-
-func (t *Tokenizer) handleString() (*token.Token, error) {
-	var str strings.Builder
-	str.Grow(16)
-
-	var lastChar rune
-	isEscaping := false
-
-	for !t.isEOF {
-		next, err := t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
-
-		if isEscaping {
-			switch next {
-			case 'n':
-				str.WriteRune('\n')
-			case 't':
-				str.WriteRune('\t')
-			case 'r':
-				str.WriteRune('\r')
-			case '0':
-				str.WriteRune('\000')
-			case 'b':
-				str.WriteRune('\b')
-			case 'f':
-				str.WriteRune('\f')
-			case 'v':
-				str.WriteRune('\v')
-			default:
-				str.WriteRune(next)
-			}
-
-			isEscaping = false
-
-			continue
-		}
-
-		if next == '"' {
-			return t.tokenPool.GetToken(str.String(), token.TokenTypeString), nil
-		}
-
-		lastChar = next
-
-		if lastChar == '\\' {
-			isEscaping = true
-
-			continue
-		}
-
-		str.WriteRune(next)
-	}
-
-	return nil, errorutil.NewErrorAt(errorutil.ErrorMsgUnexpectedEOF, t.byteIdx)
 }
