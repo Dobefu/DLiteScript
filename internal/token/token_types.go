@@ -74,6 +74,10 @@ const (
 	TokenTypeBreak
 	// TokenTypeContinue represents the 'continue' keyword.
 	TokenTypeContinue
+	// TokenTypeFrom represents the 'from' keyword.
+	TokenTypeFrom
+	// TokenTypeTo represents the 'to' keyword.
+	TokenTypeTo
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber

@@ -17,6 +17,8 @@ var keywords = map[string]token.Type{
 	"for":      token.TokenTypeFor,
 	"break":    token.TokenTypeBreak,
 	"continue": token.TokenTypeContinue,
+	"from":     token.TokenTypeFrom,
+	"to":       token.TokenTypeTo,
 	"null":     token.TokenTypeNull,
 }
 
