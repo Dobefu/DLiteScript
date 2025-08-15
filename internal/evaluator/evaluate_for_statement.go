@@ -2,41 +2,202 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
+	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func (e *Evaluator) evaluateForStatement(
 	node *ast.ForStatement,
-) (datavalue.Value, error) {
-	result := datavalue.Null()
+) (*controlflow.EvaluationResult, error) {
+	err := e.declareLoopVariable(node)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	result := controlflow.NewRegularResult(datavalue.Null())
 
 	for {
-		if node.Condition != nil {
-			evaluatedCondition, err := e.Evaluate(node.Condition)
-
-			if err != nil {
-				return datavalue.Null(), err
-			}
-
-			conditionResultBool, err := evaluatedCondition.AsBool()
-
-			if err != nil {
-				return datavalue.Null(), err
-			}
-
-			if !conditionResultBool {
-				break
-			}
-		}
-
-		evaluatedBody, err := e.Evaluate(node.Body)
+		shouldBreak, err := e.evaluateNodeCondition(node)
 
 		if err != nil {
-			return datavalue.Null(), err
+			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
-		result = evaluatedBody
+		if shouldBreak {
+			break
+		}
+
+		result, shouldBreak, shouldContinue, err := e.executeForIteration(node)
+
+		if err != nil {
+			return controlflow.NewRegularResult(datavalue.Null()), err
+		}
+
+		if shouldBreak {
+			break
+		}
+
+		if shouldContinue {
+			continue
+		}
+
+		if !result.IsNormalResult() {
+			return result, nil
+		}
 	}
 
 	return result, nil
+}
+
+func (e *Evaluator) declareLoopVariable(node *ast.ForStatement) error {
+	if node.DeclaredVariable == "" {
+		return nil
+	}
+
+	varName := node.DeclaredVariable
+
+	variable := &Variable{
+		Value: datavalue.Number(0),
+		Type:  datatype.DataTypeNumber.AsString(),
+	}
+
+	if e.blockScopesLen > 0 {
+		e.blockScopes[e.blockScopesLen-1][varName] = variable
+	} else {
+		e.outerScope[varName] = variable
+	}
+
+	return nil
+}
+
+func (e *Evaluator) evaluateNodeCondition(
+	node *ast.ForStatement,
+) (bool, error) {
+	if node.Condition == nil {
+		return false, nil
+	}
+
+	conditionResult, err := e.evaluateForCondition(node)
+
+	if err != nil {
+		return false, err
+	}
+
+	return !conditionResult, nil
+}
+
+func (e *Evaluator) executeForIteration(
+	node *ast.ForStatement,
+) (*controlflow.EvaluationResult, bool, bool, error) {
+	result, err := e.Evaluate(node.Body)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), false, false, err
+	}
+
+	shouldBreak, shouldContinue, propagatedResult, err := e.handleForControlFlowResult(result)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), false, false, err
+	}
+
+	err = e.incrementLoopVariable(node)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), false, false, err
+	}
+
+	if propagatedResult != nil {
+		return propagatedResult, shouldBreak, shouldContinue, nil
+	}
+
+	return result, shouldBreak, shouldContinue, nil
+}
+
+func (e *Evaluator) evaluateForCondition(
+	node *ast.ForStatement,
+) (bool, error) {
+	evaluatedCondition, err := e.Evaluate(node.Condition)
+
+	if err != nil {
+		return false, err
+	}
+
+	conditionResultBool, err := evaluatedCondition.Value.AsBool()
+
+	if err != nil {
+		return false, err
+	}
+
+	return conditionResultBool, nil
+}
+
+func (e *Evaluator) handleForControlFlowResult(
+	result *controlflow.EvaluationResult,
+) (shouldBreak bool, shouldContinue bool, propagatedResult *controlflow.EvaluationResult, err error) {
+	if result.IsNormalResult() {
+		return false, false, nil, nil
+	}
+
+	if result.IsBreakResult() {
+		if result.Control.Count > 1 {
+			return false, false, controlflow.NewBreakResult(result.Control.Count - 1), nil
+		}
+
+		return true, false, nil, nil
+	}
+
+	if result.IsContinueResult() {
+		if result.Control.Count > 1 {
+			return false, false, controlflow.NewContinueResult(result.Control.Count - 1), nil
+		}
+
+		return false, true, nil, nil
+	}
+
+	return false, false, nil, nil
+}
+
+func (e *Evaluator) incrementLoopVariable(node *ast.ForStatement) error {
+	if node.DeclaredVariable == "" {
+		return nil
+	}
+
+	var currentVar ScopedValue
+	var isVarFound bool
+
+	if e.blockScopesLen > 0 {
+		currentVar, isVarFound = e.blockScopes[e.blockScopesLen-1][node.DeclaredVariable]
+	} else {
+		currentVar, isVarFound = e.outerScope[node.DeclaredVariable]
+	}
+
+	if !isVarFound {
+		return errorutil.NewError(
+			errorutil.ErrorMsgVariableNotFound,
+			node.DeclaredVariable,
+		)
+	}
+
+	currentValue, err := currentVar.GetValue().AsNumber()
+
+	if err != nil {
+		return err
+	}
+
+	newVarValue := &Variable{
+		Value: datavalue.Number(currentValue + 1),
+		Type:  currentVar.GetType(),
+	}
+
+	if e.blockScopesLen > 0 {
+		e.blockScopes[e.blockScopesLen-1][node.DeclaredVariable] = newVarValue
+	} else {
+		e.outerScope[node.DeclaredVariable] = newVarValue
+	}
+
+	return nil
 }

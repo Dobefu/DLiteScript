@@ -17,6 +17,10 @@ func (p *Parser) parseForStatement() (ast.ExprNode, error) {
 		return p.parseInfiniteLoop()
 	}
 
+	if nextToken.TokenType == token.TokenTypeVar {
+		return p.parseVariableDeclarationLoop()
+	}
+
 	return p.parseLoop()
 }
 
@@ -108,4 +112,70 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 	}
 
 	return blockStatement, nil
+}
+
+func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
+	_, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nextToken.TokenType != token.TokenTypeIdentifier {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedIdentifier,
+			p.tokenIdx,
+			nextToken.TokenType,
+		)
+	}
+
+	varName := nextToken.Atom
+
+	operatorToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err = p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	rightSide, err := p.parseExpr(nextToken, nil, 0, 0)
+
+	if err != nil {
+		return nil, err
+	}
+
+	condition := &ast.BinaryExpr{
+		Left:     &ast.Identifier{Value: varName, Pos: p.tokenIdx},
+		Operator: *operatorToken,
+		Right:    rightSide,
+		Pos:      p.tokenIdx,
+	}
+
+	loopBody, err := p.parseLoopBody()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &ast.ForStatement{
+		Condition:        condition,
+		Body:             loopBody,
+		Pos:              p.tokenIdx,
+		DeclaredVariable: varName,
+		RangeVariable:    "",
+		RangeFrom:        nil,
+		RangeTo:          nil,
+		IsRange:          false,
+	}, nil
 }

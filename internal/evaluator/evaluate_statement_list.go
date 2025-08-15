@@ -5,19 +5,20 @@ import (
 	"io"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
 func (e *Evaluator) evaluateStatementList(
 	list *ast.StatementList,
-) (datavalue.Value, error) {
-	lastResult := datavalue.Null()
+) (*controlflow.EvaluationResult, error) {
+	lastResult := controlflow.NewRegularResult(datavalue.Null())
 
 	for _, statement := range list.Statements {
 		result, err := e.Evaluate(statement)
 
 		if err != nil {
-			return datavalue.Null(), err
+			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
 		lastResult = result
@@ -26,7 +27,7 @@ func (e *Evaluator) evaluateStatementList(
 			_, err := fmt.Fprint(e.outFile, e.buf.String())
 
 			if err != nil {
-				return datavalue.Null(), err
+				return controlflow.NewRegularResult(datavalue.Null()), err
 			}
 
 			e.buf.Reset()

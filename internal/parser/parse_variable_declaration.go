@@ -5,7 +5,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (p *Parser) parseVariableDeclaration() (ast.ExprNode, error) {
+func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {

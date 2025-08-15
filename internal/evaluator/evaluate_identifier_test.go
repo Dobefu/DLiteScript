@@ -51,7 +51,7 @@ func TestEvaluateIdentifier(t *testing.T) {
 			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
 		}
 
-		result, err := rawResult.AsNumber()
+		result, err := rawResult.Value.AsNumber()
 
 		if err != nil {
 			t.Fatalf("expected number, got type error: %s", err.Error())

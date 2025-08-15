@@ -64,6 +64,12 @@ const (
 	ErrorMsgReassignmentToConstant = "cannot re-assign value to constant: '%s'"
 	// ErrorMsgBlockStatementExpected occurs when a block statement is expected but a different type is encountered.
 	ErrorMsgBlockStatementExpected = "block statement expected, but got '%s'"
+	// ErrorMsgBreakCountLessThanOne occurs when a break count is less than 1.
+	ErrorMsgBreakCountLessThanOne = "break count must be greater than 0"
+	// ErrorMsgContinueCountLessThanOne occurs when a continue count is less than 1.
+	ErrorMsgContinueCountLessThanOne = "continue count must be greater than 0"
+	// ErrorMsgVariableNotFound occurs when a variable is not found.
+	ErrorMsgVariableNotFound = "variable not found: '%s'"
 )
 
 // Error represents an error with a message.

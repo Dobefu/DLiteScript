@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
@@ -11,17 +12,17 @@ import (
 
 func (e *Evaluator) evaluateBinaryExpr(
 	node *ast.BinaryExpr,
-) (datavalue.Value, error) {
+) (*controlflow.EvaluationResult, error) {
 	leftValue, err := e.Evaluate(node.Left)
 
 	if err != nil {
-		return datavalue.Null(), err
+		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
 	rightValue, err := e.Evaluate(node.Right)
 
 	if err != nil {
-		return datavalue.Null(), err
+		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
 	switch node.Operator.TokenType {
@@ -32,27 +33,27 @@ func (e *Evaluator) evaluateBinaryExpr(
 		token.TokenTypeOperationDiv,
 		token.TokenTypeOperationMod,
 		token.TokenTypeOperationPow:
-		return e.evaluateArithmeticBinaryExpr(leftValue, rightValue, node)
+		return e.evaluateArithmeticBinaryExpr(leftValue.Value, rightValue.Value, node)
 
 	case
 		token.TokenTypeEqual,
 		token.TokenTypeNotEqual:
-		return e.evaluateEqualityBinaryExpr(leftValue, rightValue, node)
+		return e.evaluateEqualityBinaryExpr(leftValue.Value, rightValue.Value, node)
 
 	case
 		token.TokenTypeGreaterThan,
 		token.TokenTypeGreaterThanOrEqual,
 		token.TokenTypeLessThan,
 		token.TokenTypeLessThanOrEqual:
-		return e.evaluateComparisonBinaryExpr(leftValue, rightValue, node)
+		return e.evaluateComparisonBinaryExpr(leftValue.Value, rightValue.Value, node)
 
 	case
 		token.TokenTypeLogicalAnd,
 		token.TokenTypeLogicalOr:
-		return e.evaluateLogicalBinaryExpr(leftValue, rightValue, node)
+		return e.evaluateLogicalBinaryExpr(leftValue.Value, rightValue.Value, node)
 	}
 
-	return datavalue.Null(), errorutil.NewErrorAt(
+	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.ErrorMsgUnknownOperator,
 		node.Position(),
 		node.Operator.Atom,
@@ -63,42 +64,42 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	leftValue datavalue.Value,
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
-) (datavalue.Value, error) {
+) (*controlflow.EvaluationResult, error) {
 	leftNumber, rightNumber, err := e.getBinaryExprValueAsNumber(leftValue, rightValue)
 
 	if err != nil {
-		return datavalue.Null(), err
+		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
 	if node.Operator.TokenType == token.TokenTypeOperationDiv && rightNumber == 0 {
-		return datavalue.Null(), errorutil.NewErrorAt(errorutil.ErrorMsgDivByZero, node.Position())
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgDivByZero, node.Position())
 	}
 
 	if node.Operator.TokenType == token.TokenTypeOperationMod && rightNumber == 0 {
-		return datavalue.Null(), errorutil.NewErrorAt(errorutil.ErrorMsgModByZero, node.Position())
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgModByZero, node.Position())
 	}
 
 	switch node.Operator.TokenType {
 	case token.TokenTypeOperationAdd:
-		return datavalue.Number(leftNumber + rightNumber), nil
+		return controlflow.NewRegularResult(datavalue.Number(leftNumber + rightNumber)), nil
 
 	case token.TokenTypeOperationSub:
-		return datavalue.Number(leftNumber - rightNumber), nil
+		return controlflow.NewRegularResult(datavalue.Number(leftNumber - rightNumber)), nil
 
 	case token.TokenTypeOperationMul:
-		return datavalue.Number(leftNumber * rightNumber), nil
+		return controlflow.NewRegularResult(datavalue.Number(leftNumber * rightNumber)), nil
 
 	case token.TokenTypeOperationDiv:
-		return datavalue.Number(leftNumber / rightNumber), nil
+		return controlflow.NewRegularResult(datavalue.Number(leftNumber / rightNumber)), nil
 
 	case token.TokenTypeOperationMod:
-		return datavalue.Number(math.Mod(leftNumber, rightNumber)), nil
+		return controlflow.NewRegularResult(datavalue.Number(math.Mod(leftNumber, rightNumber))), nil
 
 	case token.TokenTypeOperationPow:
-		return datavalue.Number(math.Pow(leftNumber, rightNumber)), nil
+		return controlflow.NewRegularResult(datavalue.Number(math.Pow(leftNumber, rightNumber))), nil
 
 	default:
-		return datavalue.Null(), errorutil.NewErrorAt(
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownOperator,
 			node.Position(),
 			node.Operator.Atom,

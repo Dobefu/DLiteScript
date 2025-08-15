@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
@@ -9,11 +10,11 @@ import (
 
 func (e *Evaluator) evaluateFunctionCall(
 	fc *ast.FunctionCall,
-) (datavalue.Value, error) {
+) (*controlflow.EvaluationResult, error) {
 	function, hasFunction := functionRegistry[fc.FunctionName]
 
 	if !hasFunction {
-		return datavalue.Null(), errorutil.NewErrorAt(
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUndefinedFunction,
 			fc.Position(),
 			fc.FunctionName,
@@ -28,10 +29,16 @@ func (e *Evaluator) evaluateFunctionCall(
 	)
 
 	if err != nil {
-		return datavalue.Null(), err
+		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	return function.handler(e, argValues)
+	handlerResult, err := function.handler(e, argValues)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	return controlflow.NewRegularResult(handlerResult), nil
 }
 
 func (e *Evaluator) evaluateArguments(
@@ -49,7 +56,7 @@ func (e *Evaluator) evaluateArguments(
 			return nil, err
 		}
 
-		argValues[i] = val
+		argValues[i] = val.Value
 	}
 
 	return e.validateArgumentTypes(argValues, function, functionName, fc)

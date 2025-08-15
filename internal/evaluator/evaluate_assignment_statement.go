@@ -2,15 +2,18 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-func (e *Evaluator) evaluateAssignmentStatement(node *ast.AssignmentStatement) (datavalue.Value, error) {
+func (e *Evaluator) evaluateAssignmentStatement(
+	node *ast.AssignmentStatement,
+) (*controlflow.EvaluationResult, error) {
 	rightValue, err := e.Evaluate(node.Right)
 
 	if err != nil {
-		return datavalue.Null(), err
+		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
 	for idx := range e.blockScopesLen {
@@ -18,16 +21,16 @@ func (e *Evaluator) evaluateAssignmentStatement(node *ast.AssignmentStatement) (
 			variable, isVariable := e.blockScopes[e.blockScopesLen-idx-1][node.Left.Value].(*Variable)
 
 			if !isVariable {
-				return datavalue.Null(), errorutil.NewErrorAt(
+				return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 					errorutil.ErrorMsgReassignmentToConstant,
 					node.Left.Position(),
 					node.Left.Value,
 				)
 			}
 
-			variable.Value = rightValue
+			variable.Value = rightValue.Value
 
-			return rightValue, nil
+			return controlflow.NewRegularResult(rightValue.Value), nil
 		}
 	}
 
@@ -35,19 +38,19 @@ func (e *Evaluator) evaluateAssignmentStatement(node *ast.AssignmentStatement) (
 		variable, isVariable := e.outerScope[node.Left.Value].(*Variable)
 
 		if !isVariable {
-			return datavalue.Null(), errorutil.NewErrorAt(
+			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 				errorutil.ErrorMsgReassignmentToConstant,
 				node.Left.Position(),
 				node.Left.Value,
 			)
 		}
 
-		variable.Value = rightValue
+		variable.Value = rightValue.Value
 
-		return rightValue, nil
+		return controlflow.NewRegularResult(rightValue.Value), nil
 	}
 
-	return datavalue.Null(), errorutil.NewErrorAt(
+	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.ErrorMsgUndefinedIdentifier,
 		node.Left.Position(),
 		node.Left.Value,

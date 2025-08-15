@@ -2,14 +2,15 @@ package evaluator
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 // Evaluate runs the evaluation logic.
-func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
+func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationResult, error) {
 	if currentAst == nil {
-		return datavalue.Null(), nil
+		return controlflow.NewRegularResult(datavalue.Null()), nil
 	}
 
 	switch node := currentAst.(type) {
@@ -52,6 +53,12 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.ForStatement:
 		return e.evaluateForStatement(node)
 
+	case *ast.BreakStatement:
+		return e.evaluateBreakStatement(node)
+
+	case *ast.ContinueStatement:
+		return e.evaluateContinueStatement(node)
+
 	case *ast.BlockStatement:
 		return e.evaluateBlockStatement(node)
 
@@ -59,7 +66,7 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 		return e.evaluateAssignmentStatement(node)
 
 	default:
-		return datavalue.Null(), errorutil.NewErrorAt(
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,
 			node.Position(),
 			node,

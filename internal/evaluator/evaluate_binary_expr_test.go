@@ -99,7 +99,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			t.Errorf("error evaluating %s: %v", test.input.Expr(), err)
 		}
 
-		result, err := rawResult.AsNumber()
+		result, err := rawResult.Value.AsNumber()
 
 		if err != nil {
 			t.Fatalf("expected number, got type error: %s", err.Error())
