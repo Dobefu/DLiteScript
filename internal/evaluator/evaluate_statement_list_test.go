@@ -3,6 +3,7 @@ package evaluator
 import (
 	"errors"
 	"fmt"
+	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -35,7 +36,7 @@ func TestEvaluateStatementList(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator()
+		ev := NewEvaluator(io.Discard)
 		_, err := ev.evaluateStatementList(test.input)
 
 		if err != nil {
@@ -72,7 +73,7 @@ func TestEvaluateStatementListErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator()
+		ev := NewEvaluator(io.Discard)
 		_, err := ev.evaluateStatementList(test.input)
 
 		if err == nil {

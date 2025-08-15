@@ -3,6 +3,7 @@ package evaluator
 import (
 	"errors"
 	"fmt"
+	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -42,7 +43,7 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator().evaluatePrefixExpr(test.input)
+		rawResult, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
@@ -92,7 +93,7 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator().evaluatePrefixExpr(test.input)
+		_, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
 
 		if err == nil {
 			t.Fatalf("expected error, got nil")

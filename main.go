@@ -56,7 +56,7 @@ func (m *Main) Run() {
 		return
 	}
 
-	e := evaluator.NewEvaluator()
+	e := evaluator.NewEvaluator(m.outFile)
 	_, err = e.Evaluate(ast)
 
 	if err != nil {

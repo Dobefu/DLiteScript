@@ -3,6 +3,7 @@ package evaluator
 import (
 	"errors"
 	"fmt"
+	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -47,7 +48,7 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator()
+		ev := NewEvaluator(io.Discard)
 		_, err := ev.Evaluate(test.input)
 
 		if err != nil {
@@ -83,7 +84,7 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator()
+		ev := NewEvaluator(io.Discard)
 		_, err := ev.Evaluate(test.input)
 
 		if err == nil {
@@ -132,7 +133,7 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator().Evaluate(test.input)
+		_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
 		if err == nil {
 			t.Fatalf("expected error, got nil")

@@ -3,6 +3,7 @@ package evaluator
 import (
 	"errors"
 	"fmt"
+	"io"
 	"math"
 	"testing"
 
@@ -44,7 +45,7 @@ func TestEvaluateIdentifier(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator().evaluateIdentifier(test.input)
+		rawResult, err := NewEvaluator(io.Discard).evaluateIdentifier(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
@@ -76,7 +77,7 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator().evaluateIdentifier(test.input)
+		_, err := NewEvaluator(io.Discard).evaluateIdentifier(test.input)
 
 		if err == nil {
 			t.Fatalf("expected error, got nil")

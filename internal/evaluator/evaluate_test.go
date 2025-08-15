@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"io"
 	"math"
 	"testing"
 
@@ -51,7 +52,7 @@ func TestEvaluate(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator().Evaluate(test.input)
+		rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
@@ -71,7 +72,7 @@ func TestEvaluate(t *testing.T) {
 
 func BenchmarkEvaluate(b *testing.B) {
 	for b.Loop() {
-		_, _ = NewEvaluator().Evaluate(
+		_, _ = NewEvaluator(io.Discard).Evaluate(
 			&ast.BinaryExpr{
 				Left: &ast.NumberLiteral{Value: "1", Pos: 0},
 				Right: &ast.BinaryExpr{

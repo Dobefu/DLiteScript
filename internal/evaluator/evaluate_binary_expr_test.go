@@ -3,6 +3,7 @@ package evaluator
 import (
 	"errors"
 	"fmt"
+	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -92,7 +93,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator().evaluateBinaryExpr(test.input)
+		rawResult, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
 
 		if err != nil {
 			t.Errorf("error evaluating %s: %v", test.input.Expr(), err)
@@ -180,7 +181,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator().evaluateBinaryExpr(test.input)
+		_, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
 
 		if err == nil {
 			t.Fatalf("expected error, got nil")

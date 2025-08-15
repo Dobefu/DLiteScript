@@ -2,6 +2,7 @@
 package evaluator
 
 import (
+	"io"
 	"strings"
 )
 
@@ -11,15 +12,17 @@ type Evaluator struct {
 	blockScopes    []map[string]ScopedValue
 	blockScopesLen int
 	buf            strings.Builder
+	outFile        io.Writer
 }
 
 // NewEvaluator creates a new evaluator.
-func NewEvaluator() *Evaluator {
+func NewEvaluator(outFile io.Writer) *Evaluator {
 	return &Evaluator{
 		outerScope:     make(map[string]ScopedValue),
 		blockScopes:    make([]map[string]ScopedValue, 0),
 		blockScopesLen: 0,
 		buf:            strings.Builder{},
+		outFile:        outFile,
 	}
 }
 
