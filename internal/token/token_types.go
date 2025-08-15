@@ -70,6 +70,10 @@ const (
 	TokenTypeConst
 	// TokenTypeFor represents the 'for' keyword.
 	TokenTypeFor
+	// TokenTypeBreak represents the 'break' keyword.
+	TokenTypeBreak
+	// TokenTypeContinue represents the 'continue' keyword.
+	TokenTypeContinue
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber

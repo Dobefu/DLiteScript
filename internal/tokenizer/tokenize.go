@@ -5,17 +5,19 @@ import (
 )
 
 var keywords = map[string]token.Type{
-	"var":    token.TokenTypeVar,
-	"const":  token.TokenTypeConst,
-	"number": token.TokenTypeTypeNumber,
-	"string": token.TokenTypeTypeString,
-	"bool":   token.TokenTypeTypeBool,
-	"true":   token.TokenTypeBool,
-	"false":  token.TokenTypeBool,
-	"if":     token.TokenTypeIf,
-	"else":   token.TokenTypeElse,
-	"for":    token.TokenTypeFor,
-	"null":   token.TokenTypeNull,
+	"var":      token.TokenTypeVar,
+	"const":    token.TokenTypeConst,
+	"number":   token.TokenTypeTypeNumber,
+	"string":   token.TokenTypeTypeString,
+	"bool":     token.TokenTypeTypeBool,
+	"true":     token.TokenTypeBool,
+	"false":    token.TokenTypeBool,
+	"if":       token.TokenTypeIf,
+	"else":     token.TokenTypeElse,
+	"for":      token.TokenTypeFor,
+	"break":    token.TokenTypeBreak,
+	"continue": token.TokenTypeContinue,
+	"null":     token.TokenTypeNull,
 }
 
 // Tokenize analyzes the expression string and turns it into tokens.
