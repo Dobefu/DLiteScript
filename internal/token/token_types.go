@@ -68,6 +68,8 @@ const (
 	TokenTypeVar
 	// TokenTypeConst represents the 'const' keyword.
 	TokenTypeConst
+	// TokenTypeFor represents the 'for' keyword.
+	TokenTypeFor
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber
