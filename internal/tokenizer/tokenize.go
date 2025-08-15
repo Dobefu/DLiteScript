@@ -14,6 +14,7 @@ var keywords = map[string]token.Type{
 	"false":  token.TokenTypeBool,
 	"if":     token.TokenTypeIf,
 	"else":   token.TokenTypeElse,
+	"for":    token.TokenTypeFor,
 	"null":   token.TokenTypeNull,
 }
 
