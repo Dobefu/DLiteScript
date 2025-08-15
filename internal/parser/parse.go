@@ -148,6 +148,9 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 	case token.TokenTypeIf:
 		return p.parseIfStatement()
 
+	case token.TokenTypeFor:
+		return p.parseForStatement()
+
 	case token.TokenTypeLBrace:
 		var endToken token.Type = token.TokenTypeRBrace
 

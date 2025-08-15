@@ -49,6 +49,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (datavalue.Value, error) {
 	case *ast.IfStatement:
 		return e.evaluateIfStatement(node)
 
+	case *ast.ForStatement:
+		return e.evaluateForStatement(node)
+
 	case *ast.BlockStatement:
 		return e.evaluateBlockStatement(node)
 
