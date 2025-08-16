@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/cmd"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
+	"github.com/Dobefu/DLiteScript/internal/scriptrunner"
 )
 
 func createTmpFile(t testing.TB, content string) string {
@@ -63,7 +63,7 @@ func TestMainRun(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		runner := &cmd.ScriptRunner{
+		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{createTmpFile(t, test.input)},
 			OutFile: io.Discard,
 			OnError: func(err error) {
@@ -116,7 +116,7 @@ func TestMainErr(t *testing.T) {
 			args = append(args, createTmpFile(t, test.input))
 		}
 
-		runner := &cmd.ScriptRunner{
+		runner := &scriptrunner.ScriptRunner{
 			Args:    args,
 			OutFile: io.Discard,
 			OnError: func(err error) {
@@ -160,7 +160,7 @@ func TestMainWriteError(t *testing.T) {
 
 	filePath := createTmpFile(t, "1 + 1")
 
-	runner := &cmd.ScriptRunner{
+	runner := &scriptrunner.ScriptRunner{
 		Args:    []string{filePath},
 		OutFile: buf,
 		OnError: func(err error) {
@@ -183,7 +183,7 @@ func BenchmarkMain(b *testing.B) {
 	filePath := createTmpFile(b, "1 + -2 * 3 / 4")
 
 	for b.Loop() {
-		runner := &cmd.ScriptRunner{
+		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{filePath},
 			OutFile: io.Discard,
 			OnError: func(err error) {
