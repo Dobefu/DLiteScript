@@ -30,7 +30,6 @@ func (s *Server) Start() error {
 	go func() {
 		<-s.Handler.GetShutdownChan()
 
-		fmt.Println("Shutting down...")
 		os.Exit(0)
 	}()
 
