@@ -27,11 +27,12 @@ func (s *Server) Start() error {
 		return fmt.Errorf("could not create JSON-RPC server: %w", err)
 	}
 
-	err = server.Start()
+	go func() {
+		<-s.Handler.GetShutdownChan()
 
-	if err != nil {
-		return fmt.Errorf("could not start JSON-RPC server: %w", err)
-	}
+		fmt.Println("Shutting down...")
+		os.Exit(0)
+	}()
 
-	return nil
+	return server.Start()
 }

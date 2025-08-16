@@ -6,9 +6,9 @@ import (
 )
 
 // ErrorCode represents a JSON-RPC error code.
-// For more information, see the [Specification].
+// For more information, see the [specification].
 //
-// [Specification]: https://www.jsonrpc.org/specification#error_object
+// [specification]: https://www.jsonrpc.org/specification#error_object
 type ErrorCode int
 
 const (
@@ -27,9 +27,9 @@ const (
 )
 
 // Error represents a JSON-RPC error.
-// For more information, see the [Specification].
+// For more information, see the [specification].
 //
-// [Specification]: https://www.jsonrpc.org/specification#error_object
+// [specification]: https://www.jsonrpc.org/specification#error_object
 type Error struct {
 	Code    ErrorCode        `json:"code"`
 	Message string           `json:"message"`

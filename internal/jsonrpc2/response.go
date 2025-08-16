@@ -3,9 +3,9 @@ package jsonrpc2
 import "encoding/json"
 
 // Response represents a JSON-RPC response.
-// For more information, see the [Specification].
+// For more information, see the [specification].
 //
-// [Specification]: https://www.jsonrpc.org/specification#response_object
+// [specification]: https://www.jsonrpc.org/specification#response_object
 type Response struct {
 	JSONRPC string          `json:"jsonrpc"`
 	Result  json.RawMessage `json:"result,omitempty"`

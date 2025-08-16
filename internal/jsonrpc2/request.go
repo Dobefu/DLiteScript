@@ -3,9 +3,9 @@ package jsonrpc2
 import "encoding/json"
 
 // Request represents a JSON-RPC request.
-// For more information, see the [Specification].
+// For more information, see the [specification].
 //
-// [Specification]: https://www.jsonrpc.org/specification#request_object
+// [specification]: https://www.jsonrpc.org/specification#request_object
 type Request struct {
 	JSONRPC string          `json:"jsonrpc"`
 	Method  string          `json:"method"`

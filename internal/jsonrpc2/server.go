@@ -2,6 +2,7 @@ package jsonrpc2
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -33,20 +34,18 @@ func (s *Server) Start() error {
 		msg, err := s.stream.ReadMessage()
 
 		if err != nil {
-			if err == io.EOF {
+			if err == io.EOF || errors.Is(err, io.EOF) {
 				return nil
 			}
 
 			return err
 		}
 
-		go func() {
-			err = s.handleMessage(msg)
+		err = s.handleMessage(msg)
 
-			if err != nil {
-				slog.Error(err.Error())
-			}
-		}()
+		if err != nil {
+			slog.Error(err.Error())
+		}
 	}
 }
 

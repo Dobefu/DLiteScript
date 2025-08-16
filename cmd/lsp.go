@@ -15,6 +15,8 @@ var lspCmd = &cobra.Command{ //nolint:exhaustruct
 }
 
 func init() {
+	lspCmd.Flags().Bool("stdio", false, "Use stdio transport (required for LSP)")
+
 	rootCmd.AddCommand(lspCmd)
 }
 

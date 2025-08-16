@@ -12,11 +12,12 @@ import (
 // Handler represents a JSON-RPC handler.
 type Handler interface {
 	Handle(method string, params json.RawMessage) (json.RawMessage, *Error)
+	GetShutdownChan() chan struct{}
 }
 
 // Stream represents the JSON-RPC stream.
 type Stream struct {
-	reader io.Reader
+	reader *bufio.Reader
 	writer io.Writer
 	closer io.Closer
 }
@@ -24,7 +25,7 @@ type Stream struct {
 // NewStream creates a new JSON-RPC stream.
 func NewStream(reader io.Reader, writer io.Writer) *Stream {
 	return &Stream{
-		reader: reader,
+		reader: bufio.NewReader(reader),
 		writer: writer,
 		closer: nil,
 	}
@@ -34,11 +35,17 @@ func NewStream(reader io.Reader, writer io.Writer) *Stream {
 func (s *Stream) ReadMessage() ([]byte, error) {
 	var err error
 
-	scanner := bufio.NewScanner(s.reader)
 	var contentLength int
+	var hasContentLength bool
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	for {
+		line, err := s.reader.ReadString('\n')
+
+		if err != nil {
+			return nil, fmt.Errorf("could not read the message: %w", err)
+		}
+
+		line = strings.TrimSpace(line)
 
 		if line == "" {
 			break
@@ -52,11 +59,17 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 			if err != nil {
 				return nil, fmt.Errorf("could not parse content length: %w", err)
 			}
+
+			hasContentLength = true
 		}
 	}
 
-	if contentLength == 0 {
-		return nil, nil
+	if !hasContentLength {
+		return nil, fmt.Errorf("no Content-Length header found")
+	}
+
+	if contentLength <= 0 {
+		return nil, fmt.Errorf("invalid content length")
 	}
 
 	buf := make([]byte, contentLength)
@@ -64,7 +77,11 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 	_, err = io.ReadFull(s.reader, buf)
 
 	if err != nil {
-		return buf, fmt.Errorf("could not read message: %w", err)
+		return nil, fmt.Errorf("could not read the message body: %w", err)
+	}
+
+	if len(buf) != contentLength {
+		return nil, fmt.Errorf("message body length does not match Content-Length")
 	}
 
 	return buf, nil

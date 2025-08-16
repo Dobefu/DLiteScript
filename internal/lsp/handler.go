@@ -9,13 +9,15 @@ import (
 
 // Handler represents the LSP handler.
 type Handler struct {
-	documents map[string]string
+	documents    map[string]string
+	shutdownChan chan struct{}
 }
 
 // NewHandler creates a new LSP handler.
 func NewHandler() *Handler {
 	return &Handler{
-		documents: make(map[string]string),
+		documents:    make(map[string]string),
+		shutdownChan: make(chan struct{}),
 	}
 }
 
@@ -25,6 +27,18 @@ func (h *Handler) Handle(
 	_ json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
 	switch method {
+	case "initialize":
+		return h.handleInitialize()
+
+	case "initialized":
+		return nil, nil
+
+	case "shutdown":
+		return h.handleShutdown()
+
+	case "exit":
+		return h.handleExit()
+
 	default:
 		return nil, jsonrpc2.NewError(
 			jsonrpc2.ErrorCodeMethodNotFound,
@@ -32,4 +46,46 @@ func (h *Handler) Handle(
 			nil,
 		)
 	}
+}
+
+// GetShutdownChan returns the shutdown channel.
+func (h *Handler) GetShutdownChan() chan struct{} {
+	return h.shutdownChan
+}
+
+func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
+	result := InitializeResult{
+		ServerInfo: ServerInfo{
+			Name:    "DLiteScript",
+			Version: "0.1.0",
+		},
+		Capabilities: ServerCapabilities{
+			TextDocumentSync: TextDocumentSync{
+				OpenClose: true,
+				Change:    ChangeTypeFull,
+			},
+		},
+	}
+
+	data, err := json.Marshal(result)
+
+	if err != nil {
+		return nil, jsonrpc2.NewError(
+			jsonrpc2.ErrorCodeInternalError,
+			err.Error(),
+			nil,
+		)
+	}
+
+	return data, nil
+}
+
+func (h *Handler) handleShutdown() (json.RawMessage, *jsonrpc2.Error) {
+	return json.RawMessage("null"), nil
+}
+
+func (h *Handler) handleExit() (json.RawMessage, *jsonrpc2.Error) {
+	go close(h.shutdownChan)
+
+	return json.RawMessage("null"), nil
 }
