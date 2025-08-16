@@ -105,10 +105,17 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 	blockStatement, isBlockStatement := blockNode.(*ast.BlockStatement)
 
 	if !isBlockStatement {
-		return nil, errorutil.NewError(
-			errorutil.ErrorMsgBlockStatementExpected,
-			blockNode.Expr(),
-		)
+		if blockNode != nil {
+			return nil, errorutil.NewError(
+				errorutil.ErrorMsgBlockStatementExpected,
+				blockNode.Expr(),
+			)
+		}
+
+		return &ast.BlockStatement{
+			Statements: []ast.ExprNode{blockNode},
+			Pos:        p.tokenIdx,
+		}, nil
 	}
 
 	return blockStatement, nil
@@ -227,25 +234,7 @@ func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
 		)
 	}
 
-	_, err = p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	valueToken, err := p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	toExpr, err := p.parseExpr(valueToken, nil, 0, 0)
-
-	if err != nil {
-		return nil, err
-	}
-
-	loopBody, err := p.parseLoopBody()
+	loopBody, toExpr, err := p.parseLoopBodyAndToExpr()
 
 	if err != nil {
 		return nil, err
@@ -264,25 +253,7 @@ func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
 }
 
 func (p *Parser) parseImplicitRangeLoop(varName string) (ast.ExprNode, error) {
-	_, err := p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	valueToken, err := p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	toExpr, err := p.parseExpr(valueToken, nil, 0, 0)
-
-	if err != nil {
-		return nil, err
-	}
-
-	loopBody, err := p.parseLoopBody()
+	loopBody, toExpr, err := p.parseLoopBodyAndToExpr()
 
 	if err != nil {
 		return nil, err
@@ -298,4 +269,32 @@ func (p *Parser) parseImplicitRangeLoop(varName string) (ast.ExprNode, error) {
 		RangeTo:          toExpr,
 		IsRange:          true,
 	}, nil
+}
+
+func (p *Parser) parseLoopBodyAndToExpr() (*ast.BlockStatement, ast.ExprNode, error) {
+	_, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	valueToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	toExpr, err := p.parseExpr(valueToken, nil, 0, 0)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	loopBody, err := p.parseLoopBody()
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return loopBody, toExpr, nil
 }
