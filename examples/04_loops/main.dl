@@ -12,6 +12,10 @@ for var i < 3 {
 printf("\n")
 
 for var i to 3 {
+  if i == 2 {
+    continue
+  }
+
   printf("Iteration %g\n", i)
 }
 
@@ -19,4 +23,24 @@ printf("\n")
 
 for var i from 0 to 3 {
   printf("Iteration %g\n", i)
+}
+
+printf("\n")
+
+var isComplete bool = false
+for !isComplete {
+  printf("Iteration\n")
+  isComplete = true
+}
+
+printf("\n")
+
+for var i to 2 {
+  for var j to 2 {
+    if i == 1 && j == 1 {
+      break 2
+    }
+
+    printf("Nested loop: i=%g, j=%g\n", i, j)
+  }
 }
