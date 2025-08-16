@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/cmd"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
@@ -62,20 +63,22 @@ func TestMainRun(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		main := &Main{
-			args:    []string{os.Args[0], createTmpFile(t, test.input)},
-			outFile: io.Discard,
-			onError: func(err error) {
+		runner := &cmd.ScriptRunner{
+			Args:    []string{createTmpFile(t, test.input)},
+			OutFile: io.Discard,
+			OnError: func(err error) {
 				t.Errorf("expected no error, got '%s'", err.Error())
 			},
-
-			result: "",
 		}
 
-		main.Run()
+		err := runner.Run()
 
-		if main.result != "" {
-			t.Errorf("expected empty output, got '%s'", main.result)
+		if err != nil {
+			t.Errorf("expected no error, got '%s'", err.Error())
+		}
+
+		if runner.Output() != "" {
+			t.Errorf("expected empty output, got '%s'", runner.Output())
 		}
 	}
 }
@@ -89,55 +92,59 @@ func TestMainErr(t *testing.T) {
 	}{
 		{
 			input:    "",
-			expected: "usage: go run main.go <file>",
+			expected: "no file specified",
 		},
 		{
 			input:    "1 +",
-			expected: errorutil.ErrorMsgUnexpectedEOF,
+			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
 		},
 		{
 			input:    "\x80",
-			expected: string(errorutil.ErrorMsgInvalidUTF8Char),
+			expected: string(errorutil.ErrorMsgInvalidUTF8Char) + " at position 0",
 		},
 		{
 			input:    "min(1)",
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 0",
 		},
 	}
 
 	for _, test := range tests {
 		var mainErr error
-		args := []string{os.Args[0]}
+		var args []string
 
 		if test.input != "" {
 			args = append(args, createTmpFile(t, test.input))
 		}
 
-		main := &Main{
-			args:    args,
-			outFile: io.Discard,
-			onError: func(err error) {
+		runner := &cmd.ScriptRunner{
+			Args:    args,
+			OutFile: io.Discard,
+			OnError: func(err error) {
 				mainErr = errors.Unwrap(err)
 
 				if mainErr == nil {
 					mainErr = err
 				}
 			},
-
-			result: "",
 		}
 
-		main.Run()
+		err := runner.Run()
 
-		if mainErr == nil {
+		if err == nil {
 			t.Fatalf("expected error, got none for input '%s'", test.input)
 		}
 
-		if mainErr.Error() != test.expected {
+		actualErr := err
+
+		if mainErr != nil {
+			actualErr = mainErr
+		}
+
+		if actualErr.Error() != test.expected {
 			t.Errorf(
 				"expected error '%s', got '%s'",
 				test.expected,
-				mainErr.Error(),
+				actualErr.Error(),
 			)
 		}
 	}
@@ -153,22 +160,21 @@ func TestMainWriteError(t *testing.T) {
 
 	filePath := createTmpFile(t, "1 + 1")
 
-	main := &Main{
-		args:    []string{os.Args[0], filePath},
-		outFile: buf,
-		onError: func(err error) {
+	runner := &cmd.ScriptRunner{
+		Args:    []string{filePath},
+		OutFile: buf,
+		OnError: func(err error) {
 			mainErr = errors.Unwrap(err)
 
 			if mainErr == nil {
 				mainErr = err
 			}
 		},
-		result: "",
 	}
 
-	main.Run()
+	err := runner.Run()
 
-	if mainErr == nil {
+	if err == nil {
 		t.Fatalf("expected error, got none")
 	}
 }
@@ -177,15 +183,18 @@ func BenchmarkMain(b *testing.B) {
 	filePath := createTmpFile(b, "1 + -2 * 3 / 4")
 
 	for b.Loop() {
-		main := &Main{
-			args:    []string{os.Args[0], filePath},
-			outFile: io.Discard,
-			onError: func(err error) {
+		runner := &cmd.ScriptRunner{
+			Args:    []string{filePath},
+			OutFile: io.Discard,
+			OnError: func(err error) {
 				b.Errorf("expected no error, got '%s'", err.Error())
 			},
-			result: "",
 		}
 
-		main.Run()
+		err := runner.Run()
+
+		if err != nil {
+			b.Errorf("expected no error, got '%s'", err.Error())
+		}
 	}
 }
