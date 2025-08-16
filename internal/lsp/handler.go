@@ -83,6 +83,11 @@ func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
 				OpenClose: true,
 				Change:    ChangeTypeFull,
 			},
+			DefinitionProvider: false,
+			CompletionProvider: CompletionProvider{
+				TriggerCharacters: []string{},
+			},
+			HoverProvider: false,
 		},
 	}
 
