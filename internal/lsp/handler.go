@@ -33,6 +33,12 @@ func (h *Handler) Handle(
 	case "initialized":
 		return nil, nil
 
+	case "textDocument/didOpen":
+		return nil, nil
+
+	case "$/setTrace":
+		return nil, nil
+
 	case "shutdown":
 		return h.handleShutdown()
 
