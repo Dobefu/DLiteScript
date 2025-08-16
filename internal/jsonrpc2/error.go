@@ -1,6 +1,9 @@
 package jsonrpc2
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // ErrorCode represents a JSON-RPC error code.
 // For more information, see the [Specification].
@@ -40,4 +43,14 @@ func NewError(code ErrorCode, message string, data *json.RawMessage) *Error {
 		Message: message,
 		Data:    data,
 	}
+}
+
+// Error returns the error message.
+func (e *Error) Error() string {
+	return fmt.Sprintf(
+		"code: %d, message: %s, data: %s",
+		e.Code,
+		e.Message,
+		string(*e.Data),
+	)
 }

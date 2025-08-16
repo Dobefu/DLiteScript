@@ -22,3 +22,13 @@ func NewResponse(result json.RawMessage, id RequestID) *Response {
 		ID:      id,
 	}
 }
+
+// NewErrorResponse creates a new JSON-RPC error response.
+func NewErrorResponse(errData []byte, id RequestID) *Response {
+	return &Response{
+		JSONRPC: "2.0",
+		Result:  nil,
+		Error:   errData,
+		ID:      id,
+	}
+}

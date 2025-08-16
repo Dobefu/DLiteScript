@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"log/slog"
 	"os"
 
@@ -20,13 +19,11 @@ func init() {
 }
 
 func runLSPCmd(_ *cobra.Command, _ []string) {
-	ctx := context.Background()
+	handler := lsp.NewHandler()
+	server := lsp.NewServer(handler)
 
-	server := lsp.NewServer()
-
-	slog.Info("DLiteScript LSP server starting...")
-
-	err := server.Start(ctx)
+	slog.Info("Starting DLiteScript LSP server...")
+	err := server.Start()
 
 	if err != nil {
 		slog.Error(err.Error())
