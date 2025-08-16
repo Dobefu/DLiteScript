@@ -2,28 +2,20 @@ package lsp
 
 import (
 	"context"
-	"os"
-
-	"go.lsp.dev/jsonrpc2"
 )
 
 // Server represents the LSP server.
 type Server struct {
-	stream jsonrpc2.Stream
-	conn   jsonrpc2.Conn
+	stream interface{}
+	conn   interface{}
 }
 
 // NewServer creates a new LSP server.
 func NewServer() *Server {
-	stream := jsonrpc2.NewStream(os.Stdin)
-
-	return &Server{
-		stream: stream,
-		conn:   jsonrpc2.NewConn(stream),
-	}
+	return &Server{}
 }
 
 // Start starts the LSP server.
-func (s *Server) Start(_ context.Context) error {
+func (s *Server) Start(ctx context.Context) error {
 	return nil
 }
