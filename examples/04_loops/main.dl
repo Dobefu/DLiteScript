@@ -1,0 +1,22 @@
+for {
+  printf("Infinite loop with break\n")
+  break
+}
+
+printf("\n")
+
+for var i < 3 {
+  printf("Iteration %g\n", i)
+}
+
+printf("\n")
+
+for var i to 3 {
+  printf("Iteration %g\n", i)
+}
+
+printf("\n")
+
+for var i from 0 to 3 {
+  printf("Iteration %g\n", i)
+}
