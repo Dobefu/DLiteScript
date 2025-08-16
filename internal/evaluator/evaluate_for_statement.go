@@ -11,9 +11,12 @@ import (
 func (e *Evaluator) evaluateForStatement(
 	node *ast.ForStatement,
 ) (*controlflow.EvaluationResult, error) {
+	e.pushBlockScope()
 	err := e.declareLoopVariable(node)
 
 	if err != nil {
+		e.popBlockScope()
+
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
@@ -23,6 +26,8 @@ func (e *Evaluator) evaluateForStatement(
 		shouldBreak, err := e.evaluateNodeCondition(node)
 
 		if err != nil {
+			e.popBlockScope()
+
 			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
@@ -33,6 +38,8 @@ func (e *Evaluator) evaluateForStatement(
 		result, shouldBreak, shouldContinue, err := e.executeForIteration(node)
 
 		if err != nil {
+			e.popBlockScope()
+
 			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
@@ -45,9 +52,13 @@ func (e *Evaluator) evaluateForStatement(
 		}
 
 		if !result.IsNormalResult() {
+			e.popBlockScope()
+
 			return result, nil
 		}
 	}
+
+	e.popBlockScope()
 
 	return result, nil
 }
