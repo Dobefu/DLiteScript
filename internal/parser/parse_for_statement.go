@@ -137,6 +137,16 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 
 	varName := nextToken.Atom
 
+	nextToken, err = p.PeekNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nextToken.TokenType == token.TokenTypeFrom {
+		return p.parseRangeLoop(varName)
+	}
+
 	operatorToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -177,5 +187,74 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 		RangeFrom:        nil,
 		RangeTo:          nil,
 		IsRange:          false,
+	}, nil
+}
+
+func (p *Parser) parseRangeLoop(varName string) (ast.ExprNode, error) {
+	_, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	fromExpr, err := p.parseExpr(nextToken, nil, 0, 0)
+
+	if err != nil {
+		return nil, err
+	}
+
+	toToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if toToken.TokenType != token.TokenTypeTo {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedToken,
+			p.tokenIdx,
+			toToken.TokenType,
+		)
+	}
+
+	_, err = p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	valueToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	toExpr, err := p.parseExpr(valueToken, nil, 0, 0)
+
+	if err != nil {
+		return nil, err
+	}
+
+	loopBody, err := p.parseLoopBody()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &ast.ForStatement{
+		Condition:        nil,
+		Body:             loopBody,
+		Pos:              p.tokenIdx,
+		DeclaredVariable: varName,
+		RangeVariable:    "",
+		RangeFrom:        fromExpr,
+		RangeTo:          toExpr,
+		IsRange:          true,
 	}, nil
 }

@@ -58,9 +58,20 @@ func (e *Evaluator) declareLoopVariable(node *ast.ForStatement) error {
 	}
 
 	varName := node.DeclaredVariable
+	initialValue := datavalue.Number(0)
+
+	if node.IsRange {
+		fromResult, err := e.Evaluate(node.RangeFrom)
+
+		if err != nil {
+			return err
+		}
+
+		initialValue = fromResult.Value
+	}
 
 	variable := &Variable{
-		Value: datavalue.Number(0),
+		Value: initialValue,
 		Type:  datatype.DataTypeNumber.AsString(),
 	}
 
@@ -76,17 +87,65 @@ func (e *Evaluator) declareLoopVariable(node *ast.ForStatement) error {
 func (e *Evaluator) evaluateNodeCondition(
 	node *ast.ForStatement,
 ) (bool, error) {
-	if node.Condition == nil {
+	if !node.IsRange && node.Condition == nil {
 		return false, nil
 	}
 
-	conditionResult, err := e.evaluateForCondition(node)
+	if !node.IsRange && node.Condition != nil {
+		conditionResult, err := e.evaluateForCondition(node)
+
+		if err != nil {
+			return false, err
+		}
+
+		return !conditionResult, nil
+	}
+
+	if !node.IsRange {
+		return false, errorutil.NewError(
+			errorutil.ErrorMsgInvalidForStatement,
+			node.Pos,
+			node.Condition.Expr(),
+		)
+	}
+
+	varName := node.DeclaredVariable
+
+	var currentVar ScopedValue
+	var isVarFound bool
+
+	if e.blockScopesLen > 0 {
+		currentVar, isVarFound = e.blockScopes[e.blockScopesLen-1][varName]
+	} else {
+		currentVar, isVarFound = e.outerScope[varName]
+	}
+
+	if !isVarFound {
+		return false, errorutil.NewError(
+			errorutil.ErrorMsgVariableNotFound,
+			varName,
+		)
+	}
+
+	currentValue, err := currentVar.GetValue().AsNumber()
 
 	if err != nil {
 		return false, err
 	}
 
-	return !conditionResult, nil
+	toResult, err := e.Evaluate(node.RangeTo)
+
+	if err != nil {
+		return false, err
+	}
+
+	toValue, err := toResult.Value.AsNumber()
+
+	if err != nil {
+		return false, err
+	}
+
+	return currentValue > toValue, nil
 }
 
 func (e *Evaluator) executeForIteration(

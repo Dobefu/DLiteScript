@@ -70,6 +70,8 @@ const (
 	ErrorMsgContinueCountLessThanOne = "continue count must be greater than 0"
 	// ErrorMsgVariableNotFound occurs when a variable is not found.
 	ErrorMsgVariableNotFound = "variable not found: '%s'"
+	// ErrorMsgInvalidForStatement occurs when a for statement is invalid.
+	ErrorMsgInvalidForStatement = "invalid for statement: '%s'"
 )
 
 // Error represents an error with a message.
