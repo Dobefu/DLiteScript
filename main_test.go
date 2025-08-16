@@ -62,19 +62,21 @@ func TestMainRun(t *testing.T) {
 		},
 	}
 
+	errMsgUnexpectedErr := "expected no error, got '%s'"
+
 	for _, test := range tests {
 		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{createTmpFile(t, test.input)},
 			OutFile: io.Discard,
 			OnError: func(err error) {
-				t.Errorf("expected no error, got '%s'", err.Error())
+				t.Errorf(errMsgUnexpectedErr, err.Error())
 			},
 		}
 
 		err := runner.Run()
 
 		if err != nil {
-			t.Errorf("expected no error, got '%s'", err.Error())
+			t.Errorf(errMsgUnexpectedErr, err.Error())
 		}
 
 		if runner.Output() != "" {
@@ -181,20 +183,21 @@ func TestMainWriteError(t *testing.T) {
 
 func BenchmarkMain(b *testing.B) {
 	filePath := createTmpFile(b, "1 + -2 * 3 / 4")
+	errMsgUnexpectedErr := "expected no error, got '%s'"
 
 	for b.Loop() {
 		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{filePath},
 			OutFile: io.Discard,
 			OnError: func(err error) {
-				b.Errorf("expected no error, got '%s'", err.Error())
+				b.Errorf(errMsgUnexpectedErr, err.Error())
 			},
 		}
 
 		err := runner.Run()
 
 		if err != nil {
-			b.Errorf("expected no error, got '%s'", err.Error())
+			b.Errorf(errMsgUnexpectedErr, err.Error())
 		}
 	}
 }
