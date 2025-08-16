@@ -46,6 +46,12 @@ func (h *Handler) Handle(
 	case "$/setTrace":
 		return nil, nil
 
+	case "textDocument/didChange":
+		return nil, nil
+
+	case "textDocument/didClose":
+		return nil, nil
+
 	case "shutdown":
 		return h.handleShutdown()
 
