@@ -16,12 +16,15 @@ var lspCmd = &cobra.Command{ //nolint:exhaustruct
 
 func init() {
 	lspCmd.Flags().Bool("stdio", false, "Use stdio transport (required for LSP)")
+	lspCmd.Flags().Bool("debug", false, "Enable debug mode")
 
 	rootCmd.AddCommand(lspCmd)
 }
 
-func runLSPCmd(_ *cobra.Command, _ []string) {
-	handler := lsp.NewHandler()
+func runLSPCmd(cmd *cobra.Command, _ []string) {
+	isDebugMode, _ := cmd.Flags().GetBool("debug")
+
+	handler := lsp.NewHandler(isDebugMode)
 	server := lsp.NewServer(handler)
 
 	slog.Info("Starting DLiteScript LSP server...")

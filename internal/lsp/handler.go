@@ -3,19 +3,22 @@ package lsp
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 )
 
 // Handler represents the LSP handler.
 type Handler struct {
+	isDebugMode  bool
 	documents    map[string]string
 	shutdownChan chan struct{}
 }
 
 // NewHandler creates a new LSP handler.
-func NewHandler() *Handler {
+func NewHandler(isDebugMode bool) *Handler {
 	return &Handler{
+		isDebugMode:  isDebugMode,
 		documents:    make(map[string]string),
 		shutdownChan: make(chan struct{}),
 	}
@@ -26,6 +29,10 @@ func (h *Handler) Handle(
 	method string,
 	_ json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
+	if h.isDebugMode {
+		fmt.Fprintf(os.Stderr, "Received request: %s\n", method)
+	}
+
 	switch method {
 	case "initialize":
 		return h.handleInitialize()
