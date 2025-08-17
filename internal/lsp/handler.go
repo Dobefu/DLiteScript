@@ -45,7 +45,7 @@ func (h *Handler) Handle(
 		return nil, nil
 
 	case "textDocument/didOpen":
-		return nil, nil
+		return h.handleDidOpen(params)
 
 	case "$/setTrace":
 		return nil, nil
