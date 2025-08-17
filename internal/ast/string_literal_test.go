@@ -14,7 +14,7 @@ func TestStringLiteral(t *testing.T) {
 	}{
 		{
 			input:         &StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
-			expectedValue: "test",
+			expectedValue: `"test"`,
 			expectedPos:   0,
 		},
 	}

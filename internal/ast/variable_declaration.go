@@ -40,5 +40,7 @@ func (v *VariableDeclaration) Walk(fn func(node ExprNode) bool) {
 		return
 	}
 
-	v.Value.Walk(fn)
+	if v.Value != nil {
+		v.Value.Walk(fn)
+	}
 }

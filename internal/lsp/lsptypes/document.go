@@ -61,7 +61,7 @@ func (d *Document) PositionToIndex(position Position) (int, error) {
 	index := 0
 
 	for i := 0; i < position.Line; i++ {
-		index += d.LineLengths[i]
+		index += d.LineLengths[i] + 1
 	}
 
 	index += position.Character

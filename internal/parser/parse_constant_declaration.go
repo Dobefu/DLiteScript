@@ -7,7 +7,9 @@ import (
 )
 
 func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
-	startPos := p.GetCurrentCharPos()
+	// The "const" keyword has already been consumed,
+	// so we should get the start position from the previous token.
+	startPos := p.tokens[p.tokenIdx-1].StartPos
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {

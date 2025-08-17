@@ -32,5 +32,7 @@ func (c *ConstantDeclaration) EndPosition() int {
 func (c *ConstantDeclaration) Walk(fn func(node ExprNode) bool) {
 	fn(c)
 
-	c.Value.Walk(fn)
+	if c.Value != nil {
+		c.Value.Walk(fn)
+	}
 }

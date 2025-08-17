@@ -46,6 +46,10 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 		return statements[0], nil
 	}
 
+	if len(statements) == 0 {
+		return nil, nil
+	}
+
 	return &ast.StatementList{
 		Statements: statements,
 		StartPos:   statements[0].StartPosition(),

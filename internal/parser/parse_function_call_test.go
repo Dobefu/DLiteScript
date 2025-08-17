@@ -19,10 +19,10 @@ func TestParseFunctionCall(t *testing.T) {
 	}{
 		{
 			input: []*token.Token{
-				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 4, EndPos: 5},
+				{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 5, EndPos: 6},
 			},
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
@@ -35,18 +35,18 @@ func TestParseFunctionCall(t *testing.T) {
 		},
 		{
 			input: []*token.Token{
-				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: ",", TokenType: token.TokenTypeComma},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 4, EndPos: 5},
+				{Atom: ",", TokenType: token.TokenTypeComma, StartPos: 5, EndPos: 6},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 6, EndPos: 7},
+				{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 7, EndPos: 8},
 			},
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
 					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
-					&ast.NumberLiteral{Value: "1", StartPos: 7, EndPos: 8},
+					&ast.NumberLiteral{Value: "1", StartPos: 6, EndPos: 7},
 				},
 				StartPos: 0,
 				EndPos:   8,
@@ -56,16 +56,13 @@ func TestParseFunctionCall(t *testing.T) {
 
 	for _, test := range tests {
 		parser := NewParser(test.input)
-
-		// Skip the function name token.
-		startCharPos := parser.GetCurrentCharPos()
 		_, err := parser.GetNextToken()
 
 		if err != nil {
 			t.Errorf("expected no error, got \"%v\"", err)
 		}
 
-		expr, err := parser.parseFunctionCall("abs", startCharPos)
+		expr, err := parser.parseFunctionCall("abs", 0)
 
 		if err != nil {
 			t.Errorf("expected no error, got \"%v\"", err)
@@ -97,49 +94,44 @@ func TestParseFunctionCallErr(t *testing.T) {
 		expected string
 	}{
 		{
-			input:    []*token.Token{},
-			expected: errorutil.ErrorMsgUnexpectedEOF,
-		},
-		{
 			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
 			},
 			expected: errorutil.ErrorMsgParenNotClosedAtEOF,
 		},
 		{
 			input: []*token.Token{
-				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
-			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgExpectedOpenParen, "abs"),
-		},
-		{
-			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 4, EndPos: 5},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 5, EndPos: 6},
 			},
 			expected: errorutil.ErrorMsgParenNotClosedAtEOF,
 		},
 		{
 			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 4, EndPos: 5},
 			},
 			expected: errorutil.ErrorMsgParenNotClosedAtEOF,
 		},
 		{
 			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: ",", TokenType: token.TokenTypeComma},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 4, EndPos: 5},
+				{Atom: ",", TokenType: token.TokenTypeComma, StartPos: 5, EndPos: 6},
 			},
 			expected: errorutil.ErrorMsgUnexpectedEOF,
 		},
 		{
 			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 4, EndPos: 5},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier, StartPos: 5, EndPos: 8},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "abs"),
 		},
@@ -147,7 +139,13 @@ func TestParseFunctionCallErr(t *testing.T) {
 
 	for _, test := range tests {
 		parser := NewParser(test.input)
-		_, err := parser.parseFunctionCall("abs", 0)
+		_, err := parser.GetNextToken()
+
+		if err != nil {
+			t.Errorf("expected no error, got \"%v\"", err)
+		}
+
+		_, err = parser.parseFunctionCall("abs", 0)
 
 		if err == nil {
 			t.Fatalf("expected error, got none for input \"%v\"", test.input)
@@ -166,11 +164,11 @@ func TestParseFunctionCallErr(t *testing.T) {
 func BenchmarkParseFunctionCall(b *testing.B) {
 	for b.Loop() {
 		_, _ = NewParser([]*token.Token{
-			{Atom: "(", TokenType: token.TokenTypeLParen},
-			{Atom: "1", TokenType: token.TokenTypeNumber},
-			{Atom: ",", TokenType: token.TokenTypeComma},
-			{Atom: "2", TokenType: token.TokenTypeNumber},
-			{Atom: ")", TokenType: token.TokenTypeRParen},
+			{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 0, EndPos: 1},
+			{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 1, EndPos: 2},
+			{Atom: ",", TokenType: token.TokenTypeComma, StartPos: 2, EndPos: 3},
+			{Atom: "2", TokenType: token.TokenTypeNumber, StartPos: 3, EndPos: 4},
+			{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 4, EndPos: 5},
 		}).parseFunctionCall("min", 0)
 	}
 }

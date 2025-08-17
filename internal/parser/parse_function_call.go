@@ -10,7 +10,9 @@ func (p *Parser) parseFunctionCall(
 	functionName string,
 	recursionDepth int,
 ) (ast.ExprNode, error) {
-	startCharPos := p.GetCurrentCharPos() - len(functionName)
+	// The function name has already been consumed,
+	// so we should get the start position from the previous token.
+	startCharPos := p.tokens[p.tokenIdx-1].StartPos
 	lparenToken, err := p.GetNextToken()
 
 	if err != nil {

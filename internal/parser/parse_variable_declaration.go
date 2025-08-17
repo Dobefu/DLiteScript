@@ -6,8 +6,9 @@ import (
 )
 
 func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
-	// The "var" keyword has already been consumed.
-	startPos := p.GetCurrentCharPos() - 3
+	// The "var" keyword has already been consumed,
+	// so we should get the start position from the previous token.
+	startPos := p.tokens[p.tokenIdx-1].StartPos
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {
