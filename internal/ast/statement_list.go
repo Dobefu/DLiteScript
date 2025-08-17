@@ -33,3 +33,22 @@ func (sl *StatementList) StartPosition() int {
 func (sl *StatementList) EndPosition() int {
 	return sl.EndPos
 }
+
+// Walk walks the statement list and its statements.
+func (sl *StatementList) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(sl)
+
+	if !shouldContinue {
+		return
+	}
+
+	for _, statement := range sl.Statements {
+		shouldContinue = fn(statement)
+
+		if !shouldContinue {
+			return
+		}
+
+		statement.Walk(fn)
+	}
+}

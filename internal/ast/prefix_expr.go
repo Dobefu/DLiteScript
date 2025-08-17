@@ -28,3 +28,8 @@ func (e *PrefixExpr) StartPosition() int {
 func (e *PrefixExpr) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the prefix expression and its operand.
+func (e *PrefixExpr) Walk(fn func(node ExprNode) bool) {
+	fn(e)
+}

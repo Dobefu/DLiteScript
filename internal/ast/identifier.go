@@ -21,3 +21,8 @@ func (e *Identifier) StartPosition() int {
 func (e *Identifier) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the identifier.
+func (e *Identifier) Walk(fn func(node ExprNode) bool) {
+	fn(e)
+}

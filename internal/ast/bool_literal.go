@@ -21,3 +21,8 @@ func (e *BoolLiteral) StartPosition() int {
 func (e *BoolLiteral) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the boolean literal.
+func (e *BoolLiteral) Walk(fn func(node ExprNode) bool) {
+	fn(e)
+}

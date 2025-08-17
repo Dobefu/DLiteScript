@@ -31,3 +31,36 @@ func (e *IfStatement) StartPosition() int {
 func (e *IfStatement) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the if statement and its condition and body.
+func (e *IfStatement) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(e)
+
+	if !shouldContinue {
+		return
+	}
+
+	if e.Condition != nil {
+		e.Condition.Walk(fn)
+	}
+
+	if e.ThenBlock != nil {
+		shouldContinue = fn(e.ThenBlock)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.ThenBlock.Walk(fn)
+	}
+
+	if e.ElseBlock != nil {
+		shouldContinue = fn(e.ElseBlock)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.ElseBlock.Walk(fn)
+	}
+}

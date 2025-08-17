@@ -27,3 +27,10 @@ func (c *ConstantDeclaration) StartPosition() int {
 func (c *ConstantDeclaration) EndPosition() int {
 	return c.EndPos
 }
+
+// Walk walks the constant declaration and its value.
+func (c *ConstantDeclaration) Walk(fn func(node ExprNode) bool) {
+	fn(c)
+
+	c.Value.Walk(fn)
+}

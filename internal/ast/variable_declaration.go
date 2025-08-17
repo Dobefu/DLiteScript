@@ -31,3 +31,14 @@ func (v *VariableDeclaration) StartPosition() int {
 func (v *VariableDeclaration) EndPosition() int {
 	return v.EndPos
 }
+
+// Walk walks the variable declaration and its value.
+func (v *VariableDeclaration) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(v)
+
+	if !shouldContinue {
+		return
+	}
+
+	v.Value.Walk(fn)
+}

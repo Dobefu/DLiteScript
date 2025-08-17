@@ -29,3 +29,32 @@ func (e *BinaryExpr) StartPosition() int {
 func (e *BinaryExpr) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the binary expression and its left and right nodes.
+func (e *BinaryExpr) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(e)
+
+	if !shouldContinue {
+		return
+	}
+
+	if e.Left != nil {
+		shouldContinue = fn(e.Left)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Left.Walk(fn)
+	}
+
+	if e.Right != nil {
+		shouldContinue = fn(e.Right)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Right.Walk(fn)
+	}
+}

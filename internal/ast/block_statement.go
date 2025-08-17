@@ -32,3 +32,22 @@ func (e *BlockStatement) StartPosition() int {
 func (e *BlockStatement) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the block statement and its statements.
+func (e *BlockStatement) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(e)
+
+	if !shouldContinue {
+		return
+	}
+
+	for _, statement := range e.Statements {
+		shouldContinue = fn(statement)
+
+		if !shouldContinue {
+			return
+		}
+
+		statement.Walk(fn)
+	}
+}

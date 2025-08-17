@@ -37,3 +37,22 @@ func (fc *FunctionCall) StartPosition() int {
 func (fc *FunctionCall) EndPosition() int {
 	return fc.EndPos
 }
+
+// Walk walks the function call and its arguments.
+func (fc *FunctionCall) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(fc)
+
+	if !shouldContinue {
+		return
+	}
+
+	for _, arg := range fc.Arguments {
+		shouldContinue = fn(arg)
+
+		if !shouldContinue {
+			return
+		}
+
+		arg.Walk(fn)
+	}
+}

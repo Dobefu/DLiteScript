@@ -5,4 +5,5 @@ type ExprNode interface {
 	Expr() string
 	StartPosition() int
 	EndPosition() int
+	Walk(func(node ExprNode) bool)
 }

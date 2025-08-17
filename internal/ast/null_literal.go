@@ -20,3 +20,8 @@ func (e *NullLiteral) StartPosition() int {
 func (e *NullLiteral) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the null literal.
+func (e *NullLiteral) Walk(fn func(node ExprNode) bool) {
+	fn(e)
+}

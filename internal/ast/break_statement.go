@@ -29,3 +29,8 @@ func (b *BreakStatement) StartPosition() int {
 func (b *BreakStatement) EndPosition() int {
 	return b.EndPos
 }
+
+// Walk walks the break statement.
+func (b *BreakStatement) Walk(fn func(node ExprNode) bool) {
+	fn(b)
+}

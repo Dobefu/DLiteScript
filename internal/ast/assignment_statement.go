@@ -26,3 +26,32 @@ func (a *AssignmentStatement) StartPosition() int {
 func (a *AssignmentStatement) EndPosition() int {
 	return a.EndPos
 }
+
+// Walk walks the assignment statement and its left and right nodes.
+func (a *AssignmentStatement) Walk(fn func(node ExprNode) bool) {
+	shouldContinue := fn(a)
+
+	if !shouldContinue {
+		return
+	}
+
+	if a.Left != nil {
+		shouldContinue = fn(a.Left)
+
+		if !shouldContinue {
+			return
+		}
+
+		a.Left.Walk(fn)
+	}
+
+	if a.Right != nil {
+		shouldContinue = fn(a.Right)
+
+		if !shouldContinue {
+			return
+		}
+
+		a.Right.Walk(fn)
+	}
+}

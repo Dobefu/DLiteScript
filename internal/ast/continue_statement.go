@@ -29,3 +29,8 @@ func (c *ContinueStatement) StartPosition() int {
 func (c *ContinueStatement) EndPosition() int {
 	return c.EndPos
 }
+
+// Walk walks the continue statement.
+func (c *ContinueStatement) Walk(fn func(node ExprNode) bool) {
+	fn(c)
+}

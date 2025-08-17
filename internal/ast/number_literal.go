@@ -21,3 +21,8 @@ func (e *NumberLiteral) StartPosition() int {
 func (e *NumberLiteral) EndPosition() int {
 	return e.EndPos
 }
+
+// Walk walks the number literal.
+func (e *NumberLiteral) Walk(fn func(node ExprNode) bool) {
+	fn(e)
+}
