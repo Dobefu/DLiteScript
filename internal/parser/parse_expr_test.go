@@ -16,13 +16,13 @@ func TestParseExpr(t *testing.T) {
 	}{
 		{
 			input: []*token.Token{
-				token.NewToken("1", token.TokenTypeNumber),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: "1",
 		},
 		{
 			input: []*token.Token{
-				token.NewToken("PI", token.TokenTypeIdentifier),
+				token.NewToken("PI", token.TokenTypeIdentifier, 0, 0),
 			},
 			expected: "PI",
 		},
@@ -51,7 +51,7 @@ func TestParseExprErr(t *testing.T) {
 	}{
 		{
 			input: []*token.Token{
-				token.NewToken("1", token.TokenTypeNumber),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			recursionDepth: 1_000_000,
 			expected:       fmt.Sprintf("maximum recursion depth of (%d) exceeded", maxRecursionDepth),
@@ -66,7 +66,11 @@ func TestParseExprErr(t *testing.T) {
 		}
 
 		if err.Error() != test.expected {
-			t.Errorf("expected error to be '%s', got '%s'", test.expected, err.Error())
+			t.Errorf(
+				"expected error to be '%s', got '%s'",
+				test.expected,
+				err.Error(),
+			)
 		}
 	}
 }

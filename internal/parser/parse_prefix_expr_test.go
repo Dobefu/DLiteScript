@@ -23,7 +23,12 @@ func TestParsePrefixExpr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: &ast.PrefixExpr{
-				Operator: token.Token{Atom: "+", TokenType: token.TokenTypeOperationAdd},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
 				Operand:  &ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
 				StartPos: 0,
 				EndPos:   0,
@@ -35,7 +40,12 @@ func TestParsePrefixExpr(t *testing.T) {
 				{Atom: "PI", TokenType: token.TokenTypeIdentifier},
 			},
 			expected: &ast.PrefixExpr{
-				Operator: token.Token{Atom: "-", TokenType: token.TokenTypeOperationSub},
+				Operator: token.Token{
+					Atom:      "-",
+					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
+				},
 				Operand:  &ast.NumberLiteral{Value: "PI", StartPos: 1, EndPos: 2},
 				StartPos: 0,
 				EndPos:   0,
@@ -50,7 +60,12 @@ func TestParsePrefixExpr(t *testing.T) {
 				{Atom: ")", TokenType: token.TokenTypeRParen},
 			},
 			expected: &ast.PrefixExpr{
-				Operator: token.Token{Atom: "-", TokenType: token.TokenTypeOperationSub},
+				Operator: token.Token{
+					Atom:      "-",
+					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
+				},
 				Operand:  &ast.NumberLiteral{Value: "abs(1)", StartPos: 4, EndPos: 5},
 				StartPos: 0,
 				EndPos:   0,
@@ -62,7 +77,12 @@ func TestParsePrefixExpr(t *testing.T) {
 				{Atom: "test", TokenType: token.TokenTypeString},
 			},
 			expected: &ast.PrefixExpr{
-				Operator: token.Token{Atom: "+", TokenType: token.TokenTypeOperationAdd},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
 				Operand:  &ast.StringLiteral{Value: "test", StartPos: 4, EndPos: 5},
 				StartPos: 0,
 				EndPos:   0,

@@ -26,6 +26,8 @@ func TestParseBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 0,
 				EndPos:   0,
@@ -47,7 +49,11 @@ func TestParseBinaryExpr(t *testing.T) {
 		}
 
 		if result.Expr() != test.expected.Expr() {
-			t.Errorf("expected \"%s\", got \"%s\"", test.expected.Expr(), result.Expr())
+			t.Errorf(
+				"expected \"%s\", got \"%s\"",
+				test.expected.Expr(),
+				result.Expr(),
+			)
 		}
 	}
 }
@@ -65,19 +71,33 @@ func TestParseBinaryExprErr(t *testing.T) {
 			operatorToken: &token.Token{
 				Atom:      "+",
 				TokenType: token.TokenTypeOperationAdd,
+				StartPos:  0,
+				EndPos:    0,
 			},
-			leftExpr:   nil,
-			rightToken: &token.Token{Atom: "1", TokenType: token.TokenTypeNumber},
-			expected:   fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "+"),
+			leftExpr: nil,
+			rightToken: &token.Token{
+				Atom:      "1",
+				TokenType: token.TokenTypeNumber,
+				StartPos:  0,
+				EndPos:    0,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "+"),
 		},
 		{
 			operatorToken: &token.Token{
 				Atom:      "/",
 				TokenType: token.TokenTypeOperationDiv,
+				StartPos:  0,
+				EndPos:    0,
 			},
-			leftExpr:   &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-			rightToken: &token.Token{Atom: "/", TokenType: token.TokenTypeOperationDiv},
-			expected:   fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "/"),
+			leftExpr: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+			rightToken: &token.Token{
+				Atom:      "/",
+				TokenType: token.TokenTypeOperationDiv,
+				StartPos:  0,
+				EndPos:    0,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "/"),
 		},
 	}
 
@@ -111,6 +131,8 @@ func BenchmarkParseBinaryExpr(b *testing.B) {
 			&token.Token{
 				Atom:      "1",
 				TokenType: token.TokenTypeOperationAdd,
+				StartPos:  0,
+				EndPos:    0,
 			},
 			nil,
 			nil,

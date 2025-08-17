@@ -4,7 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleExclamationSign() (*token.Token, error) {
+func (t *Tokenizer) handleExclamationSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -18,8 +18,13 @@ func (t *Tokenizer) handleExclamationSign() (*token.Token, error) {
 			return nil, err
 		}
 
-		return t.tokenPool.GetToken("!=", token.TokenTypeNotEqual), nil
+		return token.NewToken(
+			"!=",
+			token.TokenTypeNotEqual,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
-	return t.tokenPool.GetToken("!", token.TokenTypeNot), nil
+	return token.NewToken("!", token.TokenTypeNot, startPos, t.expIdx), nil
 }

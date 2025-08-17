@@ -17,7 +17,10 @@ const (
 	NumberFlagExponent
 )
 
-func (t *Tokenizer) parseNumber(current rune) (*token.Token, error) {
+func (t *Tokenizer) parseNumber(
+	current rune,
+	startPos int,
+) (*token.Token, error) {
 	var errMsg errorutil.ErrorMsg
 
 	var number strings.Builder
@@ -107,10 +110,19 @@ GETNEXT:
 		return nil, t.createNumberErr(errMsg, literalStartIdx, literalEndIdx)
 	}
 
-	return t.tokenPool.GetToken(number.String(), token.TokenTypeNumber), nil
+	return token.NewToken(
+		number.String(),
+		token.TokenTypeNumber,
+		startPos,
+		t.expIdx,
+	), nil
 }
 
-func (t *Tokenizer) createNumberErr(errMsg errorutil.ErrorMsg, literalStartIdx, literalEndIdx int) error {
+func (t *Tokenizer) createNumberErr(
+	errMsg errorutil.ErrorMsg,
+	literalStartIdx,
+	literalEndIdx int,
+) error {
 	if !t.isEOF {
 		next, _ := t.Peek()
 		literalEndIdx += len(string(next))

@@ -4,7 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleGreaterThanSign() (*token.Token, error) {
+func (t *Tokenizer) handleGreaterThanSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -18,8 +18,18 @@ func (t *Tokenizer) handleGreaterThanSign() (*token.Token, error) {
 			return nil, err
 		}
 
-		return t.tokenPool.GetToken(">=", token.TokenTypeGreaterThanOrEqual), nil
+		return token.NewToken(
+			">=",
+			token.TokenTypeGreaterThanOrEqual,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
-	return t.tokenPool.GetToken(">", token.TokenTypeGreaterThan), nil
+	return token.NewToken(
+		">",
+		token.TokenTypeGreaterThan,
+		startPos,
+		t.expIdx,
+	), nil
 }

@@ -7,9 +7,12 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleUnknownChar(next rune) (*token.Token, error) {
+func (t *Tokenizer) handleUnknownChar(
+	next rune,
+	startPos int,
+) (*token.Token, error) {
 	if unicode.IsLetter(rune(next)) || next == '_' {
-		return t.handleIdentifier(rune(next))
+		return t.handleIdentifier(rune(next), startPos)
 	}
 
 	return nil, errorutil.NewErrorAt(

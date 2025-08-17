@@ -4,7 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleEqualSign() (*token.Token, error) {
+func (t *Tokenizer) handleEqualSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -18,8 +18,8 @@ func (t *Tokenizer) handleEqualSign() (*token.Token, error) {
 			return nil, err
 		}
 
-		return t.tokenPool.GetToken("==", token.TokenTypeEqual), nil
+		return token.NewToken("==", token.TokenTypeEqual, startPos, t.expIdx), nil
 	}
 
-	return t.tokenPool.GetToken("=", token.TokenTypeAssign), nil
+	return token.NewToken("=", token.TokenTypeAssign, startPos, t.expIdx), nil
 }

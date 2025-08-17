@@ -10,7 +10,7 @@ func (p *Parser) parseFunctionCall(
 	functionName string,
 	recursionDepth int,
 ) (ast.ExprNode, error) {
-	startCharPos := p.GetCurrentCharPos()
+	startCharPos := p.GetCurrentCharPos() - len(functionName)
 
 	lparenToken, err := p.GetNextToken()
 

@@ -106,7 +106,7 @@ func TestMainErr(t *testing.T) {
 		},
 		{
 			input:    "min(1)",
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 3",
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 0",
 		},
 	}
 

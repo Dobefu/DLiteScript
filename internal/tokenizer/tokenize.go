@@ -28,6 +28,7 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 	tokens := make([]*token.Token, 0, approxNumTokens)
 
 	for !t.isEOF {
+		startPos := t.expIdx
 		next, err := t.GetNext()
 
 		if err != nil {
@@ -41,64 +42,64 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			continue
 
 		case '\n':
-			newToken = t.tokenPool.GetToken("\n", token.TokenTypeNewline)
+			newToken = token.NewToken("\n", token.TokenTypeNewline, startPos, t.expIdx)
 
 		case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			newToken, err = t.parseNumber(next)
+			newToken, err = t.parseNumber(next, startPos)
 
 		case '+':
-			newToken = t.tokenPool.GetToken("+", token.TokenTypeOperationAdd)
+			newToken = token.NewToken("+", token.TokenTypeOperationAdd, startPos, t.expIdx)
 
 		case '-':
-			newToken = t.tokenPool.GetToken("-", token.TokenTypeOperationSub)
+			newToken = token.NewToken("-", token.TokenTypeOperationSub, startPos, t.expIdx)
 
 		case '*':
-			newToken, err = t.handleAsteriskSign()
+			newToken, err = t.handleAsteriskSign(startPos)
 
 		case '%':
-			newToken = t.tokenPool.GetToken("%", token.TokenTypeOperationMod)
+			newToken = token.NewToken("%", token.TokenTypeOperationMod, startPos, t.expIdx)
 
 		case '/':
-			newToken, err = t.handleSlashSign()
+			newToken, err = t.handleSlashSign(startPos)
 
 		case '(':
-			newToken = t.tokenPool.GetToken("(", token.TokenTypeLParen)
+			newToken = token.NewToken("(", token.TokenTypeLParen, startPos, t.expIdx)
 
 		case ')':
-			newToken = t.tokenPool.GetToken(")", token.TokenTypeRParen)
+			newToken = token.NewToken(")", token.TokenTypeRParen, startPos, t.expIdx)
 
 		case '=':
-			newToken, err = t.handleEqualSign()
+			newToken, err = t.handleEqualSign(startPos)
 
 		case '!':
-			newToken, err = t.handleExclamationSign()
+			newToken, err = t.handleExclamationSign(startPos)
 
 		case '>':
-			newToken, err = t.handleGreaterThanSign()
+			newToken, err = t.handleGreaterThanSign(startPos)
 
 		case '<':
-			newToken, err = t.handleLessThanSign()
+			newToken, err = t.handleLessThanSign(startPos)
 
 		case '&':
-			newToken, err = t.handleAmpersandSign()
+			newToken, err = t.handleAmpersandSign(startPos)
 
 		case '|':
-			newToken, err = t.handlePipeSign()
+			newToken, err = t.handlePipeSign(startPos)
 
 		case '{':
-			newToken = t.tokenPool.GetToken("{", token.TokenTypeLBrace)
+			newToken = token.NewToken("{", token.TokenTypeLBrace, startPos, t.expIdx)
 
 		case '}':
-			newToken = t.tokenPool.GetToken("}", token.TokenTypeRBrace)
+			newToken = token.NewToken("}", token.TokenTypeRBrace, startPos, t.expIdx)
 
 		case ',':
-			newToken = t.tokenPool.GetToken(",", token.TokenTypeComma)
+			newToken = token.NewToken(",", token.TokenTypeComma, startPos, t.expIdx)
 
 		case '"':
-			newToken, err = t.handleString()
+			newToken, err = t.handleString(startPos)
 
 		default:
-			newToken, err = t.handleUnknownChar(next)
+			newToken, err = t.handleUnknownChar(next, startPos)
 		}
 
 		if err != nil {

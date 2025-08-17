@@ -14,39 +14,39 @@ func TestGetBindingPower(t *testing.T) {
 		expected int
 	}{
 		{
-			input:    token.NewToken("1", token.TokenTypeNumber),
+			input:    token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			expected: bindingPowerDefault,
 		},
 		{
-			input:    token.NewToken("+", token.TokenTypeOperationAdd),
+			input:    token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
 			expected: bindingPowerAdditive,
 		},
 		{
-			input:    token.NewToken("-", token.TokenTypeOperationSub),
+			input:    token.NewToken("-", token.TokenTypeOperationSub, 0, 0),
 			expected: bindingPowerAdditive,
 		},
 		{
-			input:    token.NewToken("*", token.TokenTypeOperationMul),
+			input:    token.NewToken("*", token.TokenTypeOperationMul, 0, 0),
 			expected: bindingPowerMultiplicative,
 		},
 		{
-			input:    token.NewToken("/", token.TokenTypeOperationDiv),
+			input:    token.NewToken("/", token.TokenTypeOperationDiv, 0, 0),
 			expected: bindingPowerMultiplicative,
 		},
 		{
-			input:    token.NewToken("%", token.TokenTypeOperationMod),
+			input:    token.NewToken("%", token.TokenTypeOperationMod, 0, 0),
 			expected: bindingPowerMultiplicative,
 		},
 		{
-			input:    token.NewToken("**", token.TokenTypeOperationPow),
+			input:    token.NewToken("**", token.TokenTypeOperationPow, 0, 0),
 			expected: bindingPowerPower,
 		},
 		{
-			input:    token.NewToken("(", token.TokenTypeLParen),
+			input:    token.NewToken("(", token.TokenTypeLParen, 0, 0),
 			expected: bindingPowerParentheses,
 		},
 		{
-			input:    token.NewToken(")", token.TokenTypeRParen),
+			input:    token.NewToken(")", token.TokenTypeRParen, 0, 0),
 			expected: bindingPowerParentheses,
 		},
 	}
@@ -55,7 +55,11 @@ func TestGetBindingPower(t *testing.T) {
 		bindingPower := NewParser([]*token.Token{test.input}).getBindingPower(test.input, false)
 
 		if bindingPower != test.expected {
-			t.Errorf("expected binding power to be %d, got %d", test.expected, bindingPower)
+			t.Errorf(
+				"expected binding power to be %d, got %d",
+				test.expected,
+				bindingPower,
+			)
 		}
 	}
 }

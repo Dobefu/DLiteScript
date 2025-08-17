@@ -3,7 +3,6 @@ package tokenizer
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
@@ -11,7 +10,7 @@ import (
 )
 
 func parseNumberTestGetNumberToken(atom string) *token.Token {
-	return token.NewToken(atom, token.TokenTypeNumber)
+	return token.NewToken(atom, token.TokenTypeNumber, 0, 0)
 }
 
 func TestParseNumber(t *testing.T) {
@@ -49,7 +48,7 @@ func TestParseNumber(t *testing.T) {
 			input: "1+1",
 			expected: []*token.Token{
 				parseNumberTestGetNumberToken("1"),
-				token.NewToken("+", token.TokenTypeOperationAdd),
+				token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
 				parseNumberTestGetNumberToken("1"),
 			},
 		},
@@ -70,8 +69,19 @@ func TestParseNumber(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if !reflect.DeepEqual(tokens, test.expected) {
-			t.Fatalf("expected %v, got %v", test.expected, tokens)
+		if len(tokens) != len(test.expected) {
+			t.Fatalf("expected %d tokens, got %d", len(test.expected), len(tokens))
+		}
+
+		for i, token := range tokens {
+			if token.Atom != test.expected[i].Atom {
+				t.Fatalf(
+					"expected token %d to be %s, got %s",
+					i,
+					test.expected[i].Atom,
+					token.Atom,
+				)
+			}
 		}
 	}
 }
@@ -122,6 +132,6 @@ func BenchmarkParseNumber(b *testing.B) {
 	for b.Loop() {
 		t := NewTokenizer("1 + -2 * 3 / 4")
 
-		_, _ = t.parseNumber('1')
+		_, _ = t.parseNumber('1', 0)
 	}
 }

@@ -29,7 +29,7 @@ func TestParseFunctionCall(t *testing.T) {
 				Arguments: []ast.ExprNode{
 					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
 				},
-				StartPos: 3,
+				StartPos: 0,
 				EndPos:   6,
 			},
 		},
@@ -48,7 +48,7 @@ func TestParseFunctionCall(t *testing.T) {
 					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
 					&ast.NumberLiteral{Value: "1", StartPos: 7, EndPos: 8},
 				},
-				StartPos: 3,
+				StartPos: 0,
 				EndPos:   8,
 			},
 		},

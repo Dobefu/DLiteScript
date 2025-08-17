@@ -4,7 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleSlashSign() (*token.Token, error) {
+func (t *Tokenizer) handleSlashSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -12,7 +12,12 @@ func (t *Tokenizer) handleSlashSign() (*token.Token, error) {
 	}
 
 	if next != '/' {
-		return t.tokenPool.GetToken("/", token.TokenTypeOperationDiv), nil
+		return token.NewToken(
+			"/",
+			token.TokenTypeOperationDiv,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
 	for !t.isEOF {

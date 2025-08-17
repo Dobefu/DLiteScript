@@ -7,7 +7,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleString() (*token.Token, error) {
+func (t *Tokenizer) handleString(startPos int) (*token.Token, error) {
 	var str strings.Builder
 	str.Grow(16)
 
@@ -47,7 +47,12 @@ func (t *Tokenizer) handleString() (*token.Token, error) {
 		}
 
 		if next == '"' {
-			return t.tokenPool.GetToken(str.String(), token.TokenTypeString), nil
+			return token.NewToken(
+				str.String(),
+				token.TokenTypeString,
+				startPos,
+				t.expIdx,
+			), nil
 		}
 
 		lastChar = next

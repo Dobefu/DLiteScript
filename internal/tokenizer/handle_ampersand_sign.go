@@ -5,7 +5,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleAmpersandSign() (*token.Token, error) {
+func (t *Tokenizer) handleAmpersandSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -19,7 +19,12 @@ func (t *Tokenizer) handleAmpersandSign() (*token.Token, error) {
 			return nil, err
 		}
 
-		return t.tokenPool.GetToken("&&", token.TokenTypeLogicalAnd), nil
+		return token.NewToken(
+			"&&",
+			token.TokenTypeLogicalAnd,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
 	return nil, errorutil.NewErrorAt(

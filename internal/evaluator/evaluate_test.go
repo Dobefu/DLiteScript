@@ -25,6 +25,8 @@ func TestEvaluate(t *testing.T) {
 						Operator: token.Token{
 							Atom:      "-",
 							TokenType: token.TokenTypeOperationSub,
+							StartPos:  0,
+							EndPos:    0,
 						},
 						Operand: &ast.FunctionCall{
 							FunctionName: "abs",
@@ -40,6 +42,8 @@ func TestEvaluate(t *testing.T) {
 					Operator: token.Token{
 						Atom:      "+",
 						TokenType: token.TokenTypeOperationAdd,
+						StartPos:  0,
+						EndPos:    0,
 					},
 					StartPos: 0,
 					EndPos:   0,
@@ -47,6 +51,8 @@ func TestEvaluate(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 0,
 				EndPos:   0,
@@ -81,7 +87,7 @@ func BenchmarkEvaluate(b *testing.B) {
 				Left: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 				Right: &ast.BinaryExpr{
 					Left: &ast.PrefixExpr{
-						Operator: *token.NewToken("-", token.TokenTypeOperationSub),
+						Operator: *token.NewToken("-", token.TokenTypeOperationSub, 0, 0),
 						Operand:  &ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
 						StartPos: 0,
 						EndPos:   0,
@@ -89,15 +95,15 @@ func BenchmarkEvaluate(b *testing.B) {
 					Right: &ast.BinaryExpr{
 						Left:     &ast.NumberLiteral{Value: "3", StartPos: 4, EndPos: 5},
 						Right:    &ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 7},
-						Operator: *token.NewToken("/", token.TokenTypeOperationDiv),
+						Operator: *token.NewToken("/", token.TokenTypeOperationDiv, 0, 0),
 						StartPos: 0,
 						EndPos:   0,
 					},
-					Operator: *token.NewToken("*", token.TokenTypeOperationMul),
+					Operator: *token.NewToken("*", token.TokenTypeOperationMul, 0, 0),
 					StartPos: 0,
 					EndPos:   0,
 				},
-				Operator: *token.NewToken("+", token.TokenTypeOperationAdd),
+				Operator: *token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
 				StartPos: 0,
 				EndPos:   0,
 			},

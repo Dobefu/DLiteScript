@@ -6,7 +6,8 @@ import (
 )
 
 func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
-	startPos := p.GetCurrentCharPos()
+	// The "var" keyword has already been consumed.
+	startPos := p.GetCurrentCharPos() - 3
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {

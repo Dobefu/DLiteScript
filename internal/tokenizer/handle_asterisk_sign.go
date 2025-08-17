@@ -4,7 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleAsteriskSign() (*token.Token, error) {
+func (t *Tokenizer) handleAsteriskSign(startPos int) (*token.Token, error) {
 	next, err := t.Peek()
 
 	if err != nil {
@@ -18,8 +18,18 @@ func (t *Tokenizer) handleAsteriskSign() (*token.Token, error) {
 			return nil, err
 		}
 
-		return t.tokenPool.GetToken("**", token.TokenTypeOperationPow), nil
+		return token.NewToken(
+			"**",
+			token.TokenTypeOperationPow,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
-	return t.tokenPool.GetToken("*", token.TokenTypeOperationMul), nil
+	return token.NewToken(
+		"*",
+		token.TokenTypeOperationMul,
+		startPos,
+		t.expIdx,
+	), nil
 }

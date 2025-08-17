@@ -25,6 +25,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -38,6 +40,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -51,6 +55,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "*",
 					TokenType: token.TokenTypeOperationMul,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -64,6 +70,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "/",
 					TokenType: token.TokenTypeOperationDiv,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -77,6 +85,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "%",
 					TokenType: token.TokenTypeOperationMod,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -90,6 +100,8 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "^",
 					TokenType: token.TokenTypeOperationPow,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -131,6 +143,8 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -144,6 +158,8 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -157,6 +173,8 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "/",
 					TokenType: token.TokenTypeOperationDiv,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -170,6 +188,8 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "%",
 					TokenType: token.TokenTypeOperationMod,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,
@@ -183,6 +203,8 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      ",",
 					TokenType: token.TokenTypeComma,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 1,
 				EndPos:   1,

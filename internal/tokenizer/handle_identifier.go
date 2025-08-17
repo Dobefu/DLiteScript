@@ -7,7 +7,10 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleIdentifier(firstChar rune) (*token.Token, error) {
+func (t *Tokenizer) handleIdentifier(
+	firstChar rune,
+	startPos int,
+) (*token.Token, error) {
 	var identifier strings.Builder
 	identifier.WriteRune(firstChar)
 
@@ -38,8 +41,13 @@ func (t *Tokenizer) handleIdentifier(firstChar rune) (*token.Token, error) {
 	identifierText := identifier.String()
 
 	if tokenType, isKeyword := keywords[identifierText]; isKeyword {
-		return t.tokenPool.GetToken(identifierText, tokenType), nil
+		return token.NewToken(identifierText, tokenType, startPos, t.expIdx), nil
 	}
 
-	return t.tokenPool.GetToken(identifierText, token.TokenTypeIdentifier), nil
+	return token.NewToken(
+		identifierText,
+		token.TokenTypeIdentifier,
+		startPos,
+		t.expIdx,
+	), nil
 }

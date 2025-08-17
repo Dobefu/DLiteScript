@@ -23,6 +23,8 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				Operand:  &ast.NumberLiteral{Value: "5", StartPos: 1, EndPos: 2},
 				StartPos: 0,
@@ -35,6 +37,8 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				Operand:  &ast.NumberLiteral{Value: "5", StartPos: 1, EndPos: 2},
 				StartPos: 0,
@@ -75,6 +79,8 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				Operand:  nil,
 				StartPos: 0,
@@ -87,6 +93,8 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				Operand:  &ast.StringLiteral{Value: "test", StartPos: 1, EndPos: 2},
 				StartPos: 0,

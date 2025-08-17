@@ -21,6 +21,8 @@ func TestBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 0,
 				EndPos:   0,
@@ -35,6 +37,8 @@ func TestBinaryExpr(t *testing.T) {
 				Operator: token.Token{
 					Atom:      "*",
 					TokenType: token.TokenTypeOperationMul,
+					StartPos:  0,
+					EndPos:    0,
 				},
 				StartPos: 0,
 				EndPos:   0,
@@ -46,7 +50,11 @@ func TestBinaryExpr(t *testing.T) {
 
 	for _, test := range tests {
 		if test.input.Expr() != test.expectedValue {
-			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+			t.Errorf(
+				"expected '%s', got '%s'",
+				test.expectedValue,
+				test.input.Expr(),
+			)
 		}
 
 		if test.input.StartPosition() != test.expectedPos {

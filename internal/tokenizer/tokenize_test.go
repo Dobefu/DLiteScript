@@ -10,7 +10,7 @@ import (
 )
 
 func tokenizeTestGetNumberToken(atom string) *token.Token {
-	return token.NewToken(atom, token.TokenTypeNumber)
+	return token.NewToken(atom, token.TokenTypeNumber, 0, 0)
 }
 
 func TestTokenize(t *testing.T) {
@@ -187,7 +187,12 @@ func TestTokenize(t *testing.T) {
 
 		for i, token := range tokens {
 			if token.Atom != test.expected[i].Atom {
-				t.Fatalf("expected token %d to be %s, got %s", i, test.expected[i].Atom, token.Atom)
+				t.Fatalf(
+					"expected token %d to be %s, got %s",
+					i,
+					test.expected[i].Atom,
+					token.Atom,
+				)
 			}
 		}
 	}
