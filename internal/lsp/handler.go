@@ -3,7 +3,6 @@ package lsp
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 )
@@ -35,7 +34,7 @@ func (h *Handler) Handle(
 	params json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
 	if h.isDebugMode {
-		fmt.Fprintf(os.Stderr, "Received request: %s\n", method)
+		h.printDebugMessage(method, params)
 	}
 
 	switch method {
