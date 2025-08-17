@@ -8,9 +8,11 @@ import (
 func (p *Parser) parseIdentifier(
 	identifierToken *token.Token,
 ) (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
+
 	return &ast.Identifier{
 		Value:    identifierToken.Atom,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   startPos + len(identifierToken.Atom),
 	}, nil
 }
