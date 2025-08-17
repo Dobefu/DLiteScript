@@ -6,6 +6,7 @@ import (
 )
 
 func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
+	startPos := p.GetCurrentCharPos()
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {
@@ -13,6 +14,7 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 	}
 
 	var value ast.ExprNode
+	endPos := p.GetCurrentCharPos()
 
 	if !p.isEOF {
 		nextToken, err := p.PeekNextToken()
@@ -35,6 +37,8 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 			if err != nil {
 				return nil, err
 			}
+
+			endPos = value.EndPosition()
 		}
 	}
 
@@ -42,7 +46,7 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 		Name:     varName,
 		Type:     varType,
 		Value:    value,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   endPos,
 	}, nil
 }
