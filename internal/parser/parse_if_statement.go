@@ -7,6 +7,7 @@ import (
 )
 
 func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	nextToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -25,7 +26,9 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 		return nil, err
 	}
 
+	endPos := thenBlock.EndPosition()
 	var elseBlock *ast.BlockStatement
+
 	if !p.isEOF {
 		nextToken, err = p.PeekNextToken()
 
@@ -39,6 +42,8 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 			if err != nil {
 				return nil, err
 			}
+
+			endPos = elseBlock.EndPosition()
 		}
 	}
 
@@ -46,8 +51,8 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 		Condition: expr,
 		ThenBlock: thenBlock,
 		ElseBlock: elseBlock,
-		StartPos:  expr.StartPosition(),
-		EndPos:    expr.EndPosition(),
+		StartPos:  startPos,
+		EndPos:    endPos,
 	}, nil
 }
 
