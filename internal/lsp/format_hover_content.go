@@ -20,8 +20,6 @@ func formatHoverContent(node ast.ExprNode, isDebugMode bool) string {
 		return ""
 	}
 
-	output.WriteString("**" + nodeType + "**\n\n")
-
 	output.WriteString("```dlitescript\n")
 	output.WriteString(node.Expr())
 	output.WriteString("\n```")
