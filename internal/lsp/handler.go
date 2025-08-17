@@ -54,7 +54,7 @@ func (h *Handler) Handle(
 		return nil, nil
 
 	case "textDocument/didClose":
-		return nil, nil
+		return h.handleDidClose(params)
 
 	case "textDocument/hover":
 		return h.handleHover(params)
