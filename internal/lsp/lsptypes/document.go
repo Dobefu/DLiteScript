@@ -42,7 +42,7 @@ func (d *Document) GetLine(line int) (string, error) {
 	startIndex := 0
 
 	for i := range line {
-		startIndex += d.LineLengths[i]
+		startIndex += d.LineLengths[i] + 1
 	}
 
 	endIndex := startIndex + d.LineLengths[line]

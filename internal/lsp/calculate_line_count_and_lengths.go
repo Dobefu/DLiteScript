@@ -10,9 +10,11 @@ func calculateLineCountAndLengths(text string) (int, []int) {
 			numNewLines++
 			lineLengths = append(lineLengths, currentLineLength)
 			currentLineLength = 0
-		} else {
-			currentLineLength++
+
+			continue
 		}
+
+		currentLineLength++
 	}
 
 	if currentLineLength > 0 || len(lineLengths) == 0 {
