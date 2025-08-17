@@ -61,7 +61,7 @@ func (h *Handler) handleHover(
 		)
 	}
 
-	content := formatHoverContent(node)
+	content := formatHoverContent(node, h.isDebugMode)
 
 	response := lsptypes.Hover{
 		Contents: content,
