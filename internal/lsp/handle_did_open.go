@@ -21,7 +21,14 @@ func (h *Handler) handleDidOpen(
 		)
 	}
 
-	h.documents[didOpenParams.TextDocument.URI] = didOpenParams.TextDocument.Text
+	numLines, lineLengths := calculateLineCountAndLengths(didOpenParams.TextDocument.Text)
+
+	h.documents[didOpenParams.TextDocument.URI] = lsptypes.Document{
+		Text:        didOpenParams.TextDocument.Text,
+		Version:     didOpenParams.TextDocument.Version,
+		NumLines:    numLines,
+		LineLengths: lineLengths,
+	}
 
 	return json.RawMessage("null"), nil
 }

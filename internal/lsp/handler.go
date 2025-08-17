@@ -5,12 +5,13 @@ import (
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
+	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
 )
 
 // Handler represents the LSP handler.
 type Handler struct {
 	isDebugMode  bool
-	documents    map[string]string
+	documents    map[string]lsptypes.Document
 	shutdownChan chan struct{}
 }
 
@@ -18,7 +19,7 @@ type Handler struct {
 func NewHandler(isDebugMode bool) *Handler {
 	return &Handler{
 		isDebugMode:  isDebugMode,
-		documents:    make(map[string]string),
+		documents:    make(map[string]lsptypes.Document),
 		shutdownChan: make(chan struct{}),
 	}
 }
@@ -51,7 +52,7 @@ func (h *Handler) Handle(
 		return nil, nil
 
 	case "textDocument/didChange":
-		return nil, nil
+		return h.handleDidChange(params)
 
 	case "textDocument/didClose":
 		return h.handleDidClose(params)

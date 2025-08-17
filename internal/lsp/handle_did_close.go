@@ -21,9 +21,7 @@ func (h *Handler) handleDidClose(
 		)
 	}
 
-	// Set the document to an empty string to indicate that it is closed.
-	// The document is not deleted from the map, to prevent memory fragmentation.
-	h.documents[didCloseParams.TextDocument.URI] = ""
+	delete(h.documents, didCloseParams.TextDocument.URI)
 
 	return json.RawMessage("null"), nil
 }
