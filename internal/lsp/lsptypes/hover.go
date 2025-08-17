@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // Hover represents the result of a hover request.
 type Hover struct {

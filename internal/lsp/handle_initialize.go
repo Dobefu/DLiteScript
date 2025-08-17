@@ -4,21 +4,22 @@ import (
 	"encoding/json"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
+	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
 )
 
 func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
-	result := InitializeResult{
-		ServerInfo: ServerInfo{
+	result := lsptypes.InitializeResult{
+		ServerInfo: lsptypes.ServerInfo{
 			Name:    "DLiteScript",
 			Version: "0.1.0",
 		},
-		Capabilities: ServerCapabilities{
-			TextDocumentSync: TextDocumentSync{
+		Capabilities: lsptypes.ServerCapabilities{
+			TextDocumentSync: lsptypes.TextDocumentSync{
 				OpenClose: true,
-				Change:    ChangeTypeFull,
+				Change:    lsptypes.ChangeTypeIncremental,
 			},
 			DefinitionProvider: false,
-			CompletionProvider: CompletionProvider{
+			CompletionProvider: lsptypes.CompletionProvider{
 				TriggerCharacters: []string{},
 			},
 			HoverProvider: true,

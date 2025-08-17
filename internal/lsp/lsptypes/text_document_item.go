@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // TextDocumentItem represents a text document item.
 type TextDocumentItem struct {

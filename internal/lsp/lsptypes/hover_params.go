@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // HoverParams represents the parameters for a hover request.
 type HoverParams struct {

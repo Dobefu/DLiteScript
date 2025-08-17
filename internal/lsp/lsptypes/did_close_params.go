@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // DidCloseParams represents the parameters for a didClose request.
 type DidCloseParams struct {

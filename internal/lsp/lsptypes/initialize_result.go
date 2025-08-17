@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // InitializeResult represents the result for the initialize method.
 type InitializeResult struct {

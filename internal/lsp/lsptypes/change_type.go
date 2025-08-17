@@ -1,4 +1,4 @@
-package lsp
+package lsptypes
 
 // ChangeType represents the change type.
 type ChangeType int
@@ -8,6 +8,7 @@ type ChangeType int
 //
 // [specification]: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentSyncKind
 const (
-	ChangeTypeFull ChangeType = iota + 1
+	ChangeTypeNone ChangeType = iota
+	ChangeTypeFull
 	ChangeTypeIncremental
 )

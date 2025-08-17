@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
+	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
 )
 
 func (h *Handler) handleDidOpen(
 	params json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
-	var didOpenParams DidOpenParams
+	var didOpenParams lsptypes.DidOpenParams
 	err := json.Unmarshal(params, &didOpenParams)
 
 	if err != nil {

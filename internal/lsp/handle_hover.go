@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
+	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
 )
 
 func (h *Handler) handleHover(
 	params json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
-	var hoverParams HoverParams
+	var hoverParams lsptypes.HoverParams
 	err := json.Unmarshal(params, &hoverParams)
 
 	if err != nil {
@@ -20,10 +21,10 @@ func (h *Handler) handleHover(
 		)
 	}
 
-	response := Hover{
+	response := lsptypes.Hover{
 		Contents: "TODO: Implement hover",
-		Range: &Range{
-			Start: Position{
+		Range: &lsptypes.Range{
+			Start: lsptypes.Position{
 				Line:      hoverParams.Position.Line,
 				Character: hoverParams.Position.Character,
 			},
