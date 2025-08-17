@@ -27,7 +27,7 @@ func NewHandler(isDebugMode bool) *Handler {
 // Handle handles a JSON-RPC request.
 func (h *Handler) Handle(
 	method string,
-	_ json.RawMessage,
+	params json.RawMessage,
 ) (json.RawMessage, *jsonrpc2.Error) {
 	if h.isDebugMode {
 		fmt.Fprintf(os.Stderr, "Received request: %s\n", method)
@@ -51,6 +51,9 @@ func (h *Handler) Handle(
 
 	case "textDocument/didClose":
 		return nil, nil
+
+	case "textDocument/hover":
+		return h.handleHover(params)
 
 	case "shutdown":
 		return h.handleShutdown()
@@ -87,7 +90,7 @@ func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
 			CompletionProvider: CompletionProvider{
 				TriggerCharacters: []string{},
 			},
-			HoverProvider: false,
+			HoverProvider: true,
 		},
 	}
 
@@ -112,4 +115,40 @@ func (h *Handler) handleExit() (json.RawMessage, *jsonrpc2.Error) {
 	go close(h.shutdownChan)
 
 	return json.RawMessage("null"), nil
+}
+
+func (h *Handler) handleHover(params json.RawMessage) (json.RawMessage, *jsonrpc2.Error) {
+	var hoverParams HoverParams
+	err := json.Unmarshal(params, &hoverParams)
+
+	if err != nil {
+		return nil, jsonrpc2.NewError(
+			jsonrpc2.ErrorCodeInvalidParams,
+			err.Error(),
+			nil,
+		)
+	}
+
+	response := Hover{
+		Contents: "TODO: Implement hover",
+		Range: &Range{
+			Start: Position{
+				Line:      hoverParams.Position.Line,
+				Character: hoverParams.Position.Character,
+			},
+			End: hoverParams.Position,
+		},
+	}
+
+	data, err := json.Marshal(response)
+
+	if err != nil {
+		return nil, jsonrpc2.NewError(
+			jsonrpc2.ErrorCodeInternalError,
+			err.Error(),
+			nil,
+		)
+	}
+
+	return data, nil
 }
