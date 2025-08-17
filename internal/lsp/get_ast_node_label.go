@@ -1,13 +1,24 @@
 package lsp
 
-import "github.com/Dobefu/DLiteScript/internal/ast"
+import (
+	"fmt"
 
-func getAstNodeLabel(node ast.ExprNode) string {
+	"github.com/Dobefu/DLiteScript/internal/ast"
+)
+
+func getAstNodeLabel(node ast.ExprNode, isDebugMode bool) string {
 	switch node.(type) {
 	case *ast.FunctionCall:
 		return "Function Call"
 
+	case *ast.Identifier:
+		return "Identifier"
+
 	default:
+		if isDebugMode {
+			return fmt.Sprintf("Unknown Node: %T", node)
+		}
+
 		return ""
 	}
 }

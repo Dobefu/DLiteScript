@@ -9,15 +9,15 @@ import (
 func formatHoverContent(node ast.ExprNode, isDebugMode bool) string {
 	var output strings.Builder
 
-	nodeType := getAstNodeLabel(node)
+	if isDebugMode {
+		output.WriteString("**🔴 Debug Mode 🔴**\n\n")
+	}
+
+	nodeType := getAstNodeLabel(node, isDebugMode)
 
 	// If there's no node type, don't display anything.
 	if nodeType == "" {
 		return ""
-	}
-
-	if isDebugMode {
-		output.WriteString("**🔴 Debug Mode 🔴**\n\n")
 	}
 
 	output.WriteString("**" + nodeType + "**\n\n")
