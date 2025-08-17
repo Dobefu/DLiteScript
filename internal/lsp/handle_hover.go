@@ -2,7 +2,6 @@ package lsp
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
@@ -62,7 +61,7 @@ func (h *Handler) handleHover(
 		)
 	}
 
-	content := fmt.Sprintf("%T\n\n%s", node, node.Expr())
+	content := formatHoverContent(node)
 
 	response := lsptypes.Hover{
 		Contents: content,
