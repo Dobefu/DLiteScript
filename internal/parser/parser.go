@@ -10,6 +10,7 @@ type Parser struct {
 	tokens   []*token.Token
 	tokenIdx int
 	tokenLen int
+	charIdx  int
 	isEOF    bool
 }
 
@@ -19,6 +20,7 @@ func NewParser(tokens []*token.Token) *Parser {
 		tokens:   tokens,
 		tokenIdx: 0,
 		tokenLen: len(tokens),
+		charIdx:  0,
 		isEOF:    len(tokens) <= 0,
 	}
 }

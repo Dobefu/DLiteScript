@@ -14,6 +14,8 @@ func (p *Parser) GetNextToken() (*token.Token, error) {
 	next := p.tokens[p.tokenIdx]
 	p.tokenIdx++
 
+	p.charIdx += len(next.Atom)
+
 	if p.tokenIdx >= p.tokenLen {
 		p.isEOF = true
 	}
