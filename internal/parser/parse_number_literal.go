@@ -6,9 +6,10 @@ import (
 )
 
 func (p *Parser) parseNumberLiteral(currentToken *token.Token) (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	return &ast.NumberLiteral{
 		Value:    currentToken.Atom,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   startPos + len(currentToken.Atom),
 	}, nil
 }
