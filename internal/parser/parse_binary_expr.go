@@ -35,7 +35,7 @@ func (p *Parser) parseBinaryExpr(
 		Left:     leftExpr,
 		Right:    rightExpr,
 		Operator: *operatorToken,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: leftExpr.StartPosition(),
+		EndPos:   rightExpr.EndPosition(),
 	}, nil
 }
