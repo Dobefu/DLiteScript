@@ -24,6 +24,11 @@ func NewHandler(isDebugMode bool) *Handler {
 	}
 }
 
+// GetShutdownChan returns the shutdown channel.
+func (h *Handler) GetShutdownChan() chan struct{} {
+	return h.shutdownChan
+}
+
 // Handle handles a JSON-RPC request.
 func (h *Handler) Handle(
 	method string,
@@ -68,87 +73,4 @@ func (h *Handler) Handle(
 			nil,
 		)
 	}
-}
-
-// GetShutdownChan returns the shutdown channel.
-func (h *Handler) GetShutdownChan() chan struct{} {
-	return h.shutdownChan
-}
-
-func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
-	result := InitializeResult{
-		ServerInfo: ServerInfo{
-			Name:    "DLiteScript",
-			Version: "0.1.0",
-		},
-		Capabilities: ServerCapabilities{
-			TextDocumentSync: TextDocumentSync{
-				OpenClose: true,
-				Change:    ChangeTypeFull,
-			},
-			DefinitionProvider: false,
-			CompletionProvider: CompletionProvider{
-				TriggerCharacters: []string{},
-			},
-			HoverProvider: true,
-		},
-	}
-
-	data, err := json.Marshal(result)
-
-	if err != nil {
-		return nil, jsonrpc2.NewError(
-			jsonrpc2.ErrorCodeInternalError,
-			err.Error(),
-			nil,
-		)
-	}
-
-	return data, nil
-}
-
-func (h *Handler) handleShutdown() (json.RawMessage, *jsonrpc2.Error) {
-	return json.RawMessage("null"), nil
-}
-
-func (h *Handler) handleExit() (json.RawMessage, *jsonrpc2.Error) {
-	go close(h.shutdownChan)
-
-	return json.RawMessage("null"), nil
-}
-
-func (h *Handler) handleHover(params json.RawMessage) (json.RawMessage, *jsonrpc2.Error) {
-	var hoverParams HoverParams
-	err := json.Unmarshal(params, &hoverParams)
-
-	if err != nil {
-		return nil, jsonrpc2.NewError(
-			jsonrpc2.ErrorCodeInvalidParams,
-			err.Error(),
-			nil,
-		)
-	}
-
-	response := Hover{
-		Contents: "TODO: Implement hover",
-		Range: &Range{
-			Start: Position{
-				Line:      hoverParams.Position.Line,
-				Character: hoverParams.Position.Character,
-			},
-			End: hoverParams.Position,
-		},
-	}
-
-	data, err := json.Marshal(response)
-
-	if err != nil {
-		return nil, jsonrpc2.NewError(
-			jsonrpc2.ErrorCodeInternalError,
-			err.Error(),
-			nil,
-		)
-	}
-
-	return data, nil
 }
