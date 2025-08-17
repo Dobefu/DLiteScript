@@ -70,11 +70,13 @@ func (p *Parser) parseUnaryOperator(
 		return nil, err
 	}
 
+	startPos := p.GetCurrentCharPos()
+
 	return &ast.PrefixExpr{
 		Operator: *operatorToken,
 		Operand:  operand,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   operand.EndPosition(),
 	}, nil
 }
 
