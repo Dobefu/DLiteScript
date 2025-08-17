@@ -10,6 +10,7 @@ import (
 )
 
 func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {
@@ -35,16 +36,20 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 			)
 		}
 
+		endPos := p.GetCurrentCharPos()
+
 		return &ast.BreakStatement{
 			Count:    breakCount,
-			StartPos: p.tokenIdx,
-			EndPos:   p.tokenIdx,
+			StartPos: startPos,
+			EndPos:   endPos,
 		}, nil
 	}
 
+	endPos := startPos + 5
+
 	return &ast.BreakStatement{
 		Count:    1,
-		StartPos: p.tokenIdx,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   endPos,
 	}, nil
 }
