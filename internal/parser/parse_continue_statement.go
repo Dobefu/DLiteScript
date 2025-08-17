@@ -10,6 +10,7 @@ import (
 )
 
 func (p *Parser) parseContinueStatement() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {
@@ -35,16 +36,20 @@ func (p *Parser) parseContinueStatement() (ast.ExprNode, error) {
 			)
 		}
 
+		endPos := p.GetCurrentCharPos()
+
 		return &ast.ContinueStatement{
 			Count:    continueCount,
-			StartPos: p.tokenIdx,
-			EndPos:   p.tokenIdx,
+			StartPos: startPos,
+			EndPos:   endPos,
 		}, nil
 	}
 
+	endPos := startPos + 8
+
 	return &ast.ContinueStatement{
 		Count:    1,
-		StartPos: p.tokenIdx,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   endPos,
 	}, nil
 }
