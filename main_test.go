@@ -106,7 +106,7 @@ func TestMainErr(t *testing.T) {
 		},
 		{
 			input:    "min(1)",
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 0",
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 3",
 		},
 	}
 
@@ -133,7 +133,7 @@ func TestMainErr(t *testing.T) {
 		err := runner.Run()
 
 		if err == nil {
-			t.Fatalf("expected error, got none for input '%s'", test.input)
+			t.Fatalf("expected error, got none for input \"%s\"", test.input)
 		}
 
 		actualErr := err
@@ -144,7 +144,7 @@ func TestMainErr(t *testing.T) {
 
 		if actualErr.Error() != test.expected {
 			t.Errorf(
-				"expected error '%s', got '%s'",
+				"expected error \"%s\", got \"%s\"",
 				test.expected,
 				actualErr.Error(),
 			)

@@ -3,7 +3,6 @@ package parser
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -20,6 +19,7 @@ func TestParseFunctionCall(t *testing.T) {
 	}{
 		{
 			input: []*token.Token{
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: ")", TokenType: token.TokenTypeRParen},
@@ -27,14 +27,15 @@ func TestParseFunctionCall(t *testing.T) {
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
+					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				StartPos: 3,
+				EndPos:   6,
 			},
 		},
 		{
 			input: []*token.Token{
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: ",", TokenType: token.TokenTypeComma},
@@ -44,11 +45,11 @@ func TestParseFunctionCall(t *testing.T) {
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
-					&ast.NumberLiteral{Value: "1", StartPos: 3, EndPos: 4},
+					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
+					&ast.NumberLiteral{Value: "1", StartPos: 7, EndPos: 8},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				StartPos: 3,
+				EndPos:   8,
 			},
 		},
 	}
@@ -56,14 +57,34 @@ func TestParseFunctionCall(t *testing.T) {
 	for _, test := range tests {
 		parser := NewParser(test.input)
 
-		expr, err := parser.parseFunctionCall("abs", 0, 0)
+		// Skip the function name token.
+		startCharPos := parser.GetCurrentCharPos()
+		_, err := parser.GetNextToken()
 
 		if err != nil {
 			t.Errorf("expected no error, got \"%v\"", err)
 		}
 
-		if !reflect.DeepEqual(expr, test.expected) {
-			t.Errorf("expected \"%v\", got \"%v\"", test.expected, expr)
+		expr, err := parser.parseFunctionCall("abs", startCharPos)
+
+		if err != nil {
+			t.Errorf("expected no error, got \"%v\"", err)
+		}
+
+		if expr.StartPosition() != test.expected.StartPosition() {
+			t.Errorf(
+				"expected StartPos to be \"%d\", got \"%d\"",
+				test.expected.StartPosition(),
+				expr.StartPosition(),
+			)
+		}
+
+		if expr.EndPosition() != test.expected.EndPosition() {
+			t.Errorf(
+				"expected EndPos to be \"%d\", got \"%d\"",
+				test.expected.EndPosition(),
+				expr.EndPosition(),
+			)
 		}
 	}
 }
@@ -126,7 +147,7 @@ func TestParseFunctionCallErr(t *testing.T) {
 
 	for _, test := range tests {
 		parser := NewParser(test.input)
-		_, err := parser.parseFunctionCall("abs", 0, 0)
+		_, err := parser.parseFunctionCall("abs", 0)
 
 		if err == nil {
 			t.Fatalf("expected error, got none for input \"%v\"", test.input)
@@ -150,6 +171,6 @@ func BenchmarkParseFunctionCall(b *testing.B) {
 			{Atom: ",", TokenType: token.TokenTypeComma},
 			{Atom: "2", TokenType: token.TokenTypeNumber},
 			{Atom: ")", TokenType: token.TokenTypeRParen},
-		}).parseFunctionCall("min", 0, 0)
+		}).parseFunctionCall("min", 0)
 	}
 }

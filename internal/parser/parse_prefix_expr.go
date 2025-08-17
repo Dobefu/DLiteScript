@@ -137,7 +137,10 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 	}
 
 	if nextToken.TokenType == token.TokenTypeLParen {
-		return p.parseFunctionCall(functionCallOrIdentifierToken.Atom, p.tokenIdx-1, recursionDepth+1)
+		return p.parseFunctionCall(
+			functionCallOrIdentifierToken.Atom,
+			recursionDepth+1,
+		)
 	}
 
 	return p.parseIdentifier(functionCallOrIdentifierToken)

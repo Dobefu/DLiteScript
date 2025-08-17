@@ -8,9 +8,10 @@ import (
 
 func (p *Parser) parseFunctionCall(
 	functionName string,
-	functionPos int,
 	recursionDepth int,
 ) (ast.ExprNode, error) {
+	startCharPos := p.GetCurrentCharPos()
+
 	lparenToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -66,8 +67,8 @@ func (p *Parser) parseFunctionCall(
 	return &ast.FunctionCall{
 		FunctionName: functionName,
 		Arguments:    args,
-		StartPos:     functionPos,
-		EndPos:       functionPos,
+		StartPos:     startCharPos,
+		EndPos:       p.GetCurrentCharPos(),
 	}, nil
 }
 
