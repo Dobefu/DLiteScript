@@ -38,7 +38,7 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 		return &ast.BlockStatement{
 			Statements: statements,
 			StartPos:   statements[0].StartPosition(),
-			EndPos:     statements[0].EndPosition(),
+			EndPos:     statements[len(statements)-1].EndPosition(),
 		}, nil
 	}
 
@@ -49,7 +49,7 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 	return &ast.StatementList{
 		Statements: statements,
 		StartPos:   statements[0].StartPosition(),
-		EndPos:     statements[0].EndPosition(),
+		EndPos:     statements[len(statements)-1].EndPosition(),
 	}, nil
 }
 
