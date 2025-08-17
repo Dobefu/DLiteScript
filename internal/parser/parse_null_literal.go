@@ -5,8 +5,10 @@ import (
 )
 
 func (p *Parser) parseNullLiteral() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
+
 	return &ast.NullLiteral{
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   startPos + 4,
 	}, nil
 }
