@@ -6,6 +6,7 @@ import (
 
 func (p *Parser) parseNullLiteral() (ast.ExprNode, error) {
 	return &ast.NullLiteral{
-		Pos: p.tokenIdx - 1,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

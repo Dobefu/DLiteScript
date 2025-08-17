@@ -9,7 +9,8 @@ import (
 type FunctionCall struct {
 	FunctionName string
 	Arguments    []ExprNode
-	Pos          int
+	StartPos     int
+	EndPos       int
 }
 
 // Expr returns the expression of the function call.
@@ -27,7 +28,12 @@ func (fc *FunctionCall) Expr() string {
 	return fmt.Sprintf("%s(%s)", fc.FunctionName, args.String())
 }
 
-// Position returns the position of the function call.
-func (fc *FunctionCall) Position() int {
-	return fc.Pos
+// StartPosition returns the start position of the function call.
+func (fc *FunctionCall) StartPosition() int {
+	return fc.StartPos
+}
+
+// EndPosition returns the end position of the function call.
+func (fc *FunctionCall) EndPosition() int {
+	return fc.EndPos
 }

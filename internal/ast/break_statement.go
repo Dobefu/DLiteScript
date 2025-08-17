@@ -6,8 +6,9 @@ import (
 
 // BreakStatement represents a break statement.
 type BreakStatement struct {
-	Count int
-	Pos   int
+	Count    int
+	StartPos int
+	EndPos   int
 }
 
 // Expr returns the expression of the break statement.
@@ -19,7 +20,12 @@ func (b *BreakStatement) Expr() string {
 	return fmt.Sprintf("break %d", b.Count)
 }
 
-// Position returns the position of the break statement.
-func (b *BreakStatement) Position() int {
-	return b.Pos
+// StartPosition returns the start position of the break statement.
+func (b *BreakStatement) StartPosition() int {
+	return b.StartPos
+}
+
+// EndPosition returns the end position of the break statement.
+func (b *BreakStatement) EndPosition() int {
+	return b.EndPos
 }

@@ -68,7 +68,7 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationRe
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,
-			node.Position(),
+			node.StartPosition(),
 			node,
 		)
 	}

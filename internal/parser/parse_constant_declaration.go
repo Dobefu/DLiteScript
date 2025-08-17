@@ -40,9 +40,10 @@ func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
 	}
 
 	return &ast.ConstantDeclaration{
-		Name:  varName,
-		Type:  varType,
-		Value: value,
-		Pos:   p.tokenIdx - 1,
+		Name:     varName,
+		Type:     varType,
+		Value:    value,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

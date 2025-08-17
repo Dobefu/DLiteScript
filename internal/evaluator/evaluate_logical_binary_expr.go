@@ -33,7 +33,7 @@ func (e *Evaluator) evaluateLogicalBinaryExpr(
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownOperator,
-			node.Position(),
+			node.StartPosition(),
 			node.Operator.Atom,
 		)
 	}

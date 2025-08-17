@@ -73,7 +73,8 @@ func (p *Parser) parseUnaryOperator(
 	return &ast.PrefixExpr{
 		Operator: *operatorToken,
 		Operand:  operand,
-		Pos:      p.tokenIdx - 1,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }
 

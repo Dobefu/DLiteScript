@@ -39,9 +39,10 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 	}
 
 	return &ast.VariableDeclaration{
-		Name:  varName,
-		Type:  varType,
-		Value: value,
-		Pos:   p.tokenIdx - 1,
+		Name:     varName,
+		Type:     varType,
+		Value:    value,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

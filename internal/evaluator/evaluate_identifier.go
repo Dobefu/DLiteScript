@@ -29,7 +29,7 @@ func (e *Evaluator) evaluateIdentifier(
 	if !hasIdentifier {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUndefinedIdentifier,
-			i.Position(),
+			i.StartPosition(),
 			i.Value,
 		)
 	}

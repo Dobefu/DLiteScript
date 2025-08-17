@@ -16,9 +16,10 @@ func TestFunctionCall(t *testing.T) {
 			input: &FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ExprNode{
-					&NumberLiteral{Value: "1", Pos: 0},
+					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   1,
 			},
 			expectedValue: "abs(1)",
 			expectedPos:   0,
@@ -27,10 +28,11 @@ func TestFunctionCall(t *testing.T) {
 			input: &FunctionCall{
 				FunctionName: "max",
 				Arguments: []ExprNode{
-					&NumberLiteral{Value: "1", Pos: 0},
-					&NumberLiteral{Value: "2", Pos: 2},
+					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   3,
 			},
 			expectedValue: "max(1, 2)",
 			expectedPos:   0,
@@ -42,8 +44,8 @@ func TestFunctionCall(t *testing.T) {
 			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
 		}
 
-		if test.input.Position() != test.expectedPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.Position())
+		if test.input.StartPosition() != test.expectedPos {
+			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.StartPosition())
 		}
 	}
 }

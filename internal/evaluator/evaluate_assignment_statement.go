@@ -23,7 +23,7 @@ func (e *Evaluator) evaluateAssignmentStatement(
 			if !isVariable {
 				return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 					errorutil.ErrorMsgReassignmentToConstant,
-					node.Left.Position(),
+					node.Left.StartPosition(),
 					node.Left.Value,
 				)
 			}
@@ -40,7 +40,7 @@ func (e *Evaluator) evaluateAssignmentStatement(
 		if !isVariable {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 				errorutil.ErrorMsgReassignmentToConstant,
-				node.Left.Position(),
+				node.Left.StartPosition(),
 				node.Left.Value,
 			)
 		}
@@ -52,7 +52,7 @@ func (e *Evaluator) evaluateAssignmentStatement(
 
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.ErrorMsgUndefinedIdentifier,
-		node.Left.Position(),
+		node.Left.StartPosition(),
 		node.Left.Value,
 	)
 }

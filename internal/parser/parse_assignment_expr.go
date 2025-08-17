@@ -57,8 +57,9 @@ func (p *Parser) parseAssignmentExpr(
 	}
 
 	return &ast.AssignmentStatement{
-		Left:  identifier,
-		Right: rightExpr,
-		Pos:   leftExpr.Position(),
+		Left:     identifier,
+		Right:    rightExpr,
+		StartPos: leftExpr.StartPosition(),
+		EndPos:   rightExpr.EndPosition(),
 	}, nil
 }

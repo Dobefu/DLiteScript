@@ -9,7 +9,8 @@ func (p *Parser) parseIdentifier(
 	identifierToken *token.Token,
 ) (ast.ExprNode, error) {
 	return &ast.Identifier{
-		Value: identifierToken.Atom,
-		Pos:   p.tokenIdx - 1,
+		Value:    identifierToken.Atom,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

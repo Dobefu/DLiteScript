@@ -14,10 +14,20 @@ func evaluateFunctionCallCreateFunctionCall(
 	functionName string,
 	arguments ...ast.ExprNode,
 ) ast.ExprNode {
+	if len(arguments) == 0 {
+		return &ast.FunctionCall{
+			FunctionName: functionName,
+			Arguments:    arguments,
+			StartPos:     0,
+			EndPos:       0,
+		}
+	}
+
 	return &ast.FunctionCall{
 		FunctionName: functionName,
 		Arguments:    arguments,
-		Pos:          0,
+		StartPos:     arguments[0].StartPosition(),
+		EndPos:       arguments[len(arguments)-1].EndPosition(),
 	}
 }
 
@@ -31,17 +41,17 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
-				&ast.StringLiteral{Value: "test", Pos: 0},
+				&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
 			),
 			expected: "test",
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
-				&ast.StringLiteral{Value: "testing, %g %g %g\n", Pos: 0},
-				&ast.NumberLiteral{Value: "1", Pos: 10},
-				&ast.NumberLiteral{Value: "2", Pos: 12},
-				&ast.NumberLiteral{Value: "3", Pos: 14},
+				&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+				&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
+				&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
 			),
 			expected: "testing, 1 2 3\n",
 		},
@@ -77,7 +87,7 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
-				&ast.NumberLiteral{Value: "1", Pos: 0},
+				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			),
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "printf", 1, "string", "number"),
 		},
@@ -111,22 +121,22 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"bogus",
-				&ast.NumberLiteral{Value: "1", Pos: 0},
+				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			),
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"abs",
-				&ast.NumberLiteral{Value: "1", Pos: 0},
-				&ast.NumberLiteral{Value: "1", Pos: 2},
+				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
 			),
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "abs", 1, 2),
 		},
 		{
 			input: evaluateFunctionCallCreateFunctionCall(
 				"abs",
-				&ast.NumberLiteral{Value: "a", Pos: 0},
+				&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
 			),
 			expected: "invalid syntax",
 		},

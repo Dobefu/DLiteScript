@@ -21,15 +21,17 @@ func TestPrefixExpr(t *testing.T) {
 					TokenType: token.TokenTypeOperationAdd,
 				},
 				Operand: &BinaryExpr{
-					Left:  &NumberLiteral{Value: "1", Pos: 0},
-					Right: &NumberLiteral{Value: "1", Pos: 2},
+					Left:  &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					Right: &NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
 					Operator: token.Token{
 						Atom:      "+",
 						TokenType: token.TokenTypeOperationAdd,
 					},
-					Pos: 0,
+					StartPos: 0,
+					EndPos:   0,
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 			expectedValue: "(+ (1 + 1))",
 			expectedPos:   0,
@@ -41,8 +43,8 @@ func TestPrefixExpr(t *testing.T) {
 			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
 		}
 
-		if test.input.Position() != test.expectedPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.Position())
+		if test.input.StartPosition() != test.expectedPos {
+			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.StartPosition())
 		}
 	}
 }

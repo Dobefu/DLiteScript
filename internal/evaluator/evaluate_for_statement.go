@@ -115,7 +115,7 @@ func (e *Evaluator) evaluateNodeCondition(
 	if !node.IsRange {
 		return false, errorutil.NewError(
 			errorutil.ErrorMsgInvalidForStatement,
-			node.Pos,
+			node.StartPosition(),
 			node.Condition.Expr(),
 		)
 	}

@@ -6,8 +6,9 @@ import (
 
 // ContinueStatement represents a continue statement.
 type ContinueStatement struct {
-	Count int
-	Pos   int
+	Count    int
+	StartPos int
+	EndPos   int
 }
 
 // Expr returns the expression of the continue statement.
@@ -19,7 +20,12 @@ func (c *ContinueStatement) Expr() string {
 	return fmt.Sprintf("continue %d", c.Count)
 }
 
-// Position returns the position of the continue statement.
-func (c *ContinueStatement) Position() int {
-	return c.Pos
+// StartPosition returns the start position of the continue statement.
+func (c *ContinueStatement) StartPosition() int {
+	return c.StartPos
+}
+
+// EndPosition returns the end position of the continue statement.
+func (c *ContinueStatement) EndPosition() int {
+	return c.EndPos
 }

@@ -18,9 +18,9 @@ func TestEvaluate(t *testing.T) {
 	}{
 		{
 			input: &ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "5", Pos: 0},
+				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.BinaryExpr{
-					Left: &ast.NumberLiteral{Value: "5", Pos: 2},
+					Left: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
 					Right: &ast.PrefixExpr{
 						Operator: token.Token{
 							Atom:      "-",
@@ -29,23 +29,27 @@ func TestEvaluate(t *testing.T) {
 						Operand: &ast.FunctionCall{
 							FunctionName: "abs",
 							Arguments: []ast.ExprNode{
-								&ast.Identifier{Value: "PI", Pos: 4},
+								&ast.Identifier{Value: "PI", StartPos: 4, EndPos: 5},
 							},
-							Pos: 0,
+							StartPos: 0,
+							EndPos:   0,
 						},
-						Pos: 0,
+						StartPos: 0,
+						EndPos:   0,
 					},
 					Operator: token.Token{
 						Atom:      "+",
 						TokenType: token.TokenTypeOperationAdd,
 					},
-					Pos: 0,
+					StartPos: 0,
+					EndPos:   0,
 				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 			expected: 5 + math.Abs(-5+math.Pi),
 		},
@@ -74,24 +78,28 @@ func BenchmarkEvaluate(b *testing.B) {
 	for b.Loop() {
 		_, _ = NewEvaluator(io.Discard).Evaluate(
 			&ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "1", Pos: 0},
+				Left: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 				Right: &ast.BinaryExpr{
 					Left: &ast.PrefixExpr{
 						Operator: *token.NewToken("-", token.TokenTypeOperationSub),
-						Operand:  &ast.NumberLiteral{Value: "2", Pos: 2},
-						Pos:      0,
+						Operand:  &ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+						StartPos: 0,
+						EndPos:   0,
 					},
 					Right: &ast.BinaryExpr{
-						Left:     &ast.NumberLiteral{Value: "3", Pos: 4},
-						Right:    &ast.NumberLiteral{Value: "4", Pos: 6},
+						Left:     &ast.NumberLiteral{Value: "3", StartPos: 4, EndPos: 5},
+						Right:    &ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 7},
 						Operator: *token.NewToken("/", token.TokenTypeOperationDiv),
-						Pos:      0,
+						StartPos: 0,
+						EndPos:   0,
 					},
 					Operator: *token.NewToken("*", token.TokenTypeOperationMul),
-					Pos:      0,
+					StartPos: 0,
+					EndPos:   0,
 				},
 				Operator: *token.NewToken("+", token.TokenTypeOperationAdd),
-				Pos:      0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 		)
 	}

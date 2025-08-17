@@ -36,13 +36,15 @@ func (p *Parser) parseContinueStatement() (ast.ExprNode, error) {
 		}
 
 		return &ast.ContinueStatement{
-			Count: continueCount,
-			Pos:   p.tokenIdx,
+			Count:    continueCount,
+			StartPos: p.tokenIdx,
+			EndPos:   p.tokenIdx,
 		}, nil
 	}
 
 	return &ast.ContinueStatement{
-		Count: 1,
-		Pos:   p.tokenIdx,
+		Count:    1,
+		StartPos: p.tokenIdx,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

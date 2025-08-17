@@ -18,18 +18,20 @@ func TestEvaluateStatementList(t *testing.T) {
 		expected string
 	}{
 		{
-			input:    &ast.StatementList{Statements: []ast.ExprNode{}, Pos: 0},
+			input:    &ast.StatementList{Statements: []ast.ExprNode{}, StartPos: 0, EndPos: 0},
 			expected: "",
 		},
 		{
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.NumberLiteral{
-						Value: "1",
-						Pos:   0,
+						Value:    "1",
+						StartPos: 0,
+						EndPos:   1,
 					},
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 			expected: "1",
 		},
@@ -59,14 +61,17 @@ func TestEvaluateStatementListErr(t *testing.T) {
 						FunctionName: "bogus",
 						Arguments: []ast.ExprNode{
 							&ast.NumberLiteral{
-								Value: "1",
-								Pos:   0,
+								Value:    "1",
+								StartPos: 0,
+								EndPos:   1,
 							},
 						},
-						Pos: 0,
+						StartPos: 0,
+						EndPos:   0,
 					},
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},

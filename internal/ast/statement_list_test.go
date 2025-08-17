@@ -14,15 +14,15 @@ func TestStatementList(t *testing.T) {
 	}{
 		{
 			input: []ExprNode{
-				&NumberLiteral{Value: "1", Pos: 0},
+				&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			},
 			expectedValue: "1",
 			expectedPos:   0,
 		},
 		{
 			input: []ExprNode{
-				&NumberLiteral{Value: "1", Pos: 0},
-				&NumberLiteral{Value: "2", Pos: 2},
+				&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
 			},
 			expectedValue: "1\n2",
 			expectedPos:   0,
@@ -32,15 +32,20 @@ func TestStatementList(t *testing.T) {
 	for _, test := range tests {
 		ast := &StatementList{
 			Statements: test.input,
-			Pos:        0,
+			StartPos:   0,
+			EndPos:     0,
 		}
 
 		if ast.Expr() != test.expectedValue {
 			t.Errorf("expected '%s', got '%s'", test.expectedValue, ast.Expr())
 		}
 
-		if ast.Position() != test.expectedPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, ast.Position())
+		if ast.StartPosition() != test.expectedPos {
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedPos,
+				ast.StartPosition(),
+			)
 		}
 	}
 }

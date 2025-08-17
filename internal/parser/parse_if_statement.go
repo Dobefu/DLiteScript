@@ -46,7 +46,8 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 		Condition: expr,
 		ThenBlock: thenBlock,
 		ElseBlock: elseBlock,
-		Pos:       expr.Position(),
+		StartPos:  expr.StartPosition(),
+		EndPos:    expr.EndPosition(),
 	}, nil
 }
 
@@ -78,7 +79,8 @@ func (p *Parser) handleElseBlock() (*ast.BlockStatement, error) {
 
 		return &ast.BlockStatement{
 			Statements: []ast.ExprNode{nestedExpr},
-			Pos:        nestedExpr.Position(),
+			StartPos:   nestedExpr.StartPosition(),
+			EndPos:     nestedExpr.EndPosition(),
 		}, nil
 	}
 

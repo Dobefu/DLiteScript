@@ -13,7 +13,7 @@ func TestStringLiteral(t *testing.T) {
 		expectedPos   int
 	}{
 		{
-			input:         &StringLiteral{Value: "test", Pos: 0},
+			input:         &StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
 			expectedValue: "test",
 			expectedPos:   0,
 		},
@@ -24,8 +24,12 @@ func TestStringLiteral(t *testing.T) {
 			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
 		}
 
-		if test.input.Position() != test.expectedPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.Position())
+		if test.input.StartPosition() != test.expectedPos {
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedPos,
+				test.input.StartPosition(),
+			)
 		}
 	}
 }

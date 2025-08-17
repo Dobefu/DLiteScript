@@ -26,8 +26,11 @@ func TestParseFunctionCall(t *testing.T) {
 			},
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
-				Arguments:    []ast.ExprNode{&ast.NumberLiteral{Value: "1", Pos: 1}},
-				Pos:          0,
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
+				},
+				StartPos: 0,
+				EndPos:   0,
 			},
 		},
 		{
@@ -41,10 +44,11 @@ func TestParseFunctionCall(t *testing.T) {
 			expected: &ast.FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", Pos: 1},
-					&ast.NumberLiteral{Value: "1", Pos: 3},
+					&ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
+					&ast.NumberLiteral{Value: "1", StartPos: 3, EndPos: 4},
 				},
-				Pos: 0,
+				StartPos: 0,
+				EndPos:   0,
 			},
 		},
 	}

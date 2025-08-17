@@ -66,7 +66,8 @@ func (p *Parser) parseFunctionCall(
 	return &ast.FunctionCall{
 		FunctionName: functionName,
 		Arguments:    args,
-		Pos:          functionPos,
+		StartPos:     functionPos,
+		EndPos:       functionPos,
 	}, nil
 }
 

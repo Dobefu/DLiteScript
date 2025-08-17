@@ -16,7 +16,7 @@ func (e *Evaluator) evaluateFunctionCall(
 	if !hasFunction {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUndefinedFunction,
-			fc.Position(),
+			fc.StartPosition(),
 			fc.FunctionName,
 		)
 	}
@@ -94,7 +94,7 @@ func (e *Evaluator) validateFixedArgs(
 	if len(argValues) != expectedCount {
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
-			fc.Position(),
+			fc.StartPosition(),
 			functionName,
 			expectedCount,
 			len(argValues),
@@ -123,7 +123,7 @@ func (e *Evaluator) validateVariadicArgs(
 
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionArgType,
-			fc.Position(),
+			fc.StartPosition(),
 			functionName,
 			i+1,
 			expectedType.AsString(),
@@ -145,7 +145,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 	if len(argValues) < minRequired {
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
-			fc.Position(),
+			fc.StartPosition(),
 			functionName,
 			minRequired,
 			len(argValues),
@@ -179,7 +179,7 @@ func (e *Evaluator) validateArgTypesMatch(
 
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionArgType,
-			fc.Position(),
+			fc.StartPosition(),
 			functionName,
 			i+1,
 			expectedKind.AsString(),

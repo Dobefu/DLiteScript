@@ -7,7 +7,8 @@ import (
 
 func (p *Parser) parseBoolLiteral(token *token.Token) (ast.ExprNode, error) {
 	return &ast.BoolLiteral{
-		Value: token.Atom,
-		Pos:   p.tokenIdx - 1,
+		Value:    token.Atom,
+		StartPos: p.tokenIdx - 1,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

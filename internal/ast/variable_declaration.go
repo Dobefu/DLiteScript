@@ -6,10 +6,11 @@ import (
 
 // VariableDeclaration represents a variable declaration.
 type VariableDeclaration struct {
-	Name  string
-	Type  string
-	Value ExprNode
-	Pos   int
+	Name     string
+	Type     string
+	Value    ExprNode
+	StartPos int
+	EndPos   int
 }
 
 // Expr returns the expression of the variable declaration.
@@ -21,7 +22,12 @@ func (v *VariableDeclaration) Expr() string {
 	return fmt.Sprintf("var %s %s = %s", v.Name, v.Type, v.Value.Expr())
 }
 
-// Position returns the position of the variable declaration.
-func (v *VariableDeclaration) Position() int {
-	return v.Pos
+// StartPosition returns the start position of the variable declaration.
+func (v *VariableDeclaration) StartPosition() int {
+	return v.StartPos
+}
+
+// EndPosition returns the end position of the variable declaration.
+func (v *VariableDeclaration) EndPosition() int {
+	return v.EndPos
 }

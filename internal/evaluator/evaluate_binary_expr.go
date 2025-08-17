@@ -55,7 +55,7 @@ func (e *Evaluator) evaluateBinaryExpr(
 
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.ErrorMsgUnknownOperator,
-		node.Position(),
+		node.StartPosition(),
 		node.Operator.Atom,
 	)
 }
@@ -72,11 +72,11 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	}
 
 	if node.Operator.TokenType == token.TokenTypeOperationDiv && rightNumber == 0 {
-		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgDivByZero, node.Position())
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgDivByZero, node.StartPosition())
 	}
 
 	if node.Operator.TokenType == token.TokenTypeOperationMod && rightNumber == 0 {
-		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgModByZero, node.Position())
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(errorutil.ErrorMsgModByZero, node.StartPosition())
 	}
 
 	switch node.Operator.TokenType {
@@ -101,7 +101,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownOperator,
-			node.Position(),
+			node.StartPosition(),
 			node.Operator.Atom,
 		)
 	}

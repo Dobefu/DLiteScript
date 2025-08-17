@@ -36,13 +36,15 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 		}
 
 		return &ast.BreakStatement{
-			Count: breakCount,
-			Pos:   p.tokenIdx,
+			Count:    breakCount,
+			StartPos: p.tokenIdx,
+			EndPos:   p.tokenIdx,
 		}, nil
 	}
 
 	return &ast.BreakStatement{
-		Count: 1,
-		Pos:   p.tokenIdx,
+		Count:    1,
+		StartPos: p.tokenIdx,
+		EndPos:   p.tokenIdx,
 	}, nil
 }

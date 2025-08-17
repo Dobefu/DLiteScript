@@ -34,7 +34,8 @@ func (p *Parser) parseInfiniteLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		Pos:              p.tokenIdx,
+		StartPos:         p.tokenIdx,
+		EndPos:           p.tokenIdx,
 		DeclaredVariable: "",
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -65,7 +66,8 @@ func (p *Parser) parseLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        condition,
 		Body:             loopBody,
-		Pos:              p.tokenIdx,
+		StartPos:         p.tokenIdx,
+		EndPos:           p.tokenIdx,
 		DeclaredVariable: "",
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -114,7 +116,8 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 
 		return &ast.BlockStatement{
 			Statements: []ast.ExprNode{blockNode},
-			Pos:        p.tokenIdx,
+			StartPos:   p.tokenIdx,
+			EndPos:     p.tokenIdx,
 		}, nil
 	}
 
@@ -177,10 +180,11 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 	}
 
 	condition := &ast.BinaryExpr{
-		Left:     &ast.Identifier{Value: varName, Pos: p.tokenIdx},
+		Left:     &ast.Identifier{Value: varName, StartPos: p.tokenIdx, EndPos: p.tokenIdx + 1},
 		Operator: *operatorToken,
 		Right:    rightSide,
-		Pos:      p.tokenIdx,
+		StartPos: p.tokenIdx,
+		EndPos:   p.tokenIdx,
 	}
 
 	loopBody, err := p.parseLoopBody()
@@ -192,7 +196,8 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        condition,
 		Body:             loopBody,
-		Pos:              p.tokenIdx,
+		StartPos:         p.tokenIdx,
+		EndPos:           p.tokenIdx,
 		DeclaredVariable: varName,
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -243,7 +248,8 @@ func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		Pos:              p.tokenIdx,
+		StartPos:         p.tokenIdx,
+		EndPos:           p.tokenIdx,
 		DeclaredVariable: varName,
 		RangeVariable:    "",
 		RangeFrom:        fromExpr,
@@ -262,10 +268,11 @@ func (p *Parser) parseImplicitRangeLoop(varName string) (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		Pos:              p.tokenIdx,
+		StartPos:         p.tokenIdx,
+		EndPos:           p.tokenIdx,
 		DeclaredVariable: varName,
 		RangeVariable:    "",
-		RangeFrom:        &ast.NumberLiteral{Value: "0", Pos: p.tokenIdx},
+		RangeFrom:        &ast.NumberLiteral{Value: "0", StartPos: p.tokenIdx, EndPos: p.tokenIdx + 1},
 		RangeTo:          toExpr,
 		IsRange:          true,
 	}, nil
