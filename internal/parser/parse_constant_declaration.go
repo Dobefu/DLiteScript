@@ -7,6 +7,7 @@ import (
 )
 
 func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {
@@ -43,7 +44,7 @@ func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
 		Name:     varName,
 		Type:     varType,
 		Value:    value,
-		StartPos: p.tokenIdx - 1,
-		EndPos:   p.tokenIdx,
+		StartPos: startPos,
+		EndPos:   value.EndPosition(),
 	}, nil
 }
