@@ -7,6 +7,7 @@ import (
 )
 
 func (p *Parser) parseForStatement() (ast.ExprNode, error) {
+	startPos := p.GetCurrentCharPos()
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {
@@ -14,17 +15,17 @@ func (p *Parser) parseForStatement() (ast.ExprNode, error) {
 	}
 
 	if nextToken.TokenType == token.TokenTypeLBrace {
-		return p.parseInfiniteLoop()
+		return p.parseInfiniteLoop(startPos)
 	}
 
 	if nextToken.TokenType == token.TokenTypeVar {
-		return p.parseVariableDeclarationLoop()
+		return p.parseVariableDeclarationLoop(startPos)
 	}
 
-	return p.parseLoop()
+	return p.parseLoop(startPos)
 }
 
-func (p *Parser) parseInfiniteLoop() (ast.ExprNode, error) {
+func (p *Parser) parseInfiniteLoop(startPos int) (ast.ExprNode, error) {
 	loopBody, err := p.parseLoopBody()
 
 	if err != nil {
@@ -34,8 +35,8 @@ func (p *Parser) parseInfiniteLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		StartPos:         p.tokenIdx,
-		EndPos:           p.tokenIdx,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
 		DeclaredVariable: "",
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -44,7 +45,7 @@ func (p *Parser) parseInfiniteLoop() (ast.ExprNode, error) {
 	}, nil
 }
 
-func (p *Parser) parseLoop() (ast.ExprNode, error) {
+func (p *Parser) parseLoop(startPos int) (ast.ExprNode, error) {
 	nextToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -66,8 +67,8 @@ func (p *Parser) parseLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        condition,
 		Body:             loopBody,
-		StartPos:         p.tokenIdx,
-		EndPos:           p.tokenIdx,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
 		DeclaredVariable: "",
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -114,17 +115,21 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 			)
 		}
 
+		blockStartPos := p.GetCurrentCharPos()
+
 		return &ast.BlockStatement{
-			Statements: []ast.ExprNode{blockNode},
-			StartPos:   p.tokenIdx,
-			EndPos:     p.tokenIdx,
+			Statements: []ast.ExprNode{},
+			StartPos:   blockStartPos,
+			EndPos:     blockStartPos,
 		}, nil
 	}
 
 	return blockStatement, nil
 }
 
-func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
+func (p *Parser) parseVariableDeclarationLoop(
+	startPos int,
+) (ast.ExprNode, error) {
 	_, err := p.GetNextToken()
 
 	if err != nil {
@@ -154,11 +159,11 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 	}
 
 	if nextToken.TokenType == token.TokenTypeFrom {
-		return p.parseExplicitRangeLoop(varName)
+		return p.parseExplicitRangeLoop(startPos, varName)
 	}
 
 	if nextToken.TokenType == token.TokenTypeTo {
-		return p.parseImplicitRangeLoop(varName)
+		return p.parseImplicitRangeLoop(startPos, varName)
 	}
 
 	operatorToken, err := p.GetNextToken()
@@ -179,12 +184,17 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 		return nil, err
 	}
 
+	identifierStartPos := p.GetCurrentCharPos()
 	condition := &ast.BinaryExpr{
-		Left:     &ast.Identifier{Value: varName, StartPos: p.tokenIdx, EndPos: p.tokenIdx + 1},
+		Left: &ast.Identifier{
+			Value:    varName,
+			StartPos: identifierStartPos,
+			EndPos:   identifierStartPos + len(varName),
+		},
 		Operator: *operatorToken,
 		Right:    rightSide,
-		StartPos: p.tokenIdx,
-		EndPos:   p.tokenIdx,
+		StartPos: identifierStartPos,
+		EndPos:   rightSide.EndPosition(),
 	}
 
 	loopBody, err := p.parseLoopBody()
@@ -196,8 +206,8 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        condition,
 		Body:             loopBody,
-		StartPos:         p.tokenIdx,
-		EndPos:           p.tokenIdx,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
 		DeclaredVariable: varName,
 		RangeVariable:    "",
 		RangeFrom:        nil,
@@ -206,7 +216,10 @@ func (p *Parser) parseVariableDeclarationLoop() (ast.ExprNode, error) {
 	}, nil
 }
 
-func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
+func (p *Parser) parseExplicitRangeLoop(
+	startPos int,
+	varName string,
+) (ast.ExprNode, error) {
 	_, err := p.GetNextToken()
 
 	if err != nil {
@@ -248,8 +261,8 @@ func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		StartPos:         p.tokenIdx,
-		EndPos:           p.tokenIdx,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
 		DeclaredVariable: varName,
 		RangeVariable:    "",
 		RangeFrom:        fromExpr,
@@ -258,27 +271,40 @@ func (p *Parser) parseExplicitRangeLoop(varName string) (ast.ExprNode, error) {
 	}, nil
 }
 
-func (p *Parser) parseImplicitRangeLoop(varName string) (ast.ExprNode, error) {
+func (p *Parser) parseImplicitRangeLoop(
+	startPos int,
+	varName string,
+) (ast.ExprNode, error) {
 	loopBody, toExpr, err := p.parseLoopBodyAndToExpr()
 
 	if err != nil {
 		return nil, err
 	}
 
+	zeroLiteralStartPos := p.GetCurrentCharPos()
+
 	return &ast.ForStatement{
 		Condition:        nil,
 		Body:             loopBody,
-		StartPos:         p.tokenIdx,
-		EndPos:           p.tokenIdx,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
 		DeclaredVariable: varName,
 		RangeVariable:    "",
-		RangeFrom:        &ast.NumberLiteral{Value: "0", StartPos: p.tokenIdx, EndPos: p.tokenIdx + 1},
-		RangeTo:          toExpr,
-		IsRange:          true,
+		RangeFrom: &ast.NumberLiteral{
+			Value:    "0",
+			StartPos: zeroLiteralStartPos,
+			EndPos:   zeroLiteralStartPos + 1,
+		},
+		RangeTo: toExpr,
+		IsRange: true,
 	}, nil
 }
 
-func (p *Parser) parseLoopBodyAndToExpr() (*ast.BlockStatement, ast.ExprNode, error) {
+func (p *Parser) parseLoopBodyAndToExpr() (
+	*ast.BlockStatement,
+	ast.ExprNode,
+	error,
+) {
 	_, err := p.GetNextToken()
 
 	if err != nil {
