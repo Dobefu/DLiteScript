@@ -1,6 +1,7 @@
 package lsp
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -9,11 +10,11 @@ import (
 func formatHoverContent(node ast.ExprNode, isDebugMode bool) string {
 	var output strings.Builder
 
-	if isDebugMode {
-		output.WriteString("**🔴 Debug Mode 🔴**\n\n")
-	}
-
 	nodeType := getAstNodeLabel(node, isDebugMode)
+
+	if isDebugMode {
+		output.WriteString(fmt.Sprintf("**🔴 Debug Mode** %s\n\n", nodeType))
+	}
 
 	// If there's no node type, don't display anything.
 	if nodeType == "" {
