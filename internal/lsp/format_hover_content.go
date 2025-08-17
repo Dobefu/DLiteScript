@@ -20,7 +20,7 @@ func formatHoverContent(node ast.ExprNode) string {
 
 	output.WriteString("```dlitescript\n")
 	output.WriteString(node.Expr())
-	output.WriteString("```")
+	output.WriteString("\n```")
 
 	return output.String()
 }

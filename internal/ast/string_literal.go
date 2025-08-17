@@ -11,7 +11,7 @@ type StringLiteral struct {
 
 // Expr returns the expression of the string literal.
 func (e *StringLiteral) Expr() string {
-	return fmt.Sprintf("\"%s\"", e.Value)
+	return fmt.Sprintf("%q", e.Value)
 }
 
 // StartPosition returns the start position of the string literal.
