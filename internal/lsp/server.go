@@ -3,6 +3,8 @@ package lsp
 import (
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 )
@@ -27,11 +29,26 @@ func (s *Server) Start() error {
 		return fmt.Errorf("could not create JSON-RPC server: %w", err)
 	}
 
-	go func() {
-		<-s.Handler.GetShutdownChan()
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-		os.Exit(0)
+	errChan := make(chan error, 1)
+
+	go func() {
+		errChan <- server.Start()
 	}()
 
-	return server.Start()
+	select {
+	case <-sigChan:
+		shutdownChan := s.Handler.GetShutdownChan()
+
+		if shutdownChan != nil {
+			close(shutdownChan)
+		}
+
+		return nil
+
+	case err := <-errChan:
+		return err
+	}
 }

@@ -13,6 +13,7 @@ type Handler struct {
 	isDebugMode  bool
 	documents    map[string]lsptypes.Document
 	shutdownChan chan struct{}
+	exitChan     chan struct{}
 }
 
 // NewHandler creates a new LSP handler.
@@ -21,6 +22,7 @@ func NewHandler(isDebugMode bool) *Handler {
 		isDebugMode:  isDebugMode,
 		documents:    make(map[string]lsptypes.Document),
 		shutdownChan: make(chan struct{}),
+		exitChan:     make(chan struct{}),
 	}
 }
 
