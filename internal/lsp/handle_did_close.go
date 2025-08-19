@@ -23,5 +23,5 @@ func (h *Handler) handleDidClose(
 
 	delete(h.documents, didCloseParams.TextDocument.URI)
 
-	return json.RawMessage("null"), nil
+	return nil, nil
 }

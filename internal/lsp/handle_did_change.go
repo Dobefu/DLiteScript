@@ -79,5 +79,5 @@ func (h *Handler) handleDidChange(
 		}
 	}
 
-	return json.RawMessage("null"), nil
+	return nil, nil
 }

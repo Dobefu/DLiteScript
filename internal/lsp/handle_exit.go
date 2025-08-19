@@ -9,5 +9,5 @@ import (
 func (h *Handler) handleExit() (json.RawMessage, *jsonrpc2.Error) {
 	go close(h.exitChan)
 
-	return json.RawMessage("null"), nil
+	return nil, nil
 }

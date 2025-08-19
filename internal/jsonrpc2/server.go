@@ -72,6 +72,10 @@ func (s *Server) handleMessage(msg []byte) error {
 		return fmt.Errorf("could not handle message: %s", handleErr.Message)
 	}
 
+	if req.ID.IsNull() || result == nil {
+		return nil
+	}
+
 	err = s.sendResponse(req.ID, result)
 
 	if err != nil {

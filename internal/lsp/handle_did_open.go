@@ -30,5 +30,5 @@ func (h *Handler) handleDidOpen(
 		LineLengths: lineLengths,
 	}
 
-	return json.RawMessage("null"), nil
+	return nil, nil
 }
