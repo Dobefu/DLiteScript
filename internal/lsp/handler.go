@@ -62,6 +62,9 @@ func (h *Handler) Handle(
 	case "textDocument/hover":
 		return h.handleHover(params)
 
+	case "textDocument/signatureHelp":
+		return h.handleSignatureHelp(params)
+
 	case "shutdown":
 		return h.handleShutdown()
 

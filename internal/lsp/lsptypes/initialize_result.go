@@ -8,10 +8,11 @@ type InitializeResult struct {
 
 // ServerCapabilities represents the capabilities of the server.
 type ServerCapabilities struct {
-	TextDocumentSync   TextDocumentSync   `json:"textDocumentSync"`
-	DefinitionProvider bool               `json:"definitionProvider"`
-	CompletionProvider CompletionProvider `json:"completionProvider"`
-	HoverProvider      bool               `json:"hoverProvider"`
+	TextDocumentSync      TextDocumentSync      `json:"textDocumentSync"`
+	DefinitionProvider    bool                  `json:"definitionProvider"`
+	CompletionProvider    CompletionProvider    `json:"completionProvider"`
+	HoverProvider         bool                  `json:"hoverProvider"`
+	SignatureHelpProvider SignatureHelpProvider `json:"signatureHelpProvider"`
 }
 
 // TextDocumentSync represents the text document sync capabilities.

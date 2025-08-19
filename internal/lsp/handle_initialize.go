@@ -23,6 +23,9 @@ func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
 				TriggerCharacters: []string{},
 			},
 			HoverProvider: true,
+			SignatureHelpProvider: lsptypes.SignatureHelpProvider{
+				TriggerCharacters: []string{"(", ","},
+			},
 		},
 	}
 

@@ -15,7 +15,11 @@ type Server struct {
 }
 
 // NewServer creates a new JSON-RPC server.
-func NewServer(handler Handler, reader io.Reader, writer io.Writer) (*Server, error) {
+func NewServer(
+	handler Handler,
+	reader io.Reader,
+	writer io.Writer,
+) (*Server, error) {
 	if handler == nil {
 		return nil, fmt.Errorf("nil handler provided")
 	}
