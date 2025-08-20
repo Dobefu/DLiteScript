@@ -22,8 +22,8 @@ func TestBlockStatement(t *testing.T) {
 		return true
 	})
 
-	if len(visitedNodes) != 3 {
-		t.Fatalf("Expected 3 visited node, got %d", len(visitedNodes))
+	if len(visitedNodes) != len(expectedNodes) {
+		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
 	}
 
 	for idx, node := range visitedNodes {

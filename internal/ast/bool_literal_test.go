@@ -6,6 +6,7 @@ func TestBoolLiteral(t *testing.T) {
 	t.Parallel()
 
 	literal := &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1}
+	expectedNodes := []string{"true"}
 
 	visitedNodes := []string{}
 	literal.Walk(func(node ExprNode) bool {
@@ -14,8 +15,8 @@ func TestBoolLiteral(t *testing.T) {
 		return true
 	})
 
-	if len(visitedNodes) != 1 {
-		t.Fatalf("Expected 1 visited node, got %d", len(visitedNodes))
+	if len(visitedNodes) != len(expectedNodes) {
+		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
 	}
 
 	if visitedNodes[0] != "true" {
