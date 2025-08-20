@@ -64,5 +64,13 @@ func TestBinaryExpr(t *testing.T) {
 				test.input.StartPosition(),
 			)
 		}
+
+		if test.input.EndPosition() != test.expectedPos {
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedPos,
+				test.input.EndPosition(),
+			)
+		}
 	}
 }
