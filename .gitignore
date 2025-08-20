@@ -4,3 +4,4 @@ cover.cov
 
 # Built binaries.
 DLiteScript
+output/

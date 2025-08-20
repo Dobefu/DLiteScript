@@ -36,3 +36,60 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.1
+
+  build-binaries:
+    name: 'Build Binaries'
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+          cache-dependency-path: |
+            **/go.sum
+            **/go.mod
+
+      - name: Build binaries
+        run: ./scripts/compile-binaries.sh
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: dlitescript-binaries
+          path: |
+            output/dlitescript*
+          retention-days: 30
+
+  release:
+    name: 'Create Release'
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+          cache: true
+          cache-dependency-path: |
+            **/go.sum
+            **/go.mod
+
+      - name: Build binaries for release
+        run: ./scripts/compile-binaries.sh
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: output/dlitescript*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
