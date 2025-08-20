@@ -37,6 +37,20 @@ jobs:
         with:
           version: v2.1
 
+      - name: Create a test results directory
+        run: mkdir test-results
+
+      - name: Run tests
+        run: |
+          go test "./..." -coverprofile="test-results/coverage.out" -covermode=count
+          go test "./..." -coverprofile="coverage.out" -covermode=count -json > test-report.out
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   build-binaries:
     name: 'Build Binaries'
     runs-on: ubuntu-latest
