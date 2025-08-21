@@ -8,19 +8,22 @@ func TestIdentifier(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		input         ExprNode
-		expectedValue string
-		expectedPos   int
+		input            ExprNode
+		expectedValue    string
+		expectedStartPos int
+		expectedEndPos   int
 	}{
 		{
-			input:         &Identifier{Value: "PI", StartPos: 0, EndPos: 1},
-			expectedValue: "PI",
-			expectedPos:   0,
+			input:            &Identifier{Value: "PI", StartPos: 0, EndPos: 1},
+			expectedValue:    "PI",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
 		},
 		{
-			input:         &Identifier{Value: "PI", StartPos: 1, EndPos: 2},
-			expectedValue: "PI",
-			expectedPos:   1,
+			input:            &Identifier{Value: "PI", StartPos: 1, EndPos: 2},
+			expectedValue:    "PI",
+			expectedStartPos: 1,
+			expectedEndPos:   2,
 		},
 	}
 
@@ -29,8 +32,12 @@ func TestIdentifier(t *testing.T) {
 			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
 		}
 
-		if test.input.StartPosition() != test.expectedPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedPos, test.input.StartPosition())
+		if test.input.StartPosition() != test.expectedStartPos {
+			t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+		}
+
+		if test.input.EndPosition() != test.expectedEndPos {
+			t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
 		}
 	}
 }
