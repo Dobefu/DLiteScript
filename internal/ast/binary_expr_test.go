@@ -10,9 +10,11 @@ func TestBinaryExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		input         ExprNode
-		expectedValue string
-		expectedPos   int
+		input            ExprNode
+		expectedValue    string
+		expectedStartPos int
+		expectedEndPos   int
+		expectedNodes    []string
 	}{
 		{
 			input: &BinaryExpr{
@@ -27,8 +29,10 @@ func TestBinaryExpr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expectedValue: "(1 + 1)",
-			expectedPos:   0,
+			expectedValue:    "(1 + 1)",
+			expectedStartPos: 0,
+			expectedEndPos:   0,
+			expectedNodes:    []string{"(1 + 1)", "1", "1", "1", "1"},
 		},
 		{
 			input: &BinaryExpr{
@@ -43,12 +47,37 @@ func TestBinaryExpr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expectedValue: "(1 * 2)",
-			expectedPos:   0,
+			expectedValue:    "(1 * 2)",
+			expectedStartPos: 0,
+			expectedEndPos:   0,
+			expectedNodes:    []string{"(1 * 2)", "1", "1", "2", "2"},
 		},
 	}
 
 	for _, test := range tests {
+		visitedNodes := []string{}
+
+		test.input.Walk(func(node ExprNode) bool {
+			visitedNodes = append(visitedNodes, node.Expr())
+
+			return true
+		})
+
+		if len(visitedNodes) != len(test.expectedNodes) {
+			t.Fatalf(
+				"Expected %d visited nodes, got %d (%v)",
+				len(test.expectedNodes),
+				len(visitedNodes),
+				visitedNodes,
+			)
+		}
+
+		for idx, node := range visitedNodes {
+			if node != test.expectedNodes[idx] {
+				t.Fatalf("Expected \"%s\", got \"%s\"", test.expectedNodes[idx], node)
+			}
+		}
+
 		if test.input.Expr() != test.expectedValue {
 			t.Errorf(
 				"expected '%s', got '%s'",
@@ -57,18 +86,18 @@ func TestBinaryExpr(t *testing.T) {
 			)
 		}
 
-		if test.input.StartPosition() != test.expectedPos {
+		if test.input.StartPosition() != test.expectedStartPos {
 			t.Errorf(
 				"expected pos '%d', got '%d'",
-				test.expectedPos,
+				test.expectedStartPos,
 				test.input.StartPosition(),
 			)
 		}
 
-		if test.input.EndPosition() != test.expectedPos {
+		if test.input.EndPosition() != test.expectedEndPos {
 			t.Errorf(
 				"expected pos '%d', got '%d'",
-				test.expectedPos,
+				test.expectedEndPos,
 				test.input.EndPosition(),
 			)
 		}
