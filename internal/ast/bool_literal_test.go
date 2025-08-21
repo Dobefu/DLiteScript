@@ -18,11 +18,18 @@ func TestBoolLiteral(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
+		t.Fatalf(
+			"Expected %d visited node, got %d (%v)",
+			len(expectedNodes),
+			len(visitedNodes),
+			visitedNodes,
+		)
 	}
 
-	if visitedNodes[0] != "true" {
-		t.Fatalf("Expected \"true\", got \"%s\"", visitedNodes[0])
+	for idx, node := range visitedNodes {
+		if node != expectedNodes[idx] {
+			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
+		}
 	}
 
 	if literal.StartPosition() != 0 {
