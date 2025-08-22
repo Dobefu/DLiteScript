@@ -49,6 +49,12 @@ func TestDatavalueNumber(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected error, got nil")
 	}
+
+	_, err = value.AsBool()
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
 }
 
 func TestDatavalueString(t *testing.T) {
@@ -72,6 +78,36 @@ func TestDatavalueString(t *testing.T) {
 
 	if str != "test" {
 		t.Errorf("expected 'test', got '%s'", str)
+	}
+
+	_, err = value.AsNumber()
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
+}
+
+func TestDatavalueBool(t *testing.T) {
+	t.Parallel()
+
+	value := Bool(true)
+
+	if value.DataType() != datatype.DataTypeBool {
+		t.Errorf("expected DataTypeBool, got '%v'", value.DataType())
+	}
+
+	if value.ToString() != "true" {
+		t.Errorf("expected 'true', got '%s'", value.ToString())
+	}
+
+	boolean, err := value.AsBool()
+
+	if err != nil {
+		t.Errorf("expected no error, got '%s'", err.Error())
+	}
+
+	if boolean != true {
+		t.Errorf("expected 'true', got '%t'", boolean)
 	}
 
 	_, err = value.AsNumber()

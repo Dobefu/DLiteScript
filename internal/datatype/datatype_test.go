@@ -22,6 +22,10 @@ func TestDatatype(t *testing.T) {
 			expectedValue: "string",
 		},
 		{
+			input:         DataTypeBool,
+			expectedValue: "bool",
+		},
+		{
 			input:         DataType(-1),
 			expectedValue: "unknown",
 		},
