@@ -1,6 +1,8 @@
 package datatype
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestDatatype(t *testing.T) {
 	t.Parallel()
