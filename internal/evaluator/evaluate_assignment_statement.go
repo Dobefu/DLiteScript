@@ -17,7 +17,9 @@ func (e *Evaluator) evaluateAssignmentStatement(
 	}
 
 	for idx := range e.blockScopesLen {
-		if _, hasScopedValue := e.blockScopes[e.blockScopesLen-idx-1][node.Left.Value]; hasScopedValue {
+		_, hasScopedValue := e.blockScopes[e.blockScopesLen-idx-1][node.Left.Value]
+
+		if hasScopedValue {
 			variable, isVariable := e.blockScopes[e.blockScopesLen-idx-1][node.Left.Value].(*Variable)
 
 			if !isVariable {
@@ -34,7 +36,9 @@ func (e *Evaluator) evaluateAssignmentStatement(
 		}
 	}
 
-	if _, hasScopedValue := e.outerScope[node.Left.Value]; hasScopedValue {
+	_, hasScopedValue := e.outerScope[node.Left.Value]
+
+	if hasScopedValue {
 		variable, isVariable := e.outerScope[node.Left.Value].(*Variable)
 
 		if !isVariable {

@@ -4,6 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func (e *Evaluator) evaluateConstantDeclaration(
@@ -13,6 +14,14 @@ func (e *Evaluator) evaluateConstantDeclaration(
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	if value.Value.DataType().AsString() != node.Type {
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewError(
+			errorutil.ErrorMsgTypeMismatch,
+			node.Type,
+			value.Value.DataType().AsString(),
+		)
 	}
 
 	var constant ScopedValue = &Constant{

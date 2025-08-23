@@ -54,6 +54,8 @@ const (
 	ErrorMsgTypeUnknownDataType = "type error: unknown data type: '%s'"
 	// ErrorMsgTypeExpected occurs when a type is expected but a different type is encountered.
 	ErrorMsgTypeExpected = "type error: expected %s, but got %s"
+	// ErrorMsgTypeMismatch occurs when there's a type mismatch.
+	ErrorMsgTypeMismatch = "expected %s, got %s"
 	// ErrorMsgUnexpectedIdentifier occurs when an unexpected identifier is encountered.
 	ErrorMsgUnexpectedIdentifier = "unexpected identifier: '%s'"
 	// ErrorMsgInvalidDataType occurs when an invalid data type is encountered.

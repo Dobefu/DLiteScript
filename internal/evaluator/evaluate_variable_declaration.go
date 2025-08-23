@@ -4,6 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func (e *Evaluator) evaluateVariableDeclaration(
@@ -19,6 +20,14 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		}
 
 		value = evaluatedValue
+	}
+
+	if value.Value.DataType().AsString() != node.Type {
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewError(
+			errorutil.ErrorMsgTypeMismatch,
+			node.Type,
+			value.Value.DataType().AsString(),
+		)
 	}
 
 	var variable ScopedValue = &Variable{
