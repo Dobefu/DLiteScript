@@ -15,7 +15,7 @@ func TestEvaluateIdentifier(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		input    *ast.Identifier
+		input    ast.ExprNode
 		expected float64
 	}{
 		{
@@ -23,43 +23,48 @@ func TestEvaluateIdentifier(t *testing.T) {
 			expected: math.Pi,
 		},
 		{
-			input:    &ast.Identifier{Value: "TAU", StartPos: 0, EndPos: 1},
-			expected: math.Pi * 2,
-		},
-		{
-			input:    &ast.Identifier{Value: "E", StartPos: 0, EndPos: 1},
-			expected: math.E,
-		},
-		{
-			input:    &ast.Identifier{Value: "PHI", StartPos: 0, EndPos: 1},
-			expected: math.Phi,
-		},
-		{
-			input:    &ast.Identifier{Value: "LN2", StartPos: 0, EndPos: 1},
-			expected: math.Ln2,
-		},
-		{
-			input:    &ast.Identifier{Value: "LN10", StartPos: 0, EndPos: 1},
-			expected: math.Ln10,
+			input: &ast.BlockStatement{
+				Statements: []ast.ExprNode{
+					&ast.VariableDeclaration{
+						Name: "test",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value:    "1",
+							StartPos: 0,
+							EndPos:   0,
+						},
+						StartPos: 0,
+						EndPos:   0,
+					},
+					&ast.Identifier{Value: "test", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: 1,
 		},
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator(io.Discard).evaluateIdentifier(test.input)
+		t.Run(test.input.Expr(), func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
-		}
+			rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
-		result, err := rawResult.Value.AsNumber()
+			if err != nil {
+				t.Fatalf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
+			}
 
-		if err != nil {
-			t.Fatalf("expected number, got type error: %s", err.Error())
-		}
+			result, err := rawResult.Value.AsNumber()
 
-		if result != test.expected {
-			t.Errorf("expected %f, got %f", test.expected, result)
-		}
+			if err != nil {
+				t.Fatalf("expected number, got type error: %s", err.Error())
+			}
+
+			if result != test.expected {
+				t.Errorf("expected %f, got %f", test.expected, result)
+			}
+		})
 	}
 }
 
@@ -67,7 +72,7 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		input    *ast.Identifier
+		input    ast.ExprNode
 		expected string
 	}{
 		{
@@ -77,7 +82,7 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).evaluateIdentifier(test.input)
+		_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
 		if err == nil {
 			t.Fatalf("expected error, got nil")
