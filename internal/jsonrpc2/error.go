@@ -47,6 +47,14 @@ func NewError(code ErrorCode, message string, data *json.RawMessage) *Error {
 
 // Error returns the error message.
 func (e *Error) Error() string {
+	if e.Data == nil {
+		return fmt.Sprintf(
+			"code: %d, message: %s",
+			e.Code,
+			e.Message,
+		)
+	}
+
 	return fmt.Sprintf(
 		"code: %d, message: %s, data: %s",
 		e.Code,
