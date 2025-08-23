@@ -74,6 +74,8 @@ const (
 	ErrorMsgVariableNotFound = "variable not found: '%s'"
 	// ErrorMsgInvalidForStatement occurs when a for statement is invalid.
 	ErrorMsgInvalidForStatement = "invalid for statement: '%s'"
+	// ErrorMsgInvalidNumber occurs when an invalid number is encountered.
+	ErrorMsgInvalidNumber = "invalid number: '%s'"
 )
 
 // Error represents an error with a message.

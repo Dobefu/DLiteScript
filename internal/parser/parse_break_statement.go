@@ -26,7 +26,11 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 		breakCount, err := strconv.Atoi(nextToken.Atom)
 
 		if err != nil {
-			return nil, err
+			return nil, errorutil.NewErrorAt(
+				errorutil.ErrorMsgInvalidNumber,
+				p.tokenIdx,
+				nextToken.Atom,
+			)
 		}
 
 		if breakCount < 1 {
