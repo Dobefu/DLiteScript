@@ -26,7 +26,11 @@ func (p *Parser) parseContinueStatement() (ast.ExprNode, error) {
 		continueCount, err := strconv.Atoi(nextToken.Atom)
 
 		if err != nil {
-			return nil, err
+			return nil, errorutil.NewErrorAt(
+				errorutil.ErrorMsgInvalidNumber,
+				p.tokenIdx,
+				nextToken.Atom,
+			)
 		}
 
 		if continueCount < 1 {
