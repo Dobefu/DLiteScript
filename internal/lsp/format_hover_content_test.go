@@ -42,7 +42,7 @@ func TestFormatHoverContent(t *testing.T) {
 			hoverContent := formatHoverContent(test.node, test.isDebugMode)
 
 			if hoverContent != test.expected {
-				t.Errorf("expected %s, got %s", test.expected, hoverContent)
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, hoverContent)
 			}
 		})
 	}
