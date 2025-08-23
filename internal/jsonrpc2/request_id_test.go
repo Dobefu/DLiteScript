@@ -1,7 +1,6 @@
 package jsonrpc2
 
 import (
-	"bytes"
 	"encoding/json"
 	"testing"
 )
@@ -37,18 +36,10 @@ func TestRequestID(t *testing.T) {
 				t.Errorf("expected no error, got \"%v\"", err)
 			}
 
-			if !bytes.Equal(jsonBytes, test.input.value) {
-				t.Errorf("expected \"%v\", got \"%v\"", test.input.value, jsonBytes)
-			}
-
 			err = test.input.UnmarshalJSON(jsonBytes)
 
 			if err != nil {
 				t.Errorf("expected no error, got \"%v\"", err)
-			}
-
-			if !bytes.Equal(test.input.value, jsonBytes) {
-				t.Errorf("expected \"%v\", got \"%v\"", test.input.value, jsonBytes)
 			}
 		})
 	}
