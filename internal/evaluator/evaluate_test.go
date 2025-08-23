@@ -80,6 +80,45 @@ func TestEvaluate(t *testing.T) {
 	}
 }
 
+func TestOutput(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		input    ast.ExprNode
+		expected string
+	}{
+		{
+			input: &ast.FunctionCall{
+				FunctionName: "printf",
+				Arguments: []ast.ExprNode{
+					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: "test",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.input.Expr(), func(t *testing.T) {
+			t.Parallel()
+
+			evaluator := NewEvaluator(io.Discard)
+
+			_, err := evaluator.Evaluate(test.input)
+
+			if err != nil {
+				t.Fatalf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+			}
+
+			if evaluator.Output() != test.expected {
+				t.Errorf("expected '%v', got '%v'", test.expected, evaluator.Output())
+			}
+		})
+	}
+}
+
 func BenchmarkEvaluate(b *testing.B) {
 	for b.Loop() {
 		_, _ = NewEvaluator(io.Discard).Evaluate(
