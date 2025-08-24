@@ -40,7 +40,7 @@ func TestForStatement(t *testing.T) {
 		expectedEnd   int
 	}{
 		{
-			name: "basic for loop",
+			name: "infinite for loop",
 			statement: &ForStatement{
 				DeclaredVariable: "",
 				Condition:        nil,
@@ -151,7 +151,52 @@ func TestForStatement(t *testing.T) {
 			expectedEnd:   1,
 		},
 		{
-			name: "for loop with range",
+			name: "for loop with from and to",
+			statement: &ForStatement{
+				DeclaredVariable: "",
+				Condition:        nil,
+				Body: &BlockStatement{
+					Statements: []ExprNode{
+						&NumberLiteral{
+							Value:    "1",
+							StartPos: 0,
+							EndPos:   1,
+						},
+					},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos:      0,
+				EndPos:        1,
+				RangeVariable: "",
+				RangeFrom: &NumberLiteral{
+					Value:    "0",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				RangeTo: &NumberLiteral{
+					Value:    "10",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				IsRange: true,
+			},
+			expectedNodes: []string{
+				"for from 0 to 10 { (1) }",
+				"0",
+				"0",
+				"10",
+				"10",
+				"(1)",
+				"(1)",
+				"1",
+				"1",
+			},
+			expectedStart: 0,
+			expectedEnd:   1,
+		},
+		{
+			name: "for loop with variable and from and to",
 			statement: &ForStatement{
 				DeclaredVariable: "i",
 				Condition:        nil,
@@ -196,7 +241,46 @@ func TestForStatement(t *testing.T) {
 			expectedEnd:   1,
 		},
 		{
-			name: "for loop with range to only",
+			name: "for loop with to",
+			statement: &ForStatement{
+				DeclaredVariable: "",
+				Condition:        nil,
+				Body: &BlockStatement{
+					Statements: []ExprNode{
+						&NumberLiteral{
+							Value:    "1",
+							StartPos: 0,
+							EndPos:   1,
+						},
+					},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos:      0,
+				EndPos:        1,
+				RangeVariable: "",
+				RangeFrom:     nil,
+				RangeTo: &NumberLiteral{
+					Value:    "10",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				IsRange: true,
+			},
+			expectedNodes: []string{
+				"for from 0 to 10 { (1) }",
+				"10",
+				"10",
+				"(1)",
+				"(1)",
+				"1",
+				"1",
+			},
+			expectedStart: 0,
+			expectedEnd:   1,
+		},
+		{
+			name: "for loop with variable and to",
 			statement: &ForStatement{
 				DeclaredVariable: "i",
 				Condition:        nil,
