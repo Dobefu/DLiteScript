@@ -14,7 +14,6 @@ import (
 // ScriptRunner handles the execution of DLiteScript files.
 type ScriptRunner struct {
 	Args    []string
-	OnError func(error)
 	OutFile io.Writer
 
 	result string

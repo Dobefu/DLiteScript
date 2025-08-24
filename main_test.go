@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -68,9 +67,6 @@ func TestMainRun(t *testing.T) {
 		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{createTmpFile(t, test.input)},
 			OutFile: io.Discard,
-			OnError: func(err error) {
-				t.Errorf(errMsgUnexpectedErr, err.Error())
-			},
 		}
 
 		err := runner.Run()
@@ -111,7 +107,6 @@ func TestMainErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		var mainErr error
 		var args []string
 
 		if test.input != "" {
@@ -121,13 +116,6 @@ func TestMainErr(t *testing.T) {
 		runner := &scriptrunner.ScriptRunner{
 			Args:    args,
 			OutFile: io.Discard,
-			OnError: func(err error) {
-				mainErr = errors.Unwrap(err)
-
-				if mainErr == nil {
-					mainErr = err
-				}
-			},
 		}
 
 		err := runner.Run()
@@ -137,10 +125,6 @@ func TestMainErr(t *testing.T) {
 		}
 
 		actualErr := err
-
-		if mainErr != nil {
-			actualErr = mainErr
-		}
 
 		if actualErr.Error() != test.expected {
 			t.Errorf(
@@ -158,20 +142,11 @@ func TestMainWriteError(t *testing.T) {
 	buf, _ := os.OpenFile("/some/bogus/file.txt", os.O_RDONLY, 0)
 	defer func() { _ = buf.Close() }()
 
-	var mainErr error
-
 	filePath := createTmpFile(t, "1 + 1")
 
 	runner := &scriptrunner.ScriptRunner{
 		Args:    []string{filePath},
 		OutFile: buf,
-		OnError: func(err error) {
-			mainErr = errors.Unwrap(err)
-
-			if mainErr == nil {
-				mainErr = err
-			}
-		},
 	}
 
 	err := runner.Run()
@@ -189,9 +164,6 @@ func BenchmarkMain(b *testing.B) {
 		runner := &scriptrunner.ScriptRunner{
 			Args:    []string{filePath},
 			OutFile: io.Discard,
-			OnError: func(err error) {
-				b.Errorf(errMsgUnexpectedErr, err.Error())
-			},
 		}
 
 		err := runner.Run()

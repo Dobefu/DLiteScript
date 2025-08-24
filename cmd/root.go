@@ -36,15 +36,12 @@ func runRootCmd(_ *cobra.Command, args []string) {
 	runner := &scriptrunner.ScriptRunner{
 		Args:    args,
 		OutFile: os.Stdout,
-		OnError: func(err error) {
-			slog.Error(err.Error())
-			os.Exit(1)
-		},
 	}
 
 	err := runner.Run()
 
 	if err != nil {
-		runner.OnError(err)
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 }
