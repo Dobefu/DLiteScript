@@ -35,9 +35,5 @@ func (e *Evaluator) evaluateReturnStatement(
 		values[i] = result.Value
 	}
 
-	if len(values) == 1 {
-		return controlflow.NewReturnResult(values[0]), nil
-	}
-
-	return controlflow.NewReturnResult(datavalue.Null()), nil
+	return controlflow.NewReturnResult(datavalue.Tuple(values...)), nil
 }

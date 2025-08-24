@@ -14,7 +14,7 @@ func TestVariable(t *testing.T) {
 		Type:  "number",
 	}
 
-	if variable.GetValue() != datavalue.Number(1) {
+	if !variable.GetValue().Equals(datavalue.Number(1)) {
 		t.Errorf("expected 1, got %v", variable.GetValue())
 	}
 

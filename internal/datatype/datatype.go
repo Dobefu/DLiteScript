@@ -15,6 +15,8 @@ const (
 	DataTypeBool
 	// DataTypeFunction represents a function type.
 	DataTypeFunction
+	// DataTypeTuple represents a tuple type.
+	DataTypeTuple
 )
 
 // AsString provides the string representation of a DataType for error messages.
@@ -34,6 +36,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeFunction:
 		return "function"
+
+	case DataTypeTuple:
+		return "tuple"
 
 	default:
 		return "unknown"

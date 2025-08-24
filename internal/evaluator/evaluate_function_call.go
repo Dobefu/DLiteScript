@@ -90,6 +90,10 @@ func (e *Evaluator) evaluateUserFunctionCall(
 	}
 
 	if result.IsReturnResult() {
+		if result.Value.DataType() == datatype.DataTypeTuple {
+			return result, nil
+		}
+
 		return result, nil
 	}
 

@@ -71,6 +71,9 @@ var functionRegistry = map[string]functionInfo{
 				case datatype.DataTypeFunction:
 					formatArgs[i-1] = "function"
 
+				case datatype.DataTypeTuple:
+					formatArgs[i-1] = args[i].ToString()
+
 				default:
 					formatArgs[i-1] = "unknown"
 				}

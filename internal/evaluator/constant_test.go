@@ -14,7 +14,7 @@ func TestConstant(t *testing.T) {
 		Type:  "number",
 	}
 
-	if constant.GetValue() != datavalue.Number(1) {
+	if !constant.GetValue().Equals(datavalue.Number(1)) {
 		t.Errorf("expected 1, got %v", constant.GetValue())
 	}
 

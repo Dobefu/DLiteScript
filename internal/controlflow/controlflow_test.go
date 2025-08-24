@@ -15,7 +15,7 @@ func TestControlFlow(t *testing.T) {
 		t.Errorf("Expected normal result, got %v", regularResult)
 	}
 
-	if regularResult.Value != datavalue.Number(1) {
+	if !regularResult.Value.Equals(datavalue.Number(1)) {
 		t.Errorf("Expected regular result, got %v", regularResult)
 	}
 
