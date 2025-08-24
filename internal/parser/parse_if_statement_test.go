@@ -1,0 +1,180 @@
+package parser
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
+	"github.com/Dobefu/DLiteScript/internal/token"
+)
+
+func TestParseIfStatement(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "true condition",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+			},
+			expected: "if true { (1) }",
+		},
+		{
+			name: "true condition with else",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("2", token.TokenTypeNumber, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+			},
+			expected: "if true { (1) } else { (2) }",
+		},
+		{
+			name: "true condition with empty else",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+			},
+			expected: "if true { (1) } else { () }",
+		},
+		{
+			name: "else if",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("false", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+			},
+			expected: "if true { () } else { (if false { () } else { () }) }",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			expr, err := p.Parse()
+
+			if err != nil {
+				t.Fatalf("expected no error, got \"%s\"", err.Error())
+			}
+
+			if expr.Expr() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, expr.Expr())
+			}
+		})
+	}
+}
+
+func TestParseIfStatementErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "no next token after if",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+			},
+			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 1",
+		},
+		{
+			name: "unexpected token after if",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "{") + " at position 2",
+		},
+		{
+			name: "no block statement after if",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+			},
+			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+		},
+		{
+			name: "unexpected token in then block",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("=", token.TokenTypeAssign, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "=") + " at position 4",
+		},
+		{
+			name: "no next token after else",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+			},
+			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 5",
+		},
+		{
+			name: "unexpected token after else",
+			input: []*token.Token{
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
+				token.NewToken("else", token.TokenTypeElse, 0, 0),
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+			},
+			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 6",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.Parse()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
