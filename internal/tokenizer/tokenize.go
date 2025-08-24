@@ -20,6 +20,8 @@ var keywords = map[string]token.Type{
 	"from":     token.TokenTypeFrom,
 	"to":       token.TokenTypeTo,
 	"null":     token.TokenTypeNull,
+	"func":     token.TokenTypeFunc,
+	"return":   token.TokenTypeReturn,
 }
 
 // Tokenize analyzes the expression string and turns it into tokens.
