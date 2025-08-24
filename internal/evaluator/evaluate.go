@@ -65,6 +65,12 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationRe
 	case *ast.AssignmentStatement:
 		return e.evaluateAssignmentStatement(node)
 
+	case *ast.FuncDeclarationStatement:
+		return e.evaluateFunctionDeclaration(node)
+
+	case *ast.ReturnStatement:
+		return e.evaluateReturnStatement(node)
+
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownNodeType,

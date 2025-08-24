@@ -2,8 +2,10 @@
 package datavalue
 
 import (
+	"fmt"
 	"strconv"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
@@ -15,6 +17,7 @@ type Value struct {
 	Num  float64
 	Str  string
 	Bool bool
+	Func *ast.FuncDeclarationStatement
 }
 
 // DataType returns the data type of the value.
@@ -30,6 +33,7 @@ func Null() Value {
 		Num:  0,
 		Str:  "",
 		Bool: false,
+		Func: nil,
 	}
 }
 
@@ -48,6 +52,9 @@ func (v Value) ToString() string {
 	case datatype.DataTypeBool:
 		return strconv.FormatBool(v.Bool)
 
+	case datatype.DataTypeFunction:
+		return fmt.Sprintf("function %s", v.Func.Name)
+
 	default:
 		return errorutil.ErrorMsgTypeUnknownDataType
 	}
@@ -61,6 +68,7 @@ func Number(n float64) Value {
 		Num:  n,
 		Str:  "",
 		Bool: false,
+		Func: nil,
 	}
 }
 
@@ -72,6 +80,7 @@ func String(s string) Value {
 		Num:  0,
 		Str:  s,
 		Bool: false,
+		Func: nil,
 	}
 }
 
@@ -83,6 +92,19 @@ func Bool(b bool) Value {
 		Num:  0,
 		Str:  "",
 		Bool: b,
+		Func: nil,
+	}
+}
+
+// Function creates a new function value.
+func Function(fn *ast.FuncDeclarationStatement) Value {
+	return Value{
+		dataType: datatype.DataTypeFunction,
+
+		Num:  0,
+		Str:  "",
+		Bool: false,
+		Func: fn,
 	}
 }
 
@@ -123,4 +145,17 @@ func (v Value) AsBool() (bool, error) {
 	}
 
 	return v.Bool, nil
+}
+
+// AsFunction returns the value as a function.
+func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
+	if v.dataType != datatype.DataTypeFunction {
+		return nil, errorutil.NewError(
+			errorutil.ErrorMsgTypeExpected,
+			datatype.DataTypeFunction.AsString(),
+			v.dataType.AsString(),
+		)
+	}
+
+	return v.Func, nil
 }

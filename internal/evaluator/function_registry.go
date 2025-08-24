@@ -68,6 +68,9 @@ var functionRegistry = map[string]functionInfo{
 				case datatype.DataTypeNull:
 					formatArgs[i-1] = "null"
 
+				case datatype.DataTypeFunction:
+					formatArgs[i-1] = "function"
+
 				default:
 					formatArgs[i-1] = "unknown"
 				}

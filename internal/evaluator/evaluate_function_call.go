@@ -14,11 +14,17 @@ func (e *Evaluator) evaluateFunctionCall(
 	function, hasFunction := functionRegistry[fc.FunctionName]
 
 	if !hasFunction {
-		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.ErrorMsgUndefinedFunction,
-			fc.StartPosition(),
-			fc.FunctionName,
-		)
+		userFunction, hasUserFunction := e.userFunctions[fc.FunctionName]
+
+		if !hasUserFunction {
+			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+				errorutil.ErrorMsgUndefinedFunction,
+				fc.StartPosition(),
+				fc.FunctionName,
+			)
+		}
+
+		return e.evaluateUserFunctionCall(fc, userFunction)
 	}
 
 	argValues, err := e.evaluateArguments(
@@ -39,6 +45,51 @@ func (e *Evaluator) evaluateFunctionCall(
 	}
 
 	return controlflow.NewRegularResult(handlerResult), nil
+}
+
+func (e *Evaluator) evaluateUserFunctionCall(
+	fc *ast.FunctionCall,
+	userFunction *ast.FuncDeclarationStatement,
+) (*controlflow.EvaluationResult, error) {
+	if len(fc.Arguments) != len(userFunction.Args) {
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgFunctionNumArgs,
+			fc.StartPosition(),
+			fc.FunctionName,
+			len(userFunction.Args),
+			len(fc.Arguments),
+		)
+	}
+
+	argValues := make([]datavalue.Value, len(fc.Arguments))
+
+	for i, arg := range fc.Arguments {
+		val, err := e.Evaluate(arg)
+
+		if err != nil {
+			return controlflow.NewRegularResult(datavalue.Null()), err
+		}
+
+		argValues[i] = val.Value
+	}
+
+	e.pushBlockScope()
+	defer e.popBlockScope()
+
+	for i, param := range userFunction.Args {
+		e.blockScopes[e.blockScopesLen-1][param.Name] = &Variable{
+			Value: argValues[i],
+			Type:  param.Type,
+		}
+	}
+
+	result, err := e.Evaluate(userFunction.Body)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	return result, nil
 }
 
 func (e *Evaluator) evaluateArguments(

@@ -4,6 +4,8 @@ package evaluator
 import (
 	"io"
 	"strings"
+
+	"github.com/Dobefu/DLiteScript/internal/ast"
 )
 
 // Evaluator defines the actual evaluator struct.
@@ -11,6 +13,7 @@ type Evaluator struct {
 	outerScope     map[string]ScopedValue
 	blockScopes    []map[string]ScopedValue
 	blockScopesLen int
+	userFunctions  map[string]*ast.FuncDeclarationStatement
 	buf            strings.Builder
 	outFile        io.Writer
 }
@@ -21,6 +24,7 @@ func NewEvaluator(outFile io.Writer) *Evaluator {
 		outerScope:     make(map[string]ScopedValue),
 		blockScopes:    make([]map[string]ScopedValue, 0),
 		blockScopesLen: 0,
+		userFunctions:  make(map[string]*ast.FuncDeclarationStatement),
 		buf:            strings.Builder{},
 		outFile:        outFile,
 	}

@@ -13,6 +13,8 @@ const (
 	DataTypeString
 	// DataTypeBool represents a boolean type.
 	DataTypeBool
+	// DataTypeFunction represents a function type.
+	DataTypeFunction
 )
 
 // AsString provides the string representation of a DataType for error messages.
@@ -29,6 +31,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeBool:
 		return "bool"
+
+	case DataTypeFunction:
+		return "function"
 
 	default:
 		return "unknown"
