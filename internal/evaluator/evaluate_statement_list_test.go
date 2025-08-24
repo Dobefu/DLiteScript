@@ -14,14 +14,17 @@ func TestEvaluateStatementList(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.StatementList
 		expected string
 	}{
 		{
+			name:     "empty",
 			input:    &ast.StatementList{Statements: []ast.ExprNode{}, StartPos: 0, EndPos: 0},
 			expected: "",
 		},
 		{
+			name: "single statement",
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.NumberLiteral{
@@ -38,12 +41,16 @@ func TestEvaluateStatementList(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator(io.Discard)
-		_, err := ev.evaluateStatementList(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
-		}
+			ev := NewEvaluator(io.Discard)
+			_, err := ev.evaluateStatementList(test.input)
+
+			if err != nil {
+				t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+			}
+		})
 	}
 }
 
@@ -51,10 +58,12 @@ func TestEvaluateStatementListErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.StatementList
 		expected string
 	}{
 		{
+			name: "undefined function",
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.FunctionCall{
@@ -78,19 +87,23 @@ func TestEvaluateStatementListErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator(io.Discard)
-		_, err := ev.evaluateStatementList(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			ev := NewEvaluator(io.Discard)
+			_, err := ev.evaluateStatementList(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }

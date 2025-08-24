@@ -14,10 +14,12 @@ func TestEvaluateIfStatement(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected datavalue.Value
 	}{
 		{
+			name: "false condition",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
 					Value:    "false",
@@ -42,6 +44,7 @@ func TestEvaluateIfStatement(t *testing.T) {
 			expected: datavalue.Null(),
 		},
 		{
+			name: "true condition",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
 					Value:    "true",
@@ -66,6 +69,7 @@ func TestEvaluateIfStatement(t *testing.T) {
 			expected: datavalue.Number(1),
 		},
 		{
+			name: "false condition, else block",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
 					Value:    "false",
@@ -96,7 +100,7 @@ func TestEvaluateIfStatement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.Expr(), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			result, err := NewEvaluator(io.Discard).Evaluate(test.input)
@@ -121,10 +125,12 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "condition is number",
 			input: &ast.IfStatement{
 				Condition: &ast.NumberLiteral{
 					Value:    "1",
@@ -149,6 +155,7 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
 		},
 		{
+			name: "condition is undefined identifier",
 			input: &ast.IfStatement{
 				Condition: &ast.Identifier{
 					Value:    "undefined_var",
@@ -175,7 +182,7 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.Expr(), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			_, err := NewEvaluator(io.Discard).Evaluate(test.input)

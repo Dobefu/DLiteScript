@@ -12,10 +12,12 @@ func TestEvaluateContinueStatement(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.ContinueStatement
 		expected *controlflow.EvaluationResult
 	}{
 		{
+			name: "zero count",
 			input: &ast.ContinueStatement{
 				Count:    0,
 				StartPos: 0,
@@ -24,6 +26,7 @@ func TestEvaluateContinueStatement(t *testing.T) {
 			expected: controlflow.NewContinueResult(0),
 		},
 		{
+			name: "one count",
 			input: &ast.ContinueStatement{
 				Count:    1,
 				StartPos: 0,
@@ -34,18 +37,22 @@ func TestEvaluateContinueStatement(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := NewEvaluator(io.Discard).evaluateContinueStatement(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Fatalf("error evaluating %s: %s", test.input.Expr(), err)
-		}
+			result, err := NewEvaluator(io.Discard).evaluateContinueStatement(test.input)
 
-		if !result.IsContinueResult() {
-			t.Fatalf("expected continue result, got \"%v\"", result.Control.Type)
-		}
+			if err != nil {
+				t.Fatalf("error evaluating %s: %s", test.input.Expr(), err)
+			}
 
-		if result.Control.Count != test.expected.Control.Count {
-			t.Fatalf("expected %d, got %d", test.expected.Control.Count, result.Control.Count)
-		}
+			if !result.IsContinueResult() {
+				t.Fatalf("expected continue result, got \"%v\"", result.Control.Type)
+			}
+
+			if result.Control.Count != test.expected.Control.Count {
+				t.Fatalf("expected %d, got %d", test.expected.Control.Count, result.Control.Count)
+			}
+		})
 	}
 }

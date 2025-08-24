@@ -13,10 +13,12 @@ func TestEvaluate(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected float64
 	}{
 		{
+			name: "binary expression",
 			input: &ast.BinaryExpr{
 				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.BinaryExpr{
@@ -62,21 +64,25 @@ func TestEvaluate(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
-		}
+			rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
-		result, err := rawResult.Value.AsNumber()
+			if err != nil {
+				t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+			}
 
-		if err != nil {
-			t.Fatalf("expected number, got type error: %s", err.Error())
-		}
+			result, err := rawResult.Value.AsNumber()
 
-		if result != test.expected {
-			t.Errorf("expected %f, got %f", test.expected, result)
-		}
+			if err != nil {
+				t.Fatalf("expected number, got type error: %s", err.Error())
+			}
+
+			if result != test.expected {
+				t.Errorf("expected %f, got %f", test.expected, result)
+			}
+		})
 	}
 }
 
@@ -84,10 +90,12 @@ func TestOutput(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "function call",
 			input: &ast.FunctionCall{
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
@@ -101,7 +109,7 @@ func TestOutput(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.Expr(), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			evaluator := NewEvaluator(io.Discard)

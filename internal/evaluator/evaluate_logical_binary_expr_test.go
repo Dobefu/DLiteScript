@@ -15,12 +15,14 @@ func TestEvaluateLogicalBinaryExpr(t *testing.T) {
 	evaluator := NewEvaluator(io.Discard)
 
 	tests := []struct {
+		name       string
 		inputLeft  datavalue.Value
 		inputRight datavalue.Value
 		inputNode  *ast.BinaryExpr
 		expected   datavalue.Value
 	}{
 		{
+			name:       "true && false",
 			inputLeft:  datavalue.Bool(true),
 			inputRight: datavalue.Bool(false),
 			inputNode: &ast.BinaryExpr{
@@ -38,6 +40,7 @@ func TestEvaluateLogicalBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(false),
 		},
 		{
+			name:       "true || false",
 			inputLeft:  datavalue.Bool(true),
 			inputRight: datavalue.Bool(false),
 			inputNode: &ast.BinaryExpr{
@@ -57,23 +60,27 @@ func TestEvaluateLogicalBinaryExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := evaluator.evaluateLogicalBinaryExpr(
-			test.inputLeft,
-			test.inputRight,
-			test.inputNode,
-		)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Fatalf("error evaluating %s: %s", test.inputNode.Expr(), err)
-		}
-
-		if rawResult.Value.DataType() != test.expected.DataType() {
-			t.Fatalf(
-				"expected %s, got %s",
-				test.expected.DataType().AsString(),
-				rawResult.Value.DataType().AsString(),
+			rawResult, err := evaluator.evaluateLogicalBinaryExpr(
+				test.inputLeft,
+				test.inputRight,
+				test.inputNode,
 			)
-		}
+
+			if err != nil {
+				t.Fatalf("error evaluating %s: %s", test.inputNode.Expr(), err)
+			}
+
+			if rawResult.Value.DataType() != test.expected.DataType() {
+				t.Fatalf(
+					"expected %s, got %s",
+					test.expected.DataType().AsString(),
+					rawResult.Value.DataType().AsString(),
+				)
+			}
+		})
 	}
 }
 
@@ -83,12 +90,14 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 	evaluator := NewEvaluator(io.Discard)
 
 	tests := []struct {
+		name       string
 		inputLeft  datavalue.Value
 		inputRight datavalue.Value
 		inputNode  *ast.BinaryExpr
 		expected   datavalue.Value
 	}{
 		{
+			name:       "number and string",
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.String("5"),
 			inputNode: &ast.BinaryExpr{
@@ -106,6 +115,7 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name:       "number and number",
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.Number(5),
 			inputNode: &ast.BinaryExpr{
@@ -125,14 +135,18 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := evaluator.evaluateLogicalBinaryExpr(
-			test.inputLeft,
-			test.inputRight,
-			test.inputNode,
-		)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error evaluating \"%s\", got nil", test.inputNode.Expr())
-		}
+			_, err := evaluator.evaluateLogicalBinaryExpr(
+				test.inputLeft,
+				test.inputRight,
+				test.inputNode,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error evaluating \"%s\", got nil", test.inputNode.Expr())
+			}
+		})
 	}
 }

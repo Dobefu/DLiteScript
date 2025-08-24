@@ -35,10 +35,12 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "single argument",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
 				&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
@@ -46,6 +48,7 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 			expected: "test",
 		},
 		{
+			name: "multiple arguments",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
 				&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
@@ -58,16 +61,20 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator(io.Discard)
-		_, err := ev.Evaluate(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("error evaluating '%s': %s", test.input, err.Error())
-		}
+			ev := NewEvaluator(io.Discard)
+			_, err := ev.Evaluate(test.input)
 
-		if ev.buf.String() != test.expected {
-			t.Errorf("expected '%s', got '%s'", test.expected, ev.buf.String())
-		}
+			if err != nil {
+				t.Errorf("error evaluating '%s': %s", test.input, err.Error())
+			}
+
+			if ev.buf.String() != test.expected {
+				t.Errorf("expected '%s', got '%s'", test.expected, ev.buf.String())
+			}
+		})
 	}
 }
 
@@ -75,16 +82,19 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "no arguments",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
 			),
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 		},
 		{
+			name: "single argument",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"printf",
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
@@ -94,20 +104,24 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		ev := NewEvaluator(io.Discard)
-		_, err := ev.Evaluate(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			ev := NewEvaluator(io.Discard)
+			_, err := ev.Evaluate(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }
 
@@ -115,10 +129,12 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "undefined function",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"bogus",
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
@@ -126,6 +142,7 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 		{
+			name: "too many arguments",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"abs",
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
@@ -134,6 +151,7 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "abs", 1, 2),
 		},
 		{
+			name: "invalid argument",
 			input: evaluateFunctionCallCreateFunctionCall(
 				"abs",
 				&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
@@ -143,18 +161,22 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).Evaluate(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }

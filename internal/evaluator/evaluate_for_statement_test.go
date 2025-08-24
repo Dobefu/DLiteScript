@@ -206,10 +206,12 @@ func TestEvaluateForStatementErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected string
 	}{
 		{
+			name: "invalid range from",
 			input: &ast.ForStatement{
 				Condition: nil,
 				Body: &ast.BlockStatement{
@@ -230,6 +232,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
+			name: "invalid range to",
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
 					&ast.VariableDeclaration{
@@ -271,6 +274,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
+			name: "invalid condition",
 			input: &ast.ForStatement{
 				Condition: &ast.StringLiteral{
 					Value:    "not_a_bool",
@@ -297,19 +301,23 @@ func TestEvaluateForStatementErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).Evaluate(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
-		if err.Error() != test.expected {
-			t.Fatalf(
-				"expected \"%v\", got \"%v\" at position %d",
-				test.expected,
-				err.Error(),
-				test.input.StartPosition(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf(
+					"expected \"%v\", got \"%v\" at position %d",
+					test.expected,
+					err.Error(),
+					test.input.StartPosition(),
+				)
+			}
+		})
 	}
 }

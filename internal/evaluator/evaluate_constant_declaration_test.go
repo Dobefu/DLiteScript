@@ -14,9 +14,11 @@ func TestEvaluateConstantDeclaration(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name  string
 		input *ast.ConstantDeclaration
 	}{
 		{
+			name: "number",
 			input: &ast.ConstantDeclaration{
 				Name:     "x",
 				Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
@@ -28,11 +30,15 @@ func TestEvaluateConstantDeclaration(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).evaluateConstantDeclaration(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Fatalf("error evaluating %s: %s", test.input.Expr(), err)
-		}
+			_, err := NewEvaluator(io.Discard).evaluateConstantDeclaration(test.input)
+
+			if err != nil {
+				t.Fatalf("error evaluating %s: %s", test.input.Expr(), err)
+			}
+		})
 	}
 }
 
@@ -40,10 +46,12 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.ConstantDeclaration
 		expected string
 	}{
 		{
+			name: "type mismatch",
 			input: &ast.ConstantDeclaration{
 				Name:     "x",
 				Value:    &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
@@ -60,14 +68,18 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).evaluateConstantDeclaration(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error evaluating %s, got nil", test.input.Expr())
-		}
+			_, err := NewEvaluator(io.Discard).evaluateConstantDeclaration(test.input)
 
-		if err.Error() != test.expected {
-			t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
-		}
+			if err == nil {
+				t.Fatalf("expected error evaluating %s, got nil", test.input.Expr())
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
 	}
 }

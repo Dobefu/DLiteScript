@@ -13,12 +13,14 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name       string
 		inputLeft  datavalue.Value
 		inputRight datavalue.Value
 		inputNode  *ast.BinaryExpr
 		expected   datavalue.Value
 	}{
 		{
+			name:       "number",
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.Number(5),
 			inputNode: &ast.BinaryExpr{
@@ -36,6 +38,7 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name:       "string",
 			inputLeft:  datavalue.String("5"),
 			inputRight: datavalue.String("5"),
 			inputNode: &ast.BinaryExpr{
@@ -53,6 +56,7 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name:       "boolean",
 			inputLeft:  datavalue.Bool(true),
 			inputRight: datavalue.Bool(true),
 			inputNode: &ast.BinaryExpr{
@@ -70,6 +74,7 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name:       "null",
 			inputLeft:  datavalue.Null(),
 			inputRight: datavalue.Null(),
 			inputNode: &ast.BinaryExpr{
@@ -89,14 +94,26 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result, err := NewEvaluator(io.Discard).evaluateEqualityBinaryExpr(test.inputLeft, test.inputRight, test.inputNode)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Fatalf("error evaluating %s: %s", test.inputNode.Expr(), err)
-		}
+			result, err := NewEvaluator(io.Discard).evaluateEqualityBinaryExpr(
+				test.inputLeft,
+				test.inputRight,
+				test.inputNode,
+			)
 
-		if result.Value.DataType().AsString() != test.expected.DataType().AsString() {
-			t.Fatalf("expected \"%v\", got \"%v\"", test.expected.DataType().AsString(), result.Value.DataType().AsString())
-		}
+			if err != nil {
+				t.Fatalf("error evaluating %s: %s", test.inputNode.Expr(), err)
+			}
+
+			if result.Value.DataType().AsString() != test.expected.DataType().AsString() {
+				t.Fatalf(
+					"expected \"%v\", got \"%v\"",
+					test.expected.DataType().AsString(),
+					result.Value.DataType().AsString(),
+				)
+			}
+		})
 	}
 }

@@ -11,9 +11,11 @@ func TestFunctionRegistry(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name  string
 		input *ast.FunctionCall
 	}{
 		{
+			name: "printf",
 			input: &ast.FunctionCall{
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
@@ -24,6 +26,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "abs",
 			input: &ast.FunctionCall{
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
@@ -34,6 +37,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "sin",
 			input: &ast.FunctionCall{
 				FunctionName: "sin",
 				Arguments: []ast.ExprNode{
@@ -44,6 +48,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "cos",
 			input: &ast.FunctionCall{
 				FunctionName: "cos",
 				Arguments: []ast.ExprNode{
@@ -54,6 +59,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "tan",
 			input: &ast.FunctionCall{
 				FunctionName: "tan",
 				Arguments: []ast.ExprNode{
@@ -64,6 +70,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "sqrt",
 			input: &ast.FunctionCall{
 				FunctionName: "sqrt",
 				Arguments: []ast.ExprNode{
@@ -74,6 +81,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "round",
 			input: &ast.FunctionCall{
 				FunctionName: "round",
 				Arguments: []ast.ExprNode{
@@ -84,6 +92,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "floor",
 			input: &ast.FunctionCall{
 				FunctionName: "floor",
 				Arguments: []ast.ExprNode{
@@ -94,6 +103,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "ceil",
 			input: &ast.FunctionCall{
 				FunctionName: "ceil",
 				Arguments: []ast.ExprNode{
@@ -104,6 +114,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "min",
 			input: &ast.FunctionCall{
 				FunctionName: "min",
 				Arguments: []ast.ExprNode{
@@ -115,6 +126,7 @@ func TestFunctionRegistry(t *testing.T) {
 			},
 		},
 		{
+			name: "max",
 			input: &ast.FunctionCall{
 				FunctionName: "max",
 				Arguments: []ast.ExprNode{
@@ -128,7 +140,7 @@ func TestFunctionRegistry(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.FunctionName, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			evaluator := NewEvaluator(io.Discard)

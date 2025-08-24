@@ -16,10 +16,12 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.PrefixExpr
 		expected datavalue.Value
 	}{
 		{
+			name: "negative",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "-",
@@ -34,6 +36,7 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 			expected: datavalue.Number(-5),
 		},
 		{
+			name: "positive",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "+",
@@ -48,6 +51,7 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 			expected: datavalue.Number(5),
 		},
 		{
+			name: "logical not",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "!",
@@ -64,19 +68,23 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
-		}
+			rawResult, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
 
-		if rawResult.Value.DataType().AsString() != test.expected.DataType().AsString() {
-			t.Errorf(
-				"expected '%v', got '%v'",
-				test.expected.DataType().AsString(),
-				rawResult.Value.DataType().AsString(),
-			)
-		}
+			if err != nil {
+				t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+			}
+
+			if rawResult.Value.DataType().AsString() != test.expected.DataType().AsString() {
+				t.Errorf(
+					"expected '%v', got '%v'",
+					test.expected.DataType().AsString(),
+					rawResult.Value.DataType().AsString(),
+				)
+			}
+		})
 	}
 }
 
@@ -84,10 +92,12 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.PrefixExpr
 		expected string
 	}{
 		{
+			name: "operand is nil",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "-",
@@ -102,6 +112,7 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
+			name: "operand is string",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "+",
@@ -116,6 +127,7 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
 		},
 		{
+			name: "unary operand is nil",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
 					Atom:      "!",
@@ -132,18 +144,22 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			_, err := NewEvaluator(io.Discard).evaluatePrefixExpr(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }

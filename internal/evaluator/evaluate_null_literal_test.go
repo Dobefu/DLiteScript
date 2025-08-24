@@ -12,17 +12,19 @@ func TestEvaluateNullLiteral(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected datavalue.Value
 	}{
 		{
+			name:     "null literal",
 			input:    &ast.NullLiteral{StartPos: 0, EndPos: 0},
 			expected: datavalue.Null(),
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.Expr(), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			result, err := NewEvaluator(io.Discard).Evaluate(test.input)

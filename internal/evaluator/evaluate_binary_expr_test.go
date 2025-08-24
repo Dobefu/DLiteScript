@@ -16,10 +16,12 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.BinaryExpr
 		expected datavalue.Value
 	}{
 		{
+			name: "addition",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -35,6 +37,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(10),
 		},
 		{
+			name: "subtraction",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -50,6 +53,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(0),
 		},
 		{
+			name: "multiplication",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -65,6 +69,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(25),
 		},
 		{
+			name: "division",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -80,6 +85,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(1),
 		},
 		{
+			name: "modulo",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -95,6 +101,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(0),
 		},
 		{
+			name: "power",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -110,6 +117,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(3125),
 		},
 		{
+			name: "equality",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -125,6 +133,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name: "greater than or equal",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "6", StartPos: 2, EndPos: 3},
@@ -140,6 +149,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(false),
 		},
 		{
+			name: "logical and",
 			input: &ast.BinaryExpr{
 				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
 				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
@@ -157,19 +167,23 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		rawResult, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Fatalf("error evaluating %s: %s", test.input.Expr(), err.Error())
-		}
+			rawResult, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
 
-		if rawResult.Value.DataType() != test.expected.DataType() {
-			t.Fatalf(
-				"expected \"%s\", got \"%s\"",
-				test.expected.DataType().AsString(),
-				rawResult.Value.DataType().AsString(),
-			)
-		}
+			if err != nil {
+				t.Fatalf("error evaluating %s: %s", test.input.Expr(), err.Error())
+			}
+
+			if rawResult.Value.DataType() != test.expected.DataType() {
+				t.Fatalf(
+					"expected \"%s\", got \"%s\"",
+					test.expected.DataType().AsString(),
+					rawResult.Value.DataType().AsString(),
+				)
+			}
+		})
 	}
 }
 
@@ -177,10 +191,12 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *ast.BinaryExpr
 		expected string
 	}{
 		{
+			name: "left operand is nil",
 			input: &ast.BinaryExpr{
 				Left:  nil,
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -196,6 +212,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
+			name: "right operand is nil",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: nil,
@@ -211,6 +228,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 		},
 		{
+			name: "division by zero",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
@@ -226,6 +244,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: errorutil.ErrorMsgDivByZero,
 		},
 		{
+			name: "modulo by zero",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
@@ -241,6 +260,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: errorutil.ErrorMsgModByZero,
 		},
 		{
+			name: "unknown operator",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
@@ -256,6 +276,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ","),
 		},
 		{
+			name: "undefined identifier",
 			input: &ast.BinaryExpr{
 				Left:  &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
@@ -271,6 +292,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
 		},
 		{
+			name: "undefined identifier",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
 				Right: &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
@@ -288,18 +310,22 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error, got nil")
-		}
+			_, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }
