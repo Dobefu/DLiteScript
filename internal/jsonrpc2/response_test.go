@@ -10,11 +10,13 @@ func TestResponse(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		result   json.RawMessage
 		id       RequestID
 		expected string
 	}{
 		{
+			name:     "test",
 			result:   json.RawMessage("test"),
 			id:       *NewRequestID(json.RawMessage("1")),
 			expected: "test",
@@ -22,7 +24,7 @@ func TestResponse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(string(test.result), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			resp := NewResponse(test.result, test.id)
@@ -38,11 +40,13 @@ func TestErrorResponse(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		errData  []byte
 		id       RequestID
 		expected string
 	}{
 		{
+			name:     "test",
 			errData:  json.RawMessage("test"),
 			id:       *NewRequestID(json.RawMessage("1")),
 			expected: "test",
@@ -50,7 +54,7 @@ func TestErrorResponse(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(string(test.errData), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			resp := NewErrorResponse(test.errData, test.id)

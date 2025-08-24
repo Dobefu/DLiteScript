@@ -9,17 +9,19 @@ func TestRequestID(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *RequestID
 		expected string
 	}{
 		{
+			name:     "test",
 			input:    &RequestID{value: json.RawMessage("1")},
 			expected: "1",
 		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.String(), func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			if test.input.String() != test.expected {

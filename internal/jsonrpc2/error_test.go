@@ -9,12 +9,14 @@ func TestError(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		code     ErrorCode
 		message  string
 		data     *json.RawMessage
 		expected string
 	}{
 		{
+			name:     "test",
 			code:     -32000,
 			message:  "test",
 			data:     &json.RawMessage{},
@@ -23,7 +25,7 @@ func TestError(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.message, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			testErr := NewError(

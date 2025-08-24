@@ -10,11 +10,13 @@ func TestRequest(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		method   string
 		params   json.RawMessage
 		expected string
 	}{
 		{
+			name:     "test",
 			method:   "test",
 			params:   json.RawMessage("1"),
 			expected: "1",
@@ -22,7 +24,7 @@ func TestRequest(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.method, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			req := NewRequest(test.method, test.params)

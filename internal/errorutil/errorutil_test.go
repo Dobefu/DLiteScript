@@ -12,25 +12,31 @@ func TestNewError(t *testing.T) {
 	const expectedErrorMsg = "expected error to be '%s', got '%s'"
 
 	tests := []struct {
+		name     string
 		input    ErrorMsg
 		expected string
 	}{
 		{
+			name:     "paren not closed at eof",
 			input:    ErrorMsgParenNotClosedAtEOF,
 			expected: ErrorMsgParenNotClosedAtEOF,
 		},
 	}
 
 	for _, test := range tests {
-		err := NewError(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err.Error() != test.expected {
-			t.Errorf(expectedErrorMsg, test.expected, err.Error())
-		}
+			err := NewError(test.input)
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(expectedErrorMsg, test.expected, errors.Unwrap(err).Error())
-		}
+			if err.Error() != test.expected {
+				t.Errorf(expectedErrorMsg, test.expected, err.Error())
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(expectedErrorMsg, test.expected, errors.Unwrap(err).Error())
+			}
+		})
 	}
 }
 

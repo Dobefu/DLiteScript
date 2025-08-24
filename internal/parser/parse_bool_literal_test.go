@@ -11,10 +11,12 @@ func TestParseBoolLiteral(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    *token.Token
 		expected ast.ExprNode
 	}{
 		{
+			name:  "true",
 			input: token.NewToken("true", token.TokenTypeBool, 0, 0),
 			expected: &ast.BoolLiteral{
 				Value:    "true",
@@ -23,6 +25,7 @@ func TestParseBoolLiteral(t *testing.T) {
 			},
 		},
 		{
+			name:  "false",
 			input: token.NewToken("false", token.TokenTypeBool, 0, 0),
 			expected: &ast.BoolLiteral{
 				Value:    "false",
@@ -33,7 +36,7 @@ func TestParseBoolLiteral(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input.Atom, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			parser := NewParser([]*token.Token{test.input})
