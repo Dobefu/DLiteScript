@@ -111,6 +111,14 @@ func (p *Parser) parseThenBlock(endToken token.Type) (*ast.BlockStatement, error
 		return nil, err
 	}
 
+	if thenBlock == nil {
+		return &ast.BlockStatement{
+			Statements: []ast.ExprNode{},
+			StartPos:   p.GetCurrentCharPos(),
+			EndPos:     p.GetCurrentCharPos(),
+		}, nil
+	}
+
 	blockStatement, isBlockStatement := thenBlock.(*ast.BlockStatement)
 
 	if !isBlockStatement {
@@ -134,6 +142,14 @@ func (p *Parser) parseElseBlock(endToken token.Type) (*ast.BlockStatement, error
 
 	if err != nil {
 		return nil, err
+	}
+
+	if elseBlock == nil {
+		return &ast.BlockStatement{
+			Statements: []ast.ExprNode{},
+			StartPos:   p.GetCurrentCharPos(),
+			EndPos:     p.GetCurrentCharPos(),
+		}, nil
 	}
 
 	blockStatement, isBlockStatement := elseBlock.(*ast.BlockStatement)
