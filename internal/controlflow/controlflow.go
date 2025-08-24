@@ -11,6 +11,8 @@ const (
 	FlowTypeBreak FlowType = iota
 	// FlowTypeContinue represents a continue statement.
 	FlowTypeContinue
+	// FlowTypeReturn represents a return statement.
+	FlowTypeReturn
 )
 
 // Control represents a control flow from a statement.
@@ -55,6 +57,17 @@ func NewContinueResult(count int) *EvaluationResult {
 	}
 }
 
+// NewReturnResult creates a new return result.
+func NewReturnResult(value datavalue.Value) *EvaluationResult {
+	return &EvaluationResult{
+		Value: value,
+		Control: &Control{
+			Type:  FlowTypeReturn,
+			Count: 0,
+		},
+	}
+}
+
 // IsNormalResult returns true if this is a normal result (no control flow).
 func (r *EvaluationResult) IsNormalResult() bool {
 	return r.Control == nil
@@ -68,4 +81,9 @@ func (r *EvaluationResult) IsBreakResult() bool {
 // IsContinueResult returns true if this is a continue result.
 func (r *EvaluationResult) IsContinueResult() bool {
 	return r.Control != nil && r.Control.Type == FlowTypeContinue
+}
+
+// IsReturnResult returns true if this is a return result.
+func (r *EvaluationResult) IsReturnResult() bool {
+	return r.Control != nil && r.Control.Type == FlowTypeReturn
 }

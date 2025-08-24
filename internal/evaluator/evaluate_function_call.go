@@ -89,6 +89,10 @@ func (e *Evaluator) evaluateUserFunctionCall(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
+	if result.IsReturnResult() {
+		return result, nil
+	}
+
 	return result, nil
 }
 
