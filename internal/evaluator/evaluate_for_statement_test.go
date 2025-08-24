@@ -14,10 +14,12 @@ func TestEvaluateForStatement(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    ast.ExprNode
 		expected datavalue.Value
 	}{
 		{
+			name: "infinite loop",
 			input: &ast.ForStatement{
 				Condition: nil,
 				Body: &ast.BlockStatement{
@@ -38,6 +40,34 @@ func TestEvaluateForStatement(t *testing.T) {
 			expected: datavalue.Null(),
 		},
 		{
+			name: "loop with range variable",
+			input: &ast.ForStatement{
+				Condition: nil,
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   0,
+					EndPos:     0,
+				},
+				StartPos:         0,
+				EndPos:           0,
+				DeclaredVariable: "i",
+				RangeVariable:    "i",
+				RangeFrom: &ast.NumberLiteral{
+					Value:    "0",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				IsRange: true,
+			},
+			expected: datavalue.Null(),
+		},
+		{
+			name: "loop with condition",
 			input: &ast.ForStatement{
 				Condition: &ast.BoolLiteral{
 					Value:    "true",
@@ -62,6 +92,7 @@ func TestEvaluateForStatement(t *testing.T) {
 			expected: datavalue.Null(),
 		},
 		{
+			name: "loop with continue statement",
 			input: &ast.ForStatement{
 				Condition: nil,
 				Body: &ast.BlockStatement{
@@ -79,6 +110,64 @@ func TestEvaluateForStatement(t *testing.T) {
 				EndPos:           0,
 				DeclaredVariable: "i",
 				RangeVariable:    "",
+				RangeFrom: &ast.NumberLiteral{
+					Value:    "0",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				IsRange: true,
+			},
+			expected: datavalue.Null(),
+		},
+		{
+			name: "loop with break statement count > 1",
+			input: &ast.ForStatement{
+				Condition: nil,
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.BreakStatement{Count: 3, StartPos: 0, EndPos: 0},
+					},
+					StartPos: 0,
+					EndPos:   0,
+				},
+				StartPos:         0,
+				EndPos:           0,
+				DeclaredVariable: "i",
+				RangeVariable:    "i",
+				RangeFrom: &ast.NumberLiteral{
+					Value:    "0",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				IsRange: true,
+			},
+			expected: datavalue.Null(),
+		},
+		{
+			name: "loop with continue statement count > 1",
+			input: &ast.ForStatement{
+				Condition: nil,
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.ContinueStatement{Count: 2, StartPos: 0, EndPos: 0},
+					},
+					StartPos: 0,
+					EndPos:   0,
+				},
+				StartPos:         0,
+				EndPos:           0,
+				DeclaredVariable: "i",
+				RangeVariable:    "i",
 				RangeFrom: &ast.NumberLiteral{
 					Value:    "0",
 					StartPos: 0,
@@ -180,6 +269,30 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				EndPos:   0,
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+		},
+		{
+			input: &ast.ForStatement{
+				Condition: &ast.StringLiteral{
+					Value:    "not_a_bool",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+					},
+					StartPos: 0,
+					EndPos:   0,
+				},
+				StartPos:         0,
+				EndPos:           0,
+				DeclaredVariable: "",
+				RangeVariable:    "",
+				RangeFrom:        nil,
+				RangeTo:          nil,
+				IsRange:          false,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
 		},
 	}
 
