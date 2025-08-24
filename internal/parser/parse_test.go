@@ -13,26 +13,31 @@ func TestParse(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected string
 	}{
 		{
+			name:     "empty",
 			input:    []*token.Token{},
 			expected: "",
 		},
 		{
+			name: "underscore",
 			input: []*token.Token{
 				{Atom: "_", TokenType: token.TokenTypeNumber},
 			},
 			expected: "_",
 		},
 		{
+			name: "number",
 			input: []*token.Token{
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: "1",
 		},
 		{
+			name: "number with newline",
 			input: []*token.Token{
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "\n", TokenType: token.TokenTypeNewline},
@@ -40,56 +45,92 @@ func TestParse(t *testing.T) {
 			expected: "1",
 		},
 		{
+			name: "variable declaration",
 			input: []*token.Token{
-				{Atom: "(", TokenType: token.TokenTypeLParen},
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
+				{Atom: "=", TokenType: token.TokenTypeAssign},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
-				{Atom: "10", TokenType: token.TokenTypeNumber},
-				{Atom: "/", TokenType: token.TokenTypeOperationDiv},
-				{Atom: "5", TokenType: token.TokenTypeNumber},
-				{Atom: "**", TokenType: token.TokenTypeOperationPow},
-				{Atom: "2", TokenType: token.TokenTypeNumber},
-				{Atom: "*", TokenType: token.TokenTypeOperationMul},
-				{Atom: "5", TokenType: token.TokenTypeNumber},
-				{Atom: "-", TokenType: token.TokenTypeOperationSub},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "-", TokenType: token.TokenTypeOperationSub},
-				{Atom: "123", TokenType: token.TokenTypeNumber},
-				{Atom: "%", TokenType: token.TokenTypeOperationMod},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "-", TokenType: token.TokenTypeOperationSub},
-				{Atom: "(", TokenType: token.TokenTypeLParen},
-				{Atom: "5", TokenType: token.TokenTypeNumber},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
-				{Atom: ")", TokenType: token.TokenTypeRParen},
 			},
-			expected: "((1 + (10 / ((5 ** 2) * 5))) - ((- 123) % (- 5)))",
+			expected: "var x number = 1",
+		},
+		{
+			name: "constant declaration",
+			input: []*token.Token{
+				{Atom: "const", TokenType: token.TokenTypeConst},
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
+				{Atom: "=", TokenType: token.TokenTypeAssign},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+			expected: "const x number = 1",
+		},
+		{
+			name: "if statement",
+			input: []*token.Token{
+				{Atom: "if", TokenType: token.TokenTypeIf},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: "if 1 { (1) }",
+		},
+		{
+			name: "for loop with break",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "break", TokenType: token.TokenTypeBreak},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: "for { (break) }",
+		},
+		{
+			name: "for loop with continue",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "continue", TokenType: token.TokenTypeContinue},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: "for { (continue) }",
+		},
+		{
+			name: "block statement",
+			input: []*token.Token{
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: "(1)",
 		},
 	}
 
 	for _, test := range tests {
-		parser := NewParser(test.input)
-		result, err := parser.Parse()
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("expected no error, got '%s'", err.Error())
+			parser := NewParser(test.input)
+			result, err := parser.Parse()
 
-			continue
-		}
-
-		if len(test.input) == 0 {
-			if result != nil {
-				t.Errorf("expected nil result, got '%s'", result.Expr())
+			if err != nil {
+				t.Fatalf("expected no error, got \"%s\"", err.Error())
 			}
 
-			continue
-		}
+			if len(test.input) == 0 {
+				if result != nil {
+					t.Fatalf("expected nil result, got \"%s\"", result.Expr())
+				}
 
-		if result.Expr() != test.expected {
-			t.Errorf("expected '%s', got '%s'", test.expected, result.Expr())
-		}
+				return
+			}
+
+			if result.Expr() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, result.Expr())
+			}
+		})
 	}
 }
 
@@ -97,14 +138,17 @@ func TestParseErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected string
 	}{
 		{
+			name:     "empty",
 			input:    []*token.Token{{}},
 			expected: errorutil.ErrorMsgUnexpectedEOF,
 		},
 		{
+			name: "unexpected EOF",
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -113,6 +157,7 @@ func TestParseErr(t *testing.T) {
 			expected: errorutil.ErrorMsgUnexpectedEOF,
 		},
 		{
+			name: "unexpected operation",
 			input: []*token.Token{
 				{Atom: "/", TokenType: token.TokenTypeOperationDiv},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -120,35 +165,48 @@ func TestParseErr(t *testing.T) {
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "/"),
 		},
 		{
+			name: "unexpected token",
 			input: []*token.Token{
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "2", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "2"),
 		},
+		{
+			name: "block statement unexpected EOF",
+			input: []*token.Token{
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+			expected: errorutil.ErrorMsgUnexpectedEOF,
+		},
 	}
 
 	for _, test := range tests {
-		p := NewParser(test.input)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		// Test the EOF error.
-		if len(test.input) == 1 && test.input[0].Atom == "_" {
-			p.isEOF = true
-		}
+			p := NewParser(test.input)
 
-		_, err := p.Parse()
+			// Test the EOF error.
+			if len(test.input) == 1 && test.input[0].Atom == "_" {
+				p.isEOF = true
+			}
 
-		if err == nil {
-			t.Fatalf("expected error for \"%v\", got none", test.input)
-		}
+			_, err := p.Parse()
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
+			if err == nil {
+				t.Fatalf("expected error for \"%v\", got none", test.input)
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Fatalf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }
 

@@ -65,7 +65,7 @@ const (
 	// ErrorMsgReassignmentToConstant occurs when trying to re-assign a value to a constant.
 	ErrorMsgReassignmentToConstant = "cannot re-assign value to constant: '%s'"
 	// ErrorMsgBlockStatementExpected occurs when a block statement is expected but a different type is encountered.
-	ErrorMsgBlockStatementExpected = "block statement expected, but got '%s'"
+	ErrorMsgBlockStatementExpected = "block statement expected, but got '%T'"
 	// ErrorMsgBreakCountLessThanOne occurs when a break count is less than 1.
 	ErrorMsgBreakCountLessThanOne = "break count must be greater than 0"
 	// ErrorMsgContinueCountLessThanOne occurs when a continue count is less than 1.
