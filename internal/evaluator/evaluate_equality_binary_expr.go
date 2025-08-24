@@ -65,6 +65,9 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 	case datatype.DataTypeFunction:
 		return controlflow.NewRegularResult(datavalue.Bool(false)), nil
 
+	case datatype.DataTypeTuple:
+		return controlflow.NewRegularResult(datavalue.Bool(false)), nil
+
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnknownOperator,
