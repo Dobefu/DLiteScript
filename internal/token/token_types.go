@@ -78,6 +78,10 @@ const (
 	TokenTypeFrom
 	// TokenTypeTo represents the 'to' keyword.
 	TokenTypeTo
+	// TokenTypeFunc represents the 'func' keyword.
+	TokenTypeFunc
+	// TokenTypeReturn represents the 'return' keyword.
+	TokenTypeReturn
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber
