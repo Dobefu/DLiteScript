@@ -1,4 +1,4 @@
-var string1 string
+var string1 string = ""
 var string2 string = "test2"
 const string3 string = "test3"
 
