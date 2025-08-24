@@ -22,6 +22,10 @@ func (p *Parser) parseForStatement() (ast.ExprNode, error) {
 		return p.parseVariableDeclarationLoop(startPos)
 	}
 
+	if nextToken.TokenType == token.TokenTypeTo {
+		return p.parseImplicitRangeLoop(startPos)
+	}
+
 	return p.parseLoop(startPos)
 }
 
@@ -46,7 +50,17 @@ func (p *Parser) parseInfiniteLoop(startPos int) (ast.ExprNode, error) {
 }
 
 func (p *Parser) parseLoop(startPos int) (ast.ExprNode, error) {
-	nextToken, err := p.GetNextToken()
+	nextToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nextToken.TokenType == token.TokenTypeFrom {
+		return p.parseRangeLoopWithoutVariable(startPos)
+	}
+
+	nextToken, err = p.GetNextToken()
 
 	if err != nil {
 		return nil, err
@@ -163,7 +177,7 @@ func (p *Parser) parseVariableDeclarationLoop(
 	}
 
 	if nextToken.TokenType == token.TokenTypeTo {
-		return p.parseImplicitRangeLoop(startPos, varName)
+		return p.parseImplicitRangeLoopWithVariable(startPos, varName)
 	}
 
 	operatorToken, err := p.GetNextToken()
@@ -271,7 +285,7 @@ func (p *Parser) parseExplicitRangeLoop(
 	}, nil
 }
 
-func (p *Parser) parseImplicitRangeLoop(
+func (p *Parser) parseImplicitRangeLoopWithVariable(
 	startPos int,
 	varName string,
 ) (ast.ExprNode, error) {
@@ -297,6 +311,84 @@ func (p *Parser) parseImplicitRangeLoop(
 		},
 		RangeTo: toExpr,
 		IsRange: true,
+	}, nil
+}
+
+func (p *Parser) parseImplicitRangeLoop(startPos int) (ast.ExprNode, error) {
+	loopBody, toExpr, err := p.parseLoopBodyAndToExpr()
+
+	if err != nil {
+		return nil, err
+	}
+
+	zeroLiteralStartPos := p.GetCurrentCharPos()
+
+	return &ast.ForStatement{
+		Condition:        nil,
+		Body:             loopBody,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
+		DeclaredVariable: "",
+		RangeVariable:    "",
+		RangeFrom: &ast.NumberLiteral{
+			Value:    "0",
+			StartPos: zeroLiteralStartPos,
+			EndPos:   zeroLiteralStartPos + 1,
+		},
+		RangeTo: toExpr,
+		IsRange: true,
+	}, nil
+}
+
+func (p *Parser) parseRangeLoopWithoutVariable(startPos int) (ast.ExprNode, error) {
+	_, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	fromExpr, err := p.parseExpr(nextToken, nil, 0, 0)
+
+	if err != nil {
+		return nil, err
+	}
+
+	toToken, err := p.PeekNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if toToken.TokenType != token.TokenTypeTo {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedToken,
+			p.tokenIdx,
+			toToken.TokenType,
+		)
+	}
+
+	loopBody, toExpr, err := p.parseLoopBodyAndToExpr()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &ast.ForStatement{
+		Condition:        nil,
+		Body:             loopBody,
+		StartPos:         startPos,
+		EndPos:           loopBody.EndPosition(),
+		DeclaredVariable: "",
+		RangeVariable:    "",
+		RangeFrom:        fromExpr,
+		RangeTo:          toExpr,
+		IsRange:          true,
 	}, nil
 }
 

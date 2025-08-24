@@ -21,18 +21,35 @@ type ForStatement struct {
 func (f *ForStatement) Expr() string {
 	if f.IsRange {
 		if f.RangeFrom != nil {
+			if f.DeclaredVariable != "" {
+				return fmt.Sprintf(
+					"for var %s from %s to %s { %s }",
+					f.DeclaredVariable,
+					f.RangeFrom.Expr(),
+					f.RangeTo.Expr(),
+					f.Body.Expr(),
+				)
+			}
+
 			return fmt.Sprintf(
-				"for var %s from %s to %s { %s }",
-				f.DeclaredVariable,
+				"for from %s to %s { %s }",
 				f.RangeFrom.Expr(),
 				f.RangeTo.Expr(),
 				f.Body.Expr(),
 			)
 		}
 
+		if f.DeclaredVariable != "" {
+			return fmt.Sprintf(
+				"for var %s to %s { %s }",
+				f.DeclaredVariable,
+				f.RangeTo.Expr(),
+				f.Body.Expr(),
+			)
+		}
+
 		return fmt.Sprintf(
-			"for var %s to %s { %s }",
-			f.DeclaredVariable,
+			"for from 0 to %s { %s }",
 			f.RangeTo.Expr(),
 			f.Body.Expr(),
 		)
@@ -43,7 +60,12 @@ func (f *ForStatement) Expr() string {
 	}
 
 	if f.DeclaredVariable != "" {
-		return fmt.Sprintf("for var %s %s { %s }", f.DeclaredVariable, f.Condition.Expr(), f.Body.Expr())
+		return fmt.Sprintf(
+			"for var %s %s { %s }",
+			f.DeclaredVariable,
+			f.Condition.Expr(),
+			f.Body.Expr(),
+		)
 	}
 
 	return fmt.Sprintf("for %s { %s }", f.Condition.Expr(), f.Body.Expr())
