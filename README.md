@@ -1,38 +1,126 @@
 # DLiteScript
 
+[![Go Version](https://img.shields.io/github/go-mod/go-version/Dobefu/DLiteScript)](https://golang.org/)
+[![License](https://img.shields.io/github/license/Dobefu/DLiteScript)](https://golang.org/)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Dobefu_DLiteScript)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Dobefu/DLiteScript)](https://goreportcard.com/report/github.com/Dobefu/DLiteScript)
 
 > [!WARNING]
 > This repository is still a work-in-progress. It is nowhere near production-ready.
 
-## Usage
+A delightfully simple scripting language.
 
-- Run the application with a file, e.g.:
+## Table of Contents
 
-  ```bash
-  go run main.go examples/00_simple/main.dl
-  ```
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Examples](#examples)
+- [Installation](#installation)
+- [Development](#development)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Supported constants
+## Features
 
-- `PI` - π
-- `TAU` - τ (2π)
-- `E` - Euler's number
-- `PHI` - φ Golden ratio
-- `LN2` - Natural logarithm of 2
-- `LN10` - Natural logarithm of 10
+- **Static typing**: Explicit types with types like `string`, `number`, and `bool`
+- **No magic**: All functionality is visible and explicit
+- **LSP support**: Language Server Protocol for IDE integration
 
-## Supported functions
+## Quick Start
 
-- `printf(format, args...)` - Print formatted output
-- `abs(x)` - Absolute value of `x`
-- `sin(x)` - Sine value of `x`
-- `cos(x)` - Cosine value of `x`
-- `tan(x)` - Tangent value of `x`
-- `sqrt(x)` - Square root
-- `round(x)` - Round `x` to the nearest integer value
-- `floor(x)` - Round `x` down to the nearest integer value
-- `ceil(x)` - Round `x` up to the nearest integer value
-- `min(x, y)` - Get the smallest of the values provided
-- `max(x, y)` - Get the largest of the values provided
+### Hello World
+
+```dlitescript
+printf("Hello, World!\n")
+```
+
+Run it:
+
+```bash
+dlitescript hello.dl
+```
+
+### Variables and Types
+
+```dlitescript
+var name string = "DLiteScript"
+var version number = 0.1
+var isSupported bool = true
+
+printf("Welcome to %s v%g\n", name, version)
+printf("Supported: %t\n", isActive)
+```
+
+### Control Flow
+
+```dlitescript
+var test number = 85
+
+if test > 80 {
+  printf("The number is over 80\n")
+} else {
+  printf("The number is 80 or lower\n")
+}
+```
+
+### Loops
+
+```dlitescript
+for var i from 0 to 5 {
+  printf("Count: %g\n", i)
+}
+
+for var i to 3 {
+  if i == 2 {
+    continue
+  }
+  printf("Iteration %g\n", i)
+}
+```
+
+### Functions
+
+```dlitescript
+func greet(name string) string {
+  printf("Hello, %s!\n", name)
+}
+
+greet("Developer")
+```
+
+## Examples
+
+Check out the `examples/` directory for examples covering:
+
+- Basic syntax and operations
+- Variables and type declarations
+- Control flow and loops
+- Functions with multiple return values
+- And much more!
+
+## Installation
+
+```bash
+git clone https://github.com/Dobefu/DLiteScript.git
+cd DLiteScript
+go mod download
+go build -o dlitescript ./cmd
+```
+
+## Development
+
+```bash
+# Run tests
+go test ./...
+
+# Build binary
+go build -o dlitescript .
+```
+
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
