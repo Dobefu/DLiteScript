@@ -16,6 +16,8 @@ const (
 	TokenTypeOperationPow
 	// TokenTypeOperationMod represents the modulo operation.
 	TokenTypeOperationMod
+	// TokenTypeOperationSpread represents the spread operator.
+	TokenTypeOperationSpread
 	// TokenTypeNumber represents a number literal.
 	TokenTypeNumber
 	// TokenTypeString represents a string literal.

@@ -47,7 +47,7 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken = token.NewToken("\n", token.TokenTypeNewline, startPos, t.expIdx)
 
 		case '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			newToken, err = t.parseNumber(next, startPos)
+			newToken, err = t.handleNumberOrSpread(next, startPos)
 
 		case '+':
 			newToken = token.NewToken("+", token.TokenTypeOperationAdd, startPos, t.expIdx)
