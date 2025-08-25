@@ -56,7 +56,7 @@ func (v Value) ToString() string {
 		return strconv.FormatBool(v.Bool)
 
 	case datatype.DataTypeFunction:
-		return fmt.Sprintf("function %s", v.Func.Name)
+		return fmt.Sprintf("func %s", v.Func.Name)
 
 	case datatype.DataTypeTuple:
 		if len(v.Values) == 0 {
@@ -200,9 +200,6 @@ func (v Value) Equals(other Value) bool {
 	}
 
 	switch v.dataType {
-	case datatype.DataTypeNull:
-		return true
-
 	case datatype.DataTypeNumber:
 		return v.Num == other.Num
 
@@ -226,6 +223,9 @@ func (v Value) Equals(other Value) bool {
 			}
 		}
 
+		return true
+
+	case datatype.DataTypeNull:
 		return true
 
 	default:

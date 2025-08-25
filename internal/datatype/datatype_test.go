@@ -33,6 +33,16 @@ func TestDatatype(t *testing.T) {
 			expectedValue: "bool",
 		},
 		{
+			name:          "function",
+			input:         DataTypeFunction,
+			expectedValue: "function",
+		},
+		{
+			name:          "tuple",
+			input:         DataTypeTuple,
+			expectedValue: "tuple",
+		},
+		{
 			name:          "unknown",
 			input:         DataType(-1),
 			expectedValue: "unknown",

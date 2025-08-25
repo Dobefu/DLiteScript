@@ -30,4 +30,14 @@ func TestControlFlow(t *testing.T) {
 	if !continueResult.IsContinueResult() {
 		t.Errorf("Expected continue result, got %v", continueResult)
 	}
+
+	returnResult := NewReturnResult(datavalue.Number(1))
+
+	if !returnResult.IsReturnResult() {
+		t.Errorf("Expected return result, got %v", returnResult)
+	}
+
+	if !returnResult.Value.Equals(datavalue.Number(1)) {
+		t.Errorf("Expected return result, got %v", returnResult)
+	}
 }
