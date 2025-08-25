@@ -41,6 +41,10 @@ func (p *Parser) parsePrefixExpr(
 		token.TokenTypeNull:
 		return p.parseNullLiteral()
 
+	case
+		token.TokenTypeOperationSpread:
+		return p.parseSpreadExpr(currentToken, recursionDepth)
+
 	default:
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnexpectedToken,
