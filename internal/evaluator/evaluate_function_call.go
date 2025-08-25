@@ -106,16 +106,39 @@ func (e *Evaluator) evaluateArguments(
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	argValues := make([]datavalue.Value, len(args))
+	argValues := make([]datavalue.Value, 0, len(args))
 
-	for i, arg := range args {
+	for _, arg := range args {
+		spreadArg, isSpreadArg := arg.(*ast.SpreadExpr)
+
+		if isSpreadArg {
+			spreadValue, err := e.Evaluate(spreadArg.Expression)
+
+			if err != nil {
+				return nil, err
+			}
+
+			if spreadValue.Value.DataType() == datatype.DataTypeTuple {
+				argValues = append(argValues, spreadValue.Value.Values...)
+
+				continue
+			}
+
+			return nil, errorutil.NewErrorAt(
+				errorutil.ErrorMsgTypeExpected,
+				spreadArg.StartPosition(),
+				datatype.DataTypeTuple.AsString(),
+				spreadValue.Value.DataType().AsString(),
+			)
+		}
+
 		val, err := e.Evaluate(arg)
 
 		if err != nil {
 			return nil, err
 		}
 
-		argValues[i] = val.Value
+		argValues = append(argValues, val.Value)
 	}
 
 	return e.validateArgumentTypes(argValues, function, functionName, fc)
