@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -22,13 +23,7 @@ func (p *Parser) parseReturnStatement() (ast.ExprNode, error) {
 		}, nil
 	}
 
-	firstToken, err := p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	returnValues, err := p.parseReturnValues(firstToken)
+	returnValues, err := p.parseReturnValues()
 
 	if err != nil {
 		return nil, err
@@ -42,23 +37,9 @@ func (p *Parser) parseReturnStatement() (ast.ExprNode, error) {
 	}, nil
 }
 
-func (p *Parser) parseReturnValues(firstToken *token.Token) ([]ast.ExprNode, error) {
-	if firstToken.TokenType == token.TokenTypeComma {
-		return []ast.ExprNode{}, nil
-	}
+func (p *Parser) parseReturnValues() ([]ast.ExprNode, error) {
+	var returnValues []ast.ExprNode
 
-	firstValue, err := p.parseExpr(firstToken, nil, 0, 0)
-
-	if err != nil {
-		return nil, err
-	}
-
-	returnValues := []ast.ExprNode{firstValue}
-
-	return p.parseAdditionalValues(returnValues)
-}
-
-func (p *Parser) parseAdditionalValues(returnValues []ast.ExprNode) ([]ast.ExprNode, error) {
 	for !p.isEOF {
 		nextToken, err := p.PeekNextToken()
 
@@ -71,6 +52,14 @@ func (p *Parser) parseAdditionalValues(returnValues []ast.ExprNode) ([]ast.ExprN
 		}
 
 		if nextToken.TokenType == token.TokenTypeComma {
+			if len(returnValues) == 0 {
+				return nil, errorutil.NewErrorAt(
+					errorutil.ErrorMsgUnexpectedToken,
+					p.tokenIdx+1,
+					nextToken.Atom,
+				)
+			}
+
 			if err := p.consumeReturnComma(); err != nil {
 				return nil, err
 			}
