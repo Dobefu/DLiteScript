@@ -59,7 +59,7 @@ func (s *Server) handleMessage(msg []byte) error {
 	err := json.Unmarshal(msg, &req)
 
 	if err != nil {
-		err = s.sendError(req.ID, ErrorCodeParseError, err.Error(), nil)
+		_ = s.sendError(req.ID, ErrorCodeParseError, err.Error(), nil)
 
 		return fmt.Errorf("could not unmarshal message: %s", err)
 	}
