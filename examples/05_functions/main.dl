@@ -1,0 +1,25 @@
+func test() number {
+	return 1
+}
+
+func testWithNumber(count number) number {
+  return count
+}
+
+func testMultiple() number, string {
+	return 1, "hello"
+}
+
+func testParenthesized() (number, string) {
+	return 1, "hello"
+}
+
+func testComplex(count number, name string) (number, error) {
+	return count, null
+}
+
+printf("test(): %g\n", test())
+printf("testWithNumber(): %g\n", testWithNumber(2))
+printf("testMultiple(): %g, %s\n", ...testMultiple())
+printf("testParenthesized(): %g, %s\n", ...testParenthesized())
+printf("testComplex(): %g, %s\n", ...testComplex(1, "hello"))
