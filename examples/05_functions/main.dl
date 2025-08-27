@@ -14,7 +14,7 @@ func testParenthesized() (number, string) {
 	return 1, "hello"
 }
 
-func testComplex(count number, name string) (number, error) {
+func testComplex(count number, name string) (number, string) {
 	return count, null
 }
 
