@@ -16,6 +16,7 @@ func TestFunctionCall(t *testing.T) {
 	}{
 		{
 			input: &FunctionCall{
+				Namespace:    "math",
 				FunctionName: "abs",
 				Arguments: []ExprNode{
 					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
@@ -23,13 +24,14 @@ func TestFunctionCall(t *testing.T) {
 				StartPos: 0,
 				EndPos:   1,
 			},
-			expectedValue:    "abs(1)",
+			expectedValue:    "math.abs(1)",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
-			expectedNodes:    []string{"abs(1)", "1", "1"},
+			expectedNodes:    []string{"math.abs(1)", "1", "1"},
 		},
 		{
 			input: &FunctionCall{
+				Namespace:    "math",
 				FunctionName: "max",
 				Arguments: []ExprNode{
 					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
@@ -38,10 +40,10 @@ func TestFunctionCall(t *testing.T) {
 				StartPos: 0,
 				EndPos:   1,
 			},
-			expectedValue:    "max(1, 2)",
+			expectedValue:    "math.max(1, 2)",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
-			expectedNodes:    []string{"max(1, 2)", "1", "1", "2", "2"},
+			expectedNodes:    []string{"math.max(1, 2)", "1", "1", "2", "2"},
 		},
 	}
 

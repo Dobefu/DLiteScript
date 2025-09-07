@@ -17,6 +17,7 @@ func TestGetAstNodeLabel(t *testing.T) {
 		{
 			name: "function call",
 			node: &ast.FunctionCall{
+				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
 					&ast.StringLiteral{Value: "test", StartPos: 6, EndPos: 10},
