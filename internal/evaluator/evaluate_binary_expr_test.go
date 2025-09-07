@@ -329,3 +329,148 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		})
 	}
 }
+
+func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		node     *ast.BinaryExpr
+		expected string
+	}{
+		{
+			name: "addition",
+			node: &ast.BinaryExpr{
+				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "",
+					TokenType: token.Type(-1),
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := NewEvaluator(io.Discard).evaluateArithmeticBinaryExpr(
+				datavalue.Number(5),
+				datavalue.Number(5),
+				test.node,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestGetBinaryExprValueAsBoolErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		expected string
+	}{
+		{
+			name:     "invalid left operand",
+			left:     datavalue.String("5"),
+			right:    datavalue.Bool(true),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+		},
+		{
+			name:     "invalid right operand",
+			left:     datavalue.Bool(true),
+			right:    datavalue.String("5"),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, _, err := NewEvaluator(io.Discard).getBinaryExprValueAsBool(
+				test.left,
+				test.right,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Fatalf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestGetBinaryExprValueAsStringErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		expected string
+	}{
+		{
+			name:     "invalid left operand",
+			left:     datavalue.Number(5),
+			right:    datavalue.String("5"),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+		},
+		{
+			name:     "invalid right operand",
+			left:     datavalue.String("5"),
+			right:    datavalue.Number(5),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, _, err := NewEvaluator(io.Discard).getBinaryExprValueAsString(
+				test.left,
+				test.right,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Fatalf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
