@@ -14,10 +14,12 @@ func TestParsePrefixExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected *ast.PrefixExpr
 	}{
 		{
+			name: "positive number",
 			input: []*token.Token{
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -35,6 +37,7 @@ func TestParsePrefixExpr(t *testing.T) {
 			},
 		},
 		{
+			name: "negative identifier",
 			input: []*token.Token{
 				{Atom: "-", TokenType: token.TokenTypeOperationAdd},
 				{Atom: "PI", TokenType: token.TokenTypeIdentifier},
@@ -52,6 +55,7 @@ func TestParsePrefixExpr(t *testing.T) {
 			},
 		},
 		{
+			name: "negative function call",
 			input: []*token.Token{
 				{Atom: "-", TokenType: token.TokenTypeOperationAdd},
 				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
@@ -72,6 +76,7 @@ func TestParsePrefixExpr(t *testing.T) {
 			},
 		},
 		{
+			name: "positive string",
 			input: []*token.Token{
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 				{Atom: "test", TokenType: token.TokenTypeString},
@@ -91,18 +96,24 @@ func TestParsePrefixExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		parser := NewParser(test.input)
-		result, err := parser.Parse()
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err != nil {
-			t.Errorf("expected no error, got \"%s\"", err.Error())
+			parser := NewParser(test.input)
+			result, err := parser.Parse()
 
-			continue
-		}
+			if err != nil {
+				t.Fatalf("expected no error, got \"%s\"", err.Error())
+			}
 
-		if result.Expr() != test.expected.Expr() {
-			t.Errorf("expected \"%s\", got \"%s\"", test.expected.Expr(), result.Expr())
-		}
+			if result.Expr() != test.expected.Expr() {
+				t.Fatalf(
+					"expected \"%s\", got \"%s\"",
+					test.expected.Expr(),
+					result.Expr(),
+				)
+			}
+		})
 	}
 }
 
@@ -112,10 +123,12 @@ func TestParsePrefixExprErr(t *testing.T) {
 	errNextTokenAfterEOF := errorutil.ErrorMsgUnexpectedEOF
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected string
 	}{
 		{
+			name: "two plus signs",
 			input: []*token.Token{
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
@@ -123,18 +136,21 @@ func TestParsePrefixExprErr(t *testing.T) {
 			expected: errNextTokenAfterEOF,
 		},
 		{
+			name: "open parenthesis",
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 			},
 			expected: errNextTokenAfterEOF,
 		},
 		{
+			name: "closing parenthesis",
 			input: []*token.Token{
 				{Atom: ")", TokenType: token.TokenTypeRParen},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, ")"),
 		},
 		{
+			name: "unclosed parenthesis",
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -144,6 +160,7 @@ func TestParsePrefixExprErr(t *testing.T) {
 			expected: errorutil.ErrorMsgParenNotClosedAtEOF,
 		},
 		{
+			name: "two plus signs in parenthesis",
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -154,6 +171,7 @@ func TestParsePrefixExprErr(t *testing.T) {
 			expected: errNextTokenAfterEOF,
 		},
 		{
+			name: "unclosed parenthesis in parenthesis",
 			input: []*token.Token{
 				{Atom: "(", TokenType: token.TokenTypeLParen},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
@@ -166,27 +184,22 @@ func TestParsePrefixExprErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		_, err := NewParser(test.input).Parse()
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-		if err == nil {
-			t.Fatalf("expected error for \"%v\", got none", test.input)
-		}
+			_, err := NewParser(test.input).Parse()
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(
-				"expected error \"%s\", got \"%s\"",
-				test.expected,
-				errors.Unwrap(err).Error(),
-			)
-		}
-	}
-}
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
 
-func BenchmarkParsePrefixExpr(b *testing.B) {
-	for b.Loop() {
-		_, _ = NewParser([]*token.Token{
-			{Atom: "-", TokenType: token.TokenTypeOperationSub},
-			{Atom: "1", TokenType: token.TokenTypeNumber},
-		}).Parse()
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
 	}
 }
