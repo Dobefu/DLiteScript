@@ -12,6 +12,22 @@ import (
 func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 	t.Parallel()
 
+	function := &ast.FuncDeclarationStatement{
+		Name: "printf",
+		Args: []ast.FuncParameter{},
+		Body: &ast.StringLiteral{
+			Value:    "1",
+			StartPos: 0,
+			EndPos:   3,
+		},
+		ReturnValues: []string{
+			"string",
+		},
+		NumReturnValues: 1,
+		StartPos:        0,
+		EndPos:          18,
+	}
+
 	tests := []struct {
 		name       string
 		inputLeft  datavalue.Value
@@ -90,6 +106,60 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 				EndPos:   3,
 			},
 			expected: datavalue.Bool(true),
+		},
+		{
+			name:       "function",
+			inputLeft:  datavalue.Function(nil),
+			inputRight: datavalue.Function(nil),
+			inputNode: &ast.BinaryExpr{
+				Left:  function,
+				Right: function,
+				Operator: token.Token{
+					Atom:      "==",
+					TokenType: token.TokenTypeEqual,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: datavalue.Bool(false),
+		},
+		{
+			name:       "tuple",
+			inputLeft:  datavalue.Tuple(datavalue.Number(1), datavalue.Number(2)),
+			inputRight: datavalue.Tuple(datavalue.Number(1), datavalue.Number(2)),
+			inputNode: &ast.BinaryExpr{
+				Left:  nil,
+				Right: nil,
+				Operator: token.Token{
+					Atom:      "==",
+					TokenType: token.TokenTypeEqual,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: datavalue.Bool(true),
+		},
+		{
+			name:       "different data types",
+			inputLeft:  datavalue.Number(5),
+			inputRight: datavalue.String("5"),
+			inputNode: &ast.BinaryExpr{
+				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.StringLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "==",
+					TokenType: token.TokenTypeEqual,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: datavalue.Bool(false),
 		},
 	}
 
