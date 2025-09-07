@@ -3,6 +3,7 @@ package scriptrunner
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"testing"
 
@@ -156,5 +157,43 @@ func TestScriptRunnerErr(t *testing.T) {
 				)
 			}
 		})
+	}
+}
+
+func TestOutput(t *testing.T) {
+	t.Parallel()
+
+	scriptRunner := &ScriptRunner{
+		Args:    []string{},
+		OutFile: io.Discard,
+		result:  "test",
+	}
+
+	if scriptRunner.Output() != "test" {
+		t.Fatalf("expected \"test\", got \"%s\"", scriptRunner.Output())
+	}
+
+	tmpFile, err := os.CreateTemp("", "test")
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	defer func() { _ = os.Remove(tmpFile.Name()) }()
+
+	scriptRunner = &ScriptRunner{
+		Args:    []string{tmpFile.Name()},
+		OutFile: io.Discard,
+		result:  "test",
+	}
+
+	err = scriptRunner.Run()
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if scriptRunner.Output() != "" {
+		t.Fatalf("expected empty string, got \"%s\"", scriptRunner.Output())
 	}
 }
