@@ -256,6 +256,24 @@ func TestDatavalueUnknown(t *testing.T) {
 func TestDatavalueEquals(t *testing.T) {
 	t.Parallel()
 
+	function := &ast.FuncDeclarationStatement{
+		Name: "test",
+		Args: []ast.FuncParameter{
+			{Name: "a", Type: "number"},
+		},
+		Body: &ast.NumberLiteral{
+			Value:    "1",
+			StartPos: 0,
+			EndPos:   3,
+		},
+		ReturnValues: []string{
+			"number",
+		},
+		NumReturnValues: 1,
+		StartPos:        0,
+		EndPos:          3,
+	}
+
 	tests := []struct {
 		name        string
 		value       Value
@@ -286,6 +304,31 @@ func TestDatavalueEquals(t *testing.T) {
 			other:       Null(),
 			shouldMatch: true,
 		},
+		{
+			name:        "two functions",
+			value:       Function(function),
+			other:       Function(function),
+			shouldMatch: true,
+		},
+		{
+			name:        "two tuples with same values",
+			value:       Tuple(Number(1), String("test")),
+			other:       Tuple(Number(1), String("test")),
+			shouldMatch: true,
+		},
+		{
+			name:        "two tuples with different number of values",
+			value:       Tuple(Number(1), String("test")),
+			other:       Tuple(Number(1)),
+			shouldMatch: false,
+		},
+		{
+			name:        "two tuples with different values",
+			value:       Tuple(Number(1), String("test")),
+			other:       Tuple(Number(1), String("tes")),
+			shouldMatch: false,
+		},
+
 		{
 			name:        "different types",
 			value:       Number(1),
