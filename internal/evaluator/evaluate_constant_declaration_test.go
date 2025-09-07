@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -65,6 +66,26 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 				datatype.DataTypeString.AsString(),
 			),
 		},
+		{
+			name: "evaluation error",
+			input: &ast.ConstantDeclaration{
+				Name: "x",
+				Type: datatype.DataTypeNumber.AsString(),
+				Value: &ast.FunctionCall{
+					Namespace:    "",
+					FunctionName: "bogus",
+					Arguments:    []ast.ExprNode{},
+					StartPos:     4,
+					EndPos:       18,
+				},
+				StartPos: 0,
+				EndPos:   18,
+			},
+			expected: fmt.Sprintf(
+				errorutil.ErrorMsgUndefinedFunction,
+				"bogus",
+			),
+		},
 	}
 
 	for _, test := range tests {
@@ -77,8 +98,12 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 				t.Fatalf("expected error evaluating %s, got nil", test.input.Expr())
 			}
 
-			if err.Error() != test.expected {
-				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Fatalf(
+					"expected \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
 			}
 		})
 	}
