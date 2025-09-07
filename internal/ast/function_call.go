@@ -7,6 +7,7 @@ import (
 
 // FunctionCall defines a struct for a function call.
 type FunctionCall struct {
+	Namespace    string
 	FunctionName string
 	Arguments    []ExprNode
 	StartPos     int
@@ -25,7 +26,13 @@ func (fc *FunctionCall) Expr() string {
 		}
 	}
 
-	return fmt.Sprintf("%s(%s)", fc.FunctionName, args.String())
+	functionName := fc.FunctionName
+
+	if fc.Namespace != "" {
+		functionName = fmt.Sprintf("%s.%s", fc.Namespace, fc.FunctionName)
+	}
+
+	return fmt.Sprintf("%s(%s)", functionName, args.String())
 }
 
 // StartPosition returns the start position of the function call.
