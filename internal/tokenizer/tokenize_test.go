@@ -172,6 +172,63 @@ func TestTokenize(t *testing.T) {
 			input:    "// Comment",
 			expected: []*token.Token{},
 		},
+		{
+			input: "var x number = 1",
+			expected: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
+				{Atom: "=", TokenType: token.TokenTypeAssign},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+		},
+		{
+			input: "!true",
+			expected: []*token.Token{
+				{Atom: "!", TokenType: token.TokenTypeNot},
+				{Atom: "true", TokenType: token.TokenTypeBool},
+			},
+		},
+		{
+			input: "1 < 1",
+			expected: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "<", TokenType: token.TokenTypeLessThan},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+		},
+		{
+			input: "1 > 1",
+			expected: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: ">", TokenType: token.TokenTypeGreaterThan},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+		},
+		{
+			input: "true && true",
+			expected: []*token.Token{
+				{Atom: "true", TokenType: token.TokenTypeBool},
+				{Atom: "&&", TokenType: token.TokenTypeLogicalAnd},
+				{Atom: "true", TokenType: token.TokenTypeBool},
+			},
+		},
+		{
+			input: "true || true",
+			expected: []*token.Token{
+				{Atom: "true", TokenType: token.TokenTypeBool},
+				{Atom: "||", TokenType: token.TokenTypeLogicalOr},
+				{Atom: "true", TokenType: token.TokenTypeBool},
+			},
+		},
+		{
+			input: "{true}",
+			expected: []*token.Token{
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "true", TokenType: token.TokenTypeBool},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+		},
 	}
 
 	for _, test := range tests {
