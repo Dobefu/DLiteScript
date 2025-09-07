@@ -6,12 +6,26 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
+	"github.com/Dobefu/DLiteScript/internal/function"
+	"github.com/Dobefu/DLiteScript/internal/stdlib"
 )
+
+var functionRegistry = stdlib.GetFunctionRegistry()
 
 func (e *Evaluator) evaluateFunctionCall(
 	fc *ast.FunctionCall,
 ) (*controlflow.EvaluationResult, error) {
-	function, hasFunction := functionRegistry[fc.FunctionName]
+	_, hasNamespace := functionRegistry[fc.Namespace]
+
+	if !hasNamespace {
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgUndefinedNamespace,
+			fc.StartPosition(),
+			fc.Namespace,
+		)
+	}
+
+	function, hasFunction := functionRegistry[fc.Namespace].Functions[fc.FunctionName]
 
 	if !hasFunction {
 		userFunction, hasUserFunction := e.userFunctions[fc.FunctionName]
@@ -38,7 +52,10 @@ func (e *Evaluator) evaluateFunctionCall(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	handlerResult, err := function.handler(e, argValues)
+	handlerResult, err := function.Handler(
+		e,
+		argValues,
+	)
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
@@ -55,7 +72,7 @@ func (e *Evaluator) evaluateUserFunctionCall(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
-			fc.FunctionName,
+			getFullFunctionName(fc),
 			len(userFunction.Args),
 			len(fc.Arguments),
 		)
@@ -102,7 +119,7 @@ func (e *Evaluator) evaluateUserFunctionCall(
 
 func (e *Evaluator) evaluateArguments(
 	args []ast.ExprNode,
-	function functionInfo,
+	function function.Info,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
@@ -146,19 +163,19 @@ func (e *Evaluator) evaluateArguments(
 
 func (e *Evaluator) validateArgumentTypes(
 	argValues []datavalue.Value,
-	function functionInfo,
+	functionInfo function.Info,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	switch function.functionType {
-	case functionTypeFixed:
-		return e.validateFixedArgs(argValues, function, functionName, fc)
+	switch functionInfo.FunctionType {
+	case function.FunctionTypeFixed:
+		return e.validateFixedArgs(argValues, functionInfo, functionName, fc)
 
-	case functionTypeVariadic:
-		return e.validateVariadicArgs(argValues, function, functionName, fc)
+	case function.FunctionTypeVariadic:
+		return e.validateVariadicArgs(argValues, functionInfo, functionName, fc)
 
-	case functionTypeMixedVariadic:
-		return e.validateMixedVariadicArgs(argValues, function, functionName, fc)
+	case function.FunctionTypeMixedVariadic:
+		return e.validateMixedVariadicArgs(argValues, functionInfo, functionName, fc)
 
 	default:
 		return argValues, nil
@@ -167,36 +184,41 @@ func (e *Evaluator) validateArgumentTypes(
 
 func (e *Evaluator) validateFixedArgs(
 	argValues []datavalue.Value,
-	function functionInfo,
+	functionInfo function.Info,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	expectedCount := len(function.argKinds)
+	expectedCount := len(functionInfo.ArgKinds)
 
 	if len(argValues) != expectedCount {
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
-			functionName,
+			getFullFunctionName(fc),
 			expectedCount,
 			len(argValues),
 		)
 	}
 
-	return e.validateArgTypesMatch(argValues, function.argKinds, functionName, fc)
+	return e.validateArgTypesMatch(
+		argValues,
+		functionInfo.ArgKinds,
+		functionName,
+		fc,
+	)
 }
 
 func (e *Evaluator) validateVariadicArgs(
 	argValues []datavalue.Value,
-	function functionInfo,
+	function function.Info,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	if len(function.argKinds) == 0 {
+	if len(function.ArgKinds) == 0 {
 		return argValues, nil
 	}
 
-	expectedType := function.argKinds[0]
+	expectedType := function.ArgKinds[0]
 
 	for i, arg := range argValues {
 		if arg.DataType() == expectedType {
@@ -218,17 +240,17 @@ func (e *Evaluator) validateVariadicArgs(
 
 func (e *Evaluator) validateMixedVariadicArgs(
 	argValues []datavalue.Value,
-	function functionInfo,
+	function function.Info,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	minRequired := len(function.argKinds)
+	minRequired := len(function.ArgKinds)
 
 	if len(argValues) < minRequired {
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
-			functionName,
+			getFullFunctionName(fc),
 			minRequired,
 			len(argValues),
 		)
@@ -236,7 +258,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 
 	_, err := e.validateArgTypesMatch(
 		argValues[:minRequired],
-		function.argKinds,
+		function.ArgKinds,
 		functionName,
 		fc,
 	)

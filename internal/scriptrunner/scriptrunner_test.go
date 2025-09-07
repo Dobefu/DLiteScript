@@ -109,8 +109,8 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "function num args",
 			hasFile:    true,
 			hasReadErr: false,
-			script:     "min(1)",
-			expected:   fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "min", 2, 1) + " at position 0",
+			script:     "math.min(1)",
+			expected:   fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.min", 2, 1) + " at position 5",
 		},
 	}
 

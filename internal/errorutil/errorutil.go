@@ -76,6 +76,8 @@ const (
 	ErrorMsgInvalidForStatement = "invalid for statement: '%s'"
 	// ErrorMsgInvalidNumber occurs when an invalid number is encountered.
 	ErrorMsgInvalidNumber = "invalid number: '%s'"
+	// ErrorMsgUndefinedNamespace occurs when an undefined namespace is encountered.
+	ErrorMsgUndefinedNamespace = "undefined namespace: '%s'"
 )
 
 // Error represents an error with a message.

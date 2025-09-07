@@ -31,6 +31,7 @@ func TestEvaluate(t *testing.T) {
 							EndPos:    0,
 						},
 						Operand: &ast.FunctionCall{
+							Namespace:    "math",
 							FunctionName: "abs",
 							Arguments: []ast.ExprNode{
 								&ast.Identifier{Value: "PI", StartPos: 4, EndPos: 5},
@@ -70,17 +71,17 @@ func TestEvaluate(t *testing.T) {
 			rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
 			if err != nil {
-				t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
 			result, err := rawResult.Value.AsNumber()
 
 			if err != nil {
-				t.Fatalf("expected number, got type error: %s", err.Error())
+				t.Fatalf("expected number, got type error: \"%s\"", err.Error())
 			}
 
 			if result != test.expected {
-				t.Errorf("expected %f, got %f", test.expected, result)
+				t.Errorf("expected \"%f\", got \"%f\"", test.expected, result)
 			}
 		})
 	}
@@ -97,6 +98,7 @@ func TestOutput(t *testing.T) {
 		{
 			name: "function call",
 			input: &ast.FunctionCall{
+				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
 					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
@@ -117,11 +119,11 @@ func TestOutput(t *testing.T) {
 			_, err := evaluator.Evaluate(test.input)
 
 			if err != nil {
-				t.Fatalf("error evaluating '%s': %s", test.input.Expr(), err.Error())
+				t.Fatalf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
 			if evaluator.Output() != test.expected {
-				t.Errorf("expected '%v', got '%v'", test.expected, evaluator.Output())
+				t.Errorf("expected \"%v\", got \"%v\"", test.expected, evaluator.Output())
 			}
 		})
 	}

@@ -144,9 +144,48 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 
 	if nextToken.TokenType == token.TokenTypeLParen {
 		return p.parseFunctionCall(
+			"",
 			functionCallOrIdentifierToken.Atom,
 			recursionDepth+1,
 		)
+	}
+
+	if nextToken.TokenType == token.TokenTypeDot {
+		namespace := functionCallOrIdentifierToken.Atom
+
+		_, err := p.GetNextToken()
+		if err != nil {
+			return nil, err
+		}
+
+		functionNameOrIdentifierToken, err := p.GetNextToken()
+		if err != nil {
+			return nil, err
+		}
+
+		if functionNameOrIdentifierToken.TokenType != token.TokenTypeIdentifier {
+			return nil, errorutil.NewErrorAt(
+				errorutil.ErrorMsgUnexpectedToken,
+				functionNameOrIdentifierToken.StartPos,
+				functionNameOrIdentifierToken.Atom,
+			)
+		}
+
+		nextToken, err := p.PeekNextToken()
+
+		if err != nil {
+			return nil, err
+		}
+
+		if nextToken.TokenType == token.TokenTypeLParen {
+			return p.parseFunctionCall(
+				namespace,
+				functionNameOrIdentifierToken.Atom,
+				recursionDepth+1,
+			)
+		}
+
+		return p.parseIdentifier(functionNameOrIdentifierToken)
 	}
 
 	return p.parseIdentifier(functionCallOrIdentifierToken)

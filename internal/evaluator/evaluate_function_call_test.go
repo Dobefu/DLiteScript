@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -14,9 +15,22 @@ func evaluateFunctionCallCreateFunctionCall(
 	functionName string,
 	arguments ...ast.ExprNode,
 ) ast.ExprNode {
+	namespace := ""
+	fullFunctionName := functionName
+
+	if strings.Contains(functionName, ".") {
+		parts := strings.Split(functionName, ".")
+
+		if len(parts) == 2 {
+			namespace = parts[0]
+			fullFunctionName = parts[1]
+		}
+	}
+
 	if len(arguments) == 0 {
 		return &ast.FunctionCall{
-			FunctionName: functionName,
+			Namespace:    namespace,
+			FunctionName: fullFunctionName,
 			Arguments:    arguments,
 			StartPos:     0,
 			EndPos:       0,
@@ -24,7 +38,8 @@ func evaluateFunctionCallCreateFunctionCall(
 	}
 
 	return &ast.FunctionCall{
-		FunctionName: functionName,
+		Namespace:    namespace,
+		FunctionName: fullFunctionName,
 		Arguments:    arguments,
 		StartPos:     arguments[0].StartPosition(),
 		EndPos:       arguments[len(arguments)-1].EndPosition(),
@@ -144,16 +159,16 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 		{
 			name: "too many arguments",
 			input: evaluateFunctionCallCreateFunctionCall(
-				"abs",
+				"math.abs",
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 				&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
 			),
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "abs", 1, 2),
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.abs", 1, 2),
 		},
 		{
 			name: "invalid argument",
 			input: evaluateFunctionCallCreateFunctionCall(
-				"abs",
+				"math.abs",
 				&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
 			),
 			expected: "invalid syntax",

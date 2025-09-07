@@ -7,6 +7,7 @@ import (
 )
 
 func (p *Parser) parseFunctionCall(
+	namespace string,
 	functionName string,
 	recursionDepth int,
 ) (ast.ExprNode, error) {
@@ -66,6 +67,7 @@ func (p *Parser) parseFunctionCall(
 	}
 
 	return &ast.FunctionCall{
+		Namespace:    namespace,
 		FunctionName: functionName,
 		Arguments:    args,
 		StartPos:     startCharPos,

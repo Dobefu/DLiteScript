@@ -180,6 +180,7 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 			input: &ast.AssignmentStatement{
 				Left: &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
 				Right: &ast.FunctionCall{
+					Namespace:    "",
 					FunctionName: "undefined_func",
 					Arguments:    []ast.ExprNode{},
 					StartPos:     4,

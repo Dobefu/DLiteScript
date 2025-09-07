@@ -67,6 +67,7 @@ func TestEvaluateStatementListErr(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.FunctionCall{
+						Namespace:    "",
 						FunctionName: "bogus",
 						Arguments: []ast.ExprNode{
 							&ast.NumberLiteral{
