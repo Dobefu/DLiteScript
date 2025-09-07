@@ -34,6 +34,8 @@ const (
 	TokenTypeRParen
 	// TokenTypeFunction represents a function name.
 	TokenTypeFunction
+	// TokenTypeDot represents a single dot.
+	TokenTypeDot
 	// TokenTypeComma represents a comma separator.
 	TokenTypeComma
 	// TokenTypeNewline represents a newline separator.
