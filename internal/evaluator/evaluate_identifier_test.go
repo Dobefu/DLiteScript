@@ -46,6 +46,28 @@ func TestEvaluateIdentifier(t *testing.T) {
 			},
 			expected: 1,
 		},
+		{
+			name: "scoped identifier",
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.VariableDeclaration{
+						Name: "test",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value:    "1",
+							StartPos: 0,
+							EndPos:   1,
+						},
+						StartPos: 0,
+						EndPos:   0,
+					},
+					&ast.Identifier{Value: "test", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: 1,
+		},
 	}
 
 	for _, test := range tests {
