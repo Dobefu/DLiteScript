@@ -229,6 +229,18 @@ func TestTokenize(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 		},
+		{
+			input: "math.abs(-1)",
+			expected: []*token.Token{
+				{Atom: "math", TokenType: token.TokenTypeIdentifier},
+				{Atom: ".", TokenType: token.TokenTypeDot},
+				{Atom: "abs", TokenType: token.TokenTypeIdentifier},
+				{Atom: "(", TokenType: token.TokenTypeLParen},
+				{Atom: "-", TokenType: token.TokenTypeOperationSub},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: ")", TokenType: token.TokenTypeRParen},
+			},
+		},
 	}
 
 	for _, test := range tests {
