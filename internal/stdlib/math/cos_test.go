@@ -18,17 +18,17 @@ func TestGetCosFunction(t *testing.T) {
 		t.Fatalf("expected cos function, got %v", functions)
 	}
 
-	cos := functions["cos"]
+	cosFunc := functions["cos"]
 
-	if cos.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", cos.FunctionType)
+	if cosFunc.FunctionType != function.FunctionTypeFixed {
+		t.Fatalf("expected fixed function, got %v", cosFunc.FunctionType)
 	}
 
-	if cos.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", cos.ArgKinds[0])
+	if cosFunc.ArgKinds[0] != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", cosFunc.ArgKinds[0])
 	}
 
-	result, err := cos.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+	result, err := cosFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)

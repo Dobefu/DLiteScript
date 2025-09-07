@@ -17,17 +17,17 @@ func TestGetCeilFunction(t *testing.T) {
 		t.Fatalf("expected ceil function, got %v", functions)
 	}
 
-	ceil := functions["ceil"]
+	ceilFunc := functions["ceil"]
 
-	if ceil.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", ceil.FunctionType)
+	if ceilFunc.FunctionType != function.FunctionTypeFixed {
+		t.Fatalf("expected fixed function, got %v", ceilFunc.FunctionType)
 	}
 
-	if ceil.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", ceil.ArgKinds[0])
+	if ceilFunc.ArgKinds[0] != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", ceilFunc.ArgKinds[0])
 	}
 
-	result, err := ceil.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+	result, err := ceilFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)

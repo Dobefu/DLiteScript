@@ -17,17 +17,17 @@ func TestGetRoundFunction(t *testing.T) {
 		t.Fatalf("expected round function, got %v", functions)
 	}
 
-	round := functions["round"]
+	roundFunc := functions["round"]
 
-	if round.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", round.FunctionType)
+	if roundFunc.FunctionType != function.FunctionTypeFixed {
+		t.Fatalf("expected fixed function, got %v", roundFunc.FunctionType)
 	}
 
-	if round.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", round.ArgKinds[0])
+	if roundFunc.ArgKinds[0] != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", roundFunc.ArgKinds[0])
 	}
 
-	result, err := round.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+	result, err := roundFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
