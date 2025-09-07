@@ -29,6 +29,12 @@ func (e *Evaluator) evaluateConstantDeclaration(
 		Type:  node.Type,
 	}
 
+	if e.blockScopesLen > 0 {
+		e.blockScopes[e.blockScopesLen-1][node.Name] = constant
+
+		return controlflow.NewRegularResult(datavalue.Null()), nil
+	}
+
 	e.outerScope[node.Name] = constant
 
 	return controlflow.NewRegularResult(datavalue.Null()), nil

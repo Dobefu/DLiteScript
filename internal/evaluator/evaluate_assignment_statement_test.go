@@ -148,24 +148,18 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 		},
 		{
 			name: "assignment to constant in block scope",
-			input: &ast.StatementList{
+			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
-					&ast.BlockStatement{
-						Statements: []ast.ExprNode{
-							&ast.ConstantDeclaration{
-								Name:     "block_const",
-								Type:     "number",
-								Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-								StartPos: 0,
-								EndPos:   1,
-							},
-							&ast.AssignmentStatement{
-								Left:     &ast.Identifier{Value: "block_const", StartPos: 0, EndPos: 11},
-								Right:    &ast.NumberLiteral{Value: "10", StartPos: 14, EndPos: 16},
-								StartPos: 0,
-								EndPos:   16,
-							},
-						},
+					&ast.ConstantDeclaration{
+						Name:     "block_const",
+						Type:     "number",
+						Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+						StartPos: 0,
+						EndPos:   1,
+					},
+					&ast.AssignmentStatement{
+						Left:     &ast.Identifier{Value: "block_const", StartPos: 0, EndPos: 11},
+						Right:    &ast.NumberLiteral{Value: "10", StartPos: 14, EndPos: 16},
 						StartPos: 0,
 						EndPos:   16,
 					},
