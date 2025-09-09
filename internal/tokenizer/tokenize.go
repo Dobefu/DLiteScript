@@ -94,6 +94,12 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 		case '}':
 			newToken = token.NewToken("}", token.TokenTypeRBrace, startPos, t.expIdx)
 
+		case '[':
+			newToken = token.NewToken("[", token.TokenTypeLBracket, startPos, t.expIdx)
+
+		case ']':
+			newToken = token.NewToken("]", token.TokenTypeRBracket, startPos, t.expIdx)
+
 		case ',':
 			newToken = token.NewToken(",", token.TokenTypeComma, startPos, t.expIdx)
 

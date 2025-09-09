@@ -68,6 +68,10 @@ const (
 	TokenTypeLBrace
 	// TokenTypeRBrace represents a right brace.
 	TokenTypeRBrace
+	// TokenTypeLBracket represents a left bracket.
+	TokenTypeLBracket
+	// TokenTypeRBracket represents a right bracket.
+	TokenTypeRBracket
 	// TokenTypeVar represents the 'var' keyword.
 	TokenTypeVar
 	// TokenTypeConst represents the 'const' keyword.
