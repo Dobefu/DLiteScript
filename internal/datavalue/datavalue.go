@@ -43,22 +43,28 @@ func Null() Value {
 // ToString returns the string representation of the value.
 func (v Value) ToString() string {
 	switch v.dataType {
-	case datatype.DataTypeNull:
+	case
+		datatype.DataTypeNull:
 		return "null"
 
-	case datatype.DataTypeNumber:
+	case
+		datatype.DataTypeNumber:
 		return strconv.FormatFloat(v.Num, 'f', -1, 64)
 
-	case datatype.DataTypeString:
+	case
+		datatype.DataTypeString:
 		return v.Str
 
-	case datatype.DataTypeBool:
+	case
+		datatype.DataTypeBool:
 		return strconv.FormatBool(v.Bool)
 
-	case datatype.DataTypeFunction:
+	case
+		datatype.DataTypeFunction:
 		return fmt.Sprintf("func %s", v.Func.Name)
 
-	case datatype.DataTypeTuple:
+	case
+		datatype.DataTypeTuple:
 		if len(v.Values) == 0 {
 			return "()"
 		}
@@ -70,6 +76,20 @@ func (v Value) ToString() string {
 		}
 
 		return fmt.Sprintf("(%s)", strings.Join(valueStrings, ", "))
+
+	case
+		datatype.DataTypeArray:
+		if len(v.Values) == 0 {
+			return "[]"
+		}
+
+		valueStrings := make([]string, len(v.Values))
+
+		for i, val := range v.Values {
+			valueStrings[i] = val.ToString()
+		}
+
+		return fmt.Sprintf("[%s]", strings.Join(valueStrings, ", "))
 
 	default:
 		return errorutil.ErrorMsgTypeUnknownDataType
@@ -141,6 +161,19 @@ func Tuple(values ...Value) Value {
 	}
 }
 
+// Array creates a new array value.
+func Array(values ...Value) Value {
+	return Value{
+		dataType: datatype.DataTypeArray,
+
+		Num:    0,
+		Str:    "",
+		Bool:   false,
+		Func:   nil,
+		Values: values,
+	}
+}
+
 // AsNumber returns the value as a number.
 func (v Value) AsNumber() (float64, error) {
 	if v.dataType != datatype.DataTypeNumber {
@@ -193,44 +226,17 @@ func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
 	return v.Func, nil
 }
 
-// Equals returns if two values are equal.
-func (v Value) Equals(other Value) bool {
-	if v.dataType != other.dataType {
-		return false
+// AsArray returns the value as an array.
+func (v Value) AsArray() ([]Value, error) {
+	if v.dataType != datatype.DataTypeArray {
+		return nil, errorutil.NewError(
+			errorutil.ErrorMsgTypeExpected,
+			datatype.DataTypeArray.AsString(),
+			v.dataType.AsString(),
+		)
 	}
 
-	switch v.dataType {
-	case datatype.DataTypeNumber:
-		return v.Num == other.Num
-
-	case datatype.DataTypeString:
-		return v.Str == other.Str
-
-	case datatype.DataTypeBool:
-		return v.Bool == other.Bool
-
-	case datatype.DataTypeFunction:
-		return v.Func == other.Func
-
-	case datatype.DataTypeTuple:
-		if len(v.Values) != len(other.Values) {
-			return false
-		}
-
-		for i, val := range v.Values {
-			if !val.Equals(other.Values[i]) {
-				return false
-			}
-		}
-
-		return true
-
-	case datatype.DataTypeNull:
-		return true
-
-	default:
-		return false
-	}
+	return v.Values, nil
 }
 
 // AsTuple returns the value as a tuple.
@@ -244,4 +250,51 @@ func (v Value) AsTuple() ([]Value, error) {
 	}
 
 	return v.Values, nil
+}
+
+// Equals returns if two values are equal.
+func (v Value) Equals(other Value) bool {
+	if v.dataType != other.dataType {
+		return false
+	}
+
+	switch v.dataType {
+	case
+		datatype.DataTypeNull:
+		return true
+
+	case
+		datatype.DataTypeNumber:
+		return v.Num == other.Num
+
+	case
+		datatype.DataTypeString:
+		return v.Str == other.Str
+
+	case
+		datatype.DataTypeBool:
+		return v.Bool == other.Bool
+
+	case
+		datatype.DataTypeFunction:
+		return v.Func == other.Func
+
+	case
+		datatype.DataTypeTuple,
+		datatype.DataTypeArray:
+		if len(v.Values) != len(other.Values) {
+			return false
+		}
+
+		for i, val := range v.Values {
+			if !val.Equals(other.Values[i]) {
+				return false
+			}
+		}
+
+		return true
+
+	default:
+		return false
+	}
 }

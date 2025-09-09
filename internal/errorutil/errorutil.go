@@ -30,6 +30,8 @@ const (
 	ErrorMsgExpectedOpenParen = "expected '(', but got: '%s'"
 	// ErrorMsgExpectedCloseParen occurs when a closing parenthesis is expected but not provided.
 	ErrorMsgExpectedCloseParen = "expected ')', but got: '%s'"
+	// ErrorMsgExpectedCloseBracket occurs when a closing bracket is expected but not provided.
+	ErrorMsgExpectedCloseBracket = "expected ']', but got: '%s'"
 	// ErrorMsgUnknownOperator occurs when an unknown operator is encountered.
 	ErrorMsgUnknownOperator = "unknown operator: '%s'"
 	// ErrorMsgUnknownNodeType occurs when an unknown node type is encountered.
@@ -78,6 +80,8 @@ const (
 	ErrorMsgInvalidNumber = "invalid number: '%s'"
 	// ErrorMsgUndefinedNamespace occurs when an undefined namespace is encountered.
 	ErrorMsgUndefinedNamespace = "undefined namespace: '%s'"
+	// ErrorMsgArrayIndexOutOfBounds occurs when an array index is out of bounds.
+	ErrorMsgArrayIndexOutOfBounds = "array index out of bounds: '%s'"
 )
 
 // Error represents an error with a message.

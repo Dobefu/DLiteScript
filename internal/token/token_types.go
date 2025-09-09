@@ -97,4 +97,6 @@ const (
 	TokenTypeTypeString
 	// TokenTypeTypeBool represents the 'bool' type keyword.
 	TokenTypeTypeBool
+	// TokenTypeTypeArray represents the '[]' array type keyword.
+	TokenTypeTypeArray
 )

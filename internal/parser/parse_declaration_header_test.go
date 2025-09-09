@@ -76,7 +76,7 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
 				token.NewToken("bogus", token.TokenTypeString, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgInvalidDataType, "bogus") + " at position 2",
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus") + " at position 0",
 		},
 	}
 

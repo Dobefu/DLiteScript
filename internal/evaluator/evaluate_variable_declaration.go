@@ -22,7 +22,7 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		value = evaluatedValue
 	}
 
-	if value.Value.DataType().AsString() != node.Type {
+	if node.Type[:2] != "[]" && value.Value.DataType().AsString() != node.Type {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewError(
 			errorutil.ErrorMsgTypeMismatch,
 			node.Type,

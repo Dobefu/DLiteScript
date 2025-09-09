@@ -225,7 +225,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "null", "number"),
 		},
 		{
 			name: "division by zero",

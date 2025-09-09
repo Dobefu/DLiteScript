@@ -129,17 +129,15 @@ func (p *Parser) parseFunctionArgument(nameToken *token.Token) (ast.FuncParamete
 		return ast.FuncParameter{}, err
 	}
 
-	if typeToken.TokenType != token.TokenTypeIdentifier && !typeToken.IsDataType() {
-		return ast.FuncParameter{}, errorutil.NewErrorAt(
-			errorutil.ErrorMsgUnexpectedToken,
-			typeToken.StartPos,
-			typeToken.Atom,
-		)
+	dataType, err := p.parseDataType(typeToken)
+
+	if err != nil {
+		return ast.FuncParameter{}, err
 	}
 
 	return ast.FuncParameter{
 		Name: nameToken.Atom,
-		Type: typeToken.Atom,
+		Type: dataType,
 	}, nil
 }
 
@@ -166,17 +164,14 @@ func (p *Parser) getReturnTypes() ([]string, error) {
 		return returnTypes, nil
 	}
 
-	// Single return type or comma-separated without parentheses
-	if nextToken.TokenType != token.TokenTypeIdentifier && !nextToken.IsDataType() {
-		return nil, errorutil.NewErrorAt(
-			errorutil.ErrorMsgUnexpectedToken,
-			nextToken.StartPos,
-			nextToken.Atom,
-		)
+	dataType, err := p.parseDataType(nextToken)
+
+	if err != nil {
+		return nil, err
 	}
 
 	returnTypes := make([]string, 0)
-	returnTypes = append(returnTypes, nextToken.Atom)
+	returnTypes = append(returnTypes, dataType)
 
 	return p.parseReturnTypes(token.TokenTypeLBrace, returnTypes...)
 }

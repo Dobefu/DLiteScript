@@ -5,6 +5,7 @@ import (
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
+	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
@@ -61,6 +62,51 @@ func (e *Evaluator) evaluateBinaryExpr(
 }
 
 func (e *Evaluator) evaluateArithmeticBinaryExpr(
+	leftValue datavalue.Value,
+	rightValue datavalue.Value,
+	node *ast.BinaryExpr,
+) (*controlflow.EvaluationResult, error) {
+	if leftValue.DataType() != rightValue.DataType() {
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgTypeExpected,
+			node.StartPosition(),
+			rightValue.DataType().AsString(),
+			leftValue.DataType().AsString(),
+		)
+	}
+
+	switch leftValue.DataType() {
+	case datatype.DataTypeNumber:
+		return e.evaluateArithmeticBinaryExprNumber(leftValue, rightValue, node)
+
+	case datatype.DataTypeArray:
+		return e.evaluateArithmeticBinaryExprArray(leftValue, rightValue, node)
+
+	case datatype.DataTypeString:
+		fallthrough
+
+	case datatype.DataTypeBool:
+		fallthrough
+
+	case datatype.DataTypeFunction:
+		fallthrough
+
+	case datatype.DataTypeTuple:
+		fallthrough
+
+	case datatype.DataTypeNull:
+		fallthrough
+
+	default:
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgTypeMismatch,
+			node.StartPosition(),
+			node.Operator.Atom,
+		)
+	}
+}
+
+func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 	leftValue datavalue.Value,
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
@@ -162,4 +208,34 @@ func (e *Evaluator) getBinaryExprValueAsString(
 	}
 
 	return leftString, rightString, nil
+}
+
+func (e *Evaluator) evaluateArithmeticBinaryExprArray(
+	leftValue datavalue.Value,
+	rightValue datavalue.Value,
+	node *ast.BinaryExpr,
+) (*controlflow.EvaluationResult, error) {
+	leftArray, err := leftValue.AsArray()
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	rightArray, err := rightValue.AsArray()
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	switch node.Operator.TokenType {
+	case token.TokenTypeOperationAdd:
+		return e.evaluateArrayConcatenation(leftArray, rightArray, node)
+
+	default:
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnknownOperator,
+			node.StartPosition(),
+			node.Operator.Atom,
+		)
+	}
 }

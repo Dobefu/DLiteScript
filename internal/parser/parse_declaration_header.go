@@ -27,15 +27,55 @@ func (p *Parser) parseDeclarationHeader() (string, string, error) {
 		return "", "", err
 	}
 
-	if !nextToken.IsDataType() {
-		return "", "", errorutil.NewErrorAt(
-			errorutil.ErrorMsgInvalidDataType,
-			p.tokenIdx,
-			nextToken.Atom,
+	varType, err := p.parseDataType(nextToken)
+
+	if err != nil {
+		return "", "", err
+	}
+
+	return varName, varType, nil
+}
+
+func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
+	if typeToken.TokenType == token.TokenTypeLBracket {
+		nextToken, err := p.GetNextToken()
+
+		if err != nil {
+			return "", err
+		}
+
+		if nextToken.TokenType != token.TokenTypeRBracket {
+			return "", errorutil.NewErrorAt(
+				errorutil.ErrorMsgUnexpectedToken,
+				nextToken.StartPos,
+				nextToken.Atom,
+			)
+		}
+
+		elementTypeToken, err := p.GetNextToken()
+
+		if err != nil {
+			return "", err
+		}
+
+		if !elementTypeToken.IsDataType() {
+			return "", errorutil.NewErrorAt(
+				errorutil.ErrorMsgUnexpectedToken,
+				elementTypeToken.StartPos,
+				elementTypeToken.Atom,
+			)
+		}
+
+		return "[]" + elementTypeToken.Atom, nil
+	}
+
+	if !typeToken.IsDataType() {
+		return "", errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnexpectedToken,
+			typeToken.StartPos,
+			typeToken.Atom,
 		)
 	}
 
-	varType := nextToken.Atom
-
-	return varName, varType, nil
+	return typeToken.Atom, nil
 }

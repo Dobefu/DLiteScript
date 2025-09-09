@@ -26,6 +26,10 @@ func (p *Parser) parsePrefixExpr(
 		return p.parseParenthesizedExpr(recursionDepth)
 
 	case
+		token.TokenTypeLBracket:
+		return p.parseArrayLiteral(recursionDepth)
+
+	case
 		token.TokenTypeIdentifier:
 		return p.parseFunctionCallOrIdentifier(currentToken, recursionDepth)
 

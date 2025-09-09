@@ -17,6 +17,8 @@ const (
 	DataTypeFunction
 	// DataTypeTuple represents a tuple type.
 	DataTypeTuple
+	// DataTypeArray represents an array type.
+	DataTypeArray
 )
 
 // AsString provides the string representation of a DataType for error messages.
@@ -39,6 +41,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeTuple:
 		return "tuple"
+
+	case DataTypeArray:
+		return "array"
 
 	default:
 		return "unknown"

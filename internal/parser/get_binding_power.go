@@ -7,12 +7,13 @@ import (
 const (
 	bindingPowerParentheses    = 1000
 	bindingPowerUnary          = 900
-	bindingPowerPower          = 800
-	bindingPowerMultiplicative = 700
-	bindingPowerAdditive       = 600
-	bindingPowerComparison     = 500
-	bindingPowerLogicalAnd     = 400
-	bindingPowerLogicalOr      = 300
+	bindingPowerArray          = 800
+	bindingPowerPower          = 700
+	bindingPowerMultiplicative = 600
+	bindingPowerAdditive       = 500
+	bindingPowerComparison     = 400
+	bindingPowerLogicalAnd     = 300
+	bindingPowerLogicalOr      = 200
 	bindingPowerAssignment     = 10
 
 	// For right-hand associativity, a value of 1 is subtracted from the
@@ -37,6 +38,10 @@ func (p *Parser) getBindingPower(currentToken *token.Token, isUnary bool) int {
 		}
 
 		return bindingPowerDefault
+
+	case
+		token.TokenTypeLBracket:
+		return bindingPowerArray
 
 	case
 		token.TokenTypeOperationPow:

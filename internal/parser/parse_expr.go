@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -67,6 +68,9 @@ func (p *Parser) parseExpr(
 
 	case token.TokenTypeAssign:
 		return p.handleAssignmentToken(leftExpr, minPrecedence, recursionDepth)
+
+	case token.TokenTypeLBracket:
+		return p.handleArrayToken(nextToken, leftExpr, minPrecedence, recursionDepth)
 
 	default:
 		return leftExpr, nil
@@ -138,4 +142,54 @@ func (p *Parser) handleAssignmentToken(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
 	return p.parseAssignmentExpr(leftExpr, minPrecedence, recursionDepth)
+}
+
+func (p *Parser) handleArrayToken(
+	nextToken *token.Token,
+	leftExpr ast.ExprNode,
+	minPrecedence int,
+	recursionDepth int,
+) (ast.ExprNode, error) {
+	if p.getBindingPower(nextToken, false) < minPrecedence {
+		return leftExpr, nil
+	}
+
+	_, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err = p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	expr, err := p.parseExpr(nextToken, nil, 0, recursionDepth+1)
+
+	if err != nil {
+		return nil, err
+	}
+
+	nextToken, err = p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	if nextToken.TokenType != token.TokenTypeRBracket {
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgExpectedCloseBracket,
+			nextToken.StartPos,
+			nextToken.Atom,
+		)
+	}
+
+	return &ast.IndexExpr{
+		Array:    leftExpr,
+		Index:    expr,
+		StartPos: leftExpr.StartPosition(),
+		EndPos:   p.GetCurrentCharPos(),
+	}, nil
 }

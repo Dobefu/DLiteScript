@@ -37,6 +37,9 @@ func getPrintfFunction() function.Info {
 				case datatype.DataTypeTuple:
 					formatArgs[i-1] = args[i].ToString()
 
+				case datatype.DataTypeArray:
+					formatArgs[i-1] = args[i].ToString()
+
 				default:
 					formatArgs[i-1] = "unknown"
 				}
