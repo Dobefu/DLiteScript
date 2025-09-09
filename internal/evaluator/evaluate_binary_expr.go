@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -83,7 +84,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 		return e.evaluateArithmeticBinaryExprArray(leftValue, rightValue, node)
 
 	case datatype.DataTypeString:
-		fallthrough
+		return e.evaluateArithmeticBinaryExprString(leftValue, rightValue, node)
 
 	case datatype.DataTypeBool:
 		fallthrough
@@ -230,6 +231,32 @@ func (e *Evaluator) evaluateArithmeticBinaryExprArray(
 	switch node.Operator.TokenType {
 	case token.TokenTypeOperationAdd:
 		return e.evaluateArrayConcatenation(leftArray, rightArray, node)
+
+	default:
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.ErrorMsgUnknownOperator,
+			node.StartPosition(),
+			node.Operator.Atom,
+		)
+	}
+}
+
+func (e *Evaluator) evaluateArithmeticBinaryExprString(
+	leftValue datavalue.Value,
+	rightValue datavalue.Value,
+	node *ast.BinaryExpr,
+) (*controlflow.EvaluationResult, error) {
+	leftString, rightString, err := e.getBinaryExprValueAsString(leftValue, rightValue)
+
+	if err != nil {
+		return controlflow.NewRegularResult(datavalue.Null()), err
+	}
+
+	switch node.Operator.TokenType {
+	case token.TokenTypeOperationAdd:
+		return controlflow.NewRegularResult(
+			datavalue.String(fmt.Sprintf("%s%s", leftString, rightString)),
+		), nil
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
