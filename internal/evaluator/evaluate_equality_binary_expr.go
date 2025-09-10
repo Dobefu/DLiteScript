@@ -21,7 +21,8 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 	}
 
 	switch leftValue.DataType() {
-	case datatype.DataTypeNumber:
+	case
+		datatype.DataTypeNumber:
 		leftNumber, rightNumber, err := e.getBinaryExprValueAsNumber(leftValue, rightValue)
 
 		if err != nil {
@@ -33,7 +34,8 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 
 		return controlflow.NewRegularResult(datavalue.Bool(result)), nil
 
-	case datatype.DataTypeString:
+	case
+		datatype.DataTypeString:
 		leftString, rightString, err := e.getBinaryExprValueAsString(leftValue, rightValue)
 
 		if err != nil {
@@ -45,7 +47,8 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 
 		return controlflow.NewRegularResult(datavalue.Bool(result)), nil
 
-	case datatype.DataTypeBool:
+	case
+		datatype.DataTypeBool:
 		leftBool, rightBool, err := e.getBinaryExprValueAsBool(leftValue, rightValue)
 
 		if err != nil {
@@ -57,22 +60,21 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 
 		return controlflow.NewRegularResult(datavalue.Bool(result)), nil
 
-	case datatype.DataTypeNull:
+	case
+		datatype.DataTypeNull:
 		result := node.Operator.TokenType == token.TokenTypeEqual
 
 		return controlflow.NewRegularResult(datavalue.Bool(result)), nil
 
-	case datatype.DataTypeFunction:
+	case
+		datatype.DataTypeFunction,
+		datatype.DataTypeTuple:
 		return controlflow.NewRegularResult(
 			datavalue.Bool(leftValue.Equals(rightValue)),
 		), nil
 
-	case datatype.DataTypeTuple:
-		return controlflow.NewRegularResult(
-			datavalue.Bool(leftValue.Equals(rightValue)),
-		), nil
-
-	case datatype.DataTypeArray:
+	case
+		datatype.DataTypeArray:
 		return controlflow.NewRegularResult(
 			datavalue.Bool(leftValue.Equals(rightValue)),
 		), nil
