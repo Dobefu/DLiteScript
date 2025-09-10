@@ -16,6 +16,7 @@ func (t *Tokenizer) handleUnknownChar(
 	}
 
 	return nil, errorutil.NewErrorAt(
+		errorutil.StageTokenization,
 		errorutil.ErrorMsgUnexpectedChar,
 		t.expIdx,
 		string(next),

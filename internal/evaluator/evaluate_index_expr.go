@@ -19,6 +19,7 @@ func (e *Evaluator) evaluateIndexExpr(
 
 	if value.Value.DataType() != datatype.DataTypeArray {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			datatype.DataTypeArray.AsString(),
@@ -34,6 +35,7 @@ func (e *Evaluator) evaluateIndexExpr(
 
 	if idxValue.Value.DataType() != datatype.DataTypeNumber {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			datatype.DataTypeNumber.AsString(),
@@ -55,6 +57,7 @@ func (e *Evaluator) evaluateIndexExpr(
 
 	if idx < 0 || int(idx) >= len(array) {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgArrayIndexOutOfBounds,
 			node.StartPosition(),
 			node.Index.Expr(),

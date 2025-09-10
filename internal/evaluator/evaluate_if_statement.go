@@ -19,6 +19,7 @@ func (e *Evaluator) evaluateIfStatement(
 
 	if expr.Value.DataType() != datatype.DataTypeBool {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewError(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgTypeExpected,
 			"bool",
 			expr.Value.DataType().AsString(),

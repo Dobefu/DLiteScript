@@ -15,6 +15,7 @@ func (p *Parser) parseAssignmentExpr(
 
 	if !isIdentifier && !isIndexExpr {
 		return nil, errorutil.NewError(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedToken,
 			leftExpr.Expr(),
 		)

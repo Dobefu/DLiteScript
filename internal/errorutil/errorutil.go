@@ -88,23 +88,26 @@ const (
 
 // Error represents an error with a message.
 type Error struct {
-	msg ErrorMsg
-	pos int
+	msg   ErrorMsg
+	pos   int
+	phase Stage
 }
 
 // NewError creates a new error with the given message.
-func NewError(msg ErrorMsg, args ...any) *Error {
+func NewError(phase Stage, msg ErrorMsg, args ...any) *Error {
 	return &Error{
-		msg: ErrorMsg(fmt.Sprintf(string(msg), args...)),
-		pos: -1,
+		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
+		pos:   -1,
+		phase: phase,
 	}
 }
 
 // NewErrorAt creates a new error with the given message at a specific position.
-func NewErrorAt(msg ErrorMsg, pos int, args ...any) *Error {
+func NewErrorAt(phase Stage, msg ErrorMsg, pos int, args ...any) *Error {
 	return &Error{
-		msg: ErrorMsg(fmt.Sprintf(string(msg), args...)),
-		pos: pos,
+		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
+		pos:   pos,
+		phase: phase,
 	}
 }
 

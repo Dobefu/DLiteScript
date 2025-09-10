@@ -24,6 +24,7 @@ func (e *Evaluator) evaluateVariableDeclaration(
 
 	if node.Type[:2] != "[]" && value.Value.DataType().AsString() != node.Type {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewError(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgTypeMismatch,
 			node.Type,
 			value.Value.DataType().AsString(),

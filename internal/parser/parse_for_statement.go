@@ -95,6 +95,7 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 
 	if nextToken.TokenType != token.TokenTypeLBrace {
 		return nil, errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgBlockStatementExpected,
 			p.tokenIdx,
 			nextToken.TokenType,
@@ -114,6 +115,7 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 	if !isBlockStatement {
 		if blockNode != nil {
 			return nil, errorutil.NewError(
+				errorutil.StageParsing,
 				errorutil.ErrorMsgBlockStatementExpected,
 				blockNode.Expr(),
 			)
@@ -148,6 +150,7 @@ func (p *Parser) parseVariableDeclarationLoop(
 
 	if nextToken.TokenType != token.TokenTypeIdentifier {
 		return nil, errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedIdentifier,
 			p.tokenIdx,
 			nextToken.Atom,
@@ -245,6 +248,7 @@ func (p *Parser) parseExplicitRangeLoop(
 
 	if toToken.TokenType != token.TokenTypeTo {
 		return nil, errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
 			toToken.Atom,
@@ -352,6 +356,7 @@ func (p *Parser) parseRangeLoopWithoutVariable(startPos int) (ast.ExprNode, erro
 
 	if toToken.TokenType != token.TokenTypeTo {
 		return nil, errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
 			toToken.Atom,

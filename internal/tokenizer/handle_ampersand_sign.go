@@ -28,6 +28,7 @@ func (t *Tokenizer) handleAmpersandSign(startPos int) (*token.Token, error) {
 	}
 
 	return nil, errorutil.NewErrorAt(
+		errorutil.StageTokenization,
 		errorutil.ErrorMsgUnexpectedChar,
 		t.expIdx,
 		string(next),

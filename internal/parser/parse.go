@@ -125,6 +125,7 @@ func (p *Parser) handleStatementEnd(endToken *token.Type) error {
 
 		if !hasNewlines {
 			return errorutil.NewErrorAt(
+				errorutil.StageParsing,
 				errorutil.ErrorMsgUnexpectedToken,
 				p.tokenIdx,
 				nextToken.Atom,

@@ -14,6 +14,7 @@ func (p *Parser) parseDeclarationHeader() (string, string, error) {
 
 	if nextToken.TokenType != token.TokenTypeIdentifier {
 		return "", "", errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedIdentifier,
 			p.tokenIdx,
 			nextToken.Atom,
@@ -46,6 +47,7 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 
 		if nextToken.TokenType != token.TokenTypeRBracket {
 			return "", errorutil.NewErrorAt(
+				errorutil.StageParsing,
 				errorutil.ErrorMsgUnexpectedToken,
 				nextToken.StartPos,
 				nextToken.Atom,
@@ -60,6 +62,7 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 
 		if !elementTypeToken.IsDataType() {
 			return "", errorutil.NewErrorAt(
+				errorutil.StageParsing,
 				errorutil.ErrorMsgUnexpectedToken,
 				elementTypeToken.StartPos,
 				elementTypeToken.Atom,
@@ -71,6 +74,7 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 
 	if !typeToken.IsDataType() {
 		return "", errorutil.NewErrorAt(
+			errorutil.StageParsing,
 			errorutil.ErrorMsgUnexpectedToken,
 			typeToken.StartPos,
 			typeToken.Atom,

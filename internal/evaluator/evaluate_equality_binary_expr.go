@@ -76,6 +76,7 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluation,
 			errorutil.ErrorMsgUnknownOperator,
 			node.StartPosition(),
 			node.Operator.Atom,

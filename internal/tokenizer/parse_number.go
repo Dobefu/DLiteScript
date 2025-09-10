@@ -130,7 +130,12 @@ func (t *Tokenizer) createNumberErr(
 
 	literalString := t.exp[literalStartIdx:literalEndIdx]
 
-	return errorutil.NewErrorAt(errMsg, literalStartIdx, literalString)
+	return errorutil.NewErrorAt(
+		errorutil.StageTokenization,
+		errMsg,
+		literalStartIdx,
+		literalString,
+	)
 }
 
 func (t *Tokenizer) handleUnderscore(

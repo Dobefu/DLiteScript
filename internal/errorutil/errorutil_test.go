@@ -27,7 +27,7 @@ func TestNewError(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			err := NewError(test.input)
+			err := NewError(StageTokenization, test.input)
 
 			if err.Error() != test.expected {
 				t.Errorf(expectedErrorMsg, test.expected, err.Error())
@@ -58,7 +58,7 @@ func TestNewErrorAt(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		err := NewErrorAt(test.input, test.pos)
+		err := NewErrorAt(StageTokenization, test.input, test.pos)
 
 		if err.Error() != fmt.Sprintf("%s at position %d", test.expected, test.pos) {
 			t.Errorf(expectedErrorMsg, test.expected, err.Error())
