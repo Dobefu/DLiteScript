@@ -11,19 +11,10 @@ func (p *Parser) parseAssignmentExpr(
 	minPrecedence int,
 	recursionDepth int,
 ) (ast.ExprNode, error) {
-	nextToken, err := p.PeekNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if p.getBindingPower(nextToken, false) < minPrecedence {
-		return leftExpr, nil
-	}
-
 	identifier, isIdentifier := leftExpr.(*ast.Identifier)
+	indexExpr, isIndexExpr := leftExpr.(*ast.IndexExpr)
 
-	if !isIdentifier {
+	if !isIdentifier && !isIndexExpr {
 		return nil, errorutil.NewError(
 			errorutil.ErrorMsgUnexpectedToken,
 			leftExpr.Expr(),
@@ -56,8 +47,18 @@ func (p *Parser) parseAssignmentExpr(
 		return nil, err
 	}
 
-	return &ast.AssignmentStatement{
-		Left:     identifier,
+	if isIdentifier {
+		return &ast.AssignmentStatement{
+			Left:     identifier,
+			Right:    rightExpr,
+			StartPos: leftExpr.StartPosition(),
+			EndPos:   rightExpr.EndPosition(),
+		}, nil
+	}
+
+	return &ast.IndexAssignmentStatement{
+		Array:    indexExpr.Array,
+		Index:    indexExpr.Index,
 		Right:    rightExpr,
 		StartPos: leftExpr.StartPosition(),
 		EndPos:   rightExpr.EndPosition(),

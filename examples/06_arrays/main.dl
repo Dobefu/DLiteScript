@@ -9,3 +9,6 @@ printf("Array with [4, 5, 6]: %s\n", array1)
 
 array2 = array2 + array1
 printf("Array with [1, 2, 3, 4, 5, 6]: %s\n", array2)
+printf("array2[1]: %g\n", array2[1])
+array2[1] = 10
+printf("array2[1]: %g\n", array2[1])

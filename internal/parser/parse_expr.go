@@ -186,10 +186,12 @@ func (p *Parser) handleArrayToken(
 		)
 	}
 
-	return &ast.IndexExpr{
+	indexExpr := &ast.IndexExpr{
 		Array:    leftExpr,
 		Index:    expr,
 		StartPos: leftExpr.StartPosition(),
 		EndPos:   p.GetCurrentCharPos(),
-	}, nil
+	}
+
+	return p.parseExpr(nil, indexExpr, minPrecedence, recursionDepth+1)
 }
