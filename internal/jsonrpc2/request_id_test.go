@@ -46,3 +46,35 @@ func TestRequestID(t *testing.T) {
 		})
 	}
 }
+
+func TestRequestIDErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    *RequestID
+		expected string
+	}{
+		{
+			name:     "invalid JSON",
+			input:    &RequestID{value: json.RawMessage("{")},
+			expected: "invalid JSON in RequestID: '{'",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.MarshalJSON()
+
+			if err == nil {
+				t.Errorf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}

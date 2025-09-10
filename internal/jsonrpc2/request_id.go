@@ -24,7 +24,7 @@ func (r *RequestID) MarshalJSON() ([]byte, error) {
 	}
 
 	if !json.Valid(r.value) {
-		return nil, fmt.Errorf("invalid JSON in RequestID: %s", string(r.value))
+		return nil, fmt.Errorf("invalid JSON in RequestID: '%s'", string(r.value))
 	}
 
 	return r.value, nil
