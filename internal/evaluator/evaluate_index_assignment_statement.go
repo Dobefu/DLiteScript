@@ -21,6 +21,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
+			datatype.DataTypeArray.AsString(),
 			node.Array.Expr(),
 		)
 	}
@@ -35,6 +36,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
+			datatype.DataTypeNumber.AsString(),
 			node.Index.Expr(),
 		)
 	}
@@ -66,9 +68,9 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 	}
 
 	array[int(index)] = rightValue.Value
-	identifier, ok := node.Array.(*ast.Identifier)
+	identifier, hasIdentifier := node.Array.(*ast.Identifier)
 
-	if ok {
+	if hasIdentifier {
 		return e.assignVariable(
 			identifier.Value,
 			datavalue.Array(array...),
