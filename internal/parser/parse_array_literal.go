@@ -25,11 +25,7 @@ func (p *Parser) parseArrayLiteral(
 	}
 
 	if nextToken.TokenType == token.TokenTypeRBracket {
-		_, err = p.GetNextToken()
-
-		if err != nil {
-			return nil, err
-		}
+		_, _ = p.GetNextToken()
 
 		return &ast.ArrayLiteral{
 			Values:   values,
@@ -71,21 +67,13 @@ func (p *Parser) parseArrayLiteralValues(
 		}
 
 		if nextToken.TokenType == token.TokenTypeRBracket {
-			_, err = p.GetNextToken()
-
-			if err != nil {
-				return nil, err
-			}
+			_, _ = p.GetNextToken()
 
 			break
 		}
 
 		if nextToken.TokenType == token.TokenTypeComma {
-			_, err = p.GetNextToken()
-
-			if err != nil {
-				return nil, err
-			}
+			_, _ = p.GetNextToken()
 
 			continue
 		}

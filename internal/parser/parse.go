@@ -188,7 +188,9 @@ func (p *Parser) handleOptionalNewlines() error {
 		}
 
 		if peek.TokenType == token.TokenTypeNewline {
-			if _, err := p.GetNextToken(); err != nil {
+			_, err := p.GetNextToken()
+
+			if err != nil {
 				return err
 			}
 
