@@ -76,6 +76,27 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 			),
 			expected: "testing, 1 2 3\n",
 		},
+		{
+			name: "spread array arguments",
+			input: evaluateFunctionCallCreateFunctionCall(
+				"printf",
+				&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
+				&ast.SpreadExpr{
+					Expression: &ast.ArrayLiteral{
+						Values: []ast.ExprNode{
+							&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+							&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
+							&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+						},
+						StartPos: 10,
+						EndPos:   15,
+					},
+					StartPos: 10,
+					EndPos:   15,
+				},
+			),
+			expected: "testing, 1 2 3\n",
+		},
 	}
 
 	for _, test := range tests {
@@ -86,11 +107,11 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 			_, err := ev.Evaluate(test.input)
 
 			if err != nil {
-				t.Errorf("error evaluating '%s': %s", test.input, err.Error())
+				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
 			if ev.buf.String() != test.expected {
-				t.Errorf("expected '%s', got '%s'", test.expected, ev.buf.String())
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, ev.buf.String())
 			}
 		})
 	}
@@ -117,7 +138,13 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 				"printf",
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			),
-			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "printf", 1, "string", "number"),
+			expected: fmt.Sprintf(
+				errorutil.ErrorMsgFunctionArgType,
+				"printf",
+				1,
+				"string",
+				"number",
+			),
 		},
 	}
 

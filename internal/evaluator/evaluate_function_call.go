@@ -128,34 +128,52 @@ func (e *Evaluator) evaluateArguments(
 	for _, arg := range args {
 		spreadArg, isSpreadArg := arg.(*ast.SpreadExpr)
 
-		if isSpreadArg {
-			spreadValue, err := e.Evaluate(spreadArg.Expression)
+		if !isSpreadArg {
+			val, err := e.Evaluate(arg)
 
 			if err != nil {
 				return nil, err
 			}
 
-			if spreadValue.Value.DataType() == datatype.DataTypeTuple {
-				argValues = append(argValues, spreadValue.Value.Values...)
+			argValues = append(argValues, val.Value)
 
-				continue
-			}
-
-			return nil, errorutil.NewErrorAt(
-				errorutil.ErrorMsgTypeExpected,
-				spreadArg.StartPosition(),
-				datatype.DataTypeTuple.AsString(),
-				spreadValue.Value.DataType().AsString(),
-			)
+			continue
 		}
 
-		val, err := e.Evaluate(arg)
-
+		spreadValue, err := e.Evaluate(spreadArg.Expression)
 		if err != nil {
 			return nil, err
 		}
 
-		argValues = append(argValues, val.Value)
+		if spreadValue.Value.DataType() == datatype.DataTypeTuple {
+			argValues = append(argValues, spreadValue.Value.Values...)
+
+			continue
+		}
+
+		if spreadValue.Value.DataType() == datatype.DataTypeArray {
+			arrayValues, err := spreadValue.Value.AsArray()
+
+			if err != nil {
+				return nil, errorutil.NewErrorAt(
+					errorutil.ErrorMsgTypeExpected,
+					spreadArg.StartPosition(),
+					"array",
+					spreadValue.Value.DataType().AsString(),
+				)
+			}
+
+			argValues = append(argValues, arrayValues...)
+
+			continue
+		}
+
+		return nil, errorutil.NewErrorAt(
+			errorutil.ErrorMsgTypeExpected,
+			spreadArg.StartPosition(),
+			"tuple or array",
+			spreadValue.Value.DataType().AsString(),
+		)
 	}
 
 	return e.validateArgumentTypes(argValues, function, functionName, fc)
