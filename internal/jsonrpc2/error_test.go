@@ -22,6 +22,13 @@ func TestError(t *testing.T) {
 			data:     &json.RawMessage{},
 			expected: "code: -32000, message: test, data: ",
 		},
+		{
+			name:     "no data",
+			code:     -32000,
+			message:  "test",
+			data:     nil,
+			expected: "code: -32000, message: test",
+		},
 	}
 
 	for _, test := range tests {
