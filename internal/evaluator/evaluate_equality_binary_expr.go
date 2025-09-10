@@ -68,12 +68,7 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 
 	case
 		datatype.DataTypeFunction,
-		datatype.DataTypeTuple:
-		return controlflow.NewRegularResult(
-			datavalue.Bool(leftValue.Equals(rightValue)),
-		), nil
-
-	case
+		datatype.DataTypeTuple,
 		datatype.DataTypeArray:
 		return controlflow.NewRegularResult(
 			datavalue.Bool(leftValue.Equals(rightValue)),
