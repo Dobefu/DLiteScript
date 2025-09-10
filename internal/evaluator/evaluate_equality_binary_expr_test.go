@@ -109,8 +109,8 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 		},
 		{
 			name:       "function",
-			inputLeft:  datavalue.Function(nil),
-			inputRight: datavalue.Function(nil),
+			inputLeft:  datavalue.Function(function),
+			inputRight: datavalue.Function(function),
 			inputNode: &ast.BinaryExpr{
 				Left:  function,
 				Right: function,
@@ -123,12 +123,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: datavalue.Bool(false),
+			expected: datavalue.Bool(true),
 		},
 		{
 			name:       "tuple",
 			inputLeft:  datavalue.Tuple(datavalue.Number(1), datavalue.Number(2)),
 			inputRight: datavalue.Tuple(datavalue.Number(1), datavalue.Number(2)),
+			inputNode: &ast.BinaryExpr{
+				Left:  nil,
+				Right: nil,
+				Operator: token.Token{
+					Atom:      "==",
+					TokenType: token.TokenTypeEqual,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: datavalue.Bool(true),
+		},
+		{
+			name:       "array",
+			inputLeft:  datavalue.Array(datavalue.Number(1), datavalue.Number(2)),
+			inputRight: datavalue.Array(datavalue.Number(1), datavalue.Number(2)),
 			inputNode: &ast.BinaryExpr{
 				Left:  nil,
 				Right: nil,
@@ -177,11 +195,11 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 				t.Fatalf("error evaluating %s: %s", test.inputNode.Expr(), err)
 			}
 
-			if result.Value.DataType().AsString() != test.expected.DataType().AsString() {
+			if !result.Value.Equals(test.expected) {
 				t.Fatalf(
 					"expected \"%v\", got \"%v\"",
-					test.expected.DataType().AsString(),
-					result.Value.DataType().AsString(),
+					test.expected,
+					result.Value,
 				)
 			}
 		})
