@@ -21,7 +21,8 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
-			node.Array.Expr(),
+			datatype.DataTypeArray.AsString(),
+			value.Value.DataType().AsString(),
 		)
 	}
 
@@ -35,7 +36,8 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
-			node.Index.Expr(),
+			datatype.DataTypeNumber.AsString(),
+			idxValue.Value.DataType().AsString(),
 		)
 	}
 
