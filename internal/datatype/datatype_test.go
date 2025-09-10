@@ -43,6 +43,11 @@ func TestDatatype(t *testing.T) {
 			expectedValue: "tuple",
 		},
 		{
+			name:          "array",
+			input:         DataTypeArray,
+			expectedValue: "array",
+		},
+		{
 			name:          "unknown",
 			input:         DataType(-1),
 			expectedValue: "unknown",
