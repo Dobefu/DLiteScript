@@ -34,11 +34,7 @@ func (p *Parser) parseExpr(
 		return leftExpr, nil
 	}
 
-	nextToken, err := p.PeekNextToken()
-
-	if err != nil {
-		return nil, err
-	}
+	nextToken, _ := p.PeekNextToken()
 
 	switch nextToken.TokenType {
 	case
