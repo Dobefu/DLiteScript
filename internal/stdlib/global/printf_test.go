@@ -99,6 +99,14 @@ func TestGetPrintfFunction(t *testing.T) {
 			},
 			expected: "test test 1",
 		},
+		{
+			name: "array argument",
+			input: []datavalue.Value{
+				datavalue.String("test %s %d"),
+				datavalue.Array(datavalue.String("test"), datavalue.Number(1)),
+			},
+			expected: "",
+		},
 	}
 
 	for _, test := range tests {
