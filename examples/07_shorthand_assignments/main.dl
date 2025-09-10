@@ -1,0 +1,19 @@
+var num1 number = 0
+
+num1 += 10
+printf("%g\n", num1)
+
+num1 -= 5
+printf("%g\n", num1)
+
+num1 *= 2
+printf("%g\n", num1)
+
+num1 /= 2
+printf("%g\n", num1)
+
+num1 %= 2
+printf("%g\n", num1)
+
+num1 **= 2
+printf("%g\n", num1)

@@ -109,8 +109,8 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasReadErr: false,
 			script:     "1 +",
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
-				errorutil.StageParse.String(),
+				"%s: %s at position 3",
+				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},

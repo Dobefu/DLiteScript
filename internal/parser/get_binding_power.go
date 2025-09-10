@@ -83,7 +83,13 @@ func (p *Parser) getBindingPower(currentToken *token.Token, isUnary bool) int {
 		return bindingPowerLogicalOr
 
 	case
-		token.TokenTypeAssign:
+		token.TokenTypeAssign,
+		token.TokenTypeOperationAddAssign,
+		token.TokenTypeOperationSubAssign,
+		token.TokenTypeOperationMulAssign,
+		token.TokenTypeOperationDivAssign,
+		token.TokenTypeOperationModAssign,
+		token.TokenTypeOperationPowAssign:
 		return bindingPowerAssignment
 
 	default:

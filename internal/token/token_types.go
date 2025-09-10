@@ -18,6 +18,20 @@ const (
 	TokenTypeOperationMod
 	// TokenTypeOperationSpread represents the spread operator.
 	TokenTypeOperationSpread
+
+	// TokenTypeOperationAddAssign represents the shorthand addition assignment operator.
+	TokenTypeOperationAddAssign
+	// TokenTypeOperationSubAssign represents the shorthand subtraction assignment operator.
+	TokenTypeOperationSubAssign
+	// TokenTypeOperationMulAssign represents the shorthand multiplication assignment operator.
+	TokenTypeOperationMulAssign
+	// TokenTypeOperationDivAssign represents the shorthand division assignment operator.
+	TokenTypeOperationDivAssign
+	// TokenTypeOperationModAssign represents the shorthand modulo assignment operator.
+	TokenTypeOperationModAssign
+	// TokenTypeOperationPowAssign represents the shorthand power assignment operator.
+	TokenTypeOperationPowAssign
+
 	// TokenTypeNumber represents a number literal.
 	TokenTypeNumber
 	// TokenTypeString represents a string literal.

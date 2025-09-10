@@ -12,15 +12,34 @@ func (t *Tokenizer) handleAsteriskSign(startPos int) (*token.Token, error) {
 	}
 
 	if next == '*' {
-		_, err = t.GetNext()
+		_, _ = t.GetNext()
 
-		if err != nil {
-			return nil, err
+		nextAfterSecond, err := t.Peek()
+		if err == nil && nextAfterSecond == '=' {
+			_, _ = t.GetNext()
+
+			return token.NewToken(
+				"**=",
+				token.TokenTypeOperationPowAssign,
+				startPos,
+				t.expIdx,
+			), nil
 		}
 
 		return token.NewToken(
 			"**",
 			token.TokenTypeOperationPow,
+			startPos,
+			t.expIdx,
+		), nil
+	}
+
+	if next == '=' {
+		_, _ = t.GetNext()
+
+		return token.NewToken(
+			"*=",
+			token.TokenTypeOperationMulAssign,
 			startPos,
 			t.expIdx,
 		), nil

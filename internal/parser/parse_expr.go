@@ -59,6 +59,21 @@ func (p *Parser) parseExpr(
 			recursionDepth,
 		)
 
+	case
+		token.TokenTypeOperationAddAssign,
+		token.TokenTypeOperationSubAssign,
+		token.TokenTypeOperationMulAssign,
+		token.TokenTypeOperationDivAssign,
+		token.TokenTypeOperationModAssign,
+		token.TokenTypeOperationPowAssign:
+
+		return p.handleShorthandAssignmentToken(
+			nextToken,
+			leftExpr,
+			minPrecedence,
+			recursionDepth,
+		)
+
 	case token.TokenTypeOperationPow:
 		return p.handlePowToken(leftExpr, minPrecedence, recursionDepth)
 
@@ -191,4 +206,45 @@ func (p *Parser) handleArrayToken(
 	}
 
 	return p.parseExpr(nil, indexExpr, minPrecedence, recursionDepth+1)
+}
+
+func (p *Parser) handleShorthandAssignmentToken(
+	nextToken *token.Token,
+	leftExpr ast.ExprNode,
+	minPrecedence int,
+	recursionDepth int,
+) (ast.ExprNode, error) {
+	if p.getBindingPower(nextToken, false) < minPrecedence {
+		return leftExpr, nil
+	}
+
+	operator, err := p.GetNextToken()
+	if err != nil {
+		return nil, err
+	}
+
+	rightToken, err := p.GetNextToken()
+
+	if err != nil {
+		return nil, err
+	}
+
+	rightExpr, err := p.parseExpr(
+		rightToken,
+		nil,
+		minPrecedence,
+		recursionDepth+1,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &ast.ShorthandAssignmentExpr{
+		Left:     leftExpr,
+		Right:    rightExpr,
+		Operator: *operator,
+		StartPos: leftExpr.StartPosition(),
+		EndPos:   rightExpr.EndPosition(),
+	}, nil
 }

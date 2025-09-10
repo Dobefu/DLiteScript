@@ -50,16 +50,16 @@ func (t *Tokenizer) Tokenize() ([]*token.Token, error) {
 			newToken, err = t.handleNumberOrSpread(next, startPos)
 
 		case '+':
-			newToken = token.NewToken("+", token.TokenTypeOperationAdd, startPos, t.expIdx)
+			newToken, err = t.handlePlusSign(startPos)
 
 		case '-':
-			newToken = token.NewToken("-", token.TokenTypeOperationSub, startPos, t.expIdx)
+			newToken, err = t.handleMinusSign(startPos)
 
 		case '*':
 			newToken, err = t.handleAsteriskSign(startPos)
 
 		case '%':
-			newToken = token.NewToken("%", token.TokenTypeOperationMod, startPos, t.expIdx)
+			newToken, err = t.handlePercentSign(startPos)
 
 		case '/':
 			newToken, err = t.handleSlashSign(startPos)

@@ -13,11 +13,7 @@ func (t *Tokenizer) handlePipeSign(startPos int) (*token.Token, error) {
 	}
 
 	if next == '|' {
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
+		_, _ = t.GetNext()
 
 		return token.NewToken(
 			"||",

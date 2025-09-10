@@ -4,27 +4,27 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
-func (t *Tokenizer) handleLessThanSign(startPos int) (*token.Token, error) {
-	next, err := t.Peek()
+func (t *Tokenizer) handleMinusSign(startPos int) (*token.Token, error) {
+	nextToken, err := t.Peek()
 
 	if err != nil {
 		return nil, err
 	}
 
-	if next == '=' {
+	if nextToken == '=' {
 		_, _ = t.GetNext()
 
 		return token.NewToken(
-			"<=",
-			token.TokenTypeLessThanOrEqual,
+			"-=",
+			token.TokenTypeOperationSubAssign,
 			startPos,
 			t.expIdx,
 		), nil
 	}
 
 	return token.NewToken(
-		"<",
-		token.TokenTypeLessThan,
+		"-",
+		token.TokenTypeOperationSub,
 		startPos,
 		t.expIdx,
 	), nil

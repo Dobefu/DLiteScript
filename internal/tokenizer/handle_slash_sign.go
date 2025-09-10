@@ -11,26 +11,37 @@ func (t *Tokenizer) handleSlashSign(startPos int) (*token.Token, error) {
 		return nil, err
 	}
 
-	if next != '/' {
+	if next == '=' {
+		_, _ = t.GetNext()
+
 		return token.NewToken(
-			"/",
-			token.TokenTypeOperationDiv,
+			"/=",
+			token.TokenTypeOperationDivAssign,
 			startPos,
 			t.expIdx,
 		), nil
 	}
 
-	for !t.isEOF {
-		next, err = t.GetNext()
+	if next == '/' {
+		for !t.isEOF {
+			next, err = t.GetNext()
 
-		if err != nil {
-			return nil, err
+			if err != nil {
+				return nil, err
+			}
+
+			if next == '\n' {
+				break
+			}
 		}
 
-		if next == '\n' {
-			break
-		}
+		return nil, nil
 	}
 
-	return nil, nil
+	return token.NewToken(
+		"/",
+		token.TokenTypeOperationDiv,
+		startPos,
+		t.expIdx,
+	), nil
 }

@@ -68,6 +68,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationRe
 	case *ast.IndexAssignmentStatement:
 		return e.evaluateIndexAssignmentStatement(node)
 
+	case *ast.ShorthandAssignmentExpr:
+		return e.evaluateShorthandAssignmentExpr(node)
+
 	case *ast.FuncDeclarationStatement:
 		return e.evaluateFunctionDeclaration(node)
 
