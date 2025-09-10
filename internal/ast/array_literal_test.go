@@ -18,7 +18,6 @@ func TestArrayLiteral(t *testing.T) {
 
 	expectedNodes := []string{"[1, 1]", "1", "1"}
 	expectedValue := "[1, 1]"
-
 	visitedNodes := []string{}
 
 	array.Walk(func(node ExprNode) bool {
