@@ -100,9 +100,10 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.ErrorMsgTypeMismatch,
+			errorutil.ErrorMsgCannotConcat,
 			node.StartPosition(),
-			node.Operator.Atom,
+			leftValue.DataType().AsString(),
+			rightValue.DataType().AsString(),
 		)
 	}
 }

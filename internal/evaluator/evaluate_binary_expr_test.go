@@ -21,7 +21,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 		expected datavalue.Value
 	}{
 		{
-			name: "addition",
+			name: "number addition",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -37,7 +37,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(10),
 		},
 		{
-			name: "subtraction",
+			name: "number subtraction",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -53,7 +53,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(0),
 		},
 		{
-			name: "multiplication",
+			name: "number multiplication",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -69,7 +69,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(25),
 		},
 		{
-			name: "division",
+			name: "number division",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -85,7 +85,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(1),
 		},
 		{
-			name: "modulo",
+			name: "number modulo",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -101,7 +101,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(0),
 		},
 		{
-			name: "power",
+			name: "number power",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -117,7 +117,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Number(3125),
 		},
 		{
-			name: "equality",
+			name: "number equality",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
@@ -133,7 +133,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
-			name: "greater than or equal",
+			name: "number greater than or equal",
 			input: &ast.BinaryExpr{
 				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
 				Right: &ast.NumberLiteral{Value: "6", StartPos: 2, EndPos: 3},
@@ -149,7 +149,7 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(false),
 		},
 		{
-			name: "logical and",
+			name: "boolean logical and",
 			input: &ast.BinaryExpr{
 				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
 				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
@@ -163,6 +163,57 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 				EndPos:   1,
 			},
 			expected: datavalue.Bool(true),
+		},
+		{
+			name: "array addition",
+			input: &ast.BinaryExpr{
+				Left: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{&ast.NumberLiteral{
+						Value:    "1",
+						StartPos: 0,
+						EndPos:   1,
+					}},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{&ast.NumberLiteral{
+						Value:    "2",
+						StartPos: 2,
+						EndPos:   3,
+					}},
+					StartPos: 2,
+					EndPos:   3,
+				},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   1,
+			},
+			expected: datavalue.Array(
+				datavalue.Number(1),
+				datavalue.Number(2),
+			),
+		},
+		{
+			name: "string addition",
+			input: &ast.BinaryExpr{
+				Left:  &ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+				Right: &ast.StringLiteral{Value: "test", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   1,
+			},
+			expected: datavalue.String("testtest"),
 		},
 	}
 
@@ -307,6 +358,22 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
 		},
+		{
+			name: "boolean addition",
+			input: &ast.BinaryExpr{
+				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgCannotConcat, "bool", "bool"),
+		},
 	}
 
 	for _, test := range tests {
@@ -314,6 +381,61 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 			t.Parallel()
 
 			_, err := NewEvaluator(io.Discard).evaluateBinaryExpr(test.input)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestEvaluateArithmeticBinaryExprNumberErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		node     *ast.BinaryExpr
+		expected string
+	}{
+		{
+			name:  "null values",
+			left:  datavalue.Null(),
+			right: datavalue.Null(),
+			node: &ast.BinaryExpr{
+				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := NewEvaluator(io.Discard).evaluateArithmeticBinaryExprNumber(
+				test.left,
+				test.right,
+				test.node,
+			)
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
@@ -381,6 +503,190 @@ func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
 	}
 }
 
+func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		node     *ast.BinaryExpr
+		expected string
+	}{
+		{
+			name:  "invalid left operand",
+			left:  datavalue.Number(5),
+			right: datavalue.Array(datavalue.Number(1)),
+			node: &ast.BinaryExpr{
+				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{
+						&ast.NumberLiteral{
+							Value:    "1",
+							StartPos: 2,
+							EndPos:   3,
+						},
+					},
+					StartPos: 2,
+					EndPos:   3,
+				},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+		},
+		{
+			name:  "invalid right operand",
+			left:  datavalue.Array(datavalue.Number(1)),
+			right: datavalue.Number(5),
+			node: &ast.BinaryExpr{
+				Left: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{
+						&ast.NumberLiteral{
+							Value:    "1",
+							StartPos: 2,
+							EndPos:   3,
+						},
+					},
+					StartPos: 2,
+					EndPos:   3,
+				},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+		},
+		{
+			name:  "invalid operator",
+			left:  datavalue.Array(datavalue.Number(1)),
+			right: datavalue.Array(datavalue.Number(1)),
+			node: &ast.BinaryExpr{
+				Left: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{&ast.NumberLiteral{
+						Value:    "1",
+						StartPos: 2,
+						EndPos:   3,
+					}},
+					StartPos: 2,
+					EndPos:   3,
+				},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Operator: token.Token{
+					Atom:      "",
+					TokenType: token.Type(-1),
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := NewEvaluator(io.Discard).evaluateArithmeticBinaryExprArray(
+				test.left,
+				test.right,
+				test.node,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestEvaluateArithmeticBinaryExprStringErr(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		node     *ast.BinaryExpr
+		expected string
+	}{
+		{
+			name:  "invalid left operand",
+			left:  datavalue.Number(5),
+			right: datavalue.String("5"),
+			node: &ast.BinaryExpr{
+				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.StringLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+		},
+		{
+			name:  "invalid operator",
+			left:  datavalue.String("5"),
+			right: datavalue.String("5"),
+			node: &ast.BinaryExpr{
+				Left:  &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "",
+					TokenType: token.Type(-1),
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 1,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := NewEvaluator(io.Discard).evaluateArithmeticBinaryExprString(
+				test.left,
+				test.right,
+				test.node,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+		})
+	}
+
+}
+
 func TestGetBinaryExprValueAsBoolErr(t *testing.T) {
 	t.Parallel()
 
@@ -409,6 +715,47 @@ func TestGetBinaryExprValueAsBoolErr(t *testing.T) {
 			t.Parallel()
 
 			_, _, err := NewEvaluator(io.Discard).getBinaryExprValueAsBool(
+				test.left,
+				test.right,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Fatalf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestGetBinaryExprValueAsNumberErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		left     datavalue.Value
+		right    datavalue.Value
+		expected string
+	}{
+		{
+			name:     "invalid left operand",
+			left:     datavalue.String("5"),
+			right:    datavalue.Number(5),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, _, err := NewEvaluator(io.Discard).getBinaryExprValueAsNumber(
 				test.left,
 				test.right,
 			)

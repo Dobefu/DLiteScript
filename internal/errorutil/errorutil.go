@@ -82,6 +82,8 @@ const (
 	ErrorMsgUndefinedNamespace = "undefined namespace: '%s'"
 	// ErrorMsgArrayIndexOutOfBounds occurs when an array index is out of bounds.
 	ErrorMsgArrayIndexOutOfBounds = "array index out of bounds: '%s'"
+	// ErrorMsgCannotConcat occurs when two values of the same type cannot be concatenated.
+	ErrorMsgCannotConcat = "cannot concatenate %s and %s"
 )
 
 // Error represents an error with a message.
