@@ -200,6 +200,20 @@ func TestParseForStatementErr(t *testing.T) {
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "to") + " at position 5",
 		},
+		{
+			name: "missing loop body",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "i", TokenType: token.TokenTypeIdentifier},
+				{Atom: "=", TokenType: token.TokenTypeEqual},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 5",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
 	}
 
 	for _, test := range tests {
@@ -215,6 +229,363 @@ func TestParseForStatementErr(t *testing.T) {
 
 			if err.Error() != test.expected {
 				t.Fatalf("expected %s, got %s", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseLoopErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseLoop(0)
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseLoopBodyErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "no tokens",
+			input: []*token.Token{
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				fmt.Sprintf(
+					errorutil.ErrorMsgBlockStatementExpected,
+					token.Type(token.TokenTypeRBrace),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseLoopBody()
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseVariableDeclarationLoopErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "no next token after variable declaration",
+			input: []*token.Token{
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 1",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "missing identifier after variable declaration",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedIdentifier, "test"),
+			),
+		},
+		{
+			name: "unexpected EOF after variable name when expecting operator",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "i", TokenType: token.TokenTypeIdentifier},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected EOF after variable declaration",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "i", TokenType: token.TokenTypeIdentifier},
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 3",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseVariableDeclarationLoop(0)
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseExplicitRangeLoopErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "no next token after variable declaration",
+			input: []*token.Token{
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 1",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "missing identifier after variable declaration",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected token instead of to",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "test", TokenType: token.TokenTypeString},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
+		},
+		{
+			name: "missing loop body",
+			input: []*token.Token{
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "test", TokenType: token.TokenTypeString},
+				{Atom: "to", TokenType: token.TokenTypeTo},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 4",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseExplicitRangeLoop(0, "")
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseImplicitRangeLoopWithVariableErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseImplicitRangeLoopWithVariable(0, "")
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "no next token after from",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "from", TokenType: token.TokenTypeFrom},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "from"),
+			),
+		},
+		{
+			name: "error peeking next token after from expression",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "2", TokenType: token.TokenTypeNumber},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected token instead of to after from expression",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "2", TokenType: token.TokenTypeNumber},
+				{Atom: "bogus", TokenType: token.TokenTypeIdentifier},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 2",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
+			),
+		},
+		{
+			name: "unexpected token instead of to after from expression",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "2", TokenType: token.TokenTypeNumber},
+				{Atom: "to", TokenType: token.TokenTypeTo},
+			},
+			expected: fmt.Sprintf(
+				"%s at position 3",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseRangeLoopWithoutVariable(0)
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}

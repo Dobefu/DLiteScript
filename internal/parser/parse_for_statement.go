@@ -60,12 +60,7 @@ func (p *Parser) parseLoop(startPos int) (ast.ExprNode, error) {
 		return p.parseRangeLoopWithoutVariable(startPos)
 	}
 
-	nextToken, err = p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
+	nextToken, _ = p.GetNextToken()
 	condition, err := p.parseExpr(nextToken, nil, 0, 0)
 
 	if err != nil {
@@ -106,12 +101,7 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 		)
 	}
 
-	_, err = p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
+	_, _ = p.GetNextToken()
 	var endToken token.Type = token.TokenTypeRBrace
 	blockNode, err := p.parseBlock(&endToken)
 
@@ -160,7 +150,7 @@ func (p *Parser) parseVariableDeclarationLoop(
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnexpectedIdentifier,
 			p.tokenIdx,
-			nextToken.TokenType,
+			nextToken.Atom,
 		)
 	}
 
@@ -180,12 +170,7 @@ func (p *Parser) parseVariableDeclarationLoop(
 		return p.parseImplicitRangeLoopWithVariable(startPos, varName)
 	}
 
-	operatorToken, err := p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
+	operatorToken, _ := p.GetNextToken()
 	nextToken, err = p.GetNextToken()
 
 	if err != nil {
@@ -262,7 +247,7 @@ func (p *Parser) parseExplicitRangeLoop(
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
-			toToken.TokenType,
+			toToken.Atom,
 		)
 	}
 
@@ -369,7 +354,7 @@ func (p *Parser) parseRangeLoopWithoutVariable(startPos int) (ast.ExprNode, erro
 		return nil, errorutil.NewErrorAt(
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
-			toToken.TokenType,
+			toToken.Atom,
 		)
 	}
 
