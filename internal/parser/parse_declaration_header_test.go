@@ -40,11 +40,19 @@ func TestParseDeclarationHeader(t *testing.T) {
 			}
 
 			if declared != test.expectedName {
-				t.Fatalf("expected declared to be \"%s\", got \"%s\"", test.expectedName, declared)
+				t.Fatalf(
+					"expected declared to be \"%s\", got \"%s\"",
+					test.expectedName,
+					declared,
+				)
 			}
 
 			if varType != test.expectedType {
-				t.Fatalf("expected varType to be \"%s\", got \"%s\"", test.expectedType, varType)
+				t.Fatalf(
+					"expected varType to be \"%s\", got \"%s\"",
+					test.expectedType,
+					varType,
+				)
 			}
 		})
 	}
@@ -59,16 +67,22 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "unexpected EOF",
-			input:    []*token.Token{},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 0",
+			name:  "unexpected EOF",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "invalid identifier",
 			input: []*token.Token{
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedIdentifier, "1") + " at position 1",
+			expected: fmt.Sprintf(
+				"%s at position 1",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedIdentifier, "1"),
+			),
 		},
 		{
 			name: "invalid data type",
@@ -76,7 +90,20 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
 				token.NewToken("bogus", token.TokenTypeString, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus") + " at position 0",
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
+			),
+		},
+		{
+			name: "unexpected EOF after identifier",
+			input: []*token.Token{
+				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s at position 1",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 
@@ -93,6 +120,130 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 
 			if err.Error() != test.expected {
 				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseDataType(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "number",
+			input: []*token.Token{
+				token.NewToken("number", token.TokenTypeTypeNumber, 0, 0),
+			},
+			expected: "number",
+		},
+		{
+			name: "array",
+			input: []*token.Token{
+				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
+				token.NewToken("number", token.TokenTypeTypeNumber, 0, 0),
+			},
+			expected: "[]number",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input[1:])
+			dataType, err := p.parseDataType(test.input[0])
+
+			if err != nil {
+				t.Fatalf("expected no error, got %s", err.Error())
+			}
+
+			if dataType != test.expected {
+				t.Fatalf(
+					"expected dataType to be \"%s\", got \"%s\"",
+					test.expected,
+					dataType,
+				)
+			}
+		})
+	}
+}
+
+func TestParseDataTypeErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "unexpected EOF in array declaration",
+			input: []*token.Token{
+				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected token in array declaration",
+			input: []*token.Token{
+				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+				token.NewToken("number", token.TokenTypeTypeNumber, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "number"),
+			),
+		},
+		{
+			name: "array declaration without type",
+			input: []*token.Token{
+				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s at position 1",
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "array declaration with invalid type",
+			input: []*token.Token{
+				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
+				token.NewToken("bogus", token.TokenTypeIdentifier, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s at position 0",
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input[1:])
+			_, err := p.parseDataType(test.input[0])
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf(
+					"expected dataType to be \"%s\", got \"%s\"",
+					test.expected,
+					err.Error(),
+				)
 			}
 		})
 	}
