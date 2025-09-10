@@ -6,16 +6,32 @@ import (
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/controlflow"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
 func TestEvaluate(t *testing.T) {
 	t.Parallel()
 
+	funcDeclaration := &ast.FuncDeclarationStatement{
+		Name: "someFunction",
+		Args: []ast.FuncParameter{},
+		Body: &ast.BlockStatement{
+			Statements: []ast.ExprNode{},
+			StartPos:   0,
+			EndPos:     1,
+		},
+		ReturnValues:    []string{},
+		NumReturnValues: 0,
+		StartPos:        0,
+		EndPos:          1,
+	}
+
 	tests := []struct {
 		name     string
 		input    ast.ExprNode
-		expected float64
+		expected *controlflow.EvaluationResult
 	}{
 		{
 			name: "binary expression",
@@ -60,7 +76,48 @@ func TestEvaluate(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expected: 5 + math.Abs(-5+math.Pi),
+			expected: controlflow.NewRegularResult(
+				datavalue.Number(5 + math.Abs(-5+math.Pi)),
+			),
+		},
+		{
+			name: "index assignment statement",
+			input: &ast.IndexAssignmentStatement{
+				Array:    &ast.Identifier{Value: "someArray", StartPos: 0, EndPos: 1},
+				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: controlflow.NewRegularResult(
+				datavalue.Array(datavalue.Number(1)),
+			),
+		},
+		{
+			name:  "function declaration statement",
+			input: funcDeclaration,
+			expected: controlflow.NewRegularResult(
+				datavalue.Function(funcDeclaration),
+			),
+		},
+		{
+			name: "spread expression",
+			input: &ast.SpreadExpr{
+				Expression: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				StartPos:   0,
+				EndPos:     1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Number(1)),
+		},
+		{
+			name: "index expression",
+			input: &ast.IndexExpr{
+				Array:    &ast.Identifier{Value: "someArray", StartPos: 0, EndPos: 1},
+				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Number(0)),
 		},
 	}
 
@@ -68,20 +125,33 @@ func TestEvaluate(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			rawResult, err := NewEvaluator(io.Discard).Evaluate(test.input)
+			ev := NewEvaluator(io.Discard)
+
+			ev.outerScope["someArray"] = &Variable{
+				Value: datavalue.Array(datavalue.Number(0)),
+				Type:  "array",
+			}
+
+			result, err := ev.Evaluate(test.input)
 
 			if err != nil {
 				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
-			result, err := rawResult.Value.AsNumber()
-
-			if err != nil {
-				t.Fatalf("expected number, got type error: \"%s\"", err.Error())
+			if result.Value.DataType() != test.expected.Value.DataType() {
+				t.Errorf(
+					"expected \"%T\", got \"%T\"",
+					test.expected.Value.DataType(),
+					result.Value.DataType(),
+				)
 			}
 
-			if result != test.expected {
-				t.Errorf("expected \"%f\", got \"%f\"", test.expected, result)
+			if !result.Value.Equals(test.expected.Value) {
+				t.Errorf(
+					"expected \"%s\", got \"%s\"",
+					test.expected.Value.ToString(),
+					result.Value.ToString(),
+				)
 			}
 		})
 	}
