@@ -45,6 +45,11 @@ func TestGetBindingPower(t *testing.T) {
 			expected: bindingPowerMultiplicative,
 		},
 		{
+			input:    token.NewToken("[", token.TokenTypeLBracket, 0, 0),
+			isUnary:  false,
+			expected: bindingPowerArray,
+		},
+		{
 			input:    token.NewToken("**", token.TokenTypeOperationPow, 0, 0),
 			isUnary:  false,
 			expected: bindingPowerPower,
