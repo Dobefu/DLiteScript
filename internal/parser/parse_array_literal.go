@@ -79,7 +79,7 @@ func (p *Parser) parseArrayLiteralValues(
 		}
 
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			nextToken.StartPos,
 			nextToken.Atom,

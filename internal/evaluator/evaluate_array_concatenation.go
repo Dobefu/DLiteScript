@@ -18,7 +18,7 @@ func (e *Evaluator) evaluateArrayConcatenation(
 
 		if leftType != rightType {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-				errorutil.StageEvaluation,
+				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeMismatch,
 				node.StartPosition(),
 				leftType.AsString(),

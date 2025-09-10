@@ -107,7 +107,11 @@ func TestParseIfStatementErr(t *testing.T) {
 			input: []*token.Token{
 				token.NewToken("if", token.TokenTypeIf, 0, 0),
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 1",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "unexpected token after if",
@@ -115,7 +119,11 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("if", token.TokenTypeIf, 0, 0),
 				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "{") + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "{"),
+			),
 		},
 		{
 			name: "no block statement after if",
@@ -123,7 +131,11 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("if", token.TokenTypeIf, 0, 0),
 				token.NewToken("true", token.TokenTypeBool, 0, 0),
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "unexpected token in then block",
@@ -134,7 +146,11 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("=", token.TokenTypeAssign, 0, 0),
 				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "=") + " at position 4",
+			expected: fmt.Sprintf(
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "="),
+			),
 		},
 		{
 			name: "no next token after else",
@@ -145,7 +161,11 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
 				token.NewToken("else", token.TokenTypeElse, 0, 0),
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 5",
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "unexpected token after else",
@@ -157,7 +177,11 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("else", token.TokenTypeElse, 0, 0),
 				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 6",
+			expected: fmt.Sprintf(
+				"%s: %s at position 6",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

@@ -1,9 +1,11 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -167,7 +169,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    6,
 				},
 			},
-			expected: "unexpected end of expression at position 1",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "invalid return value",
@@ -185,7 +191,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    12,
 				},
 			},
-			expected: "unexpected token: 'return' at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "return"),
+			),
 		},
 		{
 			name: "comma only",
@@ -203,7 +213,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    7,
 				},
 			},
-			expected: "unexpected token: ',' at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, ","),
+			),
 		},
 		{
 			name: "trailing comma",
@@ -233,7 +247,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    9,
 				},
 			},
-			expected: "unexpected token: '\n' at position 4",
+			expected: fmt.Sprintf(
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
+			),
 		},
 		{
 			name: "multiple values without comma",
@@ -263,7 +281,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    9,
 				},
 			},
-			expected: "unexpected token: '\n' at position 4",
+			expected: fmt.Sprintf(
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
+			),
 		},
 		{
 			name: "multiple commas",
@@ -299,7 +321,11 @@ func TestParseReturnStatementErr(t *testing.T) {
 					EndPos:    9,
 				},
 			},
-			expected: "unexpected token: '\n' at position 5",
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
+			),
 		},
 	}
 

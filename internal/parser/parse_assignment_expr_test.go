@@ -71,7 +71,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
 		},
 		{
 			name: "no next token after assignment",
@@ -79,7 +83,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "x", TokenType: token.TokenTypeIdentifier},
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
-			expected: fmt.Sprintf("%s at position 2", errorutil.ErrorMsgUnexpectedEOF),
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "invalid expression after assignment",
@@ -89,7 +97,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 			},
-			expected: fmt.Sprintf("%s at position 4", errorutil.ErrorMsgUnexpectedEOF),
+			expected: fmt.Sprintf(
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

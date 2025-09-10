@@ -22,7 +22,7 @@ func (p *Parser) parseFunctionCall(
 
 	if lparenToken.TokenType != token.TokenTypeLParen {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedOpenParen,
 			p.tokenIdx,
 			lparenToken.Atom,
@@ -39,7 +39,7 @@ func (p *Parser) parseFunctionCall(
 
 	if err != nil {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
 			p.tokenIdx,
 		)
@@ -63,7 +63,7 @@ func (p *Parser) parseFunctionCall(
 
 	if nextToken.TokenType != token.TokenTypeRParen {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
 			p.tokenIdx,
 		)
@@ -130,7 +130,7 @@ func (p *Parser) isEndOfArguments() (bool, error) {
 
 	if err != nil {
 		return false, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
 			p.tokenIdx,
 		)
@@ -148,7 +148,7 @@ func (p *Parser) consumeComma() error {
 
 	if err != nil {
 		return errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
 			p.tokenIdx,
 		)
@@ -156,7 +156,7 @@ func (p *Parser) consumeComma() error {
 
 	if nextToken.TokenType != token.TokenTypeComma {
 		return errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
 			nextToken.Atom,
@@ -177,7 +177,7 @@ func (p *Parser) isTrailingComma() (bool, error) {
 
 	if err != nil {
 		return false, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
 			p.tokenIdx,
 		)
@@ -191,7 +191,7 @@ func (p *Parser) parseArgument(recursionDepth int) (ast.ExprNode, error) {
 
 	if err != nil {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
 			p.tokenIdx,
 		)

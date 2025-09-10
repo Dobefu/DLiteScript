@@ -17,9 +17,13 @@ func TestNewError(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "paren not closed at eof",
-			input:    ErrorMsgParenNotClosedAtEOF,
-			expected: ErrorMsgParenNotClosedAtEOF,
+			name:  "paren not closed at eof",
+			input: ErrorMsgParenNotClosedAtEOF,
+			expected: fmt.Sprintf(
+				"%s: %s",
+				StageTokenize.String(),
+				ErrorMsgParenNotClosedAtEOF,
+			),
 		},
 	}
 
@@ -27,14 +31,18 @@ func TestNewError(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			err := NewError(StageTokenization, test.input)
+			err := NewError(StageTokenize, test.input)
 
 			if err.Error() != test.expected {
 				t.Errorf(expectedErrorMsg, test.expected, err.Error())
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
-				t.Errorf(expectedErrorMsg, test.expected, errors.Unwrap(err).Error())
+			if errors.Unwrap(err).Error() != ErrorMsgParenNotClosedAtEOF {
+				t.Errorf(
+					expectedErrorMsg,
+					ErrorMsgParenNotClosedAtEOF,
+					errors.Unwrap(err).Error(),
+				)
 			}
 		})
 	}
@@ -51,21 +59,37 @@ func TestNewErrorAt(t *testing.T) {
 		expected string
 	}{
 		{
-			input:    ErrorMsgParenNotClosedAtEOF,
-			pos:      0,
-			expected: ErrorMsgParenNotClosedAtEOF,
+			input: ErrorMsgParenNotClosedAtEOF,
+			pos:   0,
+			expected: fmt.Sprintf(
+				"%s: %s",
+				StageTokenize.String(),
+				ErrorMsgParenNotClosedAtEOF,
+			),
 		},
 	}
 
 	for _, test := range tests {
-		err := NewErrorAt(StageTokenization, test.input, test.pos)
+		err := NewErrorAt(StageTokenize, test.input, test.pos)
 
-		if err.Error() != fmt.Sprintf("%s at position %d", test.expected, test.pos) {
-			t.Errorf(expectedErrorMsg, test.expected, err.Error())
+		if err == nil {
+			t.Errorf("expected error, got nil")
 		}
 
-		if errors.Unwrap(err).Error() != test.expected {
-			t.Errorf(expectedErrorMsg, test.expected, errors.Unwrap(err).Error())
+		expected := fmt.Sprintf(
+			"%s at position %d",
+			test.expected,
+			test.pos,
+		)
+
+		if err.Error() != expected {
+			t.Errorf(expectedErrorMsg, expected, err.Error())
+		}
+
+		expected = ErrorMsgParenNotClosedAtEOF
+
+		if errors.Unwrap(err).Error() != expected {
+			t.Errorf(expectedErrorMsg, expected, errors.Unwrap(err).Error())
 		}
 
 		if err.Position() != test.pos {

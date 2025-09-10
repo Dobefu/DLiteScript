@@ -51,7 +51,7 @@ func (p *Parser) parsePrefixExpr(
 
 	default:
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
 			currentToken.Atom,
@@ -120,7 +120,7 @@ func (p *Parser) parseParenthesizedExpr(
 
 	if err != nil {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
 			p.tokenIdx,
 		)
@@ -128,7 +128,7 @@ func (p *Parser) parseParenthesizedExpr(
 
 	if rparenToken.TokenType != token.TokenTypeRParen {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedCloseParen,
 			p.tokenIdx,
 			rparenToken.Atom,
@@ -175,7 +175,7 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 
 		if functionNameOrIdentifierToken.TokenType != token.TokenTypeIdentifier {
 			return nil, errorutil.NewErrorAt(
-				errorutil.StageParsing,
+				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
 				functionNameOrIdentifierToken.StartPos,
 				functionNameOrIdentifierToken.Atom,

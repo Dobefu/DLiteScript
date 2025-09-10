@@ -135,7 +135,11 @@ func TestParseForStatementErr(t *testing.T) {
 			input: []*token.Token{
 				{Atom: "for", TokenType: token.TokenTypeFor},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 1",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after infinite loop body start",
@@ -143,7 +147,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "for", TokenType: token.TokenTypeFor},
 				{Atom: "{", TokenType: token.TokenTypeLBrace},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after condition loop body start",
@@ -154,7 +162,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "{", TokenType: token.TokenTypeLBrace},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 5",
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after to",
@@ -162,7 +174,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "for", TokenType: token.TokenTypeFor},
 				{Atom: "to", TokenType: token.TokenTypeTo},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after from",
@@ -170,7 +186,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "for", TokenType: token.TokenTypeFor},
 				{Atom: "from", TokenType: token.TokenTypeFrom},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after condition",
@@ -179,7 +199,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "0", TokenType: token.TokenTypeNumber},
 				{Atom: "<", TokenType: token.TokenTypeLessThan},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 3",
+			expected: fmt.Sprintf(
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token in condition",
@@ -187,7 +211,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "for", TokenType: token.TokenTypeFor},
 				{Atom: "0", TokenType: token.TokenTypeNumber},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "no next token after variable declaration",
@@ -198,7 +226,11 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "number", TokenType: token.TokenTypeNumber},
 				{Atom: "to", TokenType: token.TokenTypeTo},
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "to") + " at position 5",
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "to"),
+			),
 		},
 		{
 			name: "missing loop body",
@@ -210,7 +242,8 @@ func TestParseForStatementErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 5",
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -246,7 +279,8 @@ func TestParseLoopErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -284,7 +318,8 @@ func TestParseLoopBodyErr(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(
 					errorutil.ErrorMsgBlockStatementExpected,
 					token.Type(token.TokenTypeRBrace),
@@ -323,7 +358,8 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -333,7 +369,8 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 1",
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -344,7 +381,8 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 				{Atom: "test", TokenType: token.TokenTypeString},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedIdentifier, "test"),
 			),
 		},
@@ -355,7 +393,8 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 				{Atom: "i", TokenType: token.TokenTypeIdentifier},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -367,7 +406,8 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 				{Atom: "test", TokenType: token.TokenTypeString},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 3",
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -403,7 +443,8 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -413,7 +454,8 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 1",
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -424,7 +466,8 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 				{Atom: "test", TokenType: token.TokenTypeString},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -436,7 +479,8 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
 			),
 		},
@@ -449,7 +493,8 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 4",
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -485,7 +530,8 @@ func TestParseImplicitRangeLoopWithVariableErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -521,7 +567,8 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -532,7 +579,8 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 				{Atom: "from", TokenType: token.TokenTypeFrom},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "from"),
 			),
 		},
@@ -543,7 +591,8 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 				{Atom: "2", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -555,7 +604,8 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 				{Atom: "bogus", TokenType: token.TokenTypeIdentifier},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
 			),
 		},
@@ -567,7 +617,8 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 				{Atom: "to", TokenType: token.TokenTypeTo},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 3",
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},

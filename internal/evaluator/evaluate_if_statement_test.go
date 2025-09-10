@@ -152,7 +152,11 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 				StartPos:  0,
 				EndPos:    0,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			),
 		},
 		{
 			name: "condition is undefined identifier",
@@ -177,7 +181,11 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 				StartPos:  0,
 				EndPos:    0,
 			},
-			expected: "undefined identifier: 'undefined_var' at position 0",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "undefined_var"),
+			),
 		},
 	}
 

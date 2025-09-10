@@ -1,8 +1,10 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -51,7 +53,11 @@ func TestParseSpreadExprErr(t *testing.T) {
 			input: []*token.Token{
 				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
 			},
-			expected: "unexpected end of expression at position 1",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

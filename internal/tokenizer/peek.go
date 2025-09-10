@@ -10,7 +10,7 @@ import (
 func (t *Tokenizer) Peek() (rune, error) {
 	if t.isEOF {
 		return 0, errorutil.NewErrorAt(
-			errorutil.StageTokenization,
+			errorutil.StageTokenize,
 			errorutil.ErrorMsgUnexpectedEOF,
 			t.expIdx,
 		)
@@ -20,7 +20,7 @@ func (t *Tokenizer) Peek() (rune, error) {
 
 	if r == utf8.RuneError {
 		return 0, errorutil.NewErrorAt(
-			errorutil.StageTokenization,
+			errorutil.StageTokenize,
 			errorutil.ErrorMsgInvalidUTF8Char,
 			t.expIdx,
 		)

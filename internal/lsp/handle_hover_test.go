@@ -2,8 +2,10 @@ package lsp
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
 )
@@ -118,7 +120,11 @@ func TestHandleHoverErr(t *testing.T) {
 					"character": 0
 				}
 			}`),
-			expected: "unexpected end of expression at position 12",
+			expected: fmt.Sprintf(
+				"%s: %s at position 12",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "invalid position",

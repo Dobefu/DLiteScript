@@ -1,7 +1,10 @@
 package lsp
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func TestParseDocumentToAstErr(t *testing.T) {
@@ -13,9 +16,13 @@ func TestParseDocumentToAstErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "invalid token",
-			input:    "return",
-			expected: "unexpected end of expression at position 1",
+			name:  "invalid token",
+			input: "return",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

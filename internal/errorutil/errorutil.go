@@ -90,7 +90,7 @@ const (
 type Error struct {
 	msg   ErrorMsg
 	pos   int
-	phase Stage
+	stage Stage
 }
 
 // NewError creates a new error with the given message.
@@ -98,7 +98,7 @@ func NewError(phase Stage, msg ErrorMsg, args ...any) *Error {
 	return &Error{
 		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
 		pos:   -1,
-		phase: phase,
+		stage: phase,
 	}
 }
 
@@ -107,18 +107,20 @@ func NewErrorAt(phase Stage, msg ErrorMsg, pos int, args ...any) *Error {
 	return &Error{
 		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
 		pos:   pos,
-		phase: phase,
+		stage: phase,
 	}
 }
 
 // Error returns the error message with the position information.
 func (e *Error) Error() string {
+	msg := fmt.Sprintf("%s: %s", e.stage.String(), string(e.msg))
+
 	// If the position is less than 0, there's no position information to return.
 	if e.pos < 0 {
-		return string(e.msg)
+		return msg
 	}
 
-	return fmt.Sprintf("%s at position %d", e.msg, e.pos)
+	return fmt.Sprintf("%s at position %d", msg, e.pos)
 }
 
 // Unwrap returns the error message without any additional information.

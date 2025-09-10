@@ -54,7 +54,7 @@ func (p *Parser) parseReturnValues() ([]ast.ExprNode, error) {
 		if nextToken.TokenType == token.TokenTypeComma {
 			if len(returnValues) == 0 {
 				return nil, errorutil.NewErrorAt(
-					errorutil.StageParsing,
+					errorutil.StageParse,
 					errorutil.ErrorMsgUnexpectedToken,
 					p.tokenIdx+1,
 					nextToken.Atom,

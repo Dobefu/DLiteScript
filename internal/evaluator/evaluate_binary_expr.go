@@ -56,7 +56,7 @@ func (e *Evaluator) evaluateBinaryExpr(
 	}
 
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-		errorutil.StageEvaluation,
+		errorutil.StageEvaluate,
 		errorutil.ErrorMsgUnknownOperator,
 		node.StartPosition(),
 		node.Operator.Atom,
@@ -70,7 +70,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 ) (*controlflow.EvaluationResult, error) {
 	if leftValue.DataType() != rightValue.DataType() {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			rightValue.DataType().AsString(),
@@ -102,7 +102,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgCannotConcat,
 			node.StartPosition(),
 			leftValue.DataType().AsString(),
@@ -124,7 +124,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 
 	if node.Operator.TokenType == token.TokenTypeOperationDiv && rightNumber == 0 {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgDivByZero,
 			node.StartPosition(),
 		)
@@ -132,7 +132,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 
 	if node.Operator.TokenType == token.TokenTypeOperationMod && rightNumber == 0 {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgModByZero,
 			node.StartPosition(),
 		)
@@ -159,7 +159,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
 			node.StartPosition(),
 			node.Operator.Atom,
@@ -247,7 +247,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprArray(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
 			node.StartPosition(),
 			node.Operator.Atom,
@@ -274,7 +274,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprString(
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
 			node.StartPosition(),
 			node.Operator.Atom,

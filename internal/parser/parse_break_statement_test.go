@@ -74,9 +74,13 @@ func TestParseBreakStatementErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "no input",
-			input:    []*token.Token{},
-			expected: "unexpected end of expression at position 0",
+			name:  "no input",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "invalid number",
@@ -84,7 +88,11 @@ func TestParseBreakStatementErr(t *testing.T) {
 				token.NewToken("break", token.TokenTypeBreak, 0, 0),
 				token.NewToken("bogus", token.TokenTypeNumber, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgInvalidNumber+" at position 2", "bogus"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgInvalidNumber, "bogus"),
+			),
 		},
 		{
 			name: "less than 1",
@@ -92,7 +100,11 @@ func TestParseBreakStatementErr(t *testing.T) {
 				token.NewToken("break", token.TokenTypeBreak, 0, 0),
 				token.NewToken("-1", token.TokenTypeNumber, 0, 0),
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgBreakCountLessThanOne + " at position 2"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgBreakCountLessThanOne),
+			),
 		},
 	}
 

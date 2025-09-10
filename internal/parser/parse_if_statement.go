@@ -122,9 +122,10 @@ func (p *Parser) parseThenBlock(endToken token.Type) (*ast.BlockStatement, error
 	blockStatement, isBlockStatement := thenBlock.(*ast.BlockStatement)
 
 	if !isBlockStatement {
-		return nil, errorutil.NewError(
-			errorutil.StageParsing,
+		return nil, errorutil.NewErrorAt(
+			errorutil.StageParse,
 			errorutil.ErrorMsgBlockStatementExpected,
+			p.tokenIdx,
 			thenBlock.Expr(),
 		)
 	}
@@ -156,9 +157,10 @@ func (p *Parser) parseElseBlock(endToken token.Type) (*ast.BlockStatement, error
 	blockStatement, isBlockStatement := elseBlock.(*ast.BlockStatement)
 
 	if !isBlockStatement {
-		return nil, errorutil.NewError(
-			errorutil.StageParsing,
+		return nil, errorutil.NewErrorAt(
+			errorutil.StageParse,
 			errorutil.ErrorMsgBlockStatementExpected,
+			p.tokenIdx,
 			elseBlock.Expr(),
 		)
 	}

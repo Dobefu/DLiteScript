@@ -25,7 +25,7 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 
 		if err != nil {
 			return nil, errorutil.NewErrorAt(
-				errorutil.StageParsing,
+				errorutil.StageParse,
 				errorutil.ErrorMsgInvalidNumber,
 				p.tokenIdx,
 				nextToken.Atom,
@@ -34,7 +34,7 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 
 		if breakCount < 1 {
 			return nil, errorutil.NewErrorAt(
-				errorutil.StageParsing,
+				errorutil.StageParse,
 				errorutil.ErrorMsgBreakCountLessThanOne,
 				p.tokenIdx,
 			)

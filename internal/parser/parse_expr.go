@@ -176,7 +176,7 @@ func (p *Parser) handleArrayToken(
 
 	if nextToken.TokenType != token.TokenTypeRBracket {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedCloseBracket,
 			nextToken.StartPos,
 			nextToken.Atom,

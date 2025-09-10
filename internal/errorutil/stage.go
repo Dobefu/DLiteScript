@@ -4,10 +4,26 @@ package errorutil
 type Stage int
 
 const (
-	// StageTokenization represents the tokenization stage.
-	StageTokenization Stage = iota
-	// StageParsing represents the parsing stage.
-	StageParsing
-	// StageEvaluation represents the evaluation stage.
-	StageEvaluation
+	// StageTokenize represents the tokenization stage.
+	StageTokenize Stage = iota
+	// StageParse represents the parsing stage.
+	StageParse
+	// StageEvaluate represents the evaluation stage.
+	StageEvaluate
 )
+
+func (s Stage) String() string {
+	switch s {
+	case StageTokenize:
+		return "tokenize"
+
+	case StageParse:
+		return "parse"
+
+	case StageEvaluate:
+		return "evaluate"
+
+	default:
+		return "unknown stage"
+	}
+}

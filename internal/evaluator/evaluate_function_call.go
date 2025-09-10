@@ -19,7 +19,7 @@ func (e *Evaluator) evaluateFunctionCall(
 
 	if !hasNamespace {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUndefinedNamespace,
 			fc.StartPosition(),
 			fc.Namespace,
@@ -33,7 +33,7 @@ func (e *Evaluator) evaluateFunctionCall(
 
 		if !hasUserFunction {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-				errorutil.StageEvaluation,
+				errorutil.StageEvaluate,
 				errorutil.ErrorMsgUndefinedFunction,
 				fc.StartPosition(),
 				fc.FunctionName,
@@ -72,7 +72,7 @@ func (e *Evaluator) evaluateUserFunctionCall(
 ) (*controlflow.EvaluationResult, error) {
 	if len(fc.Arguments) != len(userFunction.Args) {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
 			getFullFunctionName(fc),
@@ -159,7 +159,7 @@ func (e *Evaluator) evaluateArguments(
 
 			if err != nil {
 				return nil, errorutil.NewErrorAt(
-					errorutil.StageEvaluation,
+					errorutil.StageEvaluate,
 					errorutil.ErrorMsgTypeExpected,
 					spreadArg.StartPosition(),
 					"array",
@@ -173,7 +173,7 @@ func (e *Evaluator) evaluateArguments(
 		}
 
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			spreadArg.StartPosition(),
 			"tuple or array",
@@ -215,7 +215,7 @@ func (e *Evaluator) validateFixedArgs(
 
 	if len(argValues) != expectedCount {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
 			getFullFunctionName(fc),
@@ -250,7 +250,7 @@ func (e *Evaluator) validateVariadicArgs(
 		}
 
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionArgType,
 			fc.StartPosition(),
 			functionName,
@@ -273,7 +273,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 
 	if len(argValues) < minRequired {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
 			getFullFunctionName(fc),
@@ -308,7 +308,7 @@ func (e *Evaluator) validateArgTypesMatch(
 		}
 
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionArgType,
 			fc.StartPosition(),
 			functionName,

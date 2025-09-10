@@ -19,7 +19,7 @@ func (e *Evaluator) assignVariable(
 
 			if !isVariable {
 				return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-					errorutil.StageEvaluation,
+					errorutil.StageEvaluate,
 					errorutil.ErrorMsgReassignmentToConstant,
 					startPos,
 					varName,
@@ -39,7 +39,7 @@ func (e *Evaluator) assignVariable(
 
 		if !isVariable {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-				errorutil.StageEvaluation,
+				errorutil.StageEvaluate,
 				errorutil.ErrorMsgReassignmentToConstant,
 				startPos,
 				varName,
@@ -52,7 +52,7 @@ func (e *Evaluator) assignVariable(
 	}
 
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-		errorutil.StageEvaluation,
+		errorutil.StageEvaluate,
 		errorutil.ErrorMsgUndefinedIdentifier,
 		startPos,
 		varName,

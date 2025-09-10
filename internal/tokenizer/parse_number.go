@@ -131,7 +131,7 @@ func (t *Tokenizer) createNumberErr(
 	literalString := t.exp[literalStartIdx:literalEndIdx]
 
 	return errorutil.NewErrorAt(
-		errorutil.StageTokenization,
+		errorutil.StageTokenize,
 		errMsg,
 		literalStartIdx,
 		literalString,

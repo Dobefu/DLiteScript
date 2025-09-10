@@ -78,7 +78,8 @@ func TestParseArrayLiteralErr(t *testing.T) {
 				{Atom: "[", TokenType: token.TokenTypeLBracket},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 1",
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -89,7 +90,8 @@ func TestParseArrayLiteralErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeIdentifier},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -101,7 +103,8 @@ func TestParseArrayLiteralErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 0",
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
 			),
 		},
@@ -113,7 +116,8 @@ func TestParseArrayLiteralErr(t *testing.T) {
 				{Atom: "]", TokenType: token.TokenTypeRBracket},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 2",
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
 			),
 		},

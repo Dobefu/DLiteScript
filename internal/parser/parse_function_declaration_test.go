@@ -1,9 +1,11 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -225,9 +227,13 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "missing name",
-			input:    []*token.Token{},
-			expected: "unexpected end of expression at position 0",
+			name:  "missing name",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "missing closing tag",
@@ -235,7 +241,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "add", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
 				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
 			},
-			expected: "unexpected end of expression at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "missing argument type",
@@ -244,7 +254,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
 				{Atom: "a", TokenType: token.TokenTypeIdentifier, StartPos: 4, EndPos: 5},
 			},
-			expected: "unexpected end of expression at position 3",
+			expected: fmt.Sprintf(
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "unexpected token instead of closing paren",
@@ -252,7 +266,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "add", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
 				{Atom: "a", TokenType: token.TokenTypeIdentifier, StartPos: 3, EndPos: 4},
 			},
-			expected: "unexpected token: 'a' at position 3",
+			expected: fmt.Sprintf(
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "a"),
+			),
 		},
 		{
 			name: "unexpected token instead of RParen",
@@ -262,7 +280,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "a", TokenType: token.TokenTypeIdentifier, StartPos: 4, EndPos: 5},
 				{Atom: "{", TokenType: token.TokenTypeLBrace, StartPos: 6, EndPos: 7},
 			},
-			expected: "unexpected token: '{' at position 6",
+			expected: fmt.Sprintf(
+				"%s: %s at position 6",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "{"),
+			),
 		},
 		{
 			name: "missing closing paren",
@@ -278,7 +300,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "number", TokenType: token.TokenTypeTypeNumber, StartPos: 20, EndPos: 26},
 				{Atom: ",", TokenType: token.TokenTypeComma, StartPos: 26, EndPos: 27},
 			},
-			expected: "unexpected end of expression at position 10",
+			expected: fmt.Sprintf(
+				"%s: %s at position 10",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name: "missing closing paren with parens",
@@ -295,7 +321,11 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				{Atom: "number", TokenType: token.TokenTypeTypeNumber, StartPos: 21, EndPos: 27},
 				{Atom: ",", TokenType: token.TokenTypeComma, StartPos: 27, EndPos: 28},
 			},
-			expected: "unexpected end of expression at position 11",
+			expected: fmt.Sprintf(
+				"%s: %s at position 11",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

@@ -113,8 +113,8 @@ func (e *Evaluator) evaluateNodeCondition(
 	}
 
 	if !node.IsRange {
-		return false, errorutil.NewError(
-			errorutil.StageEvaluation,
+		return false, errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgInvalidForStatement,
 			node.StartPosition(),
 			node.Condition.Expr(),
@@ -133,9 +133,10 @@ func (e *Evaluator) evaluateNodeCondition(
 	}
 
 	if !isVarFound {
-		return false, errorutil.NewError(
-			errorutil.StageEvaluation,
+		return false, errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgVariableNotFound,
+			node.StartPosition(),
 			varName,
 		)
 	}
@@ -248,9 +249,10 @@ func (e *Evaluator) incrementLoopVariable(node *ast.ForStatement) error {
 	}
 
 	if !isVarFound {
-		return errorutil.NewError(
-			errorutil.StageEvaluation,
+		return errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgVariableNotFound,
+			node.StartPosition(),
 			node.DeclaredVariable,
 		)
 	}

@@ -97,21 +97,33 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasFile:    true,
 			hasReadErr: false,
 			script:     "\x80",
-			expected:   string(errorutil.ErrorMsgInvalidUTF8Char) + " at position 0",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgInvalidUTF8Char,
+			),
 		},
 		{
 			name:       "unexpected EOF",
 			hasFile:    true,
 			hasReadErr: false,
 			script:     "1 +",
-			expected:   errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
 			name:       "function num args",
 			hasFile:    true,
 			hasReadErr: false,
 			script:     "math.min(1)",
-			expected:   fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.min", 2, 1) + " at position 5",
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.min", 2, 1),
+			),
 		},
 	}
 

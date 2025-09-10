@@ -1,8 +1,10 @@
 package tokenizer
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -47,8 +49,12 @@ func TestParseSpreadErr(t *testing.T) {
 		expected string
 	}{
 		{
-			input:    "..",
-			expected: "unexpected end of expression at position 2",
+			input: "..",
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

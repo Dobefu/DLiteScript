@@ -28,7 +28,7 @@ func (t *Tokenizer) handlePipeSign(startPos int) (*token.Token, error) {
 	}
 
 	return nil, errorutil.NewErrorAt(
-		errorutil.StageTokenization,
+		errorutil.StageTokenize,
 		errorutil.ErrorMsgUnexpectedChar,
 		t.expIdx,
 		string(next),

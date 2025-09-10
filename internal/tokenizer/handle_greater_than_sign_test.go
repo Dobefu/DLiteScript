@@ -1,8 +1,10 @@
 package tokenizer
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -72,9 +74,13 @@ func TestHandleGreaterThanSignErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "unexpected end of expression",
-			input:    "",
-			expected: "unexpected end of expression at position 0",
+			name:  "unexpected end of expression",
+			input: "",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 	}
 

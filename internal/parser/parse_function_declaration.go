@@ -15,7 +15,7 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 
 	if nextToken.TokenType != token.TokenTypeIdentifier {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			nextToken.StartPos,
 			nextToken.Atom,
@@ -45,7 +45,7 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 
 	if leftBrace.TokenType != token.TokenTypeLBrace {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			leftBrace.StartPos,
 			leftBrace.Atom,
@@ -78,7 +78,7 @@ func (p *Parser) getArgs() ([]ast.FuncParameter, error) {
 
 	if nextToken.TokenType != token.TokenTypeLParen {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			nextToken.StartPos,
 			nextToken.Atom,
@@ -120,7 +120,7 @@ func (p *Parser) parseArguments() ([]ast.FuncParameter, error) {
 func (p *Parser) parseFunctionArgument(nameToken *token.Token) (ast.FuncParameter, error) {
 	if nameToken.TokenType != token.TokenTypeIdentifier {
 		return ast.FuncParameter{}, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			nameToken.StartPos,
 			nameToken.Atom,
@@ -216,7 +216,7 @@ func (p *Parser) parseReturnTypes(
 
 		if nextToken.TokenType != token.TokenTypeIdentifier && !nextToken.IsDataType() {
 			return nil, errorutil.NewErrorAt(
-				errorutil.StageParsing,
+				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
 				nextToken.StartPos,
 				nextToken.Atom,

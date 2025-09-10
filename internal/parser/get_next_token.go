@@ -9,7 +9,7 @@ import (
 func (p *Parser) GetNextToken() (*token.Token, error) {
 	if p.isEOF {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
 			p.tokenIdx,
 		)

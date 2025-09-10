@@ -229,7 +229,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          true,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			),
 		},
 		{
 			name: "invalid range to",
@@ -271,7 +275,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			),
 		},
 		{
 			name: "invalid condition",
@@ -296,7 +304,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			),
 		},
 	}
 
@@ -312,10 +324,9 @@ func TestEvaluateForStatementErr(t *testing.T) {
 
 			if err.Error() != test.expected {
 				t.Fatalf(
-					"expected \"%v\", got \"%v\" at position %d",
+					"expected \"%s\", got \"%s\"",
 					test.expected,
 					err.Error(),
-					test.input.StartPosition(),
 				)
 			}
 		})

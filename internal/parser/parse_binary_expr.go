@@ -14,7 +14,7 @@ func (p *Parser) parseBinaryExpr(
 ) (ast.ExprNode, error) {
 	if leftExpr == nil {
 		return nil, errorutil.NewErrorAt(
-			errorutil.StageParsing,
+			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
 			p.tokenIdx,
 			operatorToken.Atom,

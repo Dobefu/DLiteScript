@@ -1,11 +1,13 @@
 package evaluator
 
 import (
+	"fmt"
 	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/datatype"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func TestEvaluateAssignmentStatement(t *testing.T) {
@@ -121,7 +123,11 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   17,
 			},
-			expected: "undefined identifier: 'undefined_var' at position 0",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "undefined_var"),
+			),
 		},
 		{
 			name: "assignment to constant",
@@ -144,7 +150,11 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   14,
 			},
-			expected: "cannot re-assign value to constant: 'const_var' at position 0",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgReassignmentToConstant, "const_var"),
+			),
 		},
 		{
 			name: "assignment to constant in block scope",
@@ -167,7 +177,11 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   16,
 			},
-			expected: "cannot re-assign value to constant: 'block_const' at position 0",
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgReassignmentToConstant, "block_const"),
+			),
 		},
 		{
 			name: "assignment with right side evaluation error",
@@ -183,7 +197,11 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   18,
 			},
-			expected: "undefined function: 'undefined_func' at position 4",
+			expected: fmt.Sprintf(
+				"%s: %s at position 4",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "undefined_func"),
+			),
 		},
 	}
 

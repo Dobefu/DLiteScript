@@ -61,7 +61,8 @@ func TestParseConstantDeclarationErr(t *testing.T) {
 				{Atom: "const", TokenType: token.TokenTypeConst},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 1",
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -73,7 +74,8 @@ func TestParseConstantDeclarationErr(t *testing.T) {
 				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 3",
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -86,7 +88,8 @@ func TestParseConstantDeclarationErr(t *testing.T) {
 				{Atom: "\n", TokenType: token.TokenTypeNewline},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 4",
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgConstantDeclarationWithNoValue, "x"),
 			),
 		},
@@ -99,7 +102,8 @@ func TestParseConstantDeclarationErr(t *testing.T) {
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 4",
+				"%s: %s at position 4",
+				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
@@ -113,7 +117,8 @@ func TestParseConstantDeclarationErr(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 			expected: fmt.Sprintf(
-				"%s at position 5",
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
 			),
 		},

@@ -178,7 +178,7 @@ func Array(values ...Value) Value {
 func (v Value) AsNumber() (float64, error) {
 	if v.dataType != datatype.DataTypeNumber {
 		return 0, errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeNumber.AsString(),
 			v.dataType.AsString(),
@@ -192,7 +192,7 @@ func (v Value) AsNumber() (float64, error) {
 func (v Value) AsString() (string, error) {
 	if v.dataType != datatype.DataTypeString {
 		return "", errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeString.AsString(),
 			v.dataType.AsString(),
@@ -206,7 +206,7 @@ func (v Value) AsString() (string, error) {
 func (v Value) AsBool() (bool, error) {
 	if v.dataType != datatype.DataTypeBool {
 		return false, errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeBool.AsString(),
 			v.dataType.AsString(),
@@ -220,7 +220,7 @@ func (v Value) AsBool() (bool, error) {
 func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
 	if v.dataType != datatype.DataTypeFunction {
 		return nil, errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeFunction.AsString(),
 			v.dataType.AsString(),
@@ -234,7 +234,7 @@ func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
 func (v Value) AsArray() ([]Value, error) {
 	if v.dataType != datatype.DataTypeArray {
 		return nil, errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeArray.AsString(),
 			v.dataType.AsString(),
@@ -248,7 +248,7 @@ func (v Value) AsArray() ([]Value, error) {
 func (v Value) AsTuple() ([]Value, error) {
 	if v.dataType != datatype.DataTypeTuple {
 		return nil, errorutil.NewError(
-			errorutil.StageEvaluation,
+			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeTuple.AsString(),
 			v.dataType.AsString(),

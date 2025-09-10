@@ -67,7 +67,7 @@ func (t *Tokenizer) handleString(startPos int) (*token.Token, error) {
 	}
 
 	return nil, errorutil.NewErrorAt(
-		errorutil.StageTokenization,
+		errorutil.StageTokenize,
 		errorutil.ErrorMsgUnexpectedEOF,
 		t.byteIdx,
 	)
