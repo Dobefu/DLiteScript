@@ -25,6 +25,18 @@ func TestParseAssignmentExpr(t *testing.T) {
 			},
 			expected: "x = 1",
 		},
+		{
+			name: "array assignment expression",
+			input: []*token.Token{
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+				{Atom: "[", TokenType: token.TokenTypeLBracket},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "]", TokenType: token.TokenTypeRBracket},
+				{Atom: "=", TokenType: token.TokenTypeAssign},
+				{Atom: "2", TokenType: token.TokenTypeNumber},
+			},
+			expected: "x[1] = 2",
+		},
 	}
 
 	for _, test := range tests {
@@ -67,7 +79,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "x", TokenType: token.TokenTypeIdentifier},
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 2",
+			expected: fmt.Sprintf("%s at position 2", errorutil.ErrorMsgUnexpectedEOF),
 		},
 		{
 			name: "invalid expression after assignment",
@@ -77,7 +89,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 			},
-			expected: errorutil.ErrorMsgUnexpectedEOF + " at position 4",
+			expected: fmt.Sprintf("%s at position 4", errorutil.ErrorMsgUnexpectedEOF),
 		},
 	}
 
