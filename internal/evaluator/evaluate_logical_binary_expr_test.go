@@ -1,11 +1,14 @@
 package evaluator
 
 import (
+	"errors"
+	"fmt"
 	"io"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -94,7 +97,7 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 		inputLeft  datavalue.Value
 		inputRight datavalue.Value
 		inputNode  *ast.BinaryExpr
-		expected   datavalue.Value
+		expected   string
 	}{
 		{
 			name:       "number and string",
@@ -112,7 +115,7 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: datavalue.Bool(true),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
 		},
 		{
 			name:       "number and number",
@@ -130,7 +133,25 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: datavalue.Bool(true),
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+		},
+		{
+			name:       "unexpected operator",
+			inputLeft:  datavalue.Bool(true),
+			inputRight: datavalue.Bool(true),
+			inputNode: &ast.BinaryExpr{
+				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "**",
+					TokenType: token.TokenTypeOperationPow,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, "**"),
 		},
 	}
 
@@ -146,6 +167,14 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 
 			if err == nil {
 				t.Fatalf("expected error evaluating \"%s\", got nil", test.inputNode.Expr())
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
 			}
 		})
 	}
