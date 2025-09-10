@@ -66,9 +66,14 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 	}
 
 	array[int(index)] = rightValue.Value
+	identifier, ok := node.Array.(*ast.Identifier)
 
-	if identifier, ok := node.Array.(*ast.Identifier); ok {
-		return e.assignVariable(identifier.Value, datavalue.Array(array...), node.StartPosition())
+	if ok {
+		return e.assignVariable(
+			identifier.Value,
+			datavalue.Array(array...),
+			node.StartPosition(),
+		)
 	}
 
 	return controlflow.NewRegularResult(rightValue.Value), nil

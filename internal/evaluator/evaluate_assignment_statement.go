@@ -15,5 +15,9 @@ func (e *Evaluator) evaluateAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	return e.assignVariable(node.Left.Value, rightValue.Value, node.Left.StartPosition())
+	return e.assignVariable(
+		node.Left.Value,
+		rightValue.Value,
+		node.Left.StartPosition(),
+	)
 }

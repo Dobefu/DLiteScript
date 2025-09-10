@@ -68,6 +68,12 @@ func TestDatavalueNumber(t *testing.T) {
 	if err == nil {
 		t.Errorf("expected error, got nil")
 	}
+
+	_, err = value.AsArray()
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
 }
 
 func TestDatavalueString(t *testing.T) {
@@ -229,6 +235,68 @@ func TestDatavalueTupleEmpty(t *testing.T) {
 
 	if len(tuple) != 0 {
 		t.Errorf("expected 0 values, got %d", len(tuple))
+	}
+}
+
+func TestDatavalueArray(t *testing.T) {
+	t.Parallel()
+
+	value := Array(Number(1), String("test"))
+
+	if value.DataType() != datatype.DataTypeArray {
+		t.Errorf("expected DataTypeArray, got '%v'", value.DataType())
+	}
+
+	if value.ToString() != "[1, test]" {
+		t.Errorf("expected '[1, test]', got '%s'", value.ToString())
+	}
+
+	array, err := value.AsArray()
+
+	if err != nil {
+		t.Errorf("expected no error, got '%s'", err.Error())
+	}
+
+	if len(array) != 2 {
+		t.Errorf("expected 2 values, got %d", len(array))
+	}
+
+	if array[0].ToString() != "1" {
+		t.Errorf("expected '1', got '%s'", array[0].ToString())
+	}
+
+	if array[1].ToString() != "test" {
+		t.Errorf("expected 'test', got '%s'", array[1].ToString())
+	}
+
+	_, err = value.AsNumber()
+
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
+}
+
+func TestDatavalueArrayEmpty(t *testing.T) {
+	t.Parallel()
+
+	value := Array()
+
+	if value.DataType() != datatype.DataTypeArray {
+		t.Errorf("expected DataTypeArray, got '%v'", value.DataType())
+	}
+
+	if value.ToString() != "[]" {
+		t.Errorf("expected '[]', got '%s'", value.ToString())
+	}
+
+	array, err := value.AsArray()
+
+	if err != nil {
+		t.Errorf("expected no error, got '%s'", err.Error())
+	}
+
+	if len(array) != 0 {
+		t.Errorf("expected 0 values, got %d", len(array))
 	}
 }
 
