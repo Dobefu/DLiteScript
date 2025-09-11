@@ -7,7 +7,8 @@ func (t *Token) IsDataType() bool {
 		TokenTypeTypeNumber,
 		TokenTypeTypeString,
 		TokenTypeTypeBool,
-		TokenTypeTypeArray:
+		TokenTypeTypeArray,
+		TokenTypeTypeAny:
 		return true
 
 	default:

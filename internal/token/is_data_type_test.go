@@ -30,6 +30,16 @@ func TestIsDataType(t *testing.T) {
 			},
 			expected: false,
 		},
+		{
+			name: "any type",
+			token: Token{
+				Atom:      "any",
+				TokenType: TokenTypeTypeAny,
+				StartPos:  0,
+				EndPos:    3,
+			},
+			expected: true,
+		},
 	}
 
 	for _, test := range tests {

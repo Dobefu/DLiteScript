@@ -3,6 +3,7 @@ package evaluator
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
+	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
@@ -22,7 +23,9 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		value = evaluatedValue
 	}
 
-	if node.Type[:2] != "[]" && value.Value.DataType().AsString() != node.Type {
+	if node.Type[:2] != "[]" &&
+		node.Type != datatype.DataTypeAny.AsString() &&
+		value.Value.DataType().AsString() != node.Type {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeMismatch,

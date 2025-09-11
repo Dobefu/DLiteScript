@@ -10,6 +10,7 @@ var keywords = map[string]token.Type{
 	"number":   token.TokenTypeTypeNumber,
 	"string":   token.TokenTypeTypeString,
 	"bool":     token.TokenTypeTypeBool,
+	"any":      token.TokenTypeTypeAny,
 	"true":     token.TokenTypeBool,
 	"false":    token.TokenTypeBool,
 	"if":       token.TokenTypeIf,

@@ -113,4 +113,6 @@ const (
 	TokenTypeTypeBool
 	// TokenTypeTypeArray represents the '[]' array type keyword.
 	TokenTypeTypeArray
+	// TokenTypeTypeAny represents the 'any' type keyword.
+	TokenTypeTypeAny
 )
