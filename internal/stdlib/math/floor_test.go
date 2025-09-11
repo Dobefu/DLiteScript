@@ -23,8 +23,8 @@ func TestGetFloorFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", floorFunc.FunctionType)
 	}
 
-	if floorFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", floorFunc.ArgKinds[0])
+	if floorFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", floorFunc.Parameters[0].Type)
 	}
 
 	result, err := floorFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

@@ -34,17 +34,47 @@ type PackageInfo struct {
 	Functions map[string]Info
 }
 
+// ArgInfo defines the information for a function argument or return value.
+type ArgInfo struct {
+	Name        string
+	Type        datatype.DataType
+	Description string
+}
+
+// DeprecationInfo defines the information for a deprecation.
+type DeprecationInfo struct {
+	IsDeprecated bool
+	Description  string
+	Version      string
+}
+
 // Info defines the information for a function.
 type Info struct {
-	Handler      Handler
-	FunctionType Type
-	ArgKinds     []datatype.DataType
+	Name            string
+	Description     string
+	PackageName     string
+	Handler         Handler
+	FunctionType    Type
+	Parameters      []ArgInfo
+	ReturnValues    []ArgInfo
+	IsBuiltin       bool
+	Since           string
+	DeprecationInfo DeprecationInfo
+	Examples        []string
 }
 
 // MakeFunction creates a new function definition.
 func MakeFunction(
+	name string,
+	description string,
+	packageName string,
 	functionType Type,
-	argKinds []datatype.DataType,
+	parameters []ArgInfo,
+	returnValues []ArgInfo,
+	isBuiltin bool,
+	since string,
+	deprecationInfo DeprecationInfo,
+	examples []string,
 	impl func(e EvaluatorInterface, args []datavalue.Value) datavalue.Value,
 ) Info {
 	handler := func(
@@ -55,8 +85,16 @@ func MakeFunction(
 	}
 
 	return Info{
-		Handler:      handler,
-		FunctionType: functionType,
-		ArgKinds:     argKinds,
+		Name:            name,
+		Description:     description,
+		PackageName:     packageName,
+		Handler:         handler,
+		FunctionType:    functionType,
+		Parameters:      parameters,
+		ReturnValues:    returnValues,
+		IsBuiltin:       isBuiltin,
+		Since:           since,
+		DeprecationInfo: deprecationInfo,
+		Examples:        examples,
 	}
 }

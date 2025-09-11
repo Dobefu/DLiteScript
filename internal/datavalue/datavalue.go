@@ -91,6 +91,10 @@ func (v Value) ToString() string {
 
 		return fmt.Sprintf("[%s]", strings.Join(valueStrings, ", "))
 
+	case
+		datatype.DataTypeAny:
+		return "any"
+
 	default:
 		return errorutil.ErrorMsgTypeUnknownDataType
 	}
@@ -298,6 +302,10 @@ func (v Value) Equals(other Value) bool {
 			}
 		}
 
+		return true
+
+	case
+		datatype.DataTypeAny:
 		return true
 
 	default:

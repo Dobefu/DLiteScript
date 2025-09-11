@@ -97,6 +97,9 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	case datatype.DataTypeTuple:
 		fallthrough
 
+	case datatype.DataTypeAny:
+		fallthrough
+
 	case datatype.DataTypeNull:
 		fallthrough
 

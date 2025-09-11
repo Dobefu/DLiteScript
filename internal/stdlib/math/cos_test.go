@@ -24,8 +24,8 @@ func TestGetCosFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", cosFunc.FunctionType)
 	}
 
-	if cosFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", cosFunc.ArgKinds[0])
+	if cosFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", cosFunc.Parameters[0].Type)
 	}
 
 	result, err := cosFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

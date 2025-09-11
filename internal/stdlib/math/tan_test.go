@@ -24,8 +24,8 @@ func TestGetTanFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", tan.FunctionType)
 	}
 
-	if tan.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", tan.ArgKinds[0])
+	if tan.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", tan.Parameters[0].Type)
 	}
 
 	result, err := tan.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

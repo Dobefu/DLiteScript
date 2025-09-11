@@ -23,8 +23,8 @@ func TestGetAbsFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", absFunc.FunctionType)
 	}
 
-	if absFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", absFunc.ArgKinds[0])
+	if absFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", absFunc.Parameters[0].Type)
 	}
 
 	result, err := absFunc.Handler(nil, []datavalue.Value{datavalue.Number(-1)})

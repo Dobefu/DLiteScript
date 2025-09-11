@@ -24,8 +24,8 @@ func TestGetSinFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", sin.FunctionType)
 	}
 
-	if sin.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", sin.ArgKinds[0])
+	if sin.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", sin.Parameters[0].Type)
 	}
 
 	result, err := sin.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

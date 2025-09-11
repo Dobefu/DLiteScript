@@ -5,6 +5,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
+const packageName = ""
+
 // GetGlobalFunctions returns the global functions for the standard library.
 func GetGlobalFunctions() map[string]function.Info {
 	return map[string]function.Info{

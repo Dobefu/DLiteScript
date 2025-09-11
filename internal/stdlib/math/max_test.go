@@ -20,12 +20,12 @@ func TestGetMaxFunction(t *testing.T) {
 
 	maxFunc := functions["max"]
 
-	if maxFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", maxFunc.FunctionType)
+	if maxFunc.FunctionType != function.FunctionTypeVariadic {
+		t.Fatalf("expected variadic function, got %T", maxFunc.FunctionType)
 	}
 
-	if maxFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", maxFunc.ArgKinds[0])
+	if maxFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", maxFunc.Parameters[0].Type)
 	}
 
 	result, err := maxFunc.Handler(
@@ -39,5 +39,18 @@ func TestGetMaxFunction(t *testing.T) {
 
 	if result.Num != math.Max(1.5, 2.5) {
 		t.Fatalf("expected %f, got %v", math.Max(1.5, 2.5), result.Num)
+	}
+
+	result, err = maxFunc.Handler(
+		nil,
+		[]datavalue.Value{},
+	)
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if result.DataType() != datatype.DataTypeNull {
+		t.Fatalf("expected null for no arguments, got %v", result.DataType())
 	}
 }

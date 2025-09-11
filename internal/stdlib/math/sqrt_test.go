@@ -24,8 +24,8 @@ func TestGetSqrtFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", sqrtFunc.FunctionType)
 	}
 
-	if sqrtFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", sqrtFunc.ArgKinds[0])
+	if sqrtFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", sqrtFunc.Parameters[0].Type)
 	}
 
 	result, err := sqrtFunc.Handler(

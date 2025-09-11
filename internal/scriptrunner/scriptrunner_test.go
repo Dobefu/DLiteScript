@@ -118,11 +118,11 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "function num args",
 			hasFile:    true,
 			hasReadErr: false,
-			script:     "math.min(1)",
+			script:     "printf()",
 			expected: fmt.Sprintf(
-				"%s: %s at position 5",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
-				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.min", 2, 1),
+				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 			),
 		},
 	}

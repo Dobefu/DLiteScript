@@ -494,10 +494,13 @@ func TestValidateVariadicArgs(t *testing.T) {
 			input: []ast.ExprNode{
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			},
-			functionInfo: function.Info{
+			functionInfo: function.Info{ //nolint:exhaustruct
 				FunctionType: function.FunctionTypeVariadic,
-				ArgKinds:     []datatype.DataType{datatype.DataTypeNumber},
-				Handler:      nil,
+				Parameters: []function.ArgInfo{
+					{Type: datatype.DataTypeNumber}, //nolint:exhaustruct
+					{Type: datatype.DataTypeAny},    //nolint:exhaustruct
+				},
+				Handler: nil,
 			},
 			expected: "1",
 		},
@@ -506,9 +509,9 @@ func TestValidateVariadicArgs(t *testing.T) {
 			input: []ast.ExprNode{
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			},
-			functionInfo: function.Info{
+			functionInfo: function.Info{ //nolint:exhaustruct
 				FunctionType: function.FunctionTypeVariadic,
-				ArgKinds:     []datatype.DataType{},
+				Parameters:   []function.ArgInfo{},
 				Handler:      nil,
 			},
 			expected: "1",
@@ -574,10 +577,13 @@ func TestValidateVariadicArgsErr(t *testing.T) {
 			input: []ast.ExprNode{
 				&ast.StringLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			},
-			functionInfo: function.Info{
+			functionInfo: function.Info{ //nolint:exhaustruct
 				FunctionType: function.FunctionTypeVariadic,
-				ArgKinds:     []datatype.DataType{datatype.DataTypeNumber},
-				Handler:      nil,
+				Parameters: []function.ArgInfo{
+					{Type: datatype.DataTypeNumber}, //nolint:exhaustruct
+					{Type: datatype.DataTypeAny},    //nolint:exhaustruct
+				},
+				Handler: nil,
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionArgType, "test", 1, "number", "string"),
 		},

@@ -23,8 +23,8 @@ func TestGetCeilFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", ceilFunc.FunctionType)
 	}
 
-	if ceilFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", ceilFunc.ArgKinds[0])
+	if ceilFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", ceilFunc.Parameters[0].Type)
 	}
 
 	result, err := ceilFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

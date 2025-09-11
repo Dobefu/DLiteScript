@@ -5,6 +5,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
+const packageName = "math"
+
 // GetMathFunctions returns the math functions for the standard library.
 func GetMathFunctions() map[string]function.Info {
 	return map[string]function.Info{

@@ -1,6 +1,8 @@
 package evaluator
 
 import (
+	"math"
+
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datatype"
@@ -211,7 +213,7 @@ func (e *Evaluator) validateFixedArgs(
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	expectedCount := len(functionInfo.ArgKinds)
+	expectedCount := len(functionInfo.Parameters)
 
 	if len(argValues) != expectedCount {
 		return nil, errorutil.NewErrorAt(
@@ -226,7 +228,7 @@ func (e *Evaluator) validateFixedArgs(
 
 	return e.validateArgTypesMatch(
 		argValues,
-		functionInfo.ArgKinds,
+		functionInfo.Parameters,
 		functionName,
 		fc,
 	)
@@ -238,14 +240,18 @@ func (e *Evaluator) validateVariadicArgs(
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	if len(function.ArgKinds) == 0 {
+	if len(function.Parameters) == 0 {
 		return argValues, nil
 	}
 
-	expectedType := function.ArgKinds[0]
+	expectedType := function.Parameters[0]
 
 	for i, arg := range argValues {
-		if arg.DataType() == expectedType {
+		if expectedType.Type == datatype.DataTypeAny {
+			continue
+		}
+
+		if arg.DataType() == expectedType.Type {
 			continue
 		}
 
@@ -255,7 +261,7 @@ func (e *Evaluator) validateVariadicArgs(
 			fc.StartPosition(),
 			functionName,
 			i+1,
-			expectedType.AsString(),
+			expectedType.Type.AsString(),
 			arg.DataType().AsString(),
 		)
 	}
@@ -269,22 +275,26 @@ func (e *Evaluator) validateMixedVariadicArgs(
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	minRequired := len(function.ArgKinds)
+	if len(function.Parameters) == 0 {
+		return argValues, nil
+	}
 
-	if len(argValues) < minRequired {
+	requiredParams := int(math.Max(float64(len(function.Parameters)-1), 0))
+
+	if len(argValues) < requiredParams {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
 			fc.StartPosition(),
 			getFullFunctionName(fc),
-			minRequired,
+			requiredParams,
 			len(argValues),
 		)
 	}
 
 	_, err := e.validateArgTypesMatch(
-		argValues[:minRequired],
-		function.ArgKinds,
+		argValues[:requiredParams],
+		function.Parameters[:requiredParams],
 		functionName,
 		fc,
 	)
@@ -293,17 +303,45 @@ func (e *Evaluator) validateMixedVariadicArgs(
 		return nil, err
 	}
 
+	if len(argValues) > requiredParams {
+		variadicType := function.Parameters[len(function.Parameters)-1]
+
+		for i := requiredParams; i < len(argValues); i++ {
+			if variadicType.Type == datatype.DataTypeAny {
+				continue
+			}
+
+			if argValues[i].DataType() == variadicType.Type {
+				continue
+			}
+
+			return nil, errorutil.NewErrorAt(
+				errorutil.StageEvaluate,
+				errorutil.ErrorMsgFunctionArgType,
+				fc.StartPosition(),
+				functionName,
+				i+1,
+				variadicType.Type.AsString(),
+				argValues[i].DataType().AsString(),
+			)
+		}
+	}
+
 	return argValues, nil
 }
 
 func (e *Evaluator) validateArgTypesMatch(
 	argValues []datavalue.Value,
-	expectedTypes []datatype.DataType,
+	expectedTypes []function.ArgInfo,
 	functionName string,
 	fc *ast.FunctionCall,
 ) ([]datavalue.Value, error) {
-	for i, expectedKind := range expectedTypes {
-		if argValues[i].DataType() == expectedKind {
+	for i, expectedType := range expectedTypes {
+		if expectedType.Type == datatype.DataTypeAny {
+			continue
+		}
+
+		if argValues[i].DataType() == expectedType.Type {
 			continue
 		}
 
@@ -313,7 +351,7 @@ func (e *Evaluator) validateArgTypesMatch(
 			fc.StartPosition(),
 			functionName,
 			i+1,
-			expectedKind.AsString(),
+			expectedType.Type.AsString(),
 			argValues[i].DataType().AsString(),
 		)
 	}

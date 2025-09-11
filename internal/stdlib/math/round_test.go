@@ -23,8 +23,8 @@ func TestGetRoundFunction(t *testing.T) {
 		t.Fatalf("expected fixed function, got %v", roundFunc.FunctionType)
 	}
 
-	if roundFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", roundFunc.ArgKinds[0])
+	if roundFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", roundFunc.Parameters[0].Type)
 	}
 
 	result, err := roundFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})

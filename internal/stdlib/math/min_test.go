@@ -20,12 +20,12 @@ func TestGetMinFunction(t *testing.T) {
 
 	minFunc := functions["min"]
 
-	if minFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", minFunc.FunctionType)
+	if minFunc.FunctionType != function.FunctionTypeVariadic {
+		t.Fatalf("expected variadic function, got %T", minFunc.FunctionType)
 	}
 
-	if minFunc.ArgKinds[0] != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", minFunc.ArgKinds[0])
+	if minFunc.Parameters[0].Type != datatype.DataTypeNumber {
+		t.Fatalf("expected number argument, got %v", minFunc.Parameters[0].Type)
 	}
 
 	result, err := minFunc.Handler(
@@ -39,5 +39,18 @@ func TestGetMinFunction(t *testing.T) {
 
 	if result.Num != math.Min(1.5, 2.5) {
 		t.Fatalf("expected %f, got %v", math.Min(1.5, 2.5), result.Num)
+	}
+
+	result, err = minFunc.Handler(
+		nil,
+		[]datavalue.Value{},
+	)
+
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if result.DataType() != datatype.DataTypeNull {
+		t.Fatalf("expected null for no arguments, got %v", result.DataType())
 	}
 }

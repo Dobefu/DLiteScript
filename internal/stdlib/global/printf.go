@@ -8,10 +8,45 @@ import (
 
 func getPrintfFunction() function.Info {
 	return function.MakeFunction(
+		"printf",
+		"Prints a formatted string.",
+		packageName,
 		function.FunctionTypeMixedVariadic,
-		[]datatype.DataType{datatype.DataTypeString},
+		[]function.ArgInfo{
+			{
+				Type:        datatype.DataTypeString,
+				Name:        "format",
+				Description: "The format string.",
+			},
+			{
+				Type:        datatype.DataTypeAny,
+				Name:        "...args",
+				Description: "The arguments to format.",
+			},
+		},
+		[]function.ArgInfo{},
+		true,
+		"v0.1.0",
+		function.DeprecationInfo{
+			IsDeprecated: false,
+			Description:  "",
+			Version:      "",
+		},
+		[]string{
+			"printf(\"test %s\", \"string\") // prints \"test string\"",
+			"printf(\"test %g\", 1) // prints \"test 1\"",
+			"printf(\"test %t\", true) // prints \"test true\"",
+			"printf(\"test %s\", null) // prints \"test null\"",
+		},
 		func(e function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			format, _ := args[0].AsString()
+
+			if len(args) == 1 {
+				e.AddToBuffer(format)
+
+				return datavalue.Null()
+			}
+
 			formatArgs := make([]any, len(args)-1)
 
 			for i := 1; i < len(args); i++ {
@@ -38,6 +73,9 @@ func getPrintfFunction() function.Info {
 					formatArgs[i-1] = args[i].ToString()
 
 				case datatype.DataTypeArray:
+					formatArgs[i-1] = args[i].ToString()
+
+				case datatype.DataTypeAny:
 					formatArgs[i-1] = args[i].ToString()
 
 				default:

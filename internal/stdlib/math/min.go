@@ -1,7 +1,7 @@
 package math
 
 import (
-	"math"
+	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -10,13 +10,53 @@ import (
 
 func getMinFunction() function.Info {
 	return function.MakeFunction(
-		function.FunctionTypeFixed,
-		[]datatype.DataType{datatype.DataTypeNumber, datatype.DataTypeNumber},
+		"min",
+		"Returns the smaller of two provided numbers.",
+		packageName,
+		function.FunctionTypeVariadic,
+		[]function.ArgInfo{
+			{
+				Type:        datatype.DataTypeNumber,
+				Name:        "...nums",
+				Description: "The numbers to process. At least two numbers are required.",
+			},
+		},
+		[]function.ArgInfo{
+			{
+				Type:        datatype.DataTypeNumber,
+				Name:        "result",
+				Description: "The smallest of the provided numbers.",
+			},
+		},
+		true,
+		"v0.1.0",
+		function.DeprecationInfo{
+			IsDeprecated: false,
+			Description:  "",
+			Version:      "",
+		},
+		[]string{
+			fmt.Sprintf("%s.min(1, 2, 3) // returns 1", packageName),
+			fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns 1.5", packageName),
+			fmt.Sprintf("%s.min(-1, -2, -3) // returns -3", packageName),
+			fmt.Sprintf("%s.min(-1.5, -2.5, -3.5) // returns -3.5", packageName),
+		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
-			arg0, _ := args[0].AsNumber()
-			arg1, _ := args[1].AsNumber()
+			if len(args) < 2 {
+				return datavalue.Null()
+			}
 
-			return datavalue.Number(math.Min(arg0, arg1))
+			minValue, _ := args[0].AsNumber()
+
+			for _, arg := range args[1:] {
+				num, _ := arg.AsNumber()
+
+				if num < minValue {
+					minValue = num
+				}
+			}
+
+			return datavalue.Number(minValue)
 		},
 	)
 }
