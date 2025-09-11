@@ -17,3 +17,4 @@ printf("%g\n", num1)
 
 num1 **= 2
 printf("%g\n", num1)
+math.sqrt(num1)

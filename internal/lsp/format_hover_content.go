@@ -7,23 +7,25 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 )
 
-func formatHoverContent(node ast.ExprNode, isDebugMode bool) string {
+func formatHoverContent(
+	node ast.ExprNode,
+	isDebugMode bool,
+) string {
 	var output strings.Builder
-
-	nodeType := getAstNodeLabel(node, isDebugMode)
+	nodeType := getAstNodeInfo(node, isDebugMode)
 
 	if isDebugMode {
-		output.WriteString(fmt.Sprintf("**🔴 Debug Mode** %s\n\n", nodeType))
+		output.WriteString("**🔴 Debug Mode** | ")
+		output.WriteString(fmt.Sprintf("**%s**", nodeType.Label))
+		output.WriteString("\n\n---\n\n")
 	}
 
 	// If there's no node type, don't display anything.
-	if nodeType == "" {
+	if nodeType == nil {
 		return ""
 	}
 
-	output.WriteString("```dlitescript\n")
-	output.WriteString(node.Expr())
-	output.WriteString("\n```")
+	output.WriteString(nodeType.Description)
 
 	return output.String()
 }

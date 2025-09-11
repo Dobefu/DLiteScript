@@ -38,9 +38,9 @@ func TestGetAstNodeLabel(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			label := getAstNodeLabel(test.node, false)
+			label := getAstNodeInfo(test.node, false)
 
-			if label != test.expected {
+			if label.Label != test.expected {
 				t.Errorf("expected \"%s\", got \"%s\"", test.expected, label)
 			}
 		})

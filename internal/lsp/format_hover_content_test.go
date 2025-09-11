@@ -31,7 +31,7 @@ func TestFormatHoverContent(t *testing.T) {
 				EndPos:   0,
 			},
 			isDebugMode: true,
-			expected:    "**🔴 Debug Mode** Unknown Node: *ast.NullLiteral\n\n```dlitescript\nnull\n```",
+			expected:    "**🔴 Debug Mode** | **Unknown Node**\n\n---\n\nUnknown Node: *ast.NullLiteral",
 		},
 	}
 

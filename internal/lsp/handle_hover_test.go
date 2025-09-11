@@ -30,7 +30,7 @@ func TestHandleHover(t *testing.T) {
 				},
 			},
 			expected: lsptypes.Hover{
-				Contents: "```dlitescript\nprintf(\"test\")\n```",
+				Contents: "\n\n```dlitescript\nfunc printf(format string, ...args any)\n```\n\nPrints a formatted string.\n\n**Parameters:**\n```dlitescript\nformat string\n```\n```dlitescript\n...args any\n```\n",
 				Range: &lsptypes.Range{
 					Start: lsptypes.Position{
 						Line:      0,

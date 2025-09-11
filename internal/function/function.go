@@ -2,6 +2,9 @@
 package function
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
@@ -97,4 +100,37 @@ func MakeFunction(
 		DeprecationInfo: deprecationInfo,
 		Examples:        examples,
 	}
+}
+
+// Expr returns the function signature as a string.
+func (f *Info) Expr() string {
+	params := make([]string, len(f.Parameters))
+
+	for i, param := range f.Parameters {
+		paramStr := param.Name
+
+		if param.Type != 0 {
+			paramStr = fmt.Sprintf("%s %s", param.Name, param.Type.AsString())
+		}
+
+		params[i] = paramStr
+	}
+
+	returns := make([]string, len(f.ReturnValues))
+
+	for i, ret := range f.ReturnValues {
+		returns[i] = ret.Type.AsString()
+	}
+
+	signature := fmt.Sprintf("func %s(%s)", f.Name, strings.Join(params, ", "))
+
+	if len(returns) == 0 {
+		return signature
+	}
+
+	if len(returns) == 1 {
+		return fmt.Sprintf("%s %s", signature, returns[0])
+	}
+
+	return fmt.Sprintf("%s (%s)", signature, strings.Join(returns, ", "))
 }
