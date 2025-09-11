@@ -178,6 +178,18 @@ func Array(values ...Value) Value {
 	}
 }
 
+// Any creates a new any value.
+func Any() Value {
+	return Value{
+		dataType: datatype.DataTypeAny,
+		Num:      0,
+		Str:      "",
+		Bool:     false,
+		Func:     nil,
+		Values:   nil,
+	}
+}
+
 // AsNumber returns the value as a number.
 func (v Value) AsNumber() (float64, error) {
 	if v.dataType != datatype.DataTypeNumber {

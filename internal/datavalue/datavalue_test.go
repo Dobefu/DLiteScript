@@ -300,6 +300,20 @@ func TestDatavalueArrayEmpty(t *testing.T) {
 	}
 }
 
+func TestDatavalueAny(t *testing.T) {
+	t.Parallel()
+
+	value := Any()
+
+	if value.DataType() != datatype.DataTypeAny {
+		t.Errorf("expected DataTypeAny, got '%v'", value.DataType())
+	}
+
+	if value.ToString() != "any" {
+		t.Errorf("expected 'any', got '%s'", value.ToString())
+	}
+}
+
 func TestDatavalueUnknown(t *testing.T) {
 	t.Parallel()
 
@@ -402,6 +416,12 @@ func TestDatavalueEquals(t *testing.T) {
 			value:       Number(1),
 			other:       Null(),
 			shouldMatch: false,
+		},
+		{
+			name:        "any type",
+			value:       Any(),
+			other:       Any(),
+			shouldMatch: true,
 		},
 		{
 			name:        "unknown type",
