@@ -407,3 +407,51 @@ func TestHandleArrayTokenErr(t *testing.T) {
 		})
 	}
 }
+
+func TestHandleShorthandAssignmentToken(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "shorthand assignment expression",
+			input: []*token.Token{
+				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
+				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+			},
+			expected: "x += 1",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			leftExpr := &ast.Identifier{
+				Value:    "x",
+				StartPos: 0,
+				EndPos:   0,
+			}
+
+			p := NewParser(test.input[1:])
+			expr, err := p.handleShorthandAssignmentToken(
+				test.input[0],
+				leftExpr,
+				0,
+				0,
+			)
+
+			if err != nil {
+				t.Fatalf("expected no error, got: %s", err.Error())
+			}
+
+			if expr.Expr() != test.expected {
+				t.Fatalf("expected %s, got %s", test.expected, expr.Expr())
+			}
+		})
+	}
+}
