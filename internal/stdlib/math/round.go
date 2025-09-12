@@ -31,11 +31,7 @@ func getRoundFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.round(1.5) // returns 2", packageName),
 			fmt.Sprintf("%s.round(1.2) // returns 1", packageName),

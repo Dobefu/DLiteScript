@@ -31,11 +31,7 @@ func getCosFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.cos(1.5) // returns 0.0707372016677029", packageName),
 			fmt.Sprintf("%s.cos(1) // returns 0.5403023058681398", packageName),

@@ -31,11 +31,7 @@ func getFloorFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.floor(1.5) // returns 1", packageName),
 			fmt.Sprintf("%s.floor(1.2) // returns 1", packageName),

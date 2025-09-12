@@ -31,11 +31,7 @@ func getSqrtFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.sqrt(4) // returns 2", packageName),
 			fmt.Sprintf("%s.sqrt(16) // returns 4", packageName),

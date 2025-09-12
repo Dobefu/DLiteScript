@@ -30,11 +30,7 @@ func getMinFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.min(1, 2, 3) // returns 1", packageName),
 			fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns 1.5", packageName),

@@ -30,11 +30,7 @@ func getMaxFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.max(1, 2, 3) // returns 3", packageName),
 			fmt.Sprintf("%s.max(1.5, 2.5, 3.5) // returns 3.5", packageName),

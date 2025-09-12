@@ -27,11 +27,7 @@ func getPrintfFunction() function.Info {
 		[]function.ArgInfo{},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			"printf(\"test %s\", \"string\") // prints \"test string\"",
 			"printf(\"test %g\", 1) // prints \"test 1\"",

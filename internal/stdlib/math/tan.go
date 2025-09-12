@@ -31,11 +31,7 @@ func getTanFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.tan(1.5) // returns 14.101419947171719", packageName),
 			fmt.Sprintf("%s.tan(1) // returns 1.557407724654902", packageName),

@@ -31,11 +31,7 @@ func getSinFunction() function.Info {
 		},
 		true,
 		"v0.1.0",
-		function.DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
+		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			fmt.Sprintf("%s.sin(1.5) // returns 0.9974949866040544", packageName),
 			fmt.Sprintf("%s.sin(1) // returns 0.8414709848078965", packageName),
