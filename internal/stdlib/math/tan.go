@@ -19,7 +19,7 @@ func getTanFunction() function.Info {
 			{
 				Type:        datatype.DataTypeNumber,
 				Name:        "num",
-				Description: "The number to process.",
+				Description: "The number to find the tangent value of.",
 			},
 		},
 		[]function.ArgInfo{

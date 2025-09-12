@@ -18,7 +18,7 @@ func getMinFunction() function.Info {
 			{
 				Type:        datatype.DataTypeNumber,
 				Name:        "...nums",
-				Description: "The numbers to process. At least two numbers are required.",
+				Description: "The numbers to find the minimum of. At least two numbers are required.",
 			},
 		},
 		[]function.ArgInfo{

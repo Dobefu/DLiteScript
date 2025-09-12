@@ -19,7 +19,7 @@ func getSqrtFunction() function.Info {
 			{
 				Type:        datatype.DataTypeNumber,
 				Name:        "num",
-				Description: "The number to process.",
+				Description: "The number to find the square root of.",
 			},
 		},
 		[]function.ArgInfo{

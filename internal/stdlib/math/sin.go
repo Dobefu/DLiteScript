@@ -19,7 +19,7 @@ func getSinFunction() function.Info {
 			{
 				Type:        datatype.DataTypeNumber,
 				Name:        "num",
-				Description: "The number to process.",
+				Description: "The number to find the sine value of.",
 			},
 		},
 		[]function.ArgInfo{
