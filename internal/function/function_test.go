@@ -84,3 +84,106 @@ func TestMakeFunction(t *testing.T) {
 		t.Errorf("expected 'example', got '%s'", function.Examples[0])
 	}
 }
+
+func TestExpr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		args     []ArgInfo
+		returns  []ArgInfo
+		expected string
+	}{
+		{
+			name: "no return values",
+			args: []ArgInfo{
+				{
+					Name:        "param",
+					Type:        datatype.DataTypeNumber,
+					Description: "test",
+				},
+			},
+			returns:  []ArgInfo{},
+			expected: "func test(param number)",
+		},
+		{
+			name: "single return value",
+			args: []ArgInfo{
+				{
+					Name:        "param",
+					Type:        datatype.DataTypeNumber,
+					Description: "test",
+				},
+			},
+			returns: []ArgInfo{
+				{
+					Name:        "return",
+					Type:        datatype.DataTypeNumber,
+					Description: "test",
+				},
+			},
+			expected: "func test(param number) number",
+		},
+		{
+			name: "multiple return values",
+			args: []ArgInfo{
+				{
+					Name:        "param",
+					Type:        datatype.DataTypeNumber,
+					Description: "test",
+				},
+			},
+			returns: []ArgInfo{
+				{
+					Name:        "return",
+					Type:        datatype.DataTypeNumber,
+					Description: "test",
+				},
+				{
+					Name:        "return",
+					Type:        datatype.DataTypeString,
+					Description: "test",
+				},
+			},
+			expected: "func test(param number) (number, string)",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			function := MakeFunction(
+				"test",
+				"description",
+				"package",
+				FunctionTypeFixed,
+				test.args,
+				test.returns,
+				false,
+				"v1.0.0",
+				DeprecationInfo{
+					IsDeprecated: false,
+					Description:  "",
+					Version:      "",
+				},
+				[]string{
+					"example",
+				},
+				func(_ EvaluatorInterface, args []datavalue.Value) datavalue.Value {
+					num, err := args[0].AsNumber()
+
+					if err != nil {
+						return datavalue.Number(0)
+					}
+
+					return datavalue.Number(num)
+				},
+			)
+
+			if function.Expr() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, function.Expr())
+			}
+		})
+	}
+}
