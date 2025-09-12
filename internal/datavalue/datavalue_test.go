@@ -1,6 +1,7 @@
 package datavalue
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -305,12 +306,160 @@ func TestDatavalueAny(t *testing.T) {
 
 	value := Any(1)
 
-	if value.DataType() != datatype.DataTypeNumber {
-		t.Errorf("expected DataTypeNumber, got \"%v\"", value.DataType())
+	if value.DataType() != datatype.DataTypeAny {
+		t.Errorf(
+			"expected DataType %s, got '%s'",
+			datatype.DataTypeAny.AsString(),
+			value.DataType().AsString(),
+		)
 	}
 
-	if value.ToString() != "1" {
-		t.Errorf("expected 1, got %s", value.ToString())
+	if value.ToString() != datatype.DataTypeAny.AsString() {
+		t.Errorf(
+			"expected '%s', got '%s'",
+			datatype.DataTypeAny.AsString(),
+			value.ToString(),
+		)
+	}
+}
+
+func TestDatavalueAsNumber(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected float64
+	}{
+		{
+			name:     "float64",
+			input:    Any(float64(1)),
+			expected: 1,
+		},
+		{
+			name:     "int",
+			input:    Any(1),
+			expected: 1,
+		},
+		{
+			name:     "int8",
+			input:    Any(int8(1)),
+			expected: 1,
+		},
+		{
+			name:     "int16",
+			input:    Any(int16(1)),
+			expected: 1,
+		},
+		{
+			name:     "int32",
+			input:    Any(int32(1)),
+			expected: 1,
+		},
+		{
+			name:     "int64",
+			input:    Any(int64(1)),
+			expected: 1,
+		},
+		{
+			name:     "uint",
+			input:    Any(uint(1)),
+			expected: 1,
+		},
+		{
+			name:     "uint8",
+			input:    Any(uint8(1)),
+			expected: 1,
+		},
+		{
+			name:     "uint16",
+			input:    Any(uint16(1)),
+			expected: 1,
+		},
+		{
+			name:     "uint32",
+			input:    Any(uint32(1)),
+			expected: 1,
+		},
+		{
+			name:     "uint64",
+			input:    Any(uint64(1)),
+			expected: 1,
+		},
+		{
+			name:     "float32",
+			input:    Any(float32(1)),
+			expected: 1,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			num, err := test.input.AsNumber()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if num != test.expected {
+				t.Errorf("expected %f, got %f", test.expected, num)
+			}
+		})
+	}
+}
+
+func TestDatavalueAsNumberErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeNumber.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any("bogus"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeNumber.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsNumber()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
 	}
 }
 
@@ -333,6 +482,485 @@ func TestDatavalueUnknown(t *testing.T) {
 
 	if val.ToString() != errorutil.ErrorMsgTypeUnknownDataType {
 		t.Errorf("expected '%s', got '%s'", errorutil.ErrorMsgTypeUnknownDataType, val.ToString())
+	}
+}
+
+func TestDatavalueAsString(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:     "string",
+			input:    String("test"),
+			expected: "test",
+		},
+		{
+			name:     "any",
+			input:    Any("test"),
+			expected: "test",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			str, err := test.input.AsString()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if str != test.expected {
+				t.Errorf("expected '%s', got '%s'", test.expected, str)
+			}
+		})
+	}
+}
+
+func TestDatavalueAsStringErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeString.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any(1),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeString.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsString()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestDatavalueAsBool(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected bool
+	}{
+		{
+			name:     "bool",
+			input:    Bool(true),
+			expected: true,
+		},
+		{
+			name:     "any",
+			input:    Any(true),
+			expected: true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			boolean, err := test.input.AsBool()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if boolean != test.expected {
+				t.Errorf("expected \"%t\", got \"%t\"", test.expected, boolean)
+			}
+		})
+	}
+}
+
+func TestDatavalueAsBoolErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeBool.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any(1),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeBool.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsBool()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestDatavalueAsFunction(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected *ast.FuncDeclarationStatement
+	}{
+		{
+			name: "function",
+			input: Function(&ast.FuncDeclarationStatement{ //nolint:exhaustruct
+				Name: "test",
+			}),
+			expected: &ast.FuncDeclarationStatement{ //nolint:exhaustruct
+				Name: "test",
+			},
+		},
+		{
+			name: "any",
+			input: Any(&ast.FuncDeclarationStatement{ //nolint:exhaustruct
+				Name: "test",
+			}),
+			expected: &ast.FuncDeclarationStatement{ //nolint:exhaustruct
+				Name: "test",
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			function, err := test.input.AsFunction()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if function.Name != test.expected.Name {
+				t.Errorf("expected '%s', got '%s'", test.expected.Name, function.Name)
+			}
+		})
+	}
+}
+
+func TestDatavalueAsFunctionErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeFunction.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any(1),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeFunction.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsFunction()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestDatavalueAsArray(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected []Value
+	}{
+		{
+			name:  "array",
+			input: Array(Number(1), String("test")),
+			expected: []Value{
+				Number(1),
+				String("test"),
+			},
+		},
+		{
+			name:  "any",
+			input: Any([]Value{Number(1), String("test")}),
+			expected: []Value{
+				Number(1),
+				String("test"),
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			array, err := test.input.AsArray()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if len(array) != len(test.expected) {
+				t.Errorf("expected %d values, got %d", len(test.expected), len(array))
+			}
+
+			for i, val := range array {
+				if val.ToString() != test.expected[i].ToString() {
+					t.Errorf("expected '%s', got '%s'", test.expected[i].ToString(), val.ToString())
+				}
+			}
+		})
+	}
+}
+
+func TestDatavalueAsArrayErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeArray.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any(1),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeArray.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsArray()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestDatavalueAsTuple(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected []Value
+	}{
+		{
+			name:  "tuple",
+			input: Tuple(Number(1), String("test")),
+			expected: []Value{
+				Number(1),
+				String("test"),
+			},
+		},
+		{
+			name:  "any",
+			input: Any([]Value{Number(1), String("test")}),
+			expected: []Value{
+				Number(1),
+				String("test"),
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			tuple, err := test.input.AsTuple()
+
+			if err != nil {
+				t.Errorf("expected no error, got '%s'", err.Error())
+			}
+
+			if len(tuple) != len(test.expected) {
+				t.Errorf("expected %d values, got %d", len(test.expected), len(tuple))
+			}
+
+			for i, val := range tuple {
+				if val.ToString() != test.expected[i].ToString() {
+					t.Errorf("expected '%s', got '%s'", test.expected[i].ToString(), val.ToString())
+				}
+			}
+		})
+	}
+}
+
+func TestDatavalueAsTupleErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "nil",
+			input: Any(nil),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeTuple.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+		{
+			name:  "invalid type",
+			input: Any(1),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeTuple.AsString(),
+					datatype.DataTypeAny.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+		})
+
+		_, err := test.input.AsTuple()
+
+		if err == nil {
+			t.Fatalf("expected error, got nil")
+		}
+
 	}
 }
 
