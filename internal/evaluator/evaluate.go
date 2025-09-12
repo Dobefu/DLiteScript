@@ -29,6 +29,9 @@ func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationRe
 	case *ast.BoolLiteral:
 		return e.evaluateBoolLiteral(node)
 
+	case *ast.AnyLiteral:
+		return e.evaluateAnyLiteral(node)
+
 	case *ast.NullLiteral:
 		return e.evaluateNullLiteral()
 
