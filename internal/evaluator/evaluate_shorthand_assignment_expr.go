@@ -53,7 +53,9 @@ func (e *Evaluator) evaluateShorthandAssignmentExpr(
 		)
 	}
 
-	if indexExpr, ok := node.Left.(*ast.IndexExpr); ok {
+	indexExpr, hasIndexExpr := node.Left.(*ast.IndexExpr)
+
+	if hasIndexExpr {
 		return e.assignArrayIndex(indexExpr, result.Value)
 	}
 
