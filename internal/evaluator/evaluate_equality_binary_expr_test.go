@@ -90,6 +90,24 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			expected: datavalue.Bool(true),
 		},
 		{
+			name:       "any",
+			inputLeft:  datavalue.Any(1),
+			inputRight: datavalue.Any(1),
+			inputNode: &ast.BinaryExpr{
+				Left:  &ast.AnyLiteral{Value: 1, StartPos: 0, EndPos: 1},
+				Right: &ast.AnyLiteral{Value: 1, StartPos: 2, EndPos: 3},
+				Operator: token.Token{
+					Atom:      "==",
+					TokenType: token.TokenTypeEqual,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
+			expected: datavalue.Bool(true),
+		},
+		{
 			name:       "null",
 			inputLeft:  datavalue.Null(),
 			inputRight: datavalue.Null(),

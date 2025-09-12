@@ -303,14 +303,14 @@ func TestDatavalueArrayEmpty(t *testing.T) {
 func TestDatavalueAny(t *testing.T) {
 	t.Parallel()
 
-	value := Any()
+	value := Any(1)
 
-	if value.DataType() != datatype.DataTypeAny {
-		t.Errorf("expected DataTypeAny, got '%v'", value.DataType())
+	if value.DataType() != datatype.DataTypeNumber {
+		t.Errorf("expected DataTypeNumber, got \"%v\"", value.DataType())
 	}
 
-	if value.ToString() != "any" {
-		t.Errorf("expected 'any', got '%s'", value.ToString())
+	if value.ToString() != "1" {
+		t.Errorf("expected 1, got %s", value.ToString())
 	}
 }
 
@@ -324,6 +324,7 @@ func TestDatavalueUnknown(t *testing.T) {
 		Bool:     false,
 		Func:     nil,
 		Values:   nil,
+		Any:      nil,
 	}
 
 	if val.DataType() != datatype.DataType(-1) {
@@ -419,8 +420,8 @@ func TestDatavalueEquals(t *testing.T) {
 		},
 		{
 			name:        "any type",
-			value:       Any(),
-			other:       Any(),
+			value:       Any(1),
+			other:       Any(1),
 			shouldMatch: true,
 		},
 		{
