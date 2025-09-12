@@ -17,10 +17,36 @@ func TestGetAstNodeLabel(t *testing.T) {
 		{
 			name: "function call",
 			node: &ast.FunctionCall{
-				Namespace:    "",
-				FunctionName: "printf",
+				Namespace:    "math",
+				FunctionName: "sqrt",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "test", StartPos: 6, EndPos: 10},
+					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
+				},
+				StartPos: 0,
+				EndPos:   10,
+			},
+			expected: "Function Call",
+		},
+		{
+			name: "bogus namespace",
+			node: &ast.FunctionCall{
+				Namespace:    "bogus",
+				FunctionName: "sqrt",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
+				},
+				StartPos: 0,
+				EndPos:   10,
+			},
+			expected: "Function Call",
+		},
+		{
+			name: "bogus function name",
+			node: &ast.FunctionCall{
+				Namespace:    "math",
+				FunctionName: "bogus",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
 				},
 				StartPos: 0,
 				EndPos:   10,
