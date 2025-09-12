@@ -4,6 +4,8 @@ package stdlib
 import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 	"github.com/Dobefu/DLiteScript/internal/stdlib/global"
+
+	stdlibarray "github.com/Dobefu/DLiteScript/internal/stdlib/array"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
 )
 
@@ -19,6 +21,9 @@ func init() {
 	}
 	functionRegistry["math"] = function.PackageInfo{
 		Functions: stdlibmath.GetMathFunctions(),
+	}
+	functionRegistry["array"] = function.PackageInfo{
+		Functions: stdlibarray.GetArrayFunctions(),
 	}
 }
 
