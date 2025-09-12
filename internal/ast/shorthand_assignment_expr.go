@@ -38,4 +38,24 @@ func (s *ShorthandAssignmentExpr) EndPosition() int {
 // Walk walks the shorthand assignment expreession.
 func (s *ShorthandAssignmentExpr) Walk(fn func(node ExprNode) bool) {
 	fn(s)
+
+	if s.Left != nil {
+		shouldContinue := fn(s.Left)
+
+		if !shouldContinue {
+			return
+		}
+
+		s.Left.Walk(fn)
+	}
+
+	if s.Right != nil {
+		shouldContinue := fn(s.Right)
+
+		if !shouldContinue {
+			return
+		}
+
+		s.Right.Walk(fn)
+	}
 }
