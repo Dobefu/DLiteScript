@@ -37,19 +37,10 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 	}
 
 	var endToken token.Type = token.TokenTypeRBrace
-	leftBrace, err := p.GetNextToken()
+	_, err = p.GetNextToken()
 
 	if err != nil {
 		return nil, err
-	}
-
-	if leftBrace.TokenType != token.TokenTypeLBrace {
-		return nil, errorutil.NewErrorAt(
-			errorutil.StageParse,
-			errorutil.ErrorMsgUnexpectedToken,
-			leftBrace.StartPos,
-			leftBrace.Atom,
-		)
 	}
 
 	body, err := p.parseBlock(&endToken)
@@ -92,11 +83,7 @@ func (p *Parser) parseArguments() ([]ast.FuncParameter, error) {
 	args := make([]ast.FuncParameter, 0)
 
 	for !p.isEOF {
-		nextToken, err := p.GetNextToken()
-
-		if err != nil {
-			return nil, err
-		}
+		nextToken, _ := p.GetNextToken()
 
 		if nextToken.TokenType == token.TokenTypeRParen {
 			break
@@ -107,6 +94,7 @@ func (p *Parser) parseArguments() ([]ast.FuncParameter, error) {
 		}
 
 		arg, err := p.parseFunctionArgument(nextToken)
+
 		if err != nil {
 			return nil, err
 		}
@@ -199,20 +187,12 @@ func (p *Parser) parseReturnTypes(
 		}
 
 		if peekToken.TokenType == token.TokenTypeComma {
-			_, err := p.GetNextToken()
-
-			if err != nil {
-				return nil, err
-			}
+			_, _ = p.GetNextToken()
 
 			continue
 		}
 
-		nextToken, err := p.GetNextToken()
-
-		if err != nil {
-			return nil, err
-		}
+		nextToken, _ := p.GetNextToken()
 
 		if nextToken.TokenType != token.TokenTypeIdentifier && !nextToken.IsDataType() {
 			return nil, errorutil.NewErrorAt(

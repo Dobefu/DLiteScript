@@ -236,6 +236,17 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 			),
 		},
 		{
+			name: "name is not an identifier",
+			input: []*token.Token{
+				{Atom: "123", TokenType: token.TokenTypeNumber, StartPos: 0, EndPos: 3},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "123"),
+			),
+		},
+		{
 			name: "missing closing tag",
 			input: []*token.Token{
 				{Atom: "add", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
@@ -327,6 +338,26 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
+		{
+			name: "invalid body",
+			input: []*token.Token{
+				{Atom: "add", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 3, EndPos: 4},
+				{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 4, EndPos: 5},
+				{Atom: "number", TokenType: token.TokenTypeTypeNumber, StartPos: 5, EndPos: 11},
+				{Atom: "{", TokenType: token.TokenTypeLBrace, StartPos: 11, EndPos: 12},
+				{Atom: "if", TokenType: token.TokenTypeIf, StartPos: 12, EndPos: 14},
+				{Atom: "true", TokenType: token.TokenTypeBool, StartPos: 14, EndPos: 18},
+				{Atom: "return", TokenType: token.TokenTypeReturn, StartPos: 18, EndPos: 24},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 24, EndPos: 25},
+				{Atom: "}", TokenType: token.TokenTypeRBrace, StartPos: 25, EndPos: 26},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 10",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
 	}
 
 	for _, test := range tests {
@@ -344,5 +375,162 @@ func TestParseFunctionDeclarationErr(t *testing.T) {
 				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
+	}
+}
+
+func TestGetArgsErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			parser := NewParser(test.input)
+			_, err := parser.getArgs()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseFunctionArgumentErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    *token.Token
+		expected string
+	}{
+		{
+			name: "name is not an identifier",
+			input: &token.Token{
+				Atom:      "1",
+				TokenType: token.TokenTypeNumber,
+				StartPos:  0,
+				EndPos:    1,
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			parser := NewParser([]*token.Token{test.input})
+			_, err := parser.parseFunctionArgument(test.input)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestGetReturnTypesErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "invalid return type in parentheses",
+			input: []*token.Token{
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 0, EndPos: 1},
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 0, EndPos: 6},
+				{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 6, EndPos: 7},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
+		},
+		{
+			name: "invalid return type",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber, StartPos: 0, EndPos: 6},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			parser := NewParser(test.input)
+			_, err := parser.getReturnTypes()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseReturnTypes(t *testing.T) {
+	t.Parallel()
+
+	parser := NewParser([]*token.Token{
+		{
+			Atom:      "number",
+			TokenType: token.TokenTypeTypeNumber,
+			StartPos:  0,
+			EndPos:    6,
+		},
+	})
+
+	parser.tokenIdx = 1
+	parser.isEOF = false
+
+	result, err := parser.parseReturnTypes(token.TokenTypeLBrace)
+
+	if err != nil {
+		t.Fatalf("expected no error, got: %s", err.Error())
+	}
+
+	if len(result) != 0 {
+		t.Errorf("expected empty result, got: %v", result)
 	}
 }
