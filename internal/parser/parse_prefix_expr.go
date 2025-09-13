@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
@@ -92,12 +94,7 @@ func (p *Parser) parseUnaryOperator(
 func (p *Parser) parseParenthesizedExpr(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
-	err := p.handleOptionalNewlines()
-
-	if err != nil {
-		return nil, err
-	}
-
+	p.handleOptionalNewlines()
 	nextToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -110,12 +107,7 @@ func (p *Parser) parseParenthesizedExpr(
 		return nil, err
 	}
 
-	err = p.handleOptionalNewlines()
-
-	if err != nil {
-		return nil, err
-	}
-
+	p.handleOptionalNewlines()
 	rparenToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -163,12 +155,9 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 	if nextToken.TokenType == token.TokenTypeDot {
 		namespace := functionCallOrIdentifierToken.Atom
 
-		_, err := p.GetNextToken()
-		if err != nil {
-			return nil, err
-		}
-
+		_, _ = p.GetNextToken()
 		functionNameOrIdentifierToken, err := p.GetNextToken()
+
 		if err != nil {
 			return nil, err
 		}
@@ -185,6 +174,14 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 		nextToken, err := p.PeekNextToken()
 
 		if err != nil {
+			if p.isEOF {
+				return &ast.Identifier{
+					Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
+					StartPos: functionNameOrIdentifierToken.StartPos,
+					EndPos:   functionNameOrIdentifierToken.EndPos,
+				}, nil
+			}
+
 			return nil, err
 		}
 
@@ -196,7 +193,11 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 			)
 		}
 
-		return p.parseIdentifier(functionNameOrIdentifierToken)
+		return &ast.Identifier{
+			Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
+			StartPos: functionNameOrIdentifierToken.StartPos,
+			EndPos:   functionNameOrIdentifierToken.EndPos,
+		}, nil
 	}
 
 	return p.parseIdentifier(functionCallOrIdentifierToken)

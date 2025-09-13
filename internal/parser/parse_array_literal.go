@@ -12,12 +12,7 @@ func (p *Parser) parseArrayLiteral(
 	startPos := p.GetCurrentCharPos()
 	var values []ast.ExprNode
 
-	err := p.handleOptionalNewlines()
-
-	if err != nil {
-		return nil, err
-	}
-
+	p.handleOptionalNewlines()
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {

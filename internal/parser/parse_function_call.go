@@ -29,11 +29,7 @@ func (p *Parser) parseFunctionCall(
 		)
 	}
 
-	err = p.handleOptionalNewlines()
-
-	if err != nil {
-		return nil, err
-	}
+	p.handleOptionalNewlines()
 
 	nextToken, err := p.PeekNextToken()
 
@@ -122,9 +118,7 @@ func (p *Parser) parseFunctionCallArguments(
 }
 
 func (p *Parser) isEndOfArguments() (bool, error) {
-	if err := p.handleOptionalNewlines(); err != nil {
-		return false, err
-	}
+	p.handleOptionalNewlines()
 
 	nextToken, err := p.PeekNextToken()
 
@@ -140,9 +134,7 @@ func (p *Parser) isEndOfArguments() (bool, error) {
 }
 
 func (p *Parser) consumeComma() error {
-	if err := p.handleOptionalNewlines(); err != nil {
-		return err
-	}
+	p.handleOptionalNewlines()
 
 	nextToken, err := p.PeekNextToken()
 
@@ -169,9 +161,7 @@ func (p *Parser) consumeComma() error {
 }
 
 func (p *Parser) isTrailingComma() (bool, error) {
-	if err := p.handleOptionalNewlines(); err != nil {
-		return false, err
-	}
+	p.handleOptionalNewlines()
 
 	nextToken, err := p.PeekNextToken()
 
