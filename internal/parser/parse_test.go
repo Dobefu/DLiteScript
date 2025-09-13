@@ -37,8 +37,9 @@ func TestParse(t *testing.T) {
 			expected: "1",
 		},
 		{
-			name: "number with newline",
+			name: "number with newlines",
 			input: []*token.Token{
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
 				{Atom: "1", TokenType: token.TokenTypeNumber},
 				{Atom: "\n", TokenType: token.TokenTypeNewline},
 			},
@@ -105,6 +106,19 @@ func TestParse(t *testing.T) {
 				{Atom: "}", TokenType: token.TokenTypeRBrace},
 			},
 			expected: "(1)",
+		},
+		{
+			name: "function declaration",
+			input: []*token.Token{
+				{Atom: "func", TokenType: token.TokenTypeFunc},
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+				{Atom: "(", TokenType: token.TokenTypeLParen},
+				{Atom: ")", TokenType: token.TokenTypeRParen},
+				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
+				{Atom: "{", TokenType: token.TokenTypeLBrace},
+				{Atom: "}", TokenType: token.TokenTypeRBrace},
+			},
+			expected: "func x() number",
 		},
 	}
 
