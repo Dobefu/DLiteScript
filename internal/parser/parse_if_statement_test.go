@@ -202,3 +202,80 @@ func TestParseIfStatementErr(t *testing.T) {
 		})
 	}
 }
+
+func TestHandleElseBlockErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "nested if statement parsing error",
+			input: []*token.Token{
+				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
+				token.NewToken("if", token.TokenTypeIf, 0, 0),
+				token.NewToken("true", token.TokenTypeBool, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.handleElseBlock()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
+func TestParseThenBlockErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseThenBlock(token.TokenTypeRBrace)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}

@@ -30,11 +30,7 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 	var elseBlock *ast.BlockStatement
 
 	if !p.isEOF {
-		nextToken, err = p.PeekNextToken()
-
-		if err != nil {
-			return nil, err
-		}
+		nextToken, _ = p.PeekNextToken()
 
 		if nextToken.TokenType == token.TokenTypeElse {
 			elseBlock, err = p.handleElseBlock()
@@ -70,12 +66,7 @@ func (p *Parser) handleElseBlock() (*ast.BlockStatement, error) {
 	}
 
 	if nextToken.TokenType == token.TokenTypeIf {
-		_, err = p.GetNextToken()
-
-		if err != nil {
-			return nil, err
-		}
-
+		_, _ = p.GetNextToken()
 		nestedExpr, err := p.parseIfStatement()
 
 		if err != nil {
