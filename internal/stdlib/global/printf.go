@@ -1,6 +1,8 @@
 package global
 
 import (
+	"strings"
+
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
@@ -36,6 +38,7 @@ func getPrintfFunction() function.Info {
 		},
 		func(e function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			format, _ := args[0].AsString()
+			format = strings.ReplaceAll(format, "%d", "%f")
 
 			if len(args) == 1 {
 				e.AddToBuffer(format)
@@ -73,9 +76,6 @@ func getPrintfFunction() function.Info {
 
 				case datatype.DataTypeAny:
 					formatArgs[i-1] = args[i].ToString()
-
-				default:
-					formatArgs[i-1] = "unknown"
 				}
 			}
 

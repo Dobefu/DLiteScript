@@ -107,6 +107,22 @@ func TestGetPrintfFunction(t *testing.T) {
 			},
 			expected: "",
 		},
+		{
+			name: "any argument",
+			input: []datavalue.Value{
+				datavalue.String("test %v"),
+				datavalue.Any(1),
+			},
+			expected: "test 1",
+		},
+		{
+			name: "unknown argument",
+			input: []datavalue.Value{
+				datavalue.String("test %v"),
+				datavalue.Any(nil),
+			},
+			expected: "test unknown",
+		},
 	}
 
 	for _, test := range tests {
