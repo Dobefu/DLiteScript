@@ -33,12 +33,14 @@ func (r *ScriptRunner) Run() error {
 
 	t := tokenizer.NewTokenizer(string(fileContent))
 	tokens, err := t.Tokenize()
+
 	if err != nil {
 		return err
 	}
 
 	p := parser.NewParser(tokens)
 	ast, err := p.Parse()
+
 	if err != nil {
 		return err
 	}

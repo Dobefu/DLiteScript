@@ -125,6 +125,17 @@ func TestScriptRunnerErr(t *testing.T) {
 				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 			),
 		},
+		{
+			name:       "parsing error",
+			hasFile:    true,
+			hasReadErr: false,
+			script:     "1 + }",
+			expected: fmt.Sprintf(
+				"%s: %s at position 3",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
+			),
+		},
 	}
 
 	for _, test := range tests {
