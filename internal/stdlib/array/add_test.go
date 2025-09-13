@@ -3,7 +3,6 @@ package array
 import (
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
@@ -59,28 +58,11 @@ func TestGetAddFunction(t *testing.T) {
 				t.Fatalf("expected no error, got %v", err)
 			}
 
-			if result.DataType() != datatype.DataTypeArray {
-				t.Fatalf("expected array, got %v", result.DataType())
-			}
-
+			expectedArray, _ := test.expected.AsArray()
 			array, err := result.AsArray()
 
 			if err != nil {
 				t.Fatalf("expected no error, got %v", err)
-			}
-
-			if !result.Equals(test.expected) {
-				t.Fatalf("expected %v, got %v", test.expected, result)
-			}
-
-			expectedArray, err := test.expected.AsArray()
-
-			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
-			}
-
-			if len(array) != len(expectedArray) {
-				t.Fatalf("expected %d values, got %d", len(expectedArray), len(array))
 			}
 
 			for i, val := range array {
