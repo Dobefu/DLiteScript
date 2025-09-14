@@ -18,7 +18,7 @@ func (t *Tokenizer) handleIdentifier(
 		next, err := t.Peek()
 
 		if err != nil {
-			break
+			return nil, err
 		}
 
 		if unicode.IsLetter(rune(next)) ||
