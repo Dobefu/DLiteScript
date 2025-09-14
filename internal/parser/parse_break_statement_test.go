@@ -103,7 +103,7 @@ func TestParseBreakStatementErr(t *testing.T) {
 			expected: fmt.Sprintf(
 				"%s: %s at position 2",
 				errorutil.StageParse.String(),
-				fmt.Sprintf(errorutil.ErrorMsgBreakCountLessThanOne),
+				errorutil.ErrorMsgBreakCountLessThanOne,
 			),
 		},
 	}

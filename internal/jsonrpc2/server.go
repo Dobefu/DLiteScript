@@ -21,7 +21,7 @@ func NewServer(
 	writer io.Writer,
 ) (*Server, error) {
 	if handler == nil {
-		return nil, fmt.Errorf("nil handler provided")
+		return nil, errors.New("nil handler provided")
 	}
 
 	stream := NewStream(reader, writer)

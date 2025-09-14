@@ -2,6 +2,7 @@
 package scriptrunner
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -22,7 +23,7 @@ type ScriptRunner struct {
 // Run executes the DLiteScript file processing.
 func (r *ScriptRunner) Run() error {
 	if len(r.Args) == 0 {
-		return fmt.Errorf("no file specified")
+		return errors.New("no file specified")
 	}
 
 	fileContent, err := os.ReadFile(r.Args[0])

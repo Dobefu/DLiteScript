@@ -3,6 +3,7 @@ package jsonrpc2
 import (
 	"bufio"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"strconv"
@@ -65,11 +66,11 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 	}
 
 	if !hasContentLength {
-		return nil, fmt.Errorf("no Content-Length header found")
+		return nil, errors.New("no Content-Length header found")
 	}
 
 	if contentLength <= 0 {
-		return nil, fmt.Errorf("invalid content length")
+		return nil, errors.New("invalid content length")
 	}
 
 	buf := make([]byte, contentLength)
@@ -81,7 +82,7 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 	}
 
 	if len(buf) != contentLength {
-		return nil, fmt.Errorf("message body length does not match Content-Length")
+		return nil, errors.New("message body length does not match Content-Length")
 	}
 
 	return buf, nil
