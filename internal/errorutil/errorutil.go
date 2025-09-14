@@ -42,6 +42,8 @@ const (
 	ErrorMsgFunctionNumArgs = "'%s()' expects exactly %d argument(s), but got %d"
 	// ErrorMsgFunctionArgType occurs when a function receives an argument of the wrong type.
 	ErrorMsgFunctionArgType = "'%s()' expects argument %d to be '%s', but got '%s'"
+	// ErrorMsgFunctionReturnCount occurs when a function returns the wrong number of values.
+	ErrorMsgFunctionReturnCount = "'%s()' expects to return %d value(s), but returned %d"
 	// ErrorMsgNumberTrailingChar occurs when a number has non-numeric trailing characters.
 	ErrorMsgNumberTrailingChar = "trailing character in number: '%s'"
 	// ErrorMsgNumberMultipleUnderscores occurs when a number has multiple consecutive underscores.

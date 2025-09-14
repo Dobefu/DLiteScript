@@ -112,6 +112,10 @@ func (e *Evaluator) evaluateUserFunctionCall(
 	}
 
 	if result.IsReturnResult() {
+		if err := e.validateReturnValues(result.Value, userFunction, fc); err != nil {
+			return controlflow.NewRegularResult(datavalue.Null()), err
+		}
+
 		if result.Value.DataType() == datatype.DataTypeTuple {
 			return result, nil
 		}
@@ -357,4 +361,40 @@ func (e *Evaluator) validateArgTypesMatch(
 	}
 
 	return argValues, nil
+}
+
+func (e *Evaluator) validateReturnValues(
+	returnValue datavalue.Value,
+	userFunction *ast.FuncDeclarationStatement,
+	fc *ast.FunctionCall,
+) error {
+	expectedNumValues := userFunction.NumReturnValues
+
+	if expectedNumValues > 1 {
+		if returnValue.DataType() != datatype.DataTypeTuple {
+			return errorutil.NewErrorAt(
+				errorutil.StageEvaluate,
+				errorutil.ErrorMsgFunctionReturnCount,
+				fc.StartPosition(),
+				userFunction.Name,
+				expectedNumValues,
+				1,
+			)
+		}
+
+		numValues := len(returnValue.Values)
+
+		if numValues != expectedNumValues {
+			return errorutil.NewErrorAt(
+				errorutil.StageEvaluate,
+				errorutil.ErrorMsgFunctionReturnCount,
+				fc.StartPosition(),
+				userFunction.Name,
+				expectedNumValues,
+				numValues,
+			)
+		}
+	}
+
+	return nil
 }
