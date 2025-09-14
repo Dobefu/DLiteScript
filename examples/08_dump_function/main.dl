@@ -1,0 +1,13 @@
+dump("test")
+dump(1)
+dump(true)
+dump(null)
+
+dump([1, 2, 3])
+dump(["a", "b", "c"])
+
+func testTuple() number, string, bool {
+  return 1, "test", false
+}
+
+dump(...testTuple())
