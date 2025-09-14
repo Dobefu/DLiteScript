@@ -11,8 +11,8 @@ func (t *Tokenizer) handleUnknownChar(
 	next rune,
 	startPos int,
 ) (*token.Token, error) {
-	if unicode.IsLetter(rune(next)) || next == '_' {
-		return t.handleIdentifier(rune(next), startPos)
+	if unicode.IsLetter(next) || next == '_' {
+		return t.handleIdentifier(next, startPos)
 	}
 
 	return nil, errorutil.NewErrorAt(

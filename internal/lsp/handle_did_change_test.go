@@ -158,7 +158,7 @@ func TestHandleDidChangeErr(t *testing.T) {
 				LineLengths: []int{0},
 			}
 
-			_, jsonErr := handler.handleDidChange(json.RawMessage(test.params))
+			_, jsonErr := handler.handleDidChange(test.params)
 
 			if jsonErr == nil {
 				t.Fatalf("expected error, got nil")

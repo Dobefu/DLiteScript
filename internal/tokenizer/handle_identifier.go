@@ -21,9 +21,9 @@ func (t *Tokenizer) handleIdentifier(
 			return nil, err
 		}
 
-		if unicode.IsLetter(rune(next)) ||
+		if unicode.IsLetter(next) ||
 			next == '_' ||
-			unicode.IsDigit(rune(next)) {
+			unicode.IsDigit(next) {
 			_, _ = t.GetNext()
 			identifier.WriteRune(next)
 

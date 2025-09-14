@@ -16,10 +16,12 @@ linters:
     - paralleltest
     - perfsprint
     - prealloc
+    - predeclared
     - reassign
     - revive
     - sloglint
     - staticcheck
+    - unconvert
     - unused
   settings:
     gocognit:
