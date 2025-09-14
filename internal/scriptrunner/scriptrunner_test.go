@@ -2,6 +2,7 @@ package scriptrunner
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -9,6 +10,12 @@ import (
 
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
+
+type errWriter struct{}
+
+func (f *errWriter) Write(_ []byte) (n int, err error) {
+	return 0, errors.New("write error")
+}
 
 func TestScriptRunner(t *testing.T) {
 	t.Parallel()
@@ -75,6 +82,7 @@ func TestScriptRunnerErr(t *testing.T) {
 		name       string
 		hasFile    bool
 		hasReadErr bool
+		outFile    io.Writer
 		script     string
 		expected   string
 	}{
@@ -82,6 +90,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "no file",
 			hasFile:    false,
 			hasReadErr: false,
+			outFile:    &bytes.Buffer{},
 			script:     "",
 			expected:   "no file specified",
 		},
@@ -89,6 +98,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "cannot read file",
 			hasFile:    true,
 			hasReadErr: true,
+			outFile:    &bytes.Buffer{},
 			script:     "",
 			expected:   "open: permission denied",
 		},
@@ -96,6 +106,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "invalid utf-8",
 			hasFile:    true,
 			hasReadErr: false,
+			outFile:    &bytes.Buffer{},
 			script:     "\x80",
 			expected: fmt.Sprintf(
 				"failed to tokenize file: %s: %s at position 0",
@@ -107,6 +118,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "unexpected EOF",
 			hasFile:    true,
 			hasReadErr: false,
+			outFile:    &bytes.Buffer{},
 			script:     "1 +",
 			expected: fmt.Sprintf(
 				"failed to tokenize file: %s: %s at position 3",
@@ -118,6 +130,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "function num args",
 			hasFile:    true,
 			hasReadErr: false,
+			outFile:    &bytes.Buffer{},
 			script:     "printf()",
 			expected: fmt.Sprintf(
 				"failed to evaluate file: %s: %s at position 0",
@@ -129,12 +142,21 @@ func TestScriptRunnerErr(t *testing.T) {
 			name:       "parsing error",
 			hasFile:    true,
 			hasReadErr: false,
+			outFile:    &bytes.Buffer{},
 			script:     "1 + }",
 			expected: fmt.Sprintf(
 				"failed to parse file: %s: %s at position 3",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
 			),
+		},
+		{
+			name:       "write error",
+			hasFile:    true,
+			hasReadErr: false,
+			outFile:    &errWriter{},
+			script:     `1 + 1`,
+			expected:   "failed to write to output file: write error",
 		},
 	}
 
@@ -143,12 +165,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			t.Parallel()
 
 			args := []string{}
-
-			tmpFile, err := os.CreateTemp("", test.name)
-
-			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
-			}
+			tmpFile, _ := os.CreateTemp("", test.name)
 
 			if test.hasFile {
 				args = append(args, tmpFile.Name())
@@ -158,6 +175,7 @@ func TestScriptRunnerErr(t *testing.T) {
 
 			if test.hasReadErr {
 				_ = os.Chmod(tmpFile.Name(), 0000)
+
 				test.expected = fmt.Sprintf(
 					"failed to read file: open %s: permission denied",
 					tmpFile.Name(),
@@ -167,13 +185,15 @@ func TestScriptRunnerErr(t *testing.T) {
 			_, _ = tmpFile.WriteString(test.script)
 			defer func() { _ = tmpFile.Close() }()
 
-			outputBuffer := &bytes.Buffer{}
-
-			err = (&ScriptRunner{
+			err := (&ScriptRunner{
 				Args:    args,
-				OutFile: outputBuffer,
+				OutFile: test.outFile,
 				result:  "",
 			}).Run()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
 
 			if err.Error() != test.expected {
 				t.Fatalf(
