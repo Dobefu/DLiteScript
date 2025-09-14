@@ -230,9 +230,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          true,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s: %s",
-				ErrMsgCouldNotEvaluateForStatement,
-				errorutil.StageEvaluate.String(),
+				"%s: %s",
+				fmt.Sprintf(
+					ErrMsgCouldNotEvaluateForStatement,
+					errorutil.StageEvaluate.String(),
+				),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
 		},
@@ -277,9 +279,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				EndPos:   0,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s: %s",
-				ErrMsgCouldNotEvaluateForStatement,
-				errorutil.StageEvaluate.String(),
+				"%s: %s",
+				fmt.Sprintf(
+					ErrMsgCouldNotEvaluateForStatement,
+					errorutil.StageEvaluate.String(),
+				),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
 		},
@@ -307,9 +311,11 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          false,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s: %s",
-				ErrMsgCouldNotEvaluateForStatement,
-				errorutil.StageEvaluate.String(),
+				"%s: %s",
+				fmt.Sprintf(
+					ErrMsgCouldNotEvaluateForStatement,
+					errorutil.StageEvaluate.String(),
+				),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
 			),
 		},
