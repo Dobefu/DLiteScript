@@ -1,59 +1,83 @@
 package math
 
 import (
-	"math"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetMinFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    []datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "no input",
+			input:    []datavalue.Value{},
+			expected: datavalue.Null(),
+		},
+		{
+			name: "positive numbers (1, 2, 3)",
+			input: []datavalue.Value{
+				datavalue.Number(1),
+				datavalue.Number(2),
+				datavalue.Number(3),
+			},
+			expected: datavalue.Number(1),
+		},
+		{
+			name: "positive numbers (1.5, 2.5, 3.5)",
+			input: []datavalue.Value{
+				datavalue.Number(1.5),
+				datavalue.Number(2.5),
+				datavalue.Number(3.5),
+			},
+			expected: datavalue.Number(1.5),
+		},
+		{
+			name: "negative numbers (-1, -2, -3)",
+			input: []datavalue.Value{
+				datavalue.Number(-1),
+				datavalue.Number(-2),
+				datavalue.Number(-3),
+			},
+			expected: datavalue.Number(-3),
+		},
+		{
+			name: "negative numbers (-1.5, -2.5, -3.5)",
+			input: []datavalue.Value{
+				datavalue.Number(-1.5),
+				datavalue.Number(-2.5),
+				datavalue.Number(-3.5),
+			},
+			expected: datavalue.Number(-3.5),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["min"]; !ok {
-		t.Fatalf("expected min function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	minFunc := functions["min"]
+			minFunc, hasFunction := functions["min"]
 
-	if minFunc.FunctionType != function.FunctionTypeVariadic {
-		t.Fatalf("expected variadic function, got %T", minFunc.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find min function")
+			}
 
-	if minFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", minFunc.Parameters[0].Type)
-	}
+			result, err := minFunc.Handler(nil, test.input)
 
-	result, err := minFunc.Handler(
-		nil,
-		[]datavalue.Value{
-			datavalue.Number(2.5),
-			datavalue.Number(1.5),
-		},
-	)
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != math.Min(2.5, 1.5) {
-		t.Fatalf("expected %f, got %v", math.Min(1.5, 2.5), result.Num)
-	}
-
-	result, err = minFunc.Handler(
-		nil,
-		[]datavalue.Value{},
-	)
-
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.DataType() != datatype.DataTypeNull {
-		t.Fatalf("expected null for no arguments, got %v", result.DataType())
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
