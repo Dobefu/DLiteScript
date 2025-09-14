@@ -34,6 +34,26 @@ func TestHandleAsteriskSign(t *testing.T) {
 				0,
 			),
 		},
+		{
+			name:  "equals sign after asterisk",
+			input: "*=",
+			expected: token.NewToken(
+				"*=",
+				token.TokenTypeOperationMulAssign,
+				0,
+				0,
+			),
+		},
+		{
+			name:  "extra asterisk and equals sign",
+			input: "**=",
+			expected: token.NewToken(
+				"**=",
+				token.TokenTypeOperationPowAssign,
+				0,
+				0,
+			),
+		},
 	}
 
 	for _, test := range tests {
