@@ -3,37 +3,59 @@ package math
 import (
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetAbsFunction(t *testing.T) {
 	t.Parallel()
 
-	functions := GetMathFunctions()
-
-	if _, ok := functions["abs"]; !ok {
-		t.Fatalf("expected abs function, got %v", functions)
+	tests := []struct {
+		name     string
+		input    datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "negative number",
+			input:    datavalue.Number(-1),
+			expected: datavalue.Number(1),
+		},
+		{
+			name:     "positive number",
+			input:    datavalue.Number(1),
+			expected: datavalue.Number(1),
+		},
+		{
+			name:     "zero",
+			input:    datavalue.Number(0),
+			expected: datavalue.Number(0),
+		},
+		{
+			name:     "negative zero",
+			input:    datavalue.Number(-0),
+			expected: datavalue.Number(0),
+		},
 	}
 
-	absFunc := functions["abs"]
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	if absFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", absFunc.FunctionType)
-	}
+			functions := GetMathFunctions()
+			absFunc, hasFunction := functions["abs"]
 
-	if absFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", absFunc.Parameters[0].Type)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find abs function")
+			}
 
-	result, err := absFunc.Handler(nil, []datavalue.Value{datavalue.Number(-1)})
+			result, err := absFunc.Handler(nil, []datavalue.Value{test.input})
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if result.Num != 1 {
-		t.Fatalf("expected 1, got %v", result.Num)
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
