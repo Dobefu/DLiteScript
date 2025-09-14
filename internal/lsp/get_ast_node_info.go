@@ -37,15 +37,16 @@ func getAstNodeInfo(node ast.ExprNode, isDebugMode bool) *AstNodeInfo {
 func getFunctionCallInfo(n *ast.FunctionCall) *AstNodeInfo {
 	registry := stdlib.GetFunctionRegistry()
 	pkg, hasPkg := registry[n.Namespace]
+	nodeInfo := &AstNodeInfo{Label: "Function Call", Description: ""}
 
 	if !hasPkg {
-		return &AstNodeInfo{Label: "Function Call", Description: ""}
+		return nodeInfo
 	}
 
 	function, hasFunction := pkg.Functions[n.FunctionName]
 
 	if !hasFunction {
-		return &AstNodeInfo{Label: "Function Call", Description: ""}
+		return nodeInfo
 	}
 
 	var description strings.Builder
@@ -78,5 +79,7 @@ func getFunctionCallInfo(n *ast.FunctionCall) *AstNodeInfo {
 		}
 	}
 
-	return &AstNodeInfo{Label: "Function Call", Description: description.String()}
+	nodeInfo.Description = description.String()
+
+	return nodeInfo
 }
