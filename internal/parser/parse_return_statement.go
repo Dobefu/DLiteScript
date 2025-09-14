@@ -41,11 +41,7 @@ func (p *Parser) parseReturnValues() ([]ast.ExprNode, error) {
 	var returnValues []ast.ExprNode
 
 	for !p.isEOF {
-		nextToken, err := p.PeekNextToken()
-
-		if err != nil {
-			return nil, err
-		}
+		nextToken, _ := p.PeekNextToken()
 
 		if p.isReturnValueTerminator(nextToken) {
 			break
@@ -61,9 +57,7 @@ func (p *Parser) parseReturnValues() ([]ast.ExprNode, error) {
 				)
 			}
 
-			if err := p.consumeReturnComma(); err != nil {
-				return nil, err
-			}
+			_ = p.consumeReturnComma()
 
 			continue
 		}

@@ -346,3 +346,40 @@ func TestParseReturnStatementErr(t *testing.T) {
 		})
 	}
 }
+
+func TestParseReturnValueErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			parser := NewParser(test.input)
+			_, err := parser.parseNextReturnValue()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
