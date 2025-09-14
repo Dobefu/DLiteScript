@@ -12,10 +12,12 @@ func TestParseSpreadExpr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected string
 	}{
 		{
+			name: "spread expression",
 			input: []*token.Token{
 				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
@@ -25,18 +27,18 @@ func TestParseSpreadExpr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input[0].Atom, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
 			expr, err := p.Parse()
 
 			if err != nil {
-				t.Errorf("Error parsing spread expression: %v", err)
+				t.Fatalf("error parsing spread expression: %v", err)
 			}
 
 			if expr.Expr() != test.expected {
-				t.Errorf("Expected %s, got %s", test.expected, expr.Expr())
+				t.Fatalf("expected %s, got %s", test.expected, expr.Expr())
 			}
 		})
 	}
@@ -46,10 +48,12 @@ func TestParseSpreadExprErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    []*token.Token
 		expected string
 	}{
 		{
+			name: "spread operator without expression",
 			input: []*token.Token{
 				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
 			},
@@ -59,21 +63,33 @@ func TestParseSpreadExprErr(t *testing.T) {
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
+		{
+			name: "spread operator with invalid expression",
+			input: []*token.Token{
+				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
+				token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
 	}
 
 	for _, test := range tests {
-		t.Run(test.input[0].Atom, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
 			_, err := p.Parse()
 
 			if err == nil {
-				t.Fatalf("Expected error, got nil")
+				t.Fatalf("expected error, got nil")
 			}
 
 			if err.Error() != test.expected {
-				t.Errorf("Expected \"%s\", got \"%s\"", test.expected, err.Error())
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}
