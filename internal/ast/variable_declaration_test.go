@@ -7,95 +7,123 @@ import (
 func TestVariableDeclaration(t *testing.T) {
 	t.Parallel()
 
-	declaration := &VariableDeclaration{
-		Name: "x",
-		Type: "int",
-		Value: &NumberLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   1,
+	tests := []struct {
+		name             string
+		input            *VariableDeclaration
+		expectedStartPos int
+		expectedEndPos   int
+		expectedNodes    []string
+		continueOn       string
+	}{
+		{
+			name: "variable declaration with value",
+			input: &VariableDeclaration{
+				Name: "x",
+				Type: "int",
+				Value: &NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"var x int = 1", "1", "1"},
+			continueOn:       "",
 		},
-		StartPos: 0,
-		EndPos:   1,
+		{
+			name: "variable declaration without value",
+			input: &VariableDeclaration{
+				Name:     "x",
+				Type:     "int",
+				Value:    nil,
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"var x int"},
+			continueOn:       "",
+		},
+		{
+			name: "walk early return after declaration node",
+			input: &VariableDeclaration{
+				Name: "y",
+				Type: "string",
+				Value: &StringLiteral{
+					Value:    "hello",
+					StartPos: 0,
+					EndPos:   2,
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			expectedNodes:    []string{"var y string = \"hello\""},
+			continueOn:       "var y string = \"hello\"",
+		},
+		{
+			name: "walk early return after value",
+			input: &VariableDeclaration{
+				Name: "y",
+				Type: "string",
+				Value: &StringLiteral{
+					Value:    "hello",
+					StartPos: 0,
+					EndPos:   2,
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			expectedNodes:    []string{"var y string = \"hello\"", "\"hello\""},
+			continueOn:       "\"hello\"",
+		},
+		{
+			name: "variable declaration with different type",
+			input: &VariableDeclaration{
+				Name: "z",
+				Type: "bool",
+				Value: &BoolLiteral{
+					Value:    "true",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"var z bool = true", "true", "true"},
+			continueOn:       "",
+		},
 	}
 
-	expectedNodes := []string{"var x int = 1", "1", "1"}
-	visitedNodes := []string{}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	declaration.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
+			if test.input.StartPosition() != test.expectedStartPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedStartPos,
+					test.input.StartPosition(),
+				)
+			}
 
-		return true
-	})
+			if test.input.EndPosition() != test.expectedEndPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedEndPos,
+					test.input.EndPosition(),
+				)
+			}
 
-	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf(
-			"Expected %d visited node, got %d",
-			len(expectedNodes),
-			len(visitedNodes),
-		)
-	}
-
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
-
-	if declaration.StartPosition() != 0 {
-		t.Fatalf(
-			"Expected start position to be 0, got %d",
-			declaration.StartPosition(),
-		)
-	}
-
-	if declaration.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", declaration.EndPosition())
-	}
-}
-
-func TestVariableDeclarationNoValue(t *testing.T) {
-	t.Parallel()
-
-	declaration := &VariableDeclaration{
-		Name:     "x",
-		Type:     "int",
-		Value:    nil,
-		StartPos: 0,
-		EndPos:   1,
-	}
-
-	expectedNodes := []string{"var x int"}
-	visitedNodes := []string{}
-
-	declaration.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
-
-		return true
-	})
-
-	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf(
-			"Expected %d visited node, got %d",
-			len(expectedNodes),
-			len(visitedNodes),
-		)
-	}
-
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
-
-	if declaration.StartPosition() != 0 {
-		t.Fatalf(
-			"Expected start position to be 0, got %d",
-			declaration.StartPosition(),
-		)
-	}
-
-	if declaration.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", declaration.EndPosition())
+			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
+		})
 	}
 }
