@@ -5,45 +5,138 @@ import "testing"
 func TestAssignmentStatement(t *testing.T) {
 	t.Parallel()
 
-	assignment := &AssignmentStatement{
-		Left: &Identifier{
-			Value:    "x",
-			StartPos: 0,
-			EndPos:   1,
+	tests := []struct {
+		name             string
+		input            *AssignmentStatement
+		expectedNodes    []string
+		expectedStartPos int
+		expectedEndPos   int
+		continueOn       string
+	}{
+		{
+			name: "assignment statement",
+			input: &AssignmentStatement{
+				Left: &Identifier{
+					Value:    "x",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedNodes:    []string{"x = 1", "x", "x", "1", "1"},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			continueOn:       "",
 		},
-		Right: &NumberLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   1,
+		{
+			name: "assignment statement with nil left",
+			input: &AssignmentStatement{
+				Left: nil,
+				Right: &NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedNodes:    []string{"", "1", "1"},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			continueOn:       "",
 		},
-		StartPos: 0,
-		EndPos:   1,
+		{
+			name: "walk early return after assignment node",
+			input: &AssignmentStatement{
+				Left: &Identifier{
+					Value:    "y",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "42",
+					StartPos: 0,
+					EndPos:   2,
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedNodes:    []string{"y = 42"},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			continueOn:       "y = 42",
+		},
+		{
+			name: "walk early return after left identifier",
+			input: &AssignmentStatement{
+				Left: &Identifier{
+					Value:    "y",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "42",
+					StartPos: 0,
+					EndPos:   2,
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedNodes:    []string{"y = 42", "y"},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			continueOn:       "y",
+		},
+		{
+			name: "walk early return after right value",
+			input: &AssignmentStatement{
+				Left: &Identifier{
+					Value:    "y",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "42",
+					StartPos: 0,
+					EndPos:   2,
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedNodes:    []string{"y = 42", "y", "y", "42"},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			continueOn:       "42",
+		},
 	}
 
-	visitedNodes := []string{}
-	expectedNodes := []string{"x = 1", "x", "x", "1", "1"}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	assignment.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
+			if test.input.StartPosition() != test.expectedStartPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedStartPos,
+					test.input.StartPosition(),
+				)
+			}
 
-		return true
-	})
+			if test.input.EndPosition() != test.expectedEndPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedEndPos,
+					test.input.EndPosition(),
+				)
+			}
 
-	if len(visitedNodes) != 5 {
-		t.Fatalf("Expected 5 visited nodes, got %d", len(visitedNodes))
-	}
-
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
-
-	if assignment.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", assignment.StartPosition())
-	}
-
-	if assignment.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", assignment.EndPosition())
+			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
+		})
 	}
 }
