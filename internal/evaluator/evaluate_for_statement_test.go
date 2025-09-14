@@ -230,7 +230,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          true,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s",
+				"could not evaluate for condition: %s: %s",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
@@ -276,7 +276,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				EndPos:   0,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s",
+				"could not evaluate for condition: %s: %s",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
@@ -305,7 +305,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          false,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s",
+				"could not evaluate for condition: %s: %s",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
 			),

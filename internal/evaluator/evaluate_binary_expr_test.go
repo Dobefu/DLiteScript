@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -260,7 +259,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			),
 		},
 		{
 			name: "right operand is nil",
@@ -276,7 +279,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "null", "number"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "null", "number"),
+			),
 		},
 		{
 			name: "division by zero",
@@ -292,7 +299,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: errorutil.ErrorMsgDivByZero,
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				errorutil.ErrorMsgDivByZero,
+			),
 		},
 		{
 			name: "modulo by zero",
@@ -308,7 +319,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: errorutil.ErrorMsgModByZero,
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				errorutil.ErrorMsgModByZero,
+			),
 		},
 		{
 			name: "unknown operator",
@@ -324,7 +339,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ","),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ","),
+			),
 		},
 		{
 			name: "undefined identifier",
@@ -340,7 +359,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+			),
 		},
 		{
 			name: "undefined identifier",
@@ -356,7 +379,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+			),
 		},
 		{
 			name: "boolean addition",
@@ -372,7 +399,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgCannotConcat, "bool", "bool"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgCannotConcat, "bool", "bool"),
+			),
 		},
 	}
 
@@ -386,11 +417,11 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -423,7 +454,11 @@ func TestEvaluateArithmeticBinaryExprNumberErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as number: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
+			),
 		},
 	}
 
@@ -441,11 +476,11 @@ func TestEvaluateArithmeticBinaryExprNumberErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -474,7 +509,11 @@ func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   1,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+			),
 		},
 	}
 
@@ -492,11 +531,11 @@ func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -539,7 +578,11 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+			),
 		},
 		{
 			name:  "invalid right operand",
@@ -567,7 +610,11 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+			),
 		},
 		{
 			name:  "invalid operator",
@@ -593,7 +640,11 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				StartPos: 1,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
+			),
 		},
 	}
 
@@ -611,11 +662,11 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -697,16 +748,24 @@ func TestGetBinaryExprValueAsBoolErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "invalid left operand",
-			left:     datavalue.String("5"),
-			right:    datavalue.Bool(true),
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			name:  "invalid left operand",
+			left:  datavalue.String("5"),
+			right: datavalue.Bool(true),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as bool: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			),
 		},
 		{
-			name:     "invalid right operand",
-			left:     datavalue.Bool(true),
-			right:    datavalue.String("5"),
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			name:  "invalid right operand",
+			left:  datavalue.Bool(true),
+			right: datavalue.String("5"),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as bool: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
+			),
 		},
 	}
 
@@ -723,11 +782,11 @@ func TestGetBinaryExprValueAsBoolErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Fatalf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -744,10 +803,14 @@ func TestGetBinaryExprValueAsNumberErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "invalid left operand",
-			left:     datavalue.String("5"),
-			right:    datavalue.Number(5),
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
+			name:  "invalid left operand",
+			left:  datavalue.String("5"),
+			right: datavalue.Number(5),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as number: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
+			),
 		},
 	}
 
@@ -764,11 +827,11 @@ func TestGetBinaryExprValueAsNumberErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Fatalf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
@@ -785,16 +848,24 @@ func TestGetBinaryExprValueAsStringErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "invalid left operand",
-			left:     datavalue.Number(5),
-			right:    datavalue.String("5"),
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+			name:  "invalid left operand",
+			left:  datavalue.Number(5),
+			right: datavalue.String("5"),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as string: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+			),
 		},
 		{
-			name:     "invalid right operand",
-			left:     datavalue.String("5"),
-			right:    datavalue.Number(5),
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+			name:  "invalid right operand",
+			left:  datavalue.String("5"),
+			right: datavalue.Number(5),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as string: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
+			),
 		},
 	}
 
@@ -811,11 +882,11 @@ func TestGetBinaryExprValueAsStringErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Fatalf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})

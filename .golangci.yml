@@ -23,6 +23,7 @@ linters:
     - staticcheck
     - unconvert
     - unused
+    - wrapcheck
   settings:
     gocognit:
       min-complexity: 15

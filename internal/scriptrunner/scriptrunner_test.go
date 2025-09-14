@@ -98,7 +98,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasReadErr: false,
 			script:     "\x80",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"failed to tokenize file: %s: %s at position 0",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgInvalidUTF8Char,
 			),
@@ -109,7 +109,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasReadErr: false,
 			script:     "1 +",
 			expected: fmt.Sprintf(
-				"%s: %s at position 3",
+				"failed to tokenize file: %s: %s at position 3",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -120,7 +120,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasReadErr: false,
 			script:     "printf()",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"failed to evaluate file: %s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 			),
@@ -131,7 +131,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			hasReadErr: false,
 			script:     "1 + }",
 			expected: fmt.Sprintf(
-				"%s: %s at position 3",
+				"failed to parse file: %s: %s at position 3",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
 			),
@@ -158,7 +158,10 @@ func TestScriptRunnerErr(t *testing.T) {
 
 			if test.hasReadErr {
 				_ = os.Chmod(tmpFile.Name(), 0000)
-				test.expected = fmt.Sprintf("open %s: permission denied", tmpFile.Name())
+				test.expected = fmt.Sprintf(
+					"failed to read file: open %s: permission denied",
+					tmpFile.Name(),
+				)
 			}
 
 			_, _ = tmpFile.WriteString(test.script)

@@ -1,6 +1,8 @@
 package evaluator
 
 import (
+	"fmt"
+
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datatype"
@@ -144,19 +146,28 @@ func (e *Evaluator) evaluateNodeCondition(
 	currentValue, err := currentVar.GetValue().AsNumber()
 
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf(
+			"could not evaluate for condition: %s",
+			err.Error(),
+		)
 	}
 
 	toResult, err := e.Evaluate(node.RangeTo)
 
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf(
+			"could not evaluate for condition: %s",
+			err.Error(),
+		)
 	}
 
 	toValue, err := toResult.Value.AsNumber()
 
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf(
+			"could not evaluate for condition: %s",
+			err.Error(),
+		)
 	}
 
 	return currentValue > toValue, nil
@@ -196,13 +207,19 @@ func (e *Evaluator) evaluateForCondition(
 	evaluatedCondition, err := e.Evaluate(node.Condition)
 
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf(
+			"could not evaluate for condition: %s",
+			err.Error(),
+		)
 	}
 
 	conditionResultBool, err := evaluatedCondition.Value.AsBool()
 
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf(
+			"could not evaluate for condition: %s",
+			err.Error(),
+		)
 	}
 
 	return conditionResultBool, nil
@@ -260,7 +277,7 @@ func (e *Evaluator) incrementLoopVariable(node *ast.ForStatement) error {
 	currentValue, err := currentVar.GetValue().AsNumber()
 
 	if err != nil {
-		return err
+		return fmt.Errorf("could not increment loop variable: %s", err.Error())
 	}
 
 	newVarValue := &Variable{

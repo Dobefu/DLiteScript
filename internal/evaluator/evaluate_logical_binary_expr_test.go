@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -115,7 +114,11 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as bool: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			),
 		},
 		{
 			name:       "number and number",
@@ -133,7 +136,11 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			expected: fmt.Sprintf(
+				"could not get binary expr value as bool: %s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "number"),
+			),
 		},
 		{
 			name:       "unexpected operator",
@@ -151,7 +158,11 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   3,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, "**"),
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, "**"),
+			),
 		},
 	}
 
@@ -166,14 +177,17 @@ func TestEvaluateLogicalBinaryExprErr(t *testing.T) {
 			)
 
 			if err == nil {
-				t.Fatalf("expected error evaluating \"%s\", got nil", test.inputNode.Expr())
+				t.Fatalf(
+					"expected error evaluating \"%s\", got nil",
+					test.inputNode.Expr(),
+				)
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})

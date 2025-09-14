@@ -19,7 +19,7 @@ func TestParseDocumentToAstErr(t *testing.T) {
 			name:  "invalid token",
 			input: "return",
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"failed to parse file: %s: %s at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

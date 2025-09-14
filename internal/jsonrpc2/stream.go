@@ -100,5 +100,9 @@ func (s *Stream) WriteMessage(data []byte) error {
 
 	_, err = s.writer.Write(data)
 
-	return err
+	if err != nil {
+		return fmt.Errorf("could not write message: %w", err)
+	}
+
+	return nil
 }

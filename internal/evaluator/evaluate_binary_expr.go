@@ -35,24 +35,40 @@ func (e *Evaluator) evaluateBinaryExpr(
 		token.TokenTypeOperationDiv,
 		token.TokenTypeOperationMod,
 		token.TokenTypeOperationPow:
-		return e.evaluateArithmeticBinaryExpr(leftValue.Value, rightValue.Value, node)
+		return e.evaluateArithmeticBinaryExpr(
+			leftValue.Value,
+			rightValue.Value,
+			node,
+		)
 
 	case
 		token.TokenTypeEqual,
 		token.TokenTypeNotEqual:
-		return e.evaluateEqualityBinaryExpr(leftValue.Value, rightValue.Value, node)
+		return e.evaluateEqualityBinaryExpr(
+			leftValue.Value,
+			rightValue.Value,
+			node,
+		)
 
 	case
 		token.TokenTypeGreaterThan,
 		token.TokenTypeGreaterThanOrEqual,
 		token.TokenTypeLessThan,
 		token.TokenTypeLessThanOrEqual:
-		return e.evaluateComparisonBinaryExpr(leftValue.Value, rightValue.Value, node)
+		return e.evaluateComparisonBinaryExpr(
+			leftValue.Value,
+			rightValue.Value,
+			node,
+		)
 
 	case
 		token.TokenTypeLogicalAnd,
 		token.TokenTypeLogicalOr:
-		return e.evaluateLogicalBinaryExpr(leftValue.Value, rightValue.Value, node)
+		return e.evaluateLogicalBinaryExpr(
+			leftValue.Value,
+			rightValue.Value,
+			node,
+		)
 	}
 
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
@@ -80,13 +96,25 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 
 	switch leftValue.DataType() {
 	case datatype.DataTypeNumber:
-		return e.evaluateArithmeticBinaryExprNumber(leftValue, rightValue, node)
+		return e.evaluateArithmeticBinaryExprNumber(
+			leftValue,
+			rightValue,
+			node,
+		)
 
 	case datatype.DataTypeArray:
-		return e.evaluateArithmeticBinaryExprArray(leftValue, rightValue, node)
+		return e.evaluateArithmeticBinaryExprArray(
+			leftValue,
+			rightValue,
+			node,
+		)
 
 	case datatype.DataTypeString:
-		return e.evaluateArithmeticBinaryExprString(leftValue, rightValue, node)
+		return e.evaluateArithmeticBinaryExprString(
+			leftValue,
+			rightValue,
+			node,
+		)
 
 	case datatype.DataTypeBool:
 		fallthrough
@@ -119,13 +147,17 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
 ) (*controlflow.EvaluationResult, error) {
-	leftNumber, rightNumber, err := e.getBinaryExprValueAsNumber(leftValue, rightValue)
+	leftNumber, rightNumber, err := e.getBinaryExprValueAsNumber(
+		leftValue,
+		rightValue,
+	)
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if node.Operator.TokenType == token.TokenTypeOperationDiv && rightNumber == 0 {
+	if node.Operator.TokenType == token.TokenTypeOperationDiv &&
+		rightNumber == 0 {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgDivByZero,
@@ -133,7 +165,8 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 		)
 	}
 
-	if node.Operator.TokenType == token.TokenTypeOperationMod && rightNumber == 0 {
+	if node.Operator.TokenType == token.TokenTypeOperationMod &&
+		rightNumber == 0 {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgModByZero,
@@ -143,22 +176,34 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 
 	switch node.Operator.TokenType {
 	case token.TokenTypeOperationAdd:
-		return controlflow.NewRegularResult(datavalue.Number(leftNumber + rightNumber)), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(leftNumber + rightNumber),
+		), nil
 
 	case token.TokenTypeOperationSub:
-		return controlflow.NewRegularResult(datavalue.Number(leftNumber - rightNumber)), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(leftNumber - rightNumber),
+		), nil
 
 	case token.TokenTypeOperationMul:
-		return controlflow.NewRegularResult(datavalue.Number(leftNumber * rightNumber)), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(leftNumber * rightNumber),
+		), nil
 
 	case token.TokenTypeOperationDiv:
-		return controlflow.NewRegularResult(datavalue.Number(leftNumber / rightNumber)), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(leftNumber / rightNumber),
+		), nil
 
 	case token.TokenTypeOperationMod:
-		return controlflow.NewRegularResult(datavalue.Number(math.Mod(leftNumber, rightNumber))), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(math.Mod(leftNumber, rightNumber)),
+		), nil
 
 	case token.TokenTypeOperationPow:
-		return controlflow.NewRegularResult(datavalue.Number(math.Pow(leftNumber, rightNumber))), nil
+		return controlflow.NewRegularResult(
+			datavalue.Number(math.Pow(leftNumber, rightNumber)),
+		), nil
 
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
@@ -177,13 +222,19 @@ func (e *Evaluator) getBinaryExprValueAsBool(
 	leftBool, err := leftValue.AsBool()
 
 	if err != nil {
-		return false, false, err
+		return false, false, fmt.Errorf(
+			"could not get binary expr value as bool: %s",
+			err.Error(),
+		)
 	}
 
 	rightBool, err := rightValue.AsBool()
 
 	if err != nil {
-		return false, false, err
+		return false, false, fmt.Errorf(
+			"could not get binary expr value as bool: %s",
+			err.Error(),
+		)
 	}
 
 	return leftBool, rightBool, nil
@@ -196,13 +247,19 @@ func (e *Evaluator) getBinaryExprValueAsNumber(
 	leftNumber, err := leftValue.AsNumber()
 
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, fmt.Errorf(
+			"could not get binary expr value as number: %s",
+			err.Error(),
+		)
 	}
 
 	rightNumber, err := rightValue.AsNumber()
 
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, fmt.Errorf(
+			"could not get binary expr value as number: %s",
+			err.Error(),
+		)
 	}
 
 	return leftNumber, rightNumber, nil
@@ -215,13 +272,19 @@ func (e *Evaluator) getBinaryExprValueAsString(
 	leftString, err := leftValue.AsString()
 
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf(
+			"could not get binary expr value as string: %s",
+			err.Error(),
+		)
 	}
 
 	rightString, err := rightValue.AsString()
 
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf(
+			"could not get binary expr value as string: %s",
+			err.Error(),
+		)
 	}
 
 	return leftString, rightString, nil
@@ -263,7 +326,10 @@ func (e *Evaluator) evaluateArithmeticBinaryExprString(
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
 ) (*controlflow.EvaluationResult, error) {
-	leftString, rightString, err := e.getBinaryExprValueAsString(leftValue, rightValue)
+	leftString, rightString, err := e.getBinaryExprValueAsString(
+		leftValue,
+		rightValue,
+	)
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
