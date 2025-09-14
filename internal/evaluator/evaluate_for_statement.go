@@ -10,6 +10,9 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
+// ErrMsgCouldNotEvaluateForStatement occurs when a for statement cannot be evaluated.
+const ErrMsgCouldNotEvaluateForStatement = "could not evaluate for statement"
+
 func (e *Evaluator) evaluateForStatement(
 	node *ast.ForStatement,
 ) (*controlflow.EvaluationResult, error) {
@@ -147,7 +150,8 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			"could not evaluate for condition: %s",
+			"%s: %s",
+			ErrMsgCouldNotEvaluateForStatement,
 			err.Error(),
 		)
 	}
@@ -156,7 +160,8 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			"could not evaluate for condition: %s",
+			"%s: %s",
+			ErrMsgCouldNotEvaluateForStatement,
 			err.Error(),
 		)
 	}
@@ -165,7 +170,8 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			"could not evaluate for condition: %s",
+			"%s: %s",
+			ErrMsgCouldNotEvaluateForStatement,
 			err.Error(),
 		)
 	}
@@ -208,7 +214,8 @@ func (e *Evaluator) evaluateForCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			"could not evaluate for condition: %s",
+			"%s: %s",
+			ErrMsgCouldNotEvaluateForStatement,
 			err.Error(),
 		)
 	}
@@ -217,7 +224,8 @@ func (e *Evaluator) evaluateForCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			"could not evaluate for condition: %s",
+			"%s: %s",
+			ErrMsgCouldNotEvaluateForStatement,
 			err.Error(),
 		)
 	}
