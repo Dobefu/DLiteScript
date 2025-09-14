@@ -12,10 +12,12 @@ func TestParseSpread(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    string
 		expected []*token.Token
 	}{
 		{
+			name:  "spread",
 			input: "...",
 			expected: []*token.Token{
 				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
@@ -24,7 +26,7 @@ func TestParseSpread(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			tokenizer := NewTokenizer(test.input)
@@ -45,13 +47,24 @@ func TestParseSpreadErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		input    string
 		expected string
 	}{
 		{
-			input: "..",
+			name:  "empty expression",
+			input: "",
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s at position 0",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgInvalidUTF8Char,
+			),
+		},
+		{
+			name:  "unexpected end of expression",
+			input: ".",
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -59,18 +72,19 @@ func TestParseSpreadErr(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.input, func(t *testing.T) {
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			tokenizer := NewTokenizer(test.input)
-			_, err := tokenizer.Tokenize()
+			tokenizer.isEOF = false
+			_, err := tokenizer.parseSpread(0)
 
 			if err == nil {
 				t.Fatalf("Expected error, got nil")
 			}
 
 			if err.Error() != test.expected {
-				t.Errorf("Expected \"%s\", got \"%s\"", test.expected, err.Error())
+				t.Fatalf("Expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}
