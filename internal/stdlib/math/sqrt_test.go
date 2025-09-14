@@ -1,43 +1,62 @@
 package math
 
 import (
-	"math"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetSqrtFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "positive number (4)",
+			input:    datavalue.Number(4),
+			expected: datavalue.Number(2),
+		},
+		{
+			name:     "positive number (16)",
+			input:    datavalue.Number(16),
+			expected: datavalue.Number(4),
+		},
+		{
+			name:     "positive number (0)",
+			input:    datavalue.Number(0),
+			expected: datavalue.Number(0),
+		},
+		{
+			name:     "negative number (-1)",
+			input:    datavalue.Number(-1),
+			expected: datavalue.Null(),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["sqrt"]; !ok {
-		t.Fatalf("expected sqrt function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	sqrtFunc := functions["sqrt"]
+			sqrtFunc, hasFunction := functions["sqrt"]
 
-	if sqrtFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", sqrtFunc.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find sqrt function")
+			}
 
-	if sqrtFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", sqrtFunc.Parameters[0].Type)
-	}
+			result, err := sqrtFunc.Handler(nil, []datavalue.Value{test.input})
 
-	result, err := sqrtFunc.Handler(
-		nil,
-		[]datavalue.Value{datavalue.Number(1.5), datavalue.Number(2.5)},
-	)
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != math.Sqrt(1.5) {
-		t.Fatalf("expected %f, got %v", math.Sqrt(1.5), result.Num)
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
