@@ -9,46 +9,187 @@ import (
 func TestShorthandAssignmentExpr(t *testing.T) {
 	t.Parallel()
 
-	assignment := &ShorthandAssignmentExpr{
-		Left: &Identifier{
-			Value:    "x",
-			StartPos: 0,
-			EndPos:   1,
+	tests := []struct {
+		name             string
+		input            ExprNode
+		expectedValue    string
+		expectedStartPos int
+		expectedEndPos   int
+		expectedNodes    []string
+		continueOn       string
+	}{
+		{
+			name: "shorthand assignment with addition",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "x",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "1",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "x += 1",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"x += 1", "x", "x", "1", "1"},
+			continueOn:       "",
 		},
-		Right: &NumberLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   1,
+		{
+			name: "shorthand assignment with subtraction",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "y",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "2",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("-=", token.TokenTypeOperationSubAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "y -= 2",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"y -= 2", "y", "y", "2", "2"},
+			continueOn:       "",
 		},
-		Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-		StartPos: 0,
-		EndPos:   1,
+		{
+			name: "shorthand assignment with nil left",
+			input: &ShorthandAssignmentExpr{
+				Left: nil,
+				Right: &NumberLiteral{
+					Value:    "3",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("*=", token.TokenTypeOperationMulAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"", "3", "3"},
+			continueOn:       "",
+		},
+		{
+			name: "shorthand assignment with nil right",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "z",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right:    nil,
+				Operator: *token.NewToken("/=", token.TokenTypeOperationDivAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"", "z", "z"},
+			continueOn:       "",
+		},
+		{
+			name: "walk early return after shorthand assignment",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "a",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "5",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("%=", token.TokenTypeOperationModAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "a %= 5",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"a %= 5"},
+			continueOn:       "a %= 5",
+		},
+		{
+			name: "walk early return after left operand",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "b",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "6",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("**=", token.TokenTypeOperationPowAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "b **= 6",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"b **= 6", "b"},
+			continueOn:       "b",
+		},
+		{
+			name: "walk early return after right operand",
+			input: &ShorthandAssignmentExpr{
+				Left: &Identifier{
+					Value:    "c",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &NumberLiteral{
+					Value:    "7",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedValue:    "c += 7",
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			expectedNodes:    []string{"c += 7", "c", "c", "7"},
+			continueOn:       "7",
+		},
 	}
 
-	visitedNodes := []string{}
-	expectedNodes := []string{"x += 1", "x", "x", "1", "1"}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	assignment.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
+			if test.input.Expr() != test.expectedValue {
+				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+			}
 
-		return true
-	})
+			if test.input.StartPosition() != test.expectedStartPos {
+				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			}
 
-	if len(visitedNodes) != 5 {
-		t.Fatalf("Expected 5 visited nodes, got %d", len(visitedNodes))
-	}
+			if test.input.EndPosition() != test.expectedEndPos {
+				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			}
 
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
-
-	if assignment.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", assignment.StartPosition())
-	}
-
-	if assignment.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", assignment.EndPosition())
+			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
+		})
 	}
 }
