@@ -3,37 +3,60 @@ package math
 import (
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetCeilFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "positive number (1.5)",
+			input:    datavalue.Number(1.5),
+			expected: datavalue.Number(2),
+		},
+		{
+			name:     "positive number (1.2)",
+			input:    datavalue.Number(1.2),
+			expected: datavalue.Number(2),
+		},
+		{
+			name:     "positive number (1)",
+			input:    datavalue.Number(1),
+			expected: datavalue.Number(1),
+		},
+		{
+			name:     "negative number (-1.5)",
+			input:    datavalue.Number(-1.5),
+			expected: datavalue.Number(-1),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["ceil"]; !ok {
-		t.Fatalf("expected ceil function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	ceilFunc := functions["ceil"]
+			ceilFunc, hasFunction := functions["ceil"]
 
-	if ceilFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", ceilFunc.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find ceil function")
+			}
 
-	if ceilFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", ceilFunc.Parameters[0].Type)
-	}
+			result, err := ceilFunc.Handler(nil, []datavalue.Value{test.input})
 
-	result, err := ceilFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != 2 {
-		t.Fatalf("expected 2, got %v", result.Num)
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }

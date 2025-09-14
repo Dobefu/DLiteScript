@@ -36,11 +36,12 @@ func TestGetAbsFunction(t *testing.T) {
 		},
 	}
 
+	functions := GetMathFunctions()
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			functions := GetMathFunctions()
 			absFunc, hasFunction := functions["abs"]
 
 			if !hasFunction {
