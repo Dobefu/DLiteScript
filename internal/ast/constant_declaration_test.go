@@ -46,7 +46,11 @@ func TestConstantDeclaration(t *testing.T) {
 				StartPos: 0,
 				EndPos:   5,
 			},
-			expectedNodes:    []string{`const y string = "hello"`, `"hello"`, `"hello"`},
+			expectedNodes: []string{
+				`const y string = "hello"`,
+				`"hello"`,
+				`"hello"`,
+			},
 			expectedStartPos: 0,
 			expectedEndPos:   5,
 			continueOn:       "",
