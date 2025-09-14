@@ -99,7 +99,9 @@ func (p *Parser) parseFunctionCallArguments(
 			break
 		}
 
-		if err := p.consumeComma(); err != nil {
+		err = p.consumeComma()
+
+		if err != nil {
 			return nil, err
 		}
 
