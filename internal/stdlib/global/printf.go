@@ -32,7 +32,7 @@ func getPrintfFunction() function.Info {
 		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
 		[]string{
 			"printf(\"test %s\", \"string\") // prints \"test string\"",
-			"printf(\"test %g\", 1) // prints \"test 1\"",
+			"printf(\"test %d\", 1) // prints \"test 1\"",
 			"printf(\"test %t\", true) // prints \"test true\"",
 			"printf(\"test %s\", null) // prints \"test null\"",
 		},

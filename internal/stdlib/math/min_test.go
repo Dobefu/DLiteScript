@@ -30,14 +30,17 @@ func TestGetMinFunction(t *testing.T) {
 
 	result, err := minFunc.Handler(
 		nil,
-		[]datavalue.Value{datavalue.Number(1.5), datavalue.Number(2.5)},
+		[]datavalue.Value{
+			datavalue.Number(2.5),
+			datavalue.Number(1.5),
+		},
 	)
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
 
-	if result.Num != math.Min(1.5, 2.5) {
+	if result.Num != math.Min(2.5, 1.5) {
 		t.Fatalf("expected %f, got %v", math.Min(1.5, 2.5), result.Num)
 	}
 
