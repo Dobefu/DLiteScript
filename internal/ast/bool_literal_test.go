@@ -7,36 +7,61 @@ import (
 func TestBoolLiteral(t *testing.T) {
 	t.Parallel()
 
-	literal := &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1}
-	expectedNodes := []string{"true"}
-
-	visitedNodes := []string{}
-	literal.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
-
-		return true
-	})
-
-	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf(
-			"Expected %d visited node, got %d (%v)",
-			len(expectedNodes),
-			len(visitedNodes),
-			visitedNodes,
-		)
+	tests := []struct {
+		name             string
+		input            *BoolLiteral
+		expectedNodes    []string
+		expectedStartPos int
+		expectedEndPos   int
+		continueOn       string
+	}{
+		{
+			name: "true literal",
+			input: &BoolLiteral{
+				Value:    "true",
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedNodes:    []string{"true"},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			continueOn:       "",
+		},
+		{
+			name: "false literal",
+			input: &BoolLiteral{
+				Value:    "false",
+				StartPos: 0,
+				EndPos:   5,
+			},
+			expectedNodes:    []string{"false"},
+			expectedStartPos: 0,
+			expectedEndPos:   5,
+			continueOn:       "",
+		},
 	}
 
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	if literal.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", literal.StartPosition())
-	}
+			if test.input.StartPosition() != test.expectedStartPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedStartPos,
+					test.input.StartPosition(),
+				)
+			}
 
-	if literal.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", literal.EndPosition())
+			if test.input.EndPosition() != test.expectedEndPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedEndPos,
+					test.input.EndPosition(),
+				)
+			}
+
+			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
+		})
 	}
 }
