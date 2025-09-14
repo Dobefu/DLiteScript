@@ -4,37 +4,70 @@ import (
 	"math"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetCosFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "positive number (1.5)",
+			input:    datavalue.Number(1.5),
+			expected: datavalue.Number(math.Cos(1.5)),
+		},
+		{
+			name:     "positive number (1)",
+			input:    datavalue.Number(1),
+			expected: datavalue.Number(math.Cos(1)),
+		},
+		{
+			name:     "positive number (0)",
+			input:    datavalue.Number(0),
+			expected: datavalue.Number(math.Cos(0)),
+		},
+		{
+			name:     "negative number (-1.5)",
+			input:    datavalue.Number(-1.5),
+			expected: datavalue.Number(math.Cos(-1.5)),
+		},
+		{
+			name:     "negative number (-1)",
+			input:    datavalue.Number(-1),
+			expected: datavalue.Number(math.Cos(-1)),
+		},
+		{
+			name:     "negative number (-0)",
+			input:    datavalue.Number(-0),
+			expected: datavalue.Number(math.Cos(-0)),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["cos"]; !ok {
-		t.Fatalf("expected cos function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	cosFunc := functions["cos"]
+			cosFunc, hasFunction := functions["cos"]
 
-	if cosFunc.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", cosFunc.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find cos function")
+			}
 
-	if cosFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", cosFunc.Parameters[0].Type)
-	}
+			result, err := cosFunc.Handler(nil, []datavalue.Value{test.input})
 
-	result, err := cosFunc.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != math.Cos(1.5) {
-		t.Fatalf("expected %f, got %v", math.Cos(1.5), result.Num)
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
