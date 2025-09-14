@@ -9,7 +9,7 @@ import (
 func (e *Evaluator) evaluateArrayLiteral(
 	node *ast.ArrayLiteral,
 ) (*controlflow.EvaluationResult, error) {
-	var values []datavalue.Value
+	values := make([]datavalue.Value, 0, len(node.Values))
 
 	for _, value := range node.Values {
 		evaluatedValue, err := e.Evaluate(value)

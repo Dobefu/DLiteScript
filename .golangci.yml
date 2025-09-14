@@ -15,6 +15,7 @@ linters:
     - noinlineerr
     - paralleltest
     - perfsprint
+    - prealloc
     - revive
     - sloglint
     - staticcheck
