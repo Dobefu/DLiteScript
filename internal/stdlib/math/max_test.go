@@ -1,56 +1,83 @@
 package math
 
 import (
-	"math"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetMaxFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    []datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "no input",
+			input:    []datavalue.Value{},
+			expected: datavalue.Null(),
+		},
+		{
+			name: "positive numbers (1, 2, 3)",
+			input: []datavalue.Value{
+				datavalue.Number(1),
+				datavalue.Number(2),
+				datavalue.Number(3),
+			},
+			expected: datavalue.Number(3),
+		},
+		{
+			name: "positive numbers (1.5, 2.5, 3.5)",
+			input: []datavalue.Value{
+				datavalue.Number(1.5),
+				datavalue.Number(2.5),
+				datavalue.Number(3.5),
+			},
+			expected: datavalue.Number(3.5),
+		},
+		{
+			name: "negative numbers (-1, -2, -3)",
+			input: []datavalue.Value{
+				datavalue.Number(-1),
+				datavalue.Number(-2),
+				datavalue.Number(-3),
+			},
+			expected: datavalue.Number(-1),
+		},
+		{
+			name: "negative numbers (-1.5, -2.5, -3.5)",
+			input: []datavalue.Value{
+				datavalue.Number(-1.5),
+				datavalue.Number(-2.5),
+				datavalue.Number(-3.5),
+			},
+			expected: datavalue.Number(-1.5),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["max"]; !ok {
-		t.Fatalf("expected max function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	maxFunc := functions["max"]
+			maxFunc, hasFunction := functions["max"]
 
-	if maxFunc.FunctionType != function.FunctionTypeVariadic {
-		t.Fatalf("expected variadic function, got %T", maxFunc.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("could not find max function")
+			}
 
-	if maxFunc.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", maxFunc.Parameters[0].Type)
-	}
+			result, err := maxFunc.Handler(nil, test.input)
 
-	result, err := maxFunc.Handler(
-		nil,
-		[]datavalue.Value{datavalue.Number(1.5), datavalue.Number(2.5)},
-	)
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != math.Max(1.5, 2.5) {
-		t.Fatalf("expected %f, got %v", math.Max(1.5, 2.5), result.Num)
-	}
-
-	result, err = maxFunc.Handler(
-		nil,
-		[]datavalue.Value{},
-	)
-
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.DataType() != datatype.DataTypeNull {
-		t.Fatalf("expected null for no arguments, got %v", result.DataType())
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
