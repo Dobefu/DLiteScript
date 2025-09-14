@@ -138,11 +138,7 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 		return p.parseIdentifier(functionCallOrIdentifierToken)
 	}
 
-	nextToken, err := p.PeekNextToken()
-
-	if err != nil {
-		return nil, err
-	}
+	nextToken, _ := p.PeekNextToken()
 
 	if nextToken.TokenType == token.TokenTypeLParen {
 		return p.parseFunctionCall(
@@ -174,15 +170,11 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 		nextToken, err := p.PeekNextToken()
 
 		if err != nil {
-			if p.isEOF {
-				return &ast.Identifier{
-					Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
-					StartPos: functionNameOrIdentifierToken.StartPos,
-					EndPos:   functionNameOrIdentifierToken.EndPos,
-				}, nil
-			}
-
-			return nil, err
+			return &ast.Identifier{
+				Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
+				StartPos: functionNameOrIdentifierToken.StartPos,
+				EndPos:   functionNameOrIdentifierToken.EndPos,
+			}, nil
 		}
 
 		if nextToken.TokenType == token.TokenTypeLParen {
