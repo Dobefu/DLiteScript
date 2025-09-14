@@ -92,11 +92,7 @@ GETNEXT:
 			break GETNEXT
 		}
 
-		_, err = t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
+		_, _ = t.GetNext()
 
 		literalEndIdx = t.byteIdx
 		lastChar = next
