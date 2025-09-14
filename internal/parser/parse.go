@@ -46,10 +46,6 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 		return statements[0], nil
 	}
 
-	if len(statements) == 0 {
-		return nil, nil
-	}
-
 	return &ast.StatementList{
 		Statements: statements,
 		StartPos:   statements[0].StartPosition(),
@@ -64,11 +60,7 @@ func (p *Parser) parseStatements(endToken *token.Type) ([]ast.ExprNode, error) {
 		p.handleOptionalNewlines()
 
 		if endToken != nil {
-			nextToken, err := p.PeekNextToken()
-
-			if err != nil {
-				return nil, err
-			}
+			nextToken, _ := p.PeekNextToken()
 
 			if nextToken.TokenType == *endToken {
 				return statements, nil
@@ -97,23 +89,14 @@ func (p *Parser) handleStatementEnd(endToken *token.Type) error {
 	hasNewlines := false
 
 	for !p.isEOF {
-		nextToken, err := p.PeekNextToken()
-
-		if err != nil {
-			return err
-		}
+		nextToken, _ := p.PeekNextToken()
 
 		if endToken != nil && nextToken.TokenType == *endToken {
 			break
 		}
 
 		if nextToken.TokenType == token.TokenTypeNewline {
-			_, err = p.GetNextToken()
-
-			if err != nil {
-				return err
-			}
-
+			_, _ = p.GetNextToken()
 			hasNewlines = true
 
 			continue

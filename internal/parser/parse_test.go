@@ -120,6 +120,15 @@ func TestParse(t *testing.T) {
 			},
 			expected: "func x() number",
 		},
+		{
+			name: "multiple statements",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: "2", TokenType: token.TokenTypeNumber},
+			},
+			expected: "1\n2",
+		},
 	}
 
 	for _, test := range tests {
@@ -219,6 +228,43 @@ func TestParseErr(t *testing.T) {
 					test.expected,
 					errors.Unwrap(err).Error(),
 				)
+			}
+		})
+	}
+}
+
+func TestParseStatementErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.parseStatement()
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}
