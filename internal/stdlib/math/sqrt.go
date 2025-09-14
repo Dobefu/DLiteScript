@@ -11,8 +11,22 @@ import (
 
 func getSqrtFunction() function.Info {
 	return function.MakeFunction(
-		"sqrt",
-		"Returns the square root of a number.",
+		function.Documentation{
+			Name:        "sqrt",
+			Description: "Returns the square root of a number.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.sqrt(4) // returns 2", packageName),
+				fmt.Sprintf("%s.sqrt(16) // returns 4", packageName),
+				fmt.Sprintf("%s.sqrt(0) // returns 0", packageName),
+				fmt.Sprintf("%s.sqrt(-1) // returns null", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeFixed,
 		[]function.ArgInfo{
@@ -30,14 +44,6 @@ func getSqrtFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.sqrt(4) // returns 2", packageName),
-			fmt.Sprintf("%s.sqrt(16) // returns 4", packageName),
-			fmt.Sprintf("%s.sqrt(0) // returns 0", packageName),
-			fmt.Sprintf("%s.sqrt(-1) // returns null", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			num, _ := args[0].AsNumber()
 

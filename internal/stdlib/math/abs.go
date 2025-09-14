@@ -11,8 +11,21 @@ import (
 
 func getAbsFunction() function.Info {
 	return function.MakeFunction(
-		"abs",
-		"Returns the absolute value of a number.",
+		function.Documentation{
+			Name:        "abs",
+			Description: "Returns the absolute value of a number.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.abs(-1) // returns 1", packageName),
+				fmt.Sprintf("%s.abs(1) // returns 1", packageName),
+				fmt.Sprintf("%s.abs(0) // returns 0", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeFixed,
 		[]function.ArgInfo{
@@ -30,13 +43,6 @@ func getAbsFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.abs(-1) // returns 1", packageName),
-			fmt.Sprintf("%s.abs(1) // returns 1", packageName),
-			fmt.Sprintf("%s.abs(0) // returns 0", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 

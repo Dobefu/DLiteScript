@@ -11,8 +11,17 @@ func TestMakeFunction(t *testing.T) {
 	t.Parallel()
 
 	function := MakeFunction(
-		"test",
-		"description",
+		Documentation{
+			Name:        "test",
+			Description: "description",
+			Since:       "v1.0.0",
+			DeprecationInfo: DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{"example"},
+		},
 		"package",
 		FunctionTypeFixed,
 		[]ArgInfo{
@@ -30,15 +39,6 @@ func TestMakeFunction(t *testing.T) {
 			},
 		},
 		false,
-		"v1.0.0",
-		DeprecationInfo{
-			IsDeprecated: false,
-			Description:  "",
-			Version:      "",
-		},
-		[]string{
-			"example",
-		},
 		func(_ EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			num, err := args[0].AsNumber()
 
@@ -60,28 +60,34 @@ func TestMakeFunction(t *testing.T) {
 		t.Errorf("expected DataTypeNumber, got %v", result.DataType())
 	}
 
-	if function.Name != "test" {
-		t.Errorf("expected 'test', got '%s'", function.Name)
+	if function.Documentation.Name != "test" {
+		t.Errorf("expected 'test', got '%s'", function.Documentation.Name)
 	}
 
-	if function.Description != "description" {
-		t.Errorf("expected 'description', got '%s'", function.Description)
+	if function.Documentation.Description != "description" {
+		t.Errorf(
+			"expected 'description', got '%s'",
+			function.Documentation.Description,
+		)
 	}
 
 	if function.PackageName != "package" {
 		t.Errorf("expected 'package', got '%s'", function.PackageName)
 	}
 
-	if function.Since != "v1.0.0" {
-		t.Errorf("expected 'v1.0.0', got '%s'", function.Since)
+	if function.Documentation.Since != "v1.0.0" {
+		t.Errorf("expected 'v1.0.0', got '%s'", function.Documentation.Since)
 	}
 
-	if function.DeprecationInfo.IsDeprecated != false {
-		t.Errorf("expected 'false', got '%t'", function.DeprecationInfo.IsDeprecated)
+	if function.Documentation.DeprecationInfo.IsDeprecated != false {
+		t.Errorf(
+			"expected 'false', got '%t'",
+			function.Documentation.DeprecationInfo.IsDeprecated,
+		)
 	}
 
-	if function.Examples[0] != "example" {
-		t.Errorf("expected 'example', got '%s'", function.Examples[0])
+	if function.Documentation.Examples[0] != "example" {
+		t.Errorf("expected 'example', got '%s'", function.Documentation.Examples[0])
 	}
 }
 
@@ -154,22 +160,22 @@ func TestExpr(t *testing.T) {
 			t.Parallel()
 
 			function := MakeFunction(
-				"test",
-				"description",
+				Documentation{
+					Name:        "test",
+					Description: "description",
+					Since:       "v1.0.0",
+					DeprecationInfo: DeprecationInfo{
+						IsDeprecated: false,
+						Description:  "",
+						Version:      "",
+					},
+					Examples: []string{"example"},
+				},
 				"package",
 				FunctionTypeFixed,
 				test.args,
 				test.returns,
 				false,
-				"v1.0.0",
-				DeprecationInfo{
-					IsDeprecated: false,
-					Description:  "",
-					Version:      "",
-				},
-				[]string{
-					"example",
-				},
 				func(_ EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 					num, err := args[0].AsNumber()
 

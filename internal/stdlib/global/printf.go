@@ -10,8 +10,22 @@ import (
 
 func getPrintfFunction() function.Info {
 	return function.MakeFunction(
-		"printf",
-		"Prints a formatted string.",
+		function.Documentation{
+			Name:        "printf",
+			Description: "Prints a formatted string.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				"printf(\"test %s\", \"string\") // prints \"test string\"",
+				"printf(\"test %d\", 1) // prints \"test 1\"",
+				"printf(\"test %t\", true) // prints \"test true\"",
+				"printf(\"test %s\", null) // prints \"test null\"",
+			},
+		},
 		packageName,
 		function.FunctionTypeMixedVariadic,
 		[]function.ArgInfo{
@@ -28,14 +42,6 @@ func getPrintfFunction() function.Info {
 		},
 		[]function.ArgInfo{},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			"printf(\"test %s\", \"string\") // prints \"test string\"",
-			"printf(\"test %d\", 1) // prints \"test 1\"",
-			"printf(\"test %t\", true) // prints \"test true\"",
-			"printf(\"test %s\", null) // prints \"test null\"",
-		},
 		func(e function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			format, _ := args[0].AsString()
 			format = strings.ReplaceAll(format, "%d", "%f")

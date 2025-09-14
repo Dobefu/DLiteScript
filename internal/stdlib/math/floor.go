@@ -11,8 +11,22 @@ import (
 
 func getFloorFunction() function.Info {
 	return function.MakeFunction(
-		"floor",
-		"Returns the input number, rounded down to the nearest whole number.",
+		function.Documentation{
+			Name:        "floor",
+			Description: "Returns the input number, rounded down to the nearest whole number.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.floor(1.5) // returns 1", packageName),
+				fmt.Sprintf("%s.floor(1.2) // returns 1", packageName),
+				fmt.Sprintf("%s.floor(1) // returns 1", packageName),
+				fmt.Sprintf("%s.floor(-1.5) // returns -2", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeFixed,
 		[]function.ArgInfo{
@@ -30,14 +44,6 @@ func getFloorFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.floor(1.5) // returns 1", packageName),
-			fmt.Sprintf("%s.floor(1.2) // returns 1", packageName),
-			fmt.Sprintf("%s.floor(1) // returns 1", packageName),
-			fmt.Sprintf("%s.floor(-1.5) // returns -2", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 

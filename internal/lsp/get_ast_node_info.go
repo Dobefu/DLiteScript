@@ -54,7 +54,7 @@ func getFunctionCallInfo(n *ast.FunctionCall) *AstNodeInfo {
 	description.WriteString("\n\n```dlitescript\n")
 	description.WriteString(function.Expr())
 	description.WriteString("\n```\n\n")
-	description.WriteString(function.Description)
+	description.WriteString(function.Documentation.Description)
 	description.WriteString("\n\n")
 
 	if len(function.Parameters) > 0 {

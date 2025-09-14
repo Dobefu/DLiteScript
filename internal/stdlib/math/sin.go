@@ -11,8 +11,24 @@ import (
 
 func getSinFunction() function.Info {
 	return function.MakeFunction(
-		"sin",
-		"Returns the sine value of a number.",
+		function.Documentation{
+			Name:        "sin",
+			Description: "Returns the sine value of a number.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.sin(1.5) // returns 0.9974949866040544", packageName),
+				fmt.Sprintf("%s.sin(1) // returns 0.8414709848078965", packageName),
+				fmt.Sprintf("%s.sin(0) // returns 0", packageName),
+				fmt.Sprintf("%s.sin(-1.5) // returns -0.9974949866040544", packageName),
+				fmt.Sprintf("%s.sin(-1) // returns -0.8414709848078965", packageName),
+				fmt.Sprintf("%s.sin(-0) // returns 0", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeFixed,
 		[]function.ArgInfo{
@@ -30,16 +46,6 @@ func getSinFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.sin(1.5) // returns 0.9974949866040544", packageName),
-			fmt.Sprintf("%s.sin(1) // returns 0.8414709848078965", packageName),
-			fmt.Sprintf("%s.sin(0) // returns 0", packageName),
-			fmt.Sprintf("%s.sin(-1.5) // returns -0.9974949866040544", packageName),
-			fmt.Sprintf("%s.sin(-1) // returns -0.8414709848078965", packageName),
-			fmt.Sprintf("%s.sin(-0) // returns 0", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 

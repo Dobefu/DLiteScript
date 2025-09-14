@@ -51,33 +51,34 @@ type DeprecationInfo struct {
 	Version      string
 }
 
-// Info defines the information for a function.
-type Info struct {
+// Documentation defines the documentation for a function.
+type Documentation struct {
 	Name            string
 	Description     string
-	PackageName     string
-	Handler         Handler
-	FunctionType    Type
-	Parameters      []ArgInfo
-	ReturnValues    []ArgInfo
-	IsBuiltin       bool
 	Since           string
 	DeprecationInfo DeprecationInfo
 	Examples        []string
 }
 
+// Info defines the information for a function.
+type Info struct {
+	Documentation Documentation
+	PackageName   string
+	Handler       Handler
+	FunctionType  Type
+	Parameters    []ArgInfo
+	ReturnValues  []ArgInfo
+	IsBuiltin     bool
+}
+
 // MakeFunction creates a new function definition.
 func MakeFunction(
-	name string,
-	description string,
+	documentation Documentation,
 	packageName string,
 	functionType Type,
 	parameters []ArgInfo,
 	returnValues []ArgInfo,
 	isBuiltin bool,
-	since string,
-	deprecationInfo DeprecationInfo,
-	examples []string,
 	impl func(e EvaluatorInterface, args []datavalue.Value) datavalue.Value,
 ) Info {
 	handler := func(
@@ -88,17 +89,13 @@ func MakeFunction(
 	}
 
 	return Info{
-		Name:            name,
-		Description:     description,
-		PackageName:     packageName,
-		Handler:         handler,
-		FunctionType:    functionType,
-		Parameters:      parameters,
-		ReturnValues:    returnValues,
-		IsBuiltin:       isBuiltin,
-		Since:           since,
-		DeprecationInfo: deprecationInfo,
-		Examples:        examples,
+		Documentation: documentation,
+		PackageName:   packageName,
+		Handler:       handler,
+		FunctionType:  functionType,
+		Parameters:    parameters,
+		ReturnValues:  returnValues,
+		IsBuiltin:     isBuiltin,
 	}
 }
 
@@ -122,7 +119,11 @@ func (f *Info) Expr() string {
 		returns[i] = ret.Type.AsString()
 	}
 
-	signature := fmt.Sprintf("func %s(%s)", f.Name, strings.Join(params, ", "))
+	signature := fmt.Sprintf(
+		"func %s(%s)",
+		f.Documentation.Name,
+		strings.Join(params, ", "),
+	)
 
 	if len(returns) == 0 {
 		return signature

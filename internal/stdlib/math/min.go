@@ -10,8 +10,22 @@ import (
 
 func getMinFunction() function.Info {
 	return function.MakeFunction(
-		"min",
-		"Returns the smaller of two provided numbers.",
+		function.Documentation{
+			Name:        "min",
+			Description: "Returns the smaller of two provided numbers.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.min(1, 2, 3) // returns 1", packageName),
+				fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns 1.5", packageName),
+				fmt.Sprintf("%s.min(-1, -2, -3) // returns -3", packageName),
+				fmt.Sprintf("%s.min(-1.5, -2.5, -3.5) // returns -3.5", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeVariadic,
 		[]function.ArgInfo{
@@ -29,14 +43,6 @@ func getMinFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.min(1, 2, 3) // returns 1", packageName),
-			fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns 1.5", packageName),
-			fmt.Sprintf("%s.min(-1, -2, -3) // returns -3", packageName),
-			fmt.Sprintf("%s.min(-1.5, -2.5, -3.5) // returns -3.5", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			if len(args) < 2 {
 				return datavalue.Null()

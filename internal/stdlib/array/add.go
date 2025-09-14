@@ -8,8 +8,20 @@ import (
 
 func getAddFunction() function.Info {
 	return function.MakeFunction(
-		"add",
-		"Adds an arbitrary number of values to an array.",
+		function.Documentation{
+			Name:        "add",
+			Description: "Adds an arbitrary number of values to an array.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				"add([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]",
+				"add([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]",
+			},
+		},
 		packageName,
 		function.FunctionTypeMixedVariadic,
 		[]function.ArgInfo{
@@ -26,12 +38,6 @@ func getAddFunction() function.Info {
 		},
 		[]function.ArgInfo{},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			"add([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]",
-			"add([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]",
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			array, _ := args[0].AsArray()
 

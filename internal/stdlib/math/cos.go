@@ -11,8 +11,24 @@ import (
 
 func getCosFunction() function.Info {
 	return function.MakeFunction(
-		"cos",
-		"Returns the cosine value of a number.",
+		function.Documentation{
+			Name:        "cos",
+			Description: "Returns the cosine value of a number.",
+			Since:       "v0.1.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf("%s.cos(1.5) // returns 0.0707372016677029", packageName),
+				fmt.Sprintf("%s.cos(1) // returns 0.5403023058681398", packageName),
+				fmt.Sprintf("%s.cos(0) // returns 1", packageName),
+				fmt.Sprintf("%s.cos(-1.5) // returns 0.0707372016677029", packageName),
+				fmt.Sprintf("%s.cos(-1) // returns 0.5403023058681398", packageName),
+				fmt.Sprintf("%s.cos(-0) // returns 1", packageName),
+			},
+		},
 		packageName,
 		function.FunctionTypeFixed,
 		[]function.ArgInfo{
@@ -30,16 +46,6 @@ func getCosFunction() function.Info {
 			},
 		},
 		true,
-		"v0.1.0",
-		function.DeprecationInfo{IsDeprecated: false, Description: "", Version: ""},
-		[]string{
-			fmt.Sprintf("%s.cos(1.5) // returns 0.0707372016677029", packageName),
-			fmt.Sprintf("%s.cos(1) // returns 0.5403023058681398", packageName),
-			fmt.Sprintf("%s.cos(0) // returns 1", packageName),
-			fmt.Sprintf("%s.cos(-1.5) // returns 0.0707372016677029", packageName),
-			fmt.Sprintf("%s.cos(-1) // returns 0.5403023058681398", packageName),
-			fmt.Sprintf("%s.cos(-0) // returns 1", packageName),
-		},
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			arg0, _ := args[0].AsNumber()
 
