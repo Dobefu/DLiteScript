@@ -15,11 +15,7 @@ func (t *Tokenizer) handleString(startPos int) (*token.Token, error) {
 	isEscaping := false
 
 	for !t.isEOF {
-		next, err := t.GetNext()
-
-		if err != nil {
-			return nil, err
-		}
+		next, _ := t.GetNext()
 
 		if isEscaping {
 			switch next {
