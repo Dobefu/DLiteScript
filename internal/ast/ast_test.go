@@ -14,6 +14,10 @@ func WalkUntil(
 		visitedNodes := []string{}
 
 		input.Walk(func(node ExprNode) bool {
+			if node == nil {
+				return false
+			}
+
 			visitedNodes = append(visitedNodes, node.Expr())
 
 			return true
