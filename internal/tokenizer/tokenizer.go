@@ -21,6 +21,6 @@ func NewTokenizer(exp string) *Tokenizer {
 		expLen:  utf8.RuneCountInString(exp),
 		expIdx:  0,
 		byteIdx: 0,
-		isEOF:   len(exp) <= 0,
+		isEOF:   len(exp) == 0,
 	}
 }

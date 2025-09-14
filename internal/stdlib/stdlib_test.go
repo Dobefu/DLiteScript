@@ -7,7 +7,7 @@ func TestStdlib(t *testing.T) {
 
 	functions := GetFunctionRegistry()
 
-	if len(functions) <= 0 {
+	if len(functions) == 0 {
 		t.Fatalf("expected at least 1 function, got %d", len(functions))
 	}
 }

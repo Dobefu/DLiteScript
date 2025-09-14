@@ -113,7 +113,7 @@ func (s *Server) sendError(
 		return fmt.Errorf("could not marshal error: %w", err)
 	}
 
-	resp := NewErrorResponse(errData[:], id)
+	resp := NewErrorResponse(errData, id)
 	respData, err := json.Marshal(resp)
 
 	if err != nil {

@@ -12,7 +12,7 @@ func (p *Parser) Parse() (ast.ExprNode, error) {
 }
 
 func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
-	if len(p.tokens) <= 0 {
+	if len(p.tokens) == 0 {
 		return nil, nil
 	}
 

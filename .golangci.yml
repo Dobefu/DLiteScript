@@ -6,6 +6,7 @@ linters:
     - exhaustruct
     - forbidigo
     - gocognit
+    - gocritic
     - godot
     - gosec
     - govet
@@ -15,6 +16,7 @@ linters:
     - paralleltest
     - perfsprint
     - prealloc
+    - reassign
     - revive
     - sloglint
     - staticcheck

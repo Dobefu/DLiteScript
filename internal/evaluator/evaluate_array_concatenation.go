@@ -27,7 +27,7 @@ func (e *Evaluator) evaluateArrayConcatenation(
 		}
 	}
 
-	result := append(leftArray, rightArray...)
-
-	return controlflow.NewRegularResult(datavalue.Array(result...)), nil
+	return controlflow.NewRegularResult(
+		datavalue.Array(append(leftArray, rightArray...)...),
+	), nil
 }

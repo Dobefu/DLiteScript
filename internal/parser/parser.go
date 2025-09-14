@@ -21,6 +21,6 @@ func NewParser(tokens []*token.Token) *Parser {
 		tokenIdx: 0,
 		tokenLen: len(tokens),
 		charIdx:  0,
-		isEOF:    len(tokens) <= 0,
+		isEOF:    len(tokens) == 0,
 	}
 }
