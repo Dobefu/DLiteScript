@@ -314,10 +314,10 @@ func TestDatavalueAny(t *testing.T) {
 		)
 	}
 
-	if value.ToString() != datatype.DataTypeAny.AsString() {
+	if value.ToString() != "1" {
 		t.Errorf(
 			"expected '%s', got '%s'",
-			datatype.DataTypeAny.AsString(),
+			"1",
 			value.ToString(),
 		)
 	}

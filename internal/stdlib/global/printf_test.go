@@ -1,7 +1,6 @@
 package global
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 
@@ -10,14 +9,6 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
-
-type testEvaluator struct {
-	buf strings.Builder
-}
-
-func (e *testEvaluator) AddToBuffer(format string, args ...any) {
-	fmt.Fprintf(&e.buf, format, args...)
-}
 
 func TestGetPrintfFunction(t *testing.T) {
 	t.Parallel()
@@ -125,24 +116,27 @@ func TestGetPrintfFunction(t *testing.T) {
 		},
 	}
 
+	functions := GetGlobalFunctions()
+
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			ev := &testEvaluator{buf: strings.Builder{}}
-			functions := GetGlobalFunctions()
+			printfFunc, hasPrintf := functions["printf"]
 
-			if _, ok := functions["printf"]; !ok {
+			if !hasPrintf {
 				t.Fatalf("expected printf function, got %v", functions)
 			}
 
-			printf := functions["printf"]
-
-			if printf.FunctionType != function.FunctionTypeMixedVariadic {
-				t.Fatalf("expected mixed variadic function, got %v", printf.FunctionType)
+			if printfFunc.FunctionType != function.FunctionTypeMixedVariadic {
+				t.Fatalf(
+					"expected mixed variadic function, got %v",
+					printfFunc.FunctionType,
+				)
 			}
 
-			result, err := printf.Handler(
+			result, err := printfFunc.Handler(
 				ev,
 				test.input,
 			)

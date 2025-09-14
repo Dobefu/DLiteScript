@@ -95,7 +95,7 @@ func (v Value) ToString() string {
 
 	case
 		datatype.DataTypeAny:
-		return "any"
+		return fmt.Sprintf("%v", v.Any)
 
 	default:
 		return errorutil.ErrorMsgTypeUnknownDataType
