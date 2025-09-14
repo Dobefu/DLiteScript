@@ -24,11 +24,7 @@ func (t *Tokenizer) handleSlashSign(startPos int) (*token.Token, error) {
 
 	if next == '/' {
 		for !t.isEOF {
-			next, err = t.GetNext()
-
-			if err != nil {
-				return nil, err
-			}
+			next, _ = t.GetNext()
 
 			if next == '\n' {
 				break
