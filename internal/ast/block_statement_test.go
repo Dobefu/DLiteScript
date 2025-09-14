@@ -7,38 +7,119 @@ import (
 func TestBlockStatement(t *testing.T) {
 	t.Parallel()
 
-	block := &BlockStatement{
-		Statements: []ExprNode{
-			&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+	tests := []struct {
+		name             string
+		input            *BlockStatement
+		expectedNodes    []string
+		expectedStartPos int
+		expectedEndPos   int
+		continueOn       string
+	}{
+		{
+			name: "block statement with single statement",
+			input: &BlockStatement{
+				Statements: []ExprNode{
+					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expectedNodes:    []string{"(1)", "1", "1"},
+			expectedStartPos: 0,
+			expectedEndPos:   1,
+			continueOn:       "",
 		},
-		StartPos: 0,
-		EndPos:   1,
+		{
+			name: "block statement with nil statement",
+			input: &BlockStatement{
+				Statements: []ExprNode{nil},
+				StartPos:   0,
+				EndPos:     0,
+			},
+			expectedNodes:    []string{"()"},
+			expectedStartPos: 0,
+			expectedEndPos:   0,
+			continueOn:       "",
+		},
+		{
+			name: "empty block statement",
+			input: &BlockStatement{
+				Statements: []ExprNode{},
+				StartPos:   0,
+				EndPos:     0,
+			},
+			expectedNodes:    []string{"()"},
+			expectedStartPos: 0,
+			expectedEndPos:   0,
+			continueOn:       "",
+		},
+		{
+			name: "block statement with multiple statements",
+			input: &BlockStatement{
+				Statements: []ExprNode{
+					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&NumberLiteral{Value: "2", StartPos: 1, EndPos: 2},
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedNodes:    []string{"(1 2)", "1", "1", "2", "2"},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			continueOn:       "",
+		},
+		{
+			name: "walk early return after block node",
+			input: &BlockStatement{
+				Statements: []ExprNode{
+					&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
+				},
+				StartPos: 0,
+				EndPos:   2,
+			},
+			expectedNodes:    []string{"(42)"},
+			expectedStartPos: 0,
+			expectedEndPos:   2,
+			continueOn:       "(42)",
+		},
+		{
+			name: "walk early return after first statement",
+			input: &BlockStatement{
+				Statements: []ExprNode{
+					&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
+					&NumberLiteral{Value: "24", StartPos: 2, EndPos: 4},
+				},
+				StartPos: 0,
+				EndPos:   4,
+			},
+			expectedNodes:    []string{"(42 24)", "42"},
+			expectedStartPos: 0,
+			expectedEndPos:   4,
+			continueOn:       "42",
+		},
 	}
 
-	visitedNodes := []string{}
-	expectedNodes := []string{"(1)", "1", "1"}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	block.Walk(func(node ExprNode) bool {
-		visitedNodes = append(visitedNodes, node.Expr())
+			if test.input.StartPosition() != test.expectedStartPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedStartPos,
+					test.input.StartPosition(),
+				)
+			}
 
-		return true
-	})
+			if test.input.EndPosition() != test.expectedEndPos {
+				t.Fatalf(
+					"expected %d, got %d",
+					test.expectedEndPos,
+					test.input.EndPosition(),
+				)
+			}
 
-	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
-	}
-
-	for idx, node := range visitedNodes {
-		if node != expectedNodes[idx] {
-			t.Fatalf("Expected \"%s\", got \"%s\"", expectedNodes[idx], node)
-		}
-	}
-
-	if block.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", block.StartPosition())
-	}
-
-	if block.EndPosition() != 1 {
-		t.Fatalf("Expected end position to be 1, got %d", block.EndPosition())
+			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
+		})
 	}
 }
