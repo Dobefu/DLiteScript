@@ -22,11 +22,7 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 		nextToken, err := p.PeekNextToken()
 
 		if err == nil && nextToken.TokenType == token.TokenTypeAssign {
-			_, err = p.GetNextToken()
-
-			if err != nil {
-				return nil, err
-			}
+			_, _ = p.GetNextToken()
 
 			nextToken, err = p.GetNextToken()
 
