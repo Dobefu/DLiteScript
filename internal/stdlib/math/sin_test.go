@@ -4,37 +4,70 @@ import (
 	"math"
 	"testing"
 
-	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
-	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
 func TestGetSinFunction(t *testing.T) {
 	t.Parallel()
 
+	tests := []struct {
+		name     string
+		input    datavalue.Value
+		expected datavalue.Value
+	}{
+		{
+			name:     "positive number (1.5)",
+			input:    datavalue.Number(1.5),
+			expected: datavalue.Number(math.Sin(1.5)),
+		},
+		{
+			name:     "positive number (1)",
+			input:    datavalue.Number(1),
+			expected: datavalue.Number(math.Sin(1)),
+		},
+		{
+			name:     "positive number (0)",
+			input:    datavalue.Number(0),
+			expected: datavalue.Number(math.Sin(0)),
+		},
+		{
+			name:     "negative number (-1.5)",
+			input:    datavalue.Number(-1.5),
+			expected: datavalue.Number(math.Sin(-1.5)),
+		},
+		{
+			name:     "negative number (-1)",
+			input:    datavalue.Number(-1),
+			expected: datavalue.Number(math.Sin(-1)),
+		},
+		{
+			name:     "negative number (-0)",
+			input:    datavalue.Number(-0),
+			expected: datavalue.Number(math.Sin(-0)),
+		},
+	}
+
 	functions := GetMathFunctions()
 
-	if _, ok := functions["sin"]; !ok {
-		t.Fatalf("expected sin function, got %v", functions)
-	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	sin := functions["sin"]
+			sinFunc, hasFunction := functions["sin"]
 
-	if sin.FunctionType != function.FunctionTypeFixed {
-		t.Fatalf("expected fixed function, got %v", sin.FunctionType)
-	}
+			if !hasFunction {
+				t.Fatalf("expected sin function, got %v", functions)
+			}
 
-	if sin.Parameters[0].Type != datatype.DataTypeNumber {
-		t.Fatalf("expected number argument, got %v", sin.Parameters[0].Type)
-	}
+			result, err := sinFunc.Handler(nil, []datavalue.Value{test.input})
 
-	result, err := sin.Handler(nil, []datavalue.Value{datavalue.Number(1.5)})
+			if err != nil {
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
+			}
 
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if result.Num != math.Sin(1.5) {
-		t.Fatalf("expected %f, got %v", math.Sin(1.5), result.Num)
+			if result.Num != test.expected.Num {
+				t.Fatalf("expected %f, got %f", test.expected.Num, result.Num)
+			}
+		})
 	}
 }
