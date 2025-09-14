@@ -66,12 +66,6 @@ func (a *IndexAssignmentStatement) Walk(fn func(node ExprNode) bool) {
 	}
 
 	if a.Right != nil {
-		shouldContinue = fn(a.Right)
-
-		if !shouldContinue {
-			return
-		}
-
 		a.Right.Walk(fn)
 	}
 }

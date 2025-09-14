@@ -227,11 +227,15 @@ func TestIfStatement(t *testing.T) {
 			t.Parallel()
 
 			if test.input.Expr() != test.expectedValue {
-				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+				t.Fatalf(
+					"expected '%s', got '%s'",
+					test.expectedValue,
+					test.input.Expr(),
+				)
 			}
 
 			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf(
+				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
 					test.input.StartPosition(),

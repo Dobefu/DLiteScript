@@ -28,8 +28,15 @@ func TestIndexAssignmentStatement(t *testing.T) {
 			expectedValue:    "array[0] = 1",
 			expectedStartPos: 0,
 			expectedEndPos:   5,
-			expectedNodes:    []string{"array[0] = 1", "array", "array", "0", "0", "1", "1"},
-			continueOn:       "",
+			expectedNodes: []string{
+				"array[0] = 1",
+				"array",
+				"array",
+				"0",
+				"0",
+				"1",
+			},
+			continueOn: "",
 		},
 		{
 			name: "index assignment with nil array",
@@ -43,7 +50,7 @@ func TestIndexAssignmentStatement(t *testing.T) {
 			expectedValue:    "",
 			expectedStartPos: 0,
 			expectedEndPos:   5,
-			expectedNodes:    []string{"", "0", "0", "1", "1"},
+			expectedNodes:    []string{"", "0", "0", "1"},
 			continueOn:       "",
 		},
 		{
@@ -58,7 +65,7 @@ func TestIndexAssignmentStatement(t *testing.T) {
 			expectedValue:    "",
 			expectedStartPos: 0,
 			expectedEndPos:   5,
-			expectedNodes:    []string{"", "array", "array", "1", "1"},
+			expectedNodes:    []string{"", "array", "array", "1"},
 			continueOn:       "",
 		},
 		{
@@ -113,15 +120,27 @@ func TestIndexAssignmentStatement(t *testing.T) {
 			t.Parallel()
 
 			if test.input.Expr() != test.expectedValue {
-				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+				t.Fatalf(
+					"expected '%s', got '%s'",
+					test.expectedValue,
+					test.input.Expr(),
+				)
 			}
 
 			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+				t.Fatalf(
+					"expected pos '%d', got '%d'",
+					test.expectedStartPos,
+					test.input.StartPosition(),
+				)
 			}
 
 			if test.input.EndPosition() != test.expectedEndPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+				t.Fatalf(
+					"expected pos '%d', got '%d'",
+					test.expectedEndPos,
+					test.input.EndPosition(),
+				)
 			}
 
 			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)
