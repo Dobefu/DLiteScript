@@ -18,8 +18,12 @@ func TestEvaluateAnyLiteral(t *testing.T) {
 		expected *controlflow.EvaluationResult
 	}{
 		{
-			name:     "any literal",
-			input:    &ast.AnyLiteral{Value: "1", StartPos: 0, EndPos: 1},
+			name: "any literal",
+			input: &ast.AnyLiteral{
+				Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: controlflow.NewRegularResult(datavalue.Any(1)),
 		},
 	}

@@ -18,9 +18,11 @@ func TestIfStatement(t *testing.T) {
 			input: &IfStatement{
 				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
 				ThenBlock: &BlockStatement{
-					Statements: []ExprNode{&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3}},
-					StartPos:   2,
-					EndPos:     3,
+					Statements: []ExprNode{
+						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					},
+					StartPos: 2,
+					EndPos:   3,
 				},
 				StartPos:  0,
 				EndPos:    5,
@@ -32,6 +34,7 @@ func TestIfStatement(t *testing.T) {
 			expectedNodes: []string{
 				"if true { (1) }",
 				"true",
+				"true",
 				"(1)",
 				"(1)",
 				"1",
@@ -42,16 +45,20 @@ func TestIfStatement(t *testing.T) {
 			input: &IfStatement{
 				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
 				ThenBlock: &BlockStatement{
-					Statements: []ExprNode{&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3}},
-					StartPos:   2,
-					EndPos:     3,
+					Statements: []ExprNode{
+						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					},
+					StartPos: 2,
+					EndPos:   3,
 				},
 				StartPos: 0,
 				EndPos:   5,
 				ElseBlock: &BlockStatement{
-					Statements: []ExprNode{&NumberLiteral{Value: "2", StartPos: 4, EndPos: 5}},
-					StartPos:   4,
-					EndPos:     5,
+					Statements: []ExprNode{
+						&NumberLiteral{Value: "2", StartPos: 4, EndPos: 5},
+					},
+					StartPos: 4,
+					EndPos:   5,
 				},
 			},
 			expectedValue:    "if true { (1) } else { (2) }",
@@ -59,6 +66,7 @@ func TestIfStatement(t *testing.T) {
 			expectedEndPos:   5,
 			expectedNodes: []string{
 				"if true { (1) } else { (2) }",
+				"true",
 				"true",
 				"(1)",
 				"(1)",
@@ -82,7 +90,11 @@ func TestIfStatement(t *testing.T) {
 		})
 
 		if len(visitedNodes) != len(test.expectedNodes) {
-			t.Fatalf("Expected %d visited nodes, got %d", len(test.expectedNodes), len(visitedNodes))
+			t.Fatalf(
+				"Expected %d visited nodes, got %d",
+				len(test.expectedNodes),
+				len(visitedNodes),
+			)
 		}
 
 		for idx, node := range visitedNodes {
@@ -96,11 +108,19 @@ func TestIfStatement(t *testing.T) {
 		}
 
 		if test.input.StartPosition() != test.expectedStartPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedStartPos,
+				test.input.StartPosition(),
+			)
 		}
 
 		if test.input.EndPosition() != test.expectedEndPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedEndPos,
+				test.input.EndPosition(),
+			)
 		}
 	}
 }

@@ -11,9 +11,17 @@ type StatementList struct {
 
 // Expr returns the expression in the statement list.
 func (sl *StatementList) Expr() string {
+	if len(sl.Statements) == 0 {
+		return ""
+	}
+
 	var statements strings.Builder
 
 	for i, statement := range sl.Statements {
+		if statement == nil {
+			continue
+		}
+
 		statements.WriteString(statement.Expr())
 
 		if i < len(sl.Statements)-1 {

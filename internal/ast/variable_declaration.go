@@ -41,6 +41,12 @@ func (v *VariableDeclaration) Walk(fn func(node ExprNode) bool) {
 	}
 
 	if v.Value != nil {
+		shouldContinue = fn(v.Value)
+
+		if !shouldContinue {
+			return
+		}
+
 		v.Value.Walk(fn)
 	}
 }

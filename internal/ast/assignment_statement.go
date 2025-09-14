@@ -14,6 +14,10 @@ type AssignmentStatement struct {
 
 // Expr returns the expression of the assignment statement.
 func (a *AssignmentStatement) Expr() string {
+	if a.Left == nil || a.Right == nil {
+		return ""
+	}
+
 	return fmt.Sprintf("%s = %s", a.Left.Expr(), a.Right.Expr())
 }
 

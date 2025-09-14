@@ -14,9 +14,17 @@ type BlockStatement struct {
 
 // Expr returns the expression of the block statement.
 func (e *BlockStatement) Expr() string {
+	if len(e.Statements) == 0 {
+		return "()"
+	}
+
 	statements := []string{}
 
 	for _, statement := range e.Statements {
+		if statement == nil {
+			continue
+		}
+
 		statements = append(statements, statement.Expr())
 	}
 

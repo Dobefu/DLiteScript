@@ -31,7 +31,7 @@ func TestFuncDeclarationStatement(t *testing.T) {
 			expectedValue:    "func test()",
 			expectedStartPos: 0,
 			expectedEndPos:   3,
-			expectedNodes:    []string{"func test()"},
+			expectedNodes:    []string{"func test()", "1", "1"},
 		},
 		{
 			name: "single return value",
@@ -56,7 +56,7 @@ func TestFuncDeclarationStatement(t *testing.T) {
 			expectedValue:    "func test(a number) number",
 			expectedStartPos: 0,
 			expectedEndPos:   3,
-			expectedNodes:    []string{"func test(a number) number"},
+			expectedNodes:    []string{"func test(a number) number", "1", "1"},
 		},
 		{
 			name: "multiple return values",
@@ -81,7 +81,11 @@ func TestFuncDeclarationStatement(t *testing.T) {
 			expectedValue:    "func test(a number) number, string",
 			expectedStartPos: 0,
 			expectedEndPos:   3,
-			expectedNodes:    []string{"func test(a number) number, string"},
+			expectedNodes: []string{
+				"func test(a number) number, string",
+				"1",
+				"1",
+			},
 		},
 	}
 

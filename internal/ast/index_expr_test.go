@@ -12,7 +12,7 @@ func TestIndexExpr(t *testing.T) {
 		EndPos:   5,
 	}
 
-	expectedNodes := []string{"array[0]", "array", "0"}
+	expectedNodes := []string{"array[0]", "array", "array", "0", "0"}
 	expectedValue := "array[0]"
 	visitedNodes := []string{}
 
@@ -23,7 +23,11 @@ func TestIndexExpr(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited nodes, got %d", len(expectedNodes), len(visitedNodes))
+		t.Fatalf(
+			"Expected %d visited nodes, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {

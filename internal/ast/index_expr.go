@@ -14,6 +14,10 @@ type IndexExpr struct {
 
 // Expr returns the expression of the index expression.
 func (e *IndexExpr) Expr() string {
+	if e.Array == nil || e.Index == nil {
+		return ""
+	}
+
 	return fmt.Sprintf("%s[%s]", e.Array.Expr(), e.Index.Expr())
 }
 
@@ -35,6 +39,23 @@ func (e *IndexExpr) Walk(fn func(node ExprNode) bool) {
 		return
 	}
 
-	e.Array.Walk(fn)
-	e.Index.Walk(fn)
+	if e.Array != nil {
+		shouldContinue = fn(e.Array)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Array.Walk(fn)
+	}
+
+	if e.Index != nil {
+		shouldContinue = fn(e.Index)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Index.Walk(fn)
+	}
 }

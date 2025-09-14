@@ -19,7 +19,7 @@ func TestConstantDeclaration(t *testing.T) {
 		EndPos:   1,
 	}
 
-	expectedNodes := []string{"const x int = 1", "1"}
+	expectedNodes := []string{"const x int = 1", "1", "1"}
 	visitedNodes := []string{}
 
 	declaration.Walk(func(node ExprNode) bool {
@@ -29,7 +29,11 @@ func TestConstantDeclaration(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
+		t.Fatalf(
+			"Expected %d visited node, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {
@@ -39,7 +43,10 @@ func TestConstantDeclaration(t *testing.T) {
 	}
 
 	if declaration.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", declaration.StartPosition())
+		t.Fatalf(
+			"Expected start position to be 0, got %d",
+			declaration.StartPosition(),
+		)
 	}
 
 	if declaration.EndPosition() != 1 {

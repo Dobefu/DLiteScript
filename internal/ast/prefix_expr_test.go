@@ -42,7 +42,15 @@ func TestPrefixExpr(t *testing.T) {
 			expectedValue:    "(+ (1 + 1))",
 			expectedStartPos: 0,
 			expectedEndPos:   0,
-			expectedNodes:    []string{"(+ (1 + 1))"},
+			expectedNodes: []string{
+				"(+ (1 + 1))",
+				"(1 + 1)",
+				"(1 + 1)",
+				"1",
+				"1",
+				"1",
+				"1",
+			},
 		},
 	}
 

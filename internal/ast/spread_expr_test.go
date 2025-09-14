@@ -27,7 +27,7 @@ func TestSpreadExpr(t *testing.T) {
 			expectedValue:    "...1",
 			expectedStartPos: 0,
 			expectedEndPos:   3,
-			expectedNodes:    []string{"...1", "1"},
+			expectedNodes:    []string{"...1", "1", "1"},
 		},
 	}
 

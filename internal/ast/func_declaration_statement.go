@@ -21,7 +21,7 @@ func (b *FuncDeclarationStatement) Expr() string {
 	argStrings := make([]string, len(b.Args))
 
 	for i, arg := range b.Args {
-		argStrings[i] = arg.Name + " " + arg.Type
+		argStrings[i] = fmt.Sprintf("%s %s", arg.Name, arg.Type)
 	}
 
 	if b.NumReturnValues == 0 {
@@ -48,5 +48,19 @@ func (b *FuncDeclarationStatement) EndPosition() int {
 
 // Walk walks the function declaration statement.
 func (b *FuncDeclarationStatement) Walk(fn func(node ExprNode) bool) {
-	fn(b)
+	shouldContinue := fn(b)
+
+	if !shouldContinue {
+		return
+	}
+
+	if b.Body != nil {
+		shouldContinue = fn(b.Body)
+
+		if !shouldContinue {
+			return
+		}
+
+		b.Body.Walk(fn)
+	}
 }

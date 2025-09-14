@@ -15,7 +15,16 @@ type IndexAssignmentStatement struct {
 
 // Expr returns the expression of the index assignment statement.
 func (a *IndexAssignmentStatement) Expr() string {
-	return fmt.Sprintf("%s[%s] = %s", a.Array.Expr(), a.Index.Expr(), a.Right.Expr())
+	if a.Array == nil || a.Index == nil || a.Right == nil {
+		return ""
+	}
+
+	return fmt.Sprintf(
+		"%s[%s] = %s",
+		a.Array.Expr(),
+		a.Index.Expr(),
+		a.Right.Expr(),
+	)
 }
 
 // StartPosition returns the start position of the index assignment statement.

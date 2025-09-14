@@ -17,8 +17,12 @@ func TestContinueStatement(t *testing.T) {
 		return true
 	})
 
-	if len(visitedNodes) != 1 {
-		t.Fatalf("Expected 1 visited node, got %d", len(visitedNodes))
+	if len(visitedNodes) != len(expectedNodes) {
+		t.Fatalf(
+			"Expected %d visited node, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {
@@ -28,7 +32,10 @@ func TestContinueStatement(t *testing.T) {
 	}
 
 	if statement.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", statement.StartPosition())
+		t.Fatalf(
+			"Expected start position to be 0, got %d",
+			statement.StartPosition(),
+		)
 	}
 
 	if statement.EndPosition() != 1 {
@@ -50,7 +57,11 @@ func TestContinueStatementWithCount(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited node, got %d", len(expectedNodes), len(visitedNodes))
+		t.Fatalf(
+			"Expected %d visited node, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {
@@ -60,7 +71,10 @@ func TestContinueStatementWithCount(t *testing.T) {
 	}
 
 	if statement.StartPosition() != 0 {
-		t.Fatalf("Expected start position to be 0, got %d", statement.StartPosition())
+		t.Fatalf(
+			"Expected start position to be 0, got %d",
+			statement.StartPosition(),
+		)
 	}
 
 	if statement.EndPosition() != 1 {

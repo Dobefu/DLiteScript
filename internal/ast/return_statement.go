@@ -22,6 +22,10 @@ func (b *ReturnStatement) Expr() string {
 	values := make([]string, 0, b.NumValues)
 
 	for _, value := range b.Values {
+		if value == nil {
+			continue
+		}
+
 		values = append(values, value.Expr())
 	}
 
@@ -40,5 +44,19 @@ func (b *ReturnStatement) EndPosition() int {
 
 // Walk walks the return statement.
 func (b *ReturnStatement) Walk(fn func(node ExprNode) bool) {
-	fn(b)
+	shouldContinue := fn(b)
+
+	if !shouldContinue {
+		return
+	}
+
+	for _, value := range b.Values {
+		shouldContinue = fn(value)
+
+		if !shouldContinue {
+			return
+		}
+
+		value.Walk(fn)
+	}
 }

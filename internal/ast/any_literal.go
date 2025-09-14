@@ -2,7 +2,7 @@ package ast
 
 // AnyLiteral defines a struct for a literal any value.
 type AnyLiteral struct {
-	Value    any
+	Value    ExprNode
 	StartPos int
 	EndPos   int
 }
@@ -24,5 +24,19 @@ func (e *AnyLiteral) EndPosition() int {
 
 // Walk walks the any literal.
 func (e *AnyLiteral) Walk(fn func(node ExprNode) bool) {
-	fn(e)
+	shouldContinue := fn(e)
+
+	if !shouldContinue {
+		return
+	}
+
+	if e.Value != nil {
+		shouldContinue = fn(e.Value)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Value.Walk(fn)
+	}
 }

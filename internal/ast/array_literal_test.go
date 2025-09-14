@@ -16,7 +16,7 @@ func TestArrayLiteral(t *testing.T) {
 		EndPos:   2,
 	}
 
-	expectedNodes := []string{"[1, 1]", "1", "1"}
+	expectedNodes := []string{"[1, 1]", "1", "1", "1", "1"}
 	expectedValue := "[1, 1]"
 	visitedNodes := []string{}
 
@@ -27,7 +27,11 @@ func TestArrayLiteral(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Fatalf("Expected %d visited nodes, got %d", len(expectedNodes), len(visitedNodes))
+		t.Fatalf(
+			"Expected %d visited nodes, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {

@@ -14,9 +14,17 @@ type ArrayLiteral struct {
 
 // Expr returns the expression of the array literal.
 func (e *ArrayLiteral) Expr() string {
+	if len(e.Values) == 0 {
+		return "[]"
+	}
+
 	var values strings.Builder
 
 	for i, value := range e.Values {
+		if value == nil {
+			continue
+		}
+
 		values.WriteString(value.Expr())
 
 		if i < len(e.Values)-1 {
@@ -51,5 +59,7 @@ func (e *ArrayLiteral) Walk(fn func(node ExprNode) bool) {
 		if !shouldContinue {
 			return
 		}
+
+		value.Walk(fn)
 	}
 }

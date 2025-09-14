@@ -15,11 +15,24 @@ type IfStatement struct {
 
 // Expr returns the expression of the if statement.
 func (e *IfStatement) Expr() string {
-	if e.ElseBlock == nil {
-		return fmt.Sprintf("if %s { %s }", e.Condition.Expr(), e.ThenBlock.Expr())
+	if e.Condition == nil || e.ThenBlock == nil {
+		return ""
 	}
 
-	return fmt.Sprintf("if %s { %s } else { %s }", e.Condition.Expr(), e.ThenBlock.Expr(), e.ElseBlock.Expr())
+	if e.ElseBlock == nil {
+		return fmt.Sprintf(
+			"if %s { %s }",
+			e.Condition.Expr(),
+			e.ThenBlock.Expr(),
+		)
+	}
+
+	return fmt.Sprintf(
+		"if %s { %s } else { %s }",
+		e.Condition.Expr(),
+		e.ThenBlock.Expr(),
+		e.ElseBlock.Expr(),
+	)
 }
 
 // StartPosition returns the start position of the if statement.
@@ -41,6 +54,12 @@ func (e *IfStatement) Walk(fn func(node ExprNode) bool) {
 	}
 
 	if e.Condition != nil {
+		shouldContinue = fn(e.Condition)
+
+		if !shouldContinue {
+			return
+		}
+
 		e.Condition.Walk(fn)
 	}
 

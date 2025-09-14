@@ -94,8 +94,16 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.Any(1),
 			inputRight: datavalue.Any(1),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.AnyLiteral{Value: 1, StartPos: 0, EndPos: 1},
-				Right: &ast.AnyLiteral{Value: 1, StartPos: 2, EndPos: 3},
+				Left: &ast.AnyLiteral{
+					Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right: &ast.AnyLiteral{
+					Value:    &ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					StartPos: 2,
+					EndPos:   3,
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,

@@ -7,7 +7,11 @@ import (
 func TestAnyLiteral(t *testing.T) {
 	t.Parallel()
 
-	anyLiteral := &AnyLiteral{Value: "1", StartPos: 0, EndPos: 1}
+	anyLiteral := &AnyLiteral{
+		Value:    &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+		StartPos: 0,
+		EndPos:   1,
+	}
 
 	if anyLiteral.Expr() != "any" {
 		t.Errorf("expected 'any', got '%s'", anyLiteral.Expr())
@@ -22,7 +26,7 @@ func TestAnyLiteral(t *testing.T) {
 	}
 
 	visitedNodes := []string{}
-	expectedNodes := []string{"any"}
+	expectedNodes := []string{"any", "1", "1"}
 
 	anyLiteral.Walk(func(node ExprNode) bool {
 		visitedNodes = append(visitedNodes, node.Expr())
@@ -31,12 +35,16 @@ func TestAnyLiteral(t *testing.T) {
 	})
 
 	if len(visitedNodes) != len(expectedNodes) {
-		t.Errorf("expected 1 visited node, got %d", len(visitedNodes))
+		t.Fatalf(
+			"expected %d visited node, got %d",
+			len(expectedNodes),
+			len(visitedNodes),
+		)
 	}
 
 	for idx, node := range visitedNodes {
 		if node != expectedNodes[idx] {
-			t.Errorf("expected '%s', got '%s'", expectedNodes[idx], node)
+			t.Fatalf("expected '%s', got '%s'", expectedNodes[idx], node)
 		}
 	}
 

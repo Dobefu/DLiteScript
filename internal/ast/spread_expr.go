@@ -1,5 +1,7 @@
 package ast
 
+import "fmt"
+
 // SpreadExpr represents a spread expression.
 type SpreadExpr struct {
 	Expression ExprNode
@@ -9,7 +11,11 @@ type SpreadExpr struct {
 
 // Expr returns the expression of the spread expression.
 func (s *SpreadExpr) Expr() string {
-	return "..." + s.Expression.Expr()
+	if s.Expression == nil {
+		return "..."
+	}
+
+	return fmt.Sprintf("...%s", s.Expression.Expr())
 }
 
 // StartPosition returns the start position of the spread expression.
@@ -24,6 +30,19 @@ func (s *SpreadExpr) EndPosition() int {
 
 // Walk walks the spread expression.
 func (s *SpreadExpr) Walk(fn func(node ExprNode) bool) {
-	fn(s)
-	s.Expression.Walk(fn)
+	shouldContinue := fn(s)
+
+	if !shouldContinue {
+		return
+	}
+
+	if s.Expression != nil {
+		shouldContinue = fn(s.Expression)
+
+		if !shouldContinue {
+			return
+		}
+
+		s.Expression.Walk(fn)
+	}
 }

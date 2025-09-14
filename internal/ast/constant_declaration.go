@@ -15,6 +15,10 @@ type ConstantDeclaration struct {
 
 // Expr returns the expression of the constant declaration.
 func (c *ConstantDeclaration) Expr() string {
+	if c.Value == nil {
+		return ""
+	}
+
 	return fmt.Sprintf("const %s %s = %s", c.Name, c.Type, c.Value.Expr())
 }
 
@@ -30,9 +34,19 @@ func (c *ConstantDeclaration) EndPosition() int {
 
 // Walk walks the constant declaration and its value.
 func (c *ConstantDeclaration) Walk(fn func(node ExprNode) bool) {
-	fn(c)
+	shouldContinue := fn(c)
+
+	if !shouldContinue {
+		return
+	}
 
 	if c.Value != nil {
+		shouldContinue = fn(c.Value)
+
+		if !shouldContinue {
+			return
+		}
+
 		c.Value.Walk(fn)
 	}
 }

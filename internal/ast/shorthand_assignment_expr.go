@@ -17,6 +17,10 @@ type ShorthandAssignmentExpr struct {
 
 // Expr returns the expression of the shorthand assignment expression.
 func (s *ShorthandAssignmentExpr) Expr() string {
+	if s.Left == nil || s.Right == nil {
+		return ""
+	}
+
 	return fmt.Sprintf(
 		"%s %s %s",
 		s.Left.Expr(),
@@ -37,7 +41,11 @@ func (s *ShorthandAssignmentExpr) EndPosition() int {
 
 // Walk walks the shorthand assignment expreession.
 func (s *ShorthandAssignmentExpr) Walk(fn func(node ExprNode) bool) {
-	fn(s)
+	shouldContinue := fn(s)
+
+	if !shouldContinue {
+		return
+	}
 
 	if s.Left != nil {
 		shouldContinue := fn(s.Left)

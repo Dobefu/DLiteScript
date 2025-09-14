@@ -17,7 +17,16 @@ type BinaryExpr struct {
 
 // Expr returns the expression of the binary expression.
 func (e *BinaryExpr) Expr() string {
-	return fmt.Sprintf("(%s %s %s)", e.Left.Expr(), e.Operator.Atom, e.Right.Expr())
+	if e.Left == nil || e.Right == nil {
+		return ""
+	}
+
+	return fmt.Sprintf(
+		"(%s %s %s)",
+		e.Left.Expr(),
+		e.Operator.Atom,
+		e.Right.Expr(),
+	)
 }
 
 // StartPosition returns the start position of the binary expression.

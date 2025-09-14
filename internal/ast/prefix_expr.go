@@ -16,6 +16,10 @@ type PrefixExpr struct {
 
 // Expr returns the expression of the prefix expression.
 func (e *PrefixExpr) Expr() string {
+	if e.Operand == nil {
+		return ""
+	}
+
 	return fmt.Sprintf("(%s %s)", e.Operator.Atom, e.Operand.Expr())
 }
 
@@ -31,5 +35,19 @@ func (e *PrefixExpr) EndPosition() int {
 
 // Walk walks the prefix expression and its operand.
 func (e *PrefixExpr) Walk(fn func(node ExprNode) bool) {
-	fn(e)
+	shouldContinue := fn(e)
+
+	if !shouldContinue {
+		return
+	}
+
+	if e.Operand != nil {
+		shouldContinue = fn(e.Operand)
+
+		if !shouldContinue {
+			return
+		}
+
+		e.Operand.Walk(fn)
+	}
 }

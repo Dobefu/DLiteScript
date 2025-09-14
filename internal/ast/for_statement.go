@@ -19,8 +19,12 @@ type ForStatement struct {
 
 // Expr returns the expression of the for statement.
 func (f *ForStatement) Expr() string {
+	if f.Body == nil {
+		return "for { }"
+	}
+
 	if f.IsRange {
-		if f.RangeFrom != nil {
+		if f.RangeFrom != nil && f.RangeTo != nil {
 			if f.DeclaredVariable != "" {
 				return fmt.Sprintf(
 					"for var %s from %s to %s { %s }",

@@ -16,9 +16,17 @@ type FunctionCall struct {
 
 // Expr returns the expression of the function call.
 func (fc *FunctionCall) Expr() string {
+	if len(fc.Arguments) == 0 {
+		return fmt.Sprintf("%s()", fc.FunctionName)
+	}
+
 	var args strings.Builder
 
 	for i, arg := range fc.Arguments {
+		if arg == nil {
+			continue
+		}
+
 		args.WriteString(arg.Expr())
 
 		if i < len(fc.Arguments)-1 {
