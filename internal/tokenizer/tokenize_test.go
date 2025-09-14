@@ -323,6 +323,11 @@ func TestTokenizeErr(t *testing.T) {
 		expected string
 	}{
 		{
+			name:     "unexpected end of expression",
+			input:    "",
+			expected: errorutil.ErrorMsgInvalidUTF8Char,
+		},
+		{
 			name:     "incomplete exponent",
 			input:    "1e",
 			expected: fmt.Sprintf(errorutil.ErrorMsgNumberTrailingChar, "1e"),
@@ -368,7 +373,9 @@ func TestTokenizeErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			_, err := NewTokenizer(test.input).Tokenize()
+			tokenizer := NewTokenizer(test.input)
+			tokenizer.isEOF = false
+			_, err := tokenizer.Tokenize()
 
 			if err == nil {
 				t.Fatalf("expected error, got none for input %s", test.input)
