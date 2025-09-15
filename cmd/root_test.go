@@ -22,7 +22,11 @@ func TestRootCmd(t *testing.T) {
 		t.Run(filepath.Base(filepath.Dir(file)), func(t *testing.T) {
 			t.Parallel()
 
-			runRootCmd(rootCmd, []string{file})
+			err := runRootCmd(rootCmd, []string{file})
+
+			if err != nil {
+				t.Fatalf("Failed to run script: %s", err.Error())
+			}
 		})
 	}
 }

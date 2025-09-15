@@ -2,9 +2,11 @@
 package main
 
 import (
+	"syscall"
+
 	"github.com/Dobefu/DLiteScript/cmd"
 )
 
 func main() {
-	cmd.Execute()
+	syscall.Exit(cmd.Execute())
 }

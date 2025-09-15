@@ -7,5 +7,9 @@ import (
 func TestLSPCmd(t *testing.T) {
 	t.Parallel()
 
-	runLSPCmd(lspCmd, nil)
+	err := runLSPCmd(lspCmd, nil)
+
+	if err != nil {
+		t.Fatalf("Failed to run LSP command: %s", err.Error())
+	}
 }

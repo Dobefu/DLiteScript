@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
-	"os"
 
 	"github.com/Dobefu/DLiteScript/internal/lsp"
 	"github.com/spf13/cobra"
@@ -11,7 +11,7 @@ import (
 var lspCmd = &cobra.Command{ //nolint:exhaustruct
 	Use:   "lsp",
 	Short: "Start the DLiteScript Language Server",
-	Run:   runLSPCmd,
+	RunE:  runLSPCmd,
 }
 
 func init() {
@@ -21,7 +21,7 @@ func init() {
 	rootCmd.AddCommand(lspCmd)
 }
 
-func runLSPCmd(cmd *cobra.Command, _ []string) {
+func runLSPCmd(cmd *cobra.Command, _ []string) error {
 	isDebugMode, _ := cmd.Flags().GetBool("debug")
 
 	handler := lsp.NewHandler(isDebugMode)
@@ -32,6 +32,9 @@ func runLSPCmd(cmd *cobra.Command, _ []string) {
 
 	if err != nil {
 		slog.Error(err.Error())
-		os.Exit(1)
+
+		return fmt.Errorf("failed to start LSP server: %s", err.Error())
 	}
+
+	return nil
 }
