@@ -20,33 +20,26 @@ var rootCmd = &cobra.Command{ //nolint:exhaustruct
 		return nil
 	}),
 	Short: "A delightfully simple scripting language",
-	RunE:  runRootCmd,
+	Run:   runRootCmd,
 }
 
 // Execute executes the root command.
 func Execute() int {
-	err := rootCmd.Execute()
+	_ = rootCmd.Execute()
 
-	if err != nil {
-		return 1
-	}
-
-	return 0
+	return exitCode
 }
 
-func runRootCmd(_ *cobra.Command, args []string) error {
+func runRootCmd(_ *cobra.Command, args []string) {
 	runner := &scriptrunner.ScriptRunner{
 		Args:    args,
 		OutFile: os.Stdout,
 	}
 
-	err := runner.Run()
+	var err error
+	exitCode, err = runner.Run()
 
 	if err != nil {
-		slog.Error(err.Error())
-
-		return fmt.Errorf("failed to run script: %s", err.Error())
+		slog.Error(fmt.Sprintf("failed to run script: %s", err.Error()))
 	}
-
-	return nil
 }

@@ -22,11 +22,11 @@ func NewServer(handler jsonrpc2.Handler) *Server {
 }
 
 // Start starts the LSP server.
-func (s *Server) Start() error {
+func (s *Server) Start() (int, error) {
 	server, err := jsonrpc2.NewServer(s.Handler, os.Stdin, os.Stdout)
 
 	if err != nil {
-		return fmt.Errorf("could not create JSON-RPC server: %w", err)
+		return 1, fmt.Errorf("could not create JSON-RPC server: %w", err)
 	}
 
 	sigChan := make(chan os.Signal, 1)
@@ -46,9 +46,9 @@ func (s *Server) Start() error {
 			close(shutdownChan)
 		}
 
-		return nil
+		return 0, nil
 
 	case err := <-errChan:
-		return err
+		return 1, err
 	}
 }

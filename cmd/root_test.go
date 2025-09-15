@@ -2,11 +2,8 @@ package cmd
 
 import (
 	"path/filepath"
-	"sync"
 	"testing"
 )
-
-var rootCmdMutex sync.Mutex
 
 func TestRootCmd(t *testing.T) {
 	t.Parallel()
@@ -25,13 +22,13 @@ func TestRootCmd(t *testing.T) {
 		t.Run(filepath.Base(filepath.Dir(file)), func(t *testing.T) {
 			t.Parallel()
 
-			rootCmdMutex.Lock()
-			err := runRootCmd(rootCmd, []string{file})
-			rootCmdMutex.Unlock()
+			cmdMutex.Lock()
+			runRootCmd(rootCmd, []string{file})
 
-			if err != nil {
-				t.Fatalf("Failed to run script: %s", err.Error())
+			if exitCode != 0 {
+				t.Fatalf("Expected non-zero exit code, got %d", exitCode)
 			}
+			cmdMutex.Unlock()
 		})
 	}
 }
@@ -39,45 +36,45 @@ func TestRootCmd(t *testing.T) {
 func TestRootCmdErr(t *testing.T) {
 	t.Parallel()
 
-	rootCmdMutex.Lock()
-	err := runRootCmd(rootCmd, []string{"bogus"})
-	rootCmdMutex.Unlock()
+	cmdMutex.Lock()
+	runRootCmd(rootCmd, []string{"bogus"})
 
-	if err == nil {
-		t.Fatalf("Expected error, got nil")
+	if exitCode == 0 {
+		t.Fatalf("expected exit code not to be 0")
 	}
+	cmdMutex.Unlock()
 }
 
 func TestExecute(t *testing.T) {
 	t.Parallel()
 
-	rootCmdMutex.Lock()
+	cmdMutex.Lock()
 	err := rootCmd.ValidateArgs([]string{"examples/00_simple/main.dl"})
-	rootCmdMutex.Unlock()
+	cmdMutex.Unlock()
 
 	if err != nil {
 		t.Fatalf("Expected no error, got: \"%s\"", err.Error())
 	}
 
-	rootCmdMutex.Lock()
+	cmdMutex.Lock()
 	rootCmd.SetArgs([]string{"../examples/00_simple/main.dl"})
 	exitCode := Execute()
-	rootCmdMutex.Unlock()
 
 	if exitCode != 0 {
-		t.Fatalf("Expected exit code 0, got %d", exitCode)
+		t.Fatalf("expected exit code 0, got %d", exitCode)
 	}
+	cmdMutex.Unlock()
 }
 
 func TestExecuteErr(t *testing.T) {
 	t.Parallel()
 
-	rootCmdMutex.Lock()
+	cmdMutex.Lock()
 	rootCmd.SetArgs([]string{})
 	exitCode := Execute()
-	rootCmdMutex.Unlock()
 
 	if exitCode == 0 {
 		t.Fatalf("Expected non-zero exit code, got %d", exitCode)
 	}
+	cmdMutex.Unlock()
 }

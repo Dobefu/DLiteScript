@@ -11,7 +11,7 @@ import (
 var lspCmd = &cobra.Command{ //nolint:exhaustruct
 	Use:   "lsp",
 	Short: "Start the DLiteScript Language Server",
-	RunE:  runLSPCmd,
+	Run:   runLSPCmd,
 }
 
 func init() {
@@ -21,20 +21,18 @@ func init() {
 	rootCmd.AddCommand(lspCmd)
 }
 
-func runLSPCmd(cmd *cobra.Command, _ []string) error {
+func runLSPCmd(cmd *cobra.Command, _ []string) {
 	isDebugMode, _ := cmd.Flags().GetBool("debug")
 
 	handler := lsp.NewHandler(isDebugMode)
 	server := lsp.NewServer(handler)
 
 	slog.Info("Starting DLiteScript LSP server...")
-	err := server.Start()
+
+	var err error
+	exitCode, err = server.Start()
 
 	if err != nil {
-		slog.Error(err.Error())
-
-		return fmt.Errorf("failed to start LSP server: %s", err.Error())
+		slog.Error(fmt.Sprintf("failed to start LSP server: %s", err.Error()))
 	}
-
-	return nil
 }

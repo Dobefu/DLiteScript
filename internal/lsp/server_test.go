@@ -10,9 +10,13 @@ func TestServer(t *testing.T) {
 	handler := NewHandler(false)
 	server := NewServer(handler)
 
-	err := server.Start()
+	exitCode, err := server.Start()
 
 	if err != nil {
-		t.Errorf("error starting server: %v", err)
+		t.Fatalf("error starting server: %s", err.Error())
+	}
+
+	if exitCode == 0 {
+		t.Fatalf("Expected non-zero exit code, got %d", exitCode)
 	}
 }

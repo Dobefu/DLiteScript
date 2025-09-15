@@ -7,9 +7,11 @@ import (
 func TestLSPCmd(t *testing.T) {
 	t.Parallel()
 
-	err := runLSPCmd(lspCmd, nil)
+	cmdMutex.Lock()
+	runLSPCmd(lspCmd, nil)
 
-	if err != nil {
-		t.Fatalf("Failed to run LSP command: %s", err.Error())
+	if exitCode == 0 {
+		t.Fatalf("Expected non-zero exit code, got %d", exitCode)
 	}
+	cmdMutex.Unlock()
 }

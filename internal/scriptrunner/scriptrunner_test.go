@@ -39,7 +39,7 @@ func TestScriptRunner(t *testing.T) {
 			tmpFile, err := os.CreateTemp("", "test")
 
 			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			defer func() { _ = os.Remove(tmpFile.Name()) }()
@@ -54,7 +54,7 @@ func TestScriptRunner(t *testing.T) {
 
 			outputBuffer := &bytes.Buffer{}
 
-			err = (&ScriptRunner{
+			exitCode, err := (&ScriptRunner{
 				Args:    []string{tmpFile.Name()},
 				OutFile: outputBuffer,
 				result:  "",
@@ -62,6 +62,10 @@ func TestScriptRunner(t *testing.T) {
 
 			if err != nil {
 				t.Fatalf("expected no error, got %s", err.Error())
+			}
+
+			if exitCode != 0 {
+				t.Fatalf("expected exit code 0, got %d", exitCode)
 			}
 
 			if outputBuffer.String() != test.expected {
@@ -185,7 +189,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			_, _ = tmpFile.WriteString(test.script)
 			defer func() { _ = tmpFile.Close() }()
 
-			err := (&ScriptRunner{
+			exitCode, err := (&ScriptRunner{
 				Args:    args,
 				OutFile: test.outFile,
 				result:  "",
@@ -193,6 +197,10 @@ func TestScriptRunnerErr(t *testing.T) {
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
+			}
+
+			if exitCode == 0 {
+				t.Fatalf("expected exit code not to be 0")
 			}
 
 			if err.Error() != test.expected {
@@ -233,10 +241,14 @@ func TestOutput(t *testing.T) {
 		result:  "test",
 	}
 
-	err = scriptRunner.Run()
+	exitCode, err := scriptRunner.Run()
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
+	}
+
+	if exitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d", exitCode)
 	}
 
 	if scriptRunner.Output() != "" {
