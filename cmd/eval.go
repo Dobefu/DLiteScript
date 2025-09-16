@@ -27,7 +27,13 @@ func init() {
 	rootCmd.AddCommand(evalCmd)
 }
 
-func runEvalCmd(cmd *cobra.Command, args []string) {
+func runEvalCmd(_ *cobra.Command, args []string) {
+	if len(args) == 0 {
+		slog.Error("no code provided")
+
+		return
+	}
+
 	runner := &scriptrunner.ScriptRunner{
 		OutFile: os.Stdout,
 	}
