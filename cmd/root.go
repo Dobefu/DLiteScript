@@ -31,13 +31,18 @@ func Execute() int {
 }
 
 func runRootCmd(_ *cobra.Command, args []string) {
+	if len(args) == 0 {
+		slog.Error("no file specified")
+
+		return
+	}
+
 	runner := &scriptrunner.ScriptRunner{
-		Args:    args,
 		OutFile: os.Stdout,
 	}
 
 	var err error
-	exitCode, err = runner.Run()
+	exitCode, err = runner.RunScript(args[0])
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to run script: %s", err.Error()))

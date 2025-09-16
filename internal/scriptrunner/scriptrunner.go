@@ -2,7 +2,6 @@
 package scriptrunner
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -14,25 +13,14 @@ import (
 
 // ScriptRunner handles the execution of DLiteScript files.
 type ScriptRunner struct {
-	Args    []string
 	OutFile io.Writer
 
 	result string
 }
 
-// Run executes the DLiteScript file processing.
-func (r *ScriptRunner) Run() (int, error) {
-	if len(r.Args) == 0 {
-		return 1, errors.New("no file specified")
-	}
-
-	fileContent, err := os.ReadFile(r.Args[0])
-
-	if err != nil {
-		return 1, fmt.Errorf("failed to read file: %s", err.Error())
-	}
-
-	t := tokenizer.NewTokenizer(string(fileContent))
+// RunString executes a DLiteScript script file.
+func (r *ScriptRunner) RunString(str string) (int, error) {
+	t := tokenizer.NewTokenizer(str)
 	tokens, err := t.Tokenize()
 
 	if err != nil {
@@ -67,6 +55,17 @@ func (r *ScriptRunner) Run() (int, error) {
 	}
 
 	return 0, nil
+}
+
+// RunScript executes a DLiteScript script file.
+func (r *ScriptRunner) RunScript(file string) (int, error) {
+	fileContent, err := os.ReadFile(file)
+
+	if err != nil {
+		return 1, fmt.Errorf("failed to read file: %s", err.Error())
+	}
+
+	return r.RunString(string(fileContent))
 }
 
 // Output returns the result of the execution.

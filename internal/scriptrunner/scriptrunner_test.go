@@ -55,10 +55,9 @@ func TestScriptRunner(t *testing.T) {
 			outputBuffer := &bytes.Buffer{}
 
 			_, err = (&ScriptRunner{
-				Args:    []string{tmpFile.Name()},
 				OutFile: outputBuffer,
 				result:  "",
-			}).Run()
+			}).RunScript(tmpFile.Name())
 
 			if err != nil {
 				t.Fatalf("expected no error, got %s", err.Error())
@@ -80,23 +79,13 @@ func TestScriptRunnerErr(t *testing.T) {
 
 	tests := []struct {
 		name       string
-		hasFile    bool
 		hasReadErr bool
 		outFile    io.Writer
 		script     string
 		expected   string
 	}{
 		{
-			name:       "no file",
-			hasFile:    false,
-			hasReadErr: false,
-			outFile:    &bytes.Buffer{},
-			script:     "",
-			expected:   "no file specified",
-		},
-		{
 			name:       "cannot read file",
-			hasFile:    true,
 			hasReadErr: true,
 			outFile:    &bytes.Buffer{},
 			script:     "",
@@ -104,7 +93,6 @@ func TestScriptRunnerErr(t *testing.T) {
 		},
 		{
 			name:       "invalid utf-8",
-			hasFile:    true,
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "\x80",
@@ -116,7 +104,6 @@ func TestScriptRunnerErr(t *testing.T) {
 		},
 		{
 			name:       "unexpected EOF",
-			hasFile:    true,
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "1 +",
@@ -128,7 +115,6 @@ func TestScriptRunnerErr(t *testing.T) {
 		},
 		{
 			name:       "function num args",
-			hasFile:    true,
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "printf()",
@@ -140,7 +126,6 @@ func TestScriptRunnerErr(t *testing.T) {
 		},
 		{
 			name:       "parsing error",
-			hasFile:    true,
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "1 + }",
@@ -152,7 +137,6 @@ func TestScriptRunnerErr(t *testing.T) {
 		},
 		{
 			name:       "write error",
-			hasFile:    true,
 			hasReadErr: false,
 			outFile:    &errWriter{},
 			script:     `1 + 1`,
@@ -164,12 +148,8 @@ func TestScriptRunnerErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			args := []string{}
 			tmpFile, _ := os.CreateTemp("", test.name)
-
-			if test.hasFile {
-				args = append(args, tmpFile.Name())
-			}
+			args := []string{tmpFile.Name()}
 
 			defer func() { _ = os.Remove(tmpFile.Name()) }()
 
@@ -186,10 +166,9 @@ func TestScriptRunnerErr(t *testing.T) {
 			defer func() { _ = tmpFile.Close() }()
 
 			_, err := (&ScriptRunner{
-				Args:    args,
 				OutFile: test.outFile,
 				result:  "",
-			}).Run()
+			}).RunScript(args[0])
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
@@ -210,7 +189,6 @@ func TestOutput(t *testing.T) {
 	t.Parallel()
 
 	scriptRunner := &ScriptRunner{
-		Args:    []string{},
 		OutFile: io.Discard,
 		result:  "test",
 	}
@@ -228,12 +206,11 @@ func TestOutput(t *testing.T) {
 	defer func() { _ = os.Remove(tmpFile.Name()) }()
 
 	scriptRunner = &ScriptRunner{
-		Args:    []string{tmpFile.Name()},
 		OutFile: io.Discard,
 		result:  "test",
 	}
 
-	exitCode, err := scriptRunner.Run()
+	exitCode, err := scriptRunner.RunScript(tmpFile.Name())
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
