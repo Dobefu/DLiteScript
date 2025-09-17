@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/Dobefu/DLiteScript/internal/evaluator"
 	"github.com/Dobefu/DLiteScript/internal/parser"
@@ -59,7 +60,7 @@ func (r *ScriptRunner) RunString(str string) (int, error) {
 
 // RunScript executes a DLiteScript script file.
 func (r *ScriptRunner) RunScript(file string) (int, error) {
-	fileContent, err := os.ReadFile(file)
+	fileContent, err := os.ReadFile(filepath.Clean(file))
 
 	if err != nil {
 		return 1, fmt.Errorf("failed to read file: %s", err.Error())
