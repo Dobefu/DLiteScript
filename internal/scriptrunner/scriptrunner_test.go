@@ -30,6 +30,11 @@ func TestScriptRunner(t *testing.T) {
 			script:   `printf("test\n")`,
 			expected: "test\n",
 		},
+		{
+			name:     "exit",
+			script:   "exit(0)\nprintf(\"test\")",
+			expected: "",
+		},
 	}
 
 	for _, test := range tests {
