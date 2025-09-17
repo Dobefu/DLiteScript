@@ -30,6 +30,7 @@ func init() {
 func runEvalCmd(_ *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no code provided")
+		exitCode = 1
 
 		return
 	}
@@ -43,5 +44,6 @@ func runEvalCmd(_ *cobra.Command, args []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to run script: %s", err.Error()))
+		exitCode = 1
 	}
 }

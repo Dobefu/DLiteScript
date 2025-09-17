@@ -23,7 +23,10 @@ func TestRootCmd(t *testing.T) {
 			t.Parallel()
 
 			cmdMutex.Lock()
-			defer cmdMutex.Unlock()
+			defer func() {
+				exitCode = 0
+				cmdMutex.Unlock()
+			}()
 
 			runRootCmd(rootCmd, []string{file})
 
@@ -38,7 +41,10 @@ func TestRootCmdErr(t *testing.T) {
 	t.Parallel()
 
 	cmdMutex.Lock()
-	defer cmdMutex.Unlock()
+	defer func() {
+		exitCode = 0
+		cmdMutex.Unlock()
+	}()
 
 	runRootCmd(rootCmd, []string{"bogus"})
 
@@ -51,7 +57,10 @@ func TestExecute(t *testing.T) {
 	t.Parallel()
 
 	cmdMutex.Lock()
-	defer cmdMutex.Unlock()
+	defer func() {
+		exitCode = 0
+		cmdMutex.Unlock()
+	}()
 
 	err := rootCmd.ValidateArgs([]string{"examples/00_simple/main.dl"})
 
@@ -60,10 +69,10 @@ func TestExecute(t *testing.T) {
 	}
 
 	rootCmd.SetArgs([]string{"../examples/00_simple/main.dl"})
-	exitCode := Execute()
+	resultExitCode := Execute()
 
-	if exitCode != 0 {
-		t.Fatalf("expected exit code 0, got %d", exitCode)
+	if resultExitCode != 0 {
+		t.Fatalf("expected exit code 0, got %d", resultExitCode)
 	}
 }
 
@@ -71,12 +80,15 @@ func TestExecuteErr(t *testing.T) {
 	t.Parallel()
 
 	cmdMutex.Lock()
-	defer cmdMutex.Unlock()
+	defer func() {
+		exitCode = 0
+		cmdMutex.Unlock()
+	}()
 
 	rootCmd.SetArgs([]string{})
-	exitCode := Execute()
+	resultExitCode := Execute()
 
-	if exitCode == 0 {
-		t.Fatalf("Expected non-zero exit code, got %d", exitCode)
+	if resultExitCode == 0 {
+		t.Fatalf("Expected non-zero exit code, got %d", resultExitCode)
 	}
 }

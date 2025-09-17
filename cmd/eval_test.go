@@ -22,7 +22,10 @@ func TestEvalCmd(t *testing.T) {
 			t.Parallel()
 
 			cmdMutex.Lock()
-			defer cmdMutex.Unlock()
+			defer func() {
+				exitCode = 0
+				cmdMutex.Unlock()
+			}()
 
 			err := evalCmd.ValidateArgs([]string{test.input})
 
@@ -62,7 +65,10 @@ func TestEvalCmdErr(t *testing.T) {
 			t.Parallel()
 
 			cmdMutex.Lock()
-			defer cmdMutex.Unlock()
+			defer func() {
+				exitCode = 0
+				cmdMutex.Unlock()
+			}()
 
 			input := []string{}
 

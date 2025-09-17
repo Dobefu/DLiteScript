@@ -8,7 +8,10 @@ func TestLSPCmd(t *testing.T) {
 	t.Parallel()
 
 	cmdMutex.Lock()
-	defer cmdMutex.Unlock()
+	defer func() {
+		exitCode = 0
+		cmdMutex.Unlock()
+	}()
 
 	runLSPCmd(lspCmd, nil)
 

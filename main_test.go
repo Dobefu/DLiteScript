@@ -10,10 +10,7 @@ func TestMain(t *testing.T) {
 
 	oldOsArgs := os.Args
 	os.Args = []string{"DLiteScript", "examples/00_simple/main.dl"}
-
-	defer func() {
-		os.Args = oldOsArgs
-	}()
+	defer func() { os.Args = oldOsArgs }()
 
 	main()
 }

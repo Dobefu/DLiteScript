@@ -25,7 +25,11 @@ var rootCmd = &cobra.Command{ //nolint:exhaustruct
 
 // Execute executes the root command.
 func Execute() int {
-	_ = rootCmd.Execute()
+	err := rootCmd.Execute()
+
+	if err != nil {
+		exitCode = 1
+	}
 
 	return exitCode
 }
@@ -33,6 +37,7 @@ func Execute() int {
 func runRootCmd(_ *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no file specified")
+		exitCode = 1
 
 		return
 	}
@@ -46,5 +51,6 @@ func runRootCmd(_ *cobra.Command, args []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to run script: %s", err.Error()))
+		exitCode = 1
 	}
 }

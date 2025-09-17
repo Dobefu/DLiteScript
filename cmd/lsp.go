@@ -34,5 +34,6 @@ func runLSPCmd(cmd *cobra.Command, _ []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to start LSP server: %s", err.Error()))
+		exitCode = 1
 	}
 }
