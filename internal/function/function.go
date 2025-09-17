@@ -12,6 +12,7 @@ import (
 // EvaluatorInterface defines the interface that functions need from the evaluator.
 type EvaluatorInterface interface {
 	AddToBuffer(format string, args ...any)
+	Terminate(code byte)
 }
 
 // Type defines the type of function.

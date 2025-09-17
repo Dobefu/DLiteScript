@@ -20,7 +20,7 @@ type ScriptRunner struct {
 }
 
 // RunString executes a DLiteScript script file.
-func (r *ScriptRunner) RunString(str string) (int, error) {
+func (r *ScriptRunner) RunString(str string) (byte, error) {
 	t := tokenizer.NewTokenizer(str)
 	tokens, err := t.Tokenize()
 
@@ -36,7 +36,7 @@ func (r *ScriptRunner) RunString(str string) (int, error) {
 	}
 
 	e := evaluator.NewEvaluator(r.OutFile)
-	_, err = e.Evaluate(ast)
+	result, err := e.Evaluate(ast)
 
 	if err != nil {
 		return 1, fmt.Errorf("failed to evaluate file: %s", err.Error())
@@ -55,11 +55,15 @@ func (r *ScriptRunner) RunString(str string) (int, error) {
 		return 1, fmt.Errorf("failed to write to output file: %s", err.Error())
 	}
 
+	if result.IsExitResult() {
+		return byte(result.Control.Count), nil
+	}
+
 	return 0, nil
 }
 
 // RunScript executes a DLiteScript script file.
-func (r *ScriptRunner) RunScript(file string) (int, error) {
+func (r *ScriptRunner) RunScript(file string) (byte, error) {
 	fileContent, err := os.ReadFile(filepath.Clean(file))
 
 	if err != nil {

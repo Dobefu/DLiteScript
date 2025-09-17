@@ -12,5 +12,6 @@ func GetGlobalFunctions() map[string]function.Info {
 	return map[string]function.Info{
 		"printf": getPrintfFunction(),
 		"dump":   getDumpFunction(),
+		"exit":   getExitFunction(),
 	}
 }

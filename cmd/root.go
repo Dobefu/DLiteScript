@@ -24,7 +24,7 @@ var rootCmd = &cobra.Command{ //nolint:exhaustruct
 }
 
 // Execute executes the root command.
-func Execute() int {
+func Execute() byte {
 	err := rootCmd.Execute()
 
 	if err != nil {

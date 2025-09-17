@@ -22,7 +22,7 @@ func NewServer(handler jsonrpc2.Handler) *Server {
 }
 
 // Start starts the LSP server.
-func (s *Server) Start() (int, error) {
+func (s *Server) Start() (byte, error) {
 	server, err := jsonrpc2.NewServer(s.Handler, os.Stdin, os.Stdout)
 
 	if err != nil {

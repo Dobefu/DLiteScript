@@ -8,5 +8,5 @@ import (
 )
 
 func main() {
-	syscall.Exit(cmd.Execute())
+	syscall.Exit(int(cmd.Execute()))
 }

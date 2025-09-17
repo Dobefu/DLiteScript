@@ -110,7 +110,7 @@ func TestDump(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			evaluator := &testEvaluator{buf: strings.Builder{}}
+			evaluator := &testEvaluator{buf: strings.Builder{}, exitCode: 0}
 			dumpFunc, hasDump := functions["dump"]
 
 			if !hasDump {

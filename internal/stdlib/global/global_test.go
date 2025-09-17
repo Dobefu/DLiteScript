@@ -7,11 +7,16 @@ import (
 )
 
 type testEvaluator struct {
-	buf strings.Builder
+	buf      strings.Builder
+	exitCode byte
 }
 
 func (e *testEvaluator) AddToBuffer(format string, args ...any) {
 	fmt.Fprintf(&e.buf, format, args...)
+}
+
+func (e *testEvaluator) Terminate(code byte) {
+	e.exitCode = code
 }
 
 func TestGetGlobalFunctions(t *testing.T) {

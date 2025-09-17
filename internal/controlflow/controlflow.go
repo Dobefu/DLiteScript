@@ -7,12 +7,14 @@ import "github.com/Dobefu/DLiteScript/internal/datavalue"
 type FlowType int
 
 const (
-	// FlowTypeBreak represents a break statement.
+	// FlowTypeBreak represents a break flow control.
 	FlowTypeBreak FlowType = iota
-	// FlowTypeContinue represents a continue statement.
+	// FlowTypeContinue represents a continue flow control.
 	FlowTypeContinue
-	// FlowTypeReturn represents a return statement.
+	// FlowTypeReturn represents a return flow control.
 	FlowTypeReturn
+	// FlowTypeExit represents an exit flow control.
+	FlowTypeExit
 )
 
 // Control represents a control flow from a statement.
@@ -68,6 +70,17 @@ func NewReturnResult(value datavalue.Value) *EvaluationResult {
 	}
 }
 
+// NewExitResult creates a new exit result.
+func NewExitResult(code byte) *EvaluationResult {
+	return &EvaluationResult{
+		Value: datavalue.Null(),
+		Control: &Control{
+			Type:  FlowTypeExit,
+			Count: int(code),
+		},
+	}
+}
+
 // IsNormalResult returns true if this is a normal result (no control flow).
 func (r *EvaluationResult) IsNormalResult() bool {
 	return r.Control == nil
@@ -86,4 +99,9 @@ func (r *EvaluationResult) IsContinueResult() bool {
 // IsReturnResult returns true if this is a return result.
 func (r *EvaluationResult) IsReturnResult() bool {
 	return r.Control != nil && r.Control.Type == FlowTypeReturn
+}
+
+// IsExitResult returns true if this is an exit result.
+func (r *EvaluationResult) IsExitResult() bool {
+	return r.Control != nil && r.Control.Type == FlowTypeExit
 }

@@ -122,7 +122,7 @@ func TestGetPrintfFunction(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			ev := &testEvaluator{buf: strings.Builder{}}
+			ev := &testEvaluator{buf: strings.Builder{}, exitCode: 0}
 			printfFunc, hasPrintf := functions["printf"]
 
 			if !hasPrintf {

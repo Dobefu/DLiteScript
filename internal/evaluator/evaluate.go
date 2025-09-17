@@ -8,9 +8,11 @@ import (
 )
 
 // Evaluate runs the evaluation logic.
-func (e *Evaluator) Evaluate(currentAst ast.ExprNode) (*controlflow.EvaluationResult, error) {
-	if currentAst == nil {
-		return controlflow.NewRegularResult(datavalue.Null()), nil
+func (e *Evaluator) Evaluate(
+	currentAst ast.ExprNode,
+) (*controlflow.EvaluationResult, error) {
+	if e.shouldTerminate || currentAst == nil {
+		return controlflow.NewExitResult(e.exitCode), nil
 	}
 
 	switch node := currentAst.(type) {
