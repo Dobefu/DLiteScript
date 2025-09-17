@@ -40,16 +40,51 @@ func TestRootCmd(t *testing.T) {
 func TestRootCmdErr(t *testing.T) {
 	t.Parallel()
 
-	cmdMutex.Lock()
-	defer func() {
-		exitCode = 0
-		cmdMutex.Unlock()
-	}()
+	tests := []struct {
+		name  string
+		input string
+	}{
+		{
+			name:  "missing arguments",
+			input: "",
+		},
+		{
+			name:  "invalid syntax",
+			input: "bogus",
+		},
+	}
 
-	runRootCmd(rootCmd, []string{"bogus"})
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
 
-	if exitCode == 0 {
-		t.Fatalf("expected exit code not to be 0")
+			cmdMutex.Lock()
+			defer func() {
+				exitCode = 0
+				cmdMutex.Unlock()
+			}()
+
+			input := []string{}
+
+			if test.input != "" {
+				input = append(input, test.input)
+			}
+
+			if len(input) == 0 {
+				err := rootCmd.ValidateArgs(input)
+
+				if err == nil {
+					t.Fatalf("Expected error, got nil")
+				}
+			}
+
+			rootCmd.SetArgs(input)
+			runRootCmd(rootCmd, input)
+
+			if exitCode == 0 {
+				t.Fatalf("expected non-zero exit code, got 0")
+			}
+		})
 	}
 }
 
