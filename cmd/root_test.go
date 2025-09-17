@@ -103,7 +103,7 @@ func TestExecute(t *testing.T) {
 		t.Fatalf("Expected no error, got: \"%s\"", err.Error())
 	}
 
-	rootCmd.SetArgs([]string{"../examples/00_simple/main.dl"})
+	rootCmd.SetArgs([]string{"-q", "../examples/00_simple/main.dl"})
 	resultExitCode := Execute()
 
 	if resultExitCode != 0 {

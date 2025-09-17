@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 
@@ -24,10 +25,12 @@ var evalCmd = &cobra.Command{ //nolint:exhaustruct
 }
 
 func init() {
+	evalCmd.Flags().BoolP("quiet", "q", false, "Don't print any messages to the output")
+
 	rootCmd.AddCommand(evalCmd)
 }
 
-func runEvalCmd(_ *cobra.Command, args []string) {
+func runEvalCmd(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no code provided")
 		exitCode = 1
@@ -35,8 +38,15 @@ func runEvalCmd(_ *cobra.Command, args []string) {
 		return
 	}
 
+	isQuiet, _ := cmd.Flags().GetBool("quiet")
+	var outfile io.Writer = os.Stdout
+
+	if isQuiet {
+		outfile = io.Discard
+	}
+
 	runner := &scriptrunner.ScriptRunner{
-		OutFile: os.Stdout,
+		OutFile: outfile,
 	}
 
 	var err error

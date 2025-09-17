@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 
-	"github.com/Dobefu/DLiteScript/internal/scriptrunner"
 	"github.com/spf13/cobra"
+
+	"github.com/Dobefu/DLiteScript/internal/scriptrunner"
 )
 
 var rootCmd = &cobra.Command{ //nolint:exhaustruct
@@ -23,6 +25,10 @@ var rootCmd = &cobra.Command{ //nolint:exhaustruct
 	Run:   runRootCmd,
 }
 
+func init() {
+	rootCmd.Flags().BoolP("quiet", "q", false, "Don't print any messages to the output")
+}
+
 // Execute executes the root command.
 func Execute() byte {
 	err := rootCmd.Execute()
@@ -34,7 +40,7 @@ func Execute() byte {
 	return exitCode
 }
 
-func runRootCmd(_ *cobra.Command, args []string) {
+func runRootCmd(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no file specified")
 		exitCode = 1
@@ -42,8 +48,15 @@ func runRootCmd(_ *cobra.Command, args []string) {
 		return
 	}
 
+	isQuiet, _ := cmd.Flags().GetBool("quiet")
+	var outfile io.Writer = os.Stdout
+
+	if isQuiet {
+		outfile = io.Discard
+	}
+
 	runner := &scriptrunner.ScriptRunner{
-		OutFile: os.Stdout,
+		OutFile: outfile,
 	}
 
 	var err error

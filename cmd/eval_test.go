@@ -34,6 +34,7 @@ func TestEvalCmd(t *testing.T) {
 			}
 
 			evalCmd.SetArgs([]string{test.input})
+			evalCmd.Flags().Set("quiet", "true")
 			runEvalCmd(evalCmd, []string{test.input})
 
 			if exitCode != 0 {
