@@ -1,6 +1,7 @@
 package datavalue
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -323,6 +324,36 @@ func TestDatavalueAny(t *testing.T) {
 	}
 }
 
+func TestDatavalueError(t *testing.T) {
+	t.Parallel()
+
+	value := Error(errors.New("test"))
+
+	if value.DataType() != datatype.DataTypeError {
+		t.Errorf("expected DataTypeError, got '%v'", value.DataType())
+	}
+
+	if value.ToString() != "test" {
+		t.Errorf("expected 'test', got '%s'", value.ToString())
+	}
+
+	errValue, err := value.AsError()
+
+	if err != nil {
+		t.Errorf("expected no error, got '%s'", err.Error())
+	}
+
+	if errValue.Error() != "test" {
+		t.Errorf("expected 'test', got '%s'", errValue.Error())
+	}
+
+	str := Error(nil).ToString()
+
+	if str != "null" {
+		t.Errorf("expected 'null', got '%s'", str)
+	}
+}
+
 func TestDatavalueAsNumber(t *testing.T) {
 	t.Parallel()
 
@@ -473,6 +504,7 @@ func TestDatavalueUnknown(t *testing.T) {
 		Bool:     false,
 		Func:     nil,
 		Values:   nil,
+		Error:    nil,
 		Any:      nil,
 	}
 
@@ -964,6 +996,46 @@ func TestDatavalueAsTupleErr(t *testing.T) {
 	}
 }
 
+func TestDatavalueAsErrorErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected string
+	}{
+		{
+			name:  "null value",
+			input: Null(),
+			expected: fmt.Sprintf(
+				"%s: %s",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgTypeExpected,
+					datatype.DataTypeError.AsString(),
+					datatype.DataTypeNull.AsString(),
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := test.input.AsError()
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
 func TestDatavalueEquals(t *testing.T) {
 	t.Parallel()
 
@@ -1044,6 +1116,24 @@ func TestDatavalueEquals(t *testing.T) {
 			name:        "different types",
 			value:       Number(1),
 			other:       Null(),
+			shouldMatch: false,
+		},
+		{
+			name:        "two errors with same error",
+			value:       Error(errors.New("test")),
+			other:       Error(errors.New("test")),
+			shouldMatch: true,
+		},
+		{
+			name:        "two errors with left nil",
+			value:       Error(nil),
+			other:       Error(errors.New("test2")),
+			shouldMatch: false,
+		},
+		{
+			name:        "two errors with right nil",
+			value:       Error(errors.New("test")),
+			other:       Error(nil),
 			shouldMatch: false,
 		},
 		{

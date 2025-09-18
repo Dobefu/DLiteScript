@@ -1,6 +1,7 @@
 package global
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
@@ -86,6 +87,13 @@ func TestDump(t *testing.T) {
 				),
 			},
 			expected: "tuple[3]:\n  (0):   1\n  (1):   2\n  (2):   3\n",
+		},
+		{
+			name: "error value",
+			input: []datavalue.Value{
+				datavalue.Error(errors.New("test")),
+			},
+			expected: "error: test\n",
 		},
 		{
 			name: "any value",

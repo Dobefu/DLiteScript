@@ -56,31 +56,34 @@ func getPrintfFunction() function.Info {
 
 			for i := 1; i < len(args); i++ {
 				switch args[i].DataType() {
-				case datatype.DataTypeString:
+				case
+					datatype.DataTypeString:
 					str, _ := args[i].AsString()
 					formatArgs[i-1] = str
 
-				case datatype.DataTypeNumber:
+				case
+					datatype.DataTypeNumber:
 					num, _ := args[i].AsNumber()
 					formatArgs[i-1] = num
 
-				case datatype.DataTypeBool:
+				case
+					datatype.DataTypeBool:
 					num, _ := args[i].AsBool()
 					formatArgs[i-1] = num
 
-				case datatype.DataTypeNull:
+				case
+					datatype.DataTypeNull:
 					formatArgs[i-1] = "null"
 
-				case datatype.DataTypeFunction:
+				case
+					datatype.DataTypeFunction:
 					formatArgs[i-1] = "function"
 
-				case datatype.DataTypeTuple:
-					formatArgs[i-1] = args[i].ToString()
-
-				case datatype.DataTypeArray:
-					formatArgs[i-1] = args[i].ToString()
-
-				case datatype.DataTypeAny:
+				case
+					datatype.DataTypeTuple,
+					datatype.DataTypeArray,
+					datatype.DataTypeError,
+					datatype.DataTypeAny:
 					formatArgs[i-1] = args[i].ToString()
 				}
 			}

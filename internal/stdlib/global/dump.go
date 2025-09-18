@@ -91,5 +91,9 @@ func dumpSingleValue(
 			e.AddToBuffer(fmt.Sprintf("%s  (%d): ", indentStr, i))
 			dumpSingleValue(e, item, indent+1)
 		}
+
+	case
+		datatype.DataTypeError:
+		e.AddToBuffer(fmt.Sprintf("%serror: %s\n", indentStr, value.ToString()))
 	}
 }

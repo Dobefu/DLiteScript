@@ -19,6 +19,8 @@ const (
 	DataTypeTuple
 	// DataTypeArray represents an array type.
 	DataTypeArray
+	// DataTypeError represents an error type.
+	DataTypeError
 	// DataTypeAny represents any type.
 	DataTypeAny
 )
@@ -46,6 +48,9 @@ func (dt DataType) AsString() string {
 
 	case DataTypeArray:
 		return "array"
+
+	case DataTypeError:
+		return "error"
 
 	case DataTypeAny:
 		return "any"

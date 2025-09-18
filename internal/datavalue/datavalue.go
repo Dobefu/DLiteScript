@@ -20,6 +20,7 @@ type Value struct {
 	Bool   bool
 	Func   *ast.FuncDeclarationStatement
 	Values []Value
+	Error  error
 	Any    any
 }
 
@@ -38,6 +39,7 @@ func Null() Value {
 		Bool:   false,
 		Func:   nil,
 		Values: nil,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -94,6 +96,14 @@ func (v Value) ToString() string {
 		return fmt.Sprintf("[%s]", strings.Join(valueStrings, ", "))
 
 	case
+		datatype.DataTypeError:
+		if v.Error == nil {
+			return "null"
+		}
+
+		return v.Error.Error()
+
+	case
 		datatype.DataTypeAny:
 		return fmt.Sprintf("%v", v.Any)
 
@@ -112,6 +122,7 @@ func Number(n float64) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: nil,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -126,6 +137,7 @@ func String(s string) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: nil,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -140,6 +152,7 @@ func Bool(b bool) Value {
 		Bool:   b,
 		Func:   nil,
 		Values: nil,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -154,6 +167,7 @@ func Function(fn *ast.FuncDeclarationStatement) Value {
 		Bool:   false,
 		Func:   fn,
 		Values: nil,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -168,6 +182,7 @@ func Tuple(values ...Value) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: values,
+		Error:  nil,
 		Any:    nil,
 	}
 }
@@ -182,6 +197,22 @@ func Array(values ...Value) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: values,
+		Error:  nil,
+		Any:    nil,
+	}
+}
+
+// Error creates a new error value.
+func Error(e error) Value {
+	return Value{
+		dataType: datatype.DataTypeError,
+
+		Num:    0,
+		Str:    "",
+		Bool:   false,
+		Func:   nil,
+		Values: nil,
+		Error:  e,
 		Any:    nil,
 	}
 }
@@ -196,6 +227,7 @@ func Any(a any) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: nil,
+		Error:  nil,
 		Any:    a,
 	}
 }
@@ -461,6 +493,20 @@ func (v Value) AsTuple() ([]Value, error) {
 	)
 }
 
+// AsError returns the value as an error.
+func (v Value) AsError() (error, error) {
+	if v.dataType == datatype.DataTypeError {
+		return v.Error, nil
+	}
+
+	return nil, errorutil.NewError(
+		errorutil.StageEvaluate,
+		errorutil.ErrorMsgTypeExpected,
+		datatype.DataTypeError.AsString(),
+		v.dataType.AsString(),
+	)
+}
+
 // Equals returns if two values are equal.
 func (v Value) Equals(other Value) bool {
 	if v.dataType != other.dataType {
@@ -502,6 +548,18 @@ func (v Value) Equals(other Value) bool {
 		}
 
 		return true
+
+	case
+		datatype.DataTypeError:
+		if v.Error == nil {
+			return other.Error == nil
+		}
+
+		if other.Error == nil {
+			return v.Error == nil
+		}
+
+		return v.Error.Error() == other.Error.Error()
 
 	case
 		datatype.DataTypeAny:

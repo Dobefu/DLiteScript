@@ -95,40 +95,37 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	}
 
 	switch leftValue.DataType() {
-	case datatype.DataTypeNumber:
+	case
+		datatype.DataTypeNumber:
 		return e.evaluateArithmeticBinaryExprNumber(
 			leftValue,
 			rightValue,
 			node,
 		)
 
-	case datatype.DataTypeArray:
+	case
+		datatype.DataTypeArray:
 		return e.evaluateArithmeticBinaryExprArray(
 			leftValue,
 			rightValue,
 			node,
 		)
 
-	case datatype.DataTypeString:
+	case
+		datatype.DataTypeString:
 		return e.evaluateArithmeticBinaryExprString(
 			leftValue,
 			rightValue,
 			node,
 		)
 
-	case datatype.DataTypeBool:
-		fallthrough
-
-	case datatype.DataTypeFunction:
-		fallthrough
-
-	case datatype.DataTypeTuple:
-		fallthrough
-
-	case datatype.DataTypeAny:
-		fallthrough
-
-	case datatype.DataTypeNull:
+	case
+		datatype.DataTypeBool,
+		datatype.DataTypeFunction,
+		datatype.DataTypeTuple,
+		datatype.DataTypeError,
+		datatype.DataTypeAny,
+		datatype.DataTypeNull:
 		fallthrough
 
 	default:

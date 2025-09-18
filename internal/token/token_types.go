@@ -42,6 +42,9 @@ const (
 	TokenTypeIdentifier
 	// TokenTypeNull represents the null keyword.
 	TokenTypeNull
+	// TokenTypeError represents the error keyword.
+	TokenTypeError
+
 	// TokenTypeLParen represents a left parenthesis.
 	TokenTypeLParen
 	// TokenTypeRParen represents a right parenthesis.
@@ -113,6 +116,8 @@ const (
 	TokenTypeTypeBool
 	// TokenTypeTypeArray represents the '[]' array type keyword.
 	TokenTypeTypeArray
+	// TokenTypeTypeError represents the 'error' type keyword.
+	TokenTypeTypeError
 	// TokenTypeTypeAny represents the 'any' type keyword.
 	TokenTypeTypeAny
 )
