@@ -1,16 +1,18 @@
 package strings
 
 import (
+	"strings"
+
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getLenFunction() function.Info {
+func getFindFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "len",
-			Description: "Returns the length of a string.",
+			Name:        "find",
+			Description: "Returns the index of the first occurrence of a substring in a string.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -18,8 +20,9 @@ func getLenFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				`len("") // returns 0`,
-				`len("test") // returns 4`,
+				`find("some test string", "") // returns 0`,
+				`find("some test string", "test") // returns 5`,
+				`find("some test string", "bogus") // returns -1`,
 			},
 		},
 		packageName,
@@ -28,21 +31,27 @@ func getLenFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "str",
-				Description: "The string to get the length of.",
+				Description: "The string to search in.",
+			},
+			{
+				Type:        datatype.DataTypeString,
+				Name:        "substr",
+				Description: "The substring to search for.",
 			},
 		},
 		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeNumber,
-				Name:        "length",
-				Description: "The length of the string.",
+				Name:        "index",
+				Description: "The index of the first occurrence of the substring in the string.",
 			},
 		},
 		true,
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			str, _ := args[0].AsString()
+			substr, _ := args[1].AsString()
 
-			return datavalue.Number(float64(len(str)))
+			return datavalue.Number(float64(strings.Index(str, substr)))
 		},
 	)
 }

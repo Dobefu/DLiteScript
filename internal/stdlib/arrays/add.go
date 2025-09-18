@@ -27,7 +27,7 @@ func getAddFunction() function.Info {
 		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeArray,
-				Name:        "array",
+				Name:        "arr",
 				Description: "The array to add the values to.",
 			},
 			{
