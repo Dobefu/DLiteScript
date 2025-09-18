@@ -11,5 +11,6 @@ const packageName = "array"
 func GetArrayFunctions() map[string]function.Info {
 	return map[string]function.Info{
 		"add": getAddFunction(),
+		"len": getLenFunction(),
 	}
 }
