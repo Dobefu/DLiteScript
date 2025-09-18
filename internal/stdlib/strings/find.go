@@ -1,6 +1,7 @@
 package strings
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
@@ -20,9 +21,9 @@ func getFindFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				`find("some test string", "") // returns 0`,
-				`find("some test string", "test") // returns 5`,
-				`find("some test string", "bogus") // returns -1`,
+				fmt.Sprintf(`%s.find("some test string", "") // returns 0`, packageName),
+				fmt.Sprintf(`%s.find("some test string", "test") // returns 5`, packageName),
+				fmt.Sprintf(`%s.find("some test string", "bogus") // returns -1`, packageName),
 			},
 		},
 		packageName,

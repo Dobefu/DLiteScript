@@ -1,6 +1,8 @@
 package strings
 
 import (
+	"fmt"
+
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
@@ -18,8 +20,8 @@ func getLenFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				`len("") // returns 0`,
-				`len("test") // returns 4`,
+				fmt.Sprintf(`%s.len("") // returns 0`, packageName),
+				fmt.Sprintf(`%s.len("test") // returns 4`, packageName),
 			},
 		},
 		packageName,

@@ -1,6 +1,7 @@
 package strings
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
@@ -20,9 +21,9 @@ func getHasFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				`has("some test string", "") // returns true`,
-				`has("some test string", "test") // returns true`,
-				`has("some test string", "bogus") // returns false`,
+				fmt.Sprintf(`%s.has("some test string", "") // returns true`, packageName),
+				fmt.Sprintf(`%s.has("some test string", "test") // returns true`, packageName),
+				fmt.Sprintf(`%s.has("some test string", "bogus") // returns false`, packageName),
 			},
 		},
 		packageName,

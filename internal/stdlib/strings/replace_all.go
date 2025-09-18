@@ -9,11 +9,11 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getReplaceFunction() function.Info {
+func getReplaceAllFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "replace",
-			Description: "Replaces a substring in a string with a new substring.",
+			Name:        "replaceAll",
+			Description: "Replaces all occurrences of a substring in a string with a new substring.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,8 +21,8 @@ func getReplaceFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.replace("some test string", "test", "new") // returns "some new string"`, packageName),
-				fmt.Sprintf(`%s.replace("some test string", "bogus", "new") // returns "some test string"`, packageName),
+				fmt.Sprintf(`%s.replaceAll("test some test string", "test", "new") // returns "new some new string"`, packageName),
+				fmt.Sprintf(`%s.replaceAll("test some test string", "bogus", "new") // returns "test some test string"`, packageName),
 			},
 		},
 		packageName,
@@ -48,7 +48,7 @@ func getReplaceFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "newStr",
-				Description: "The new string with the substring replaced.",
+				Description: "The new string with the substring replaced all occurrences of the substring.",
 			},
 		},
 		true,
@@ -57,7 +57,7 @@ func getReplaceFunction() function.Info {
 			substr, _ := args[1].AsString()
 			newSubstr, _ := args[2].AsString()
 
-			return datavalue.String(strings.Replace(str, substr, newSubstr, 1))
+			return datavalue.String(strings.ReplaceAll(str, substr, newSubstr))
 		},
 	)
 }
