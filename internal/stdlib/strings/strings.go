@@ -10,8 +10,9 @@ const packageName = "strings"
 // GetStringsFunctions returns the string functions for the standard library.
 func GetStringsFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"len":  getLenFunction(),
-		"find": getFindFunction(),
-		"has":  getHasFunction(),
+		"len":     getLenFunction(),
+		"find":    getFindFunction(),
+		"has":     getHasFunction(),
+		"replace": getReplaceFunction(),
 	}
 }
