@@ -43,13 +43,13 @@ func TestGetAddFunction(t *testing.T) {
 		},
 	}
 
-	add := getAddFunction()
+	addFunc := getAddFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := add.Handler(
+			result, err := addFunc.Handler(
 				nil,
 				[]datavalue.Value{test.input, test.args},
 			)
