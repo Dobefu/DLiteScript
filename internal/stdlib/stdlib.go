@@ -5,7 +5,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 	"github.com/Dobefu/DLiteScript/internal/stdlib/global"
 
-	stdlibarray "github.com/Dobefu/DLiteScript/internal/stdlib/array"
+	stdlibarrays "github.com/Dobefu/DLiteScript/internal/stdlib/arrays"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
 )
 
@@ -22,8 +22,8 @@ func init() {
 	functionRegistry["math"] = function.PackageInfo{
 		Functions: stdlibmath.GetMathFunctions(),
 	}
-	functionRegistry["array"] = function.PackageInfo{
-		Functions: stdlibarray.GetArrayFunctions(),
+	functionRegistry["arrays"] = function.PackageInfo{
+		Functions: stdlibarrays.GetArrayFunctions(),
 	}
 }
 

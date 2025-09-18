@@ -1,4 +1,4 @@
-package array
+package arrays
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/datatype"
