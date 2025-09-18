@@ -55,22 +55,26 @@ func dumpSingleValue(
 	indentStr := strings.Repeat("  ", indent)
 
 	switch value.DataType() {
-	case datatype.DataTypeString:
+	case
+		datatype.DataTypeString:
 		e.AddToBuffer(fmt.Sprintf("%s\"%s\"\n", indentStr, value.ToString()))
 
-	case datatype.DataTypeNumber:
+	case
+		datatype.DataTypeNumber,
+		datatype.DataTypeBool,
+		datatype.DataTypeAny:
 		e.AddToBuffer(fmt.Sprintf("%s%s\n", indentStr, value.ToString()))
 
-	case datatype.DataTypeBool:
-		e.AddToBuffer(fmt.Sprintf("%s%s\n", indentStr, value.ToString()))
-
-	case datatype.DataTypeNull:
+	case
+		datatype.DataTypeNull:
 		e.AddToBuffer(fmt.Sprintf("%snull\n", indentStr))
 
-	case datatype.DataTypeFunction:
+	case
+		datatype.DataTypeFunction:
 		e.AddToBuffer(fmt.Sprintf("%sfunction\n", indentStr))
 
-	case datatype.DataTypeArray:
+	case
+		datatype.DataTypeArray:
 		e.AddToBuffer(fmt.Sprintf("%sarray[%d]:\n", indentStr, len(value.Values)))
 
 		for i, item := range value.Values {
@@ -79,15 +83,13 @@ func dumpSingleValue(
 			dumpSingleValue(e, item, indent+1)
 		}
 
-	case datatype.DataTypeTuple:
+	case
+		datatype.DataTypeTuple:
 		e.AddToBuffer(fmt.Sprintf("%stuple[%d]:\n", indentStr, len(value.Values)))
 
 		for i, item := range value.Values {
 			e.AddToBuffer(fmt.Sprintf("%s  (%d): ", indentStr, i))
 			dumpSingleValue(e, item, indent+1)
 		}
-
-	case datatype.DataTypeAny:
-		e.AddToBuffer(fmt.Sprintf("%s%s\n", indentStr, value.ToString()))
 	}
 }
