@@ -17,7 +17,10 @@ func (p *Parser) parseExpr(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
 	if recursionDepth > maxRecursionDepth {
-		return nil, fmt.Errorf("maximum recursion depth of (%d) exceeded", maxRecursionDepth)
+		return nil, fmt.Errorf(
+			"maximum recursion depth of (%d) exceeded",
+			maxRecursionDepth,
+		)
 	}
 
 	if leftExpr == nil {

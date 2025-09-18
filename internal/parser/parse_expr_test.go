@@ -40,6 +40,15 @@ func TestParseExpr(t *testing.T) {
 			},
 			expected: "(1 ** 2)",
 		},
+		{
+			name: "shorthand addition",
+			input: []*token.Token{
+				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
+				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 0),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+			},
+			expected: "x += 1",
+		},
 	}
 
 	for _, test := range tests {
@@ -298,7 +307,7 @@ func TestHandleArrayToken(t *testing.T) {
 			)
 
 			if err != nil {
-				t.Fatalf("expected no error, got: %s", err.Error())
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if expr.Expr() != test.expected {
@@ -412,9 +421,10 @@ func TestHandleShorthandAssignmentToken(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name     string
-		input    []*token.Token
-		expected string
+		name          string
+		input         []*token.Token
+		minPrecedence int
+		expected      string
 	}{
 		{
 			name: "shorthand assignment expression",
@@ -423,7 +433,18 @@ func TestHandleShorthandAssignmentToken(t *testing.T) {
 				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
-			expected: "x += 1",
+			minPrecedence: bindingPowerDefault,
+			expected:      "x += 1",
+		},
+		{
+			name: "shorthand assignment expression with lower precedence",
+			input: []*token.Token{
+				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
+				token.NewToken("**=", token.TokenTypeOperationPowAssign, 0, 1),
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+			},
+			minPrecedence: bindingPowerAssignment,
+			expected:      "x",
 		},
 	}
 
@@ -441,16 +462,99 @@ func TestHandleShorthandAssignmentToken(t *testing.T) {
 			expr, err := p.handleShorthandAssignmentToken(
 				test.input[0],
 				leftExpr,
-				0,
+				test.minPrecedence,
 				0,
 			)
 
 			if err != nil {
-				t.Fatalf("expected no error, got: %s", err.Error())
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if expr.Expr() != test.expected {
-				t.Fatalf("expected %s, got %s", test.expected, expr.Expr())
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, expr.Expr())
+			}
+		})
+	}
+}
+
+func TestHandleShorthandAssignmentTokenErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected EOF",
+			input: []*token.Token{
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 1",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "unexpected token after shorthand assignment",
+			input: []*token.Token{
+				token.NewToken("1", token.TokenTypeNumber, 0, 0),
+				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				token.NewToken("(", token.TokenTypeLParen, 1, 6),
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 2",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			firstToken := &token.Token{} //nolint:exhaustruct
+			restTokens := []*token.Token{}
+
+			if len(test.input) > 0 {
+				firstToken = test.input[0]
+				restTokens = test.input[1:]
+			}
+
+			p := NewParser(restTokens)
+			_, err := p.handleShorthandAssignmentToken(
+				firstToken,
+				&ast.Identifier{
+					Value:    "x",
+					StartPos: 0,
+					EndPos:   0,
+				},
+				0,
+				0,
+			)
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf(
+					"expected error to be \"%s\", got \"%s\"",
+					test.expected,
+					err.Error(),
+				)
 			}
 		})
 	}
