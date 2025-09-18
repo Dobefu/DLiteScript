@@ -12,5 +12,6 @@ func GetStringsFunctions() map[string]function.Info {
 	return map[string]function.Info{
 		"len":  getLenFunction(),
 		"find": getFindFunction(),
+		"has":  getHasFunction(),
 	}
 }
