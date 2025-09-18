@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -47,11 +48,11 @@ func TestParseAssignmentExpr(t *testing.T) {
 			expr, err := p.Parse()
 
 			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if expr.Expr() != test.expected {
-				t.Fatalf("expected %s, got %s", test.expected, expr.Expr())
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, expr.Expr())
 			}
 		})
 	}
@@ -63,18 +64,51 @@ func TestParseAssignmentExprErr(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    []*token.Token
+		leftExpr ast.ExprNode
 		expected string
 	}{
 		{
-			name: "unexpected token",
+			name:  "token is not an identifier or index expression",
+			input: []*token.Token{},
+			leftExpr: &ast.NumberLiteral{
+				Value:    "1",
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+			),
+		},
+		{
+			name:  "no tokens",
+			input: []*token.Token{},
+			leftExpr: &ast.Identifier{
+				Value:    "x",
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "no right expression token",
 			input: []*token.Token{
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: "=", TokenType: token.TokenTypeAssign},
+				{Atom: "x", TokenType: token.TokenTypeIdentifier},
+			},
+			leftExpr: &ast.Identifier{
+				Value:    "x",
+				StartPos: 0,
+				EndPos:   1,
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 1",
 				errorutil.StageParse.String(),
-				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
+				errorutil.ErrorMsgUnexpectedEOF,
 			),
 		},
 		{
@@ -83,24 +117,15 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "x", TokenType: token.TokenTypeIdentifier},
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
+			leftExpr: &ast.Identifier{
+				Value:    "x",
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 2",
 				errorutil.StageParse.String(),
-				errorutil.ErrorMsgUnexpectedEOF,
-			),
-		},
-		{
-			name: "invalid expression after assignment",
-			input: []*token.Token{
-				{Atom: "x", TokenType: token.TokenTypeIdentifier},
-				{Atom: "=", TokenType: token.TokenTypeAssign},
-				{Atom: "1", TokenType: token.TokenTypeNumber},
-				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
-			},
-			expected: fmt.Sprintf(
-				"%s: %s at position 4",
-				errorutil.StageParse.String(),
-				errorutil.ErrorMsgUnexpectedEOF,
+				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "="),
 			),
 		},
 	}
@@ -110,14 +135,14 @@ func TestParseAssignmentExprErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.Parse()
+			_, err := p.parseAssignmentExpr(test.leftExpr, 0, 0)
 
 			if err == nil {
 				t.Fatalf("expected error, got none")
 			}
 
 			if err.Error() != test.expected {
-				t.Fatalf("expected %s, got %s", test.expected, err.Error())
+				t.Fatalf("expected \"%s\", got: \"%s\"", test.expected, err.Error())
 			}
 		})
 	}
