@@ -145,8 +145,8 @@ func TestGetPrintfFunction(t *testing.T) {
 				t.Fatalf("expected no error, got %v", err)
 			}
 
-			if result.DataType() != datatype.DataTypeNull {
-				t.Fatalf("expected null, got %v", result.DataType())
+			if result.DataType != datatype.DataTypeNull {
+				t.Fatalf("expected null, got %v", result.DataType)
 			}
 		})
 	}

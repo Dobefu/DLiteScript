@@ -56,11 +56,11 @@ func TestEvaluateArrayConcatenation(t *testing.T) {
 				t.Fatalf("expected no error, got: %s", err.Error())
 			}
 
-			if result.Value.DataType() != test.expected.DataType() {
+			if result.Value.DataType != test.expected.DataType {
 				t.Fatalf(
 					"expected type to be \"%s\", got \"%s\"",
-					test.expected.DataType().AsString(),
-					result.Value.DataType().AsString(),
+					test.expected.DataType.AsString(),
+					result.Value.DataType.AsString(),
 				)
 			}
 

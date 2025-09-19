@@ -138,11 +138,11 @@ func TestEvaluate(t *testing.T) {
 				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
-			if result.Value.DataType() != test.expected.Value.DataType() {
+			if result.Value.DataType != test.expected.Value.DataType {
 				t.Errorf(
 					"expected \"%T\", got \"%T\"",
-					test.expected.Value.DataType(),
-					result.Value.DataType(),
+					test.expected.Value.DataType,
+					result.Value.DataType,
 				)
 			}
 

@@ -49,8 +49,8 @@ func TestEvaluateIndexExpr(t *testing.T) {
 				t.Fatalf("expected no error, got: %s", err.Error())
 			}
 
-			if result.Value.DataType() != datatype.DataTypeNumber {
-				t.Fatalf("expected number result, got: %v", result.Value.DataType())
+			if result.Value.DataType != datatype.DataTypeNumber {
+				t.Fatalf("expected number result, got: %v", result.Value.DataType)
 			}
 
 			number, err := result.Value.AsNumber()

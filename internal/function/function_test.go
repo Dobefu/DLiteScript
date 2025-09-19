@@ -56,8 +56,8 @@ func TestMakeFunction(t *testing.T) {
 		t.Errorf("expected no error, got %v", err)
 	}
 
-	if result.DataType() != datatype.DataTypeNumber {
-		t.Errorf("expected DataTypeNumber, got %v", result.DataType())
+	if result.DataType != datatype.DataTypeNumber {
+		t.Errorf("expected DataTypeNumber, got %v", result.DataType)
 	}
 
 	if function.Documentation.Name != "test" {

@@ -14,13 +14,15 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
 ) (*controlflow.EvaluationResult, error) {
-	if leftValue.DataType() != rightValue.DataType() {
+	if leftValue.DataType != rightValue.DataType &&
+		leftValue.DataType != datatype.DataTypeAny &&
+		rightValue.DataType != datatype.DataTypeAny {
 		result := node.Operator.TokenType == token.TokenTypeNotEqual
 
 		return controlflow.NewRegularResult(datavalue.Bool(result)), nil
 	}
 
-	switch leftValue.DataType() {
+	switch leftValue.DataType {
 	case
 		datatype.DataTypeNumber:
 		leftNumber, rightNumber, err := e.getBinaryExprValueAsNumber(leftValue, rightValue)
@@ -79,9 +81,9 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
-			errorutil.ErrorMsgUnknownOperator,
+			errorutil.ErrorMsgTypeUnknownDataType,
 			node.StartPosition(),
-			node.Operator.Atom,
+			leftValue.DataType.AsString(),
 		)
 	}
 }

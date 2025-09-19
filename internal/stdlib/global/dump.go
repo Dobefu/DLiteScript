@@ -54,7 +54,7 @@ func dumpSingleValue(
 ) {
 	indentStr := strings.Repeat("  ", indent)
 
-	switch value.DataType() {
+	switch value.DataType {
 	case
 		datatype.DataTypeString:
 		e.AddToBuffer(fmt.Sprintf("%s\"%s\"\n", indentStr, value.ToString()))

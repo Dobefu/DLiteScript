@@ -90,8 +90,8 @@ func TestEvaluateAssignmentStatement(t *testing.T) {
 				t.Fatalf("failed to evaluate assignment statement: %s", err.Error())
 			}
 
-			if result.Value.DataType() != datatype.DataTypeNumber {
-				t.Fatalf("expected number result, got %v", result.Value.DataType())
+			if result.Value.DataType != datatype.DataTypeNumber {
+				t.Fatalf("expected number result, got %v", result.Value.DataType)
 			}
 
 			num, err := result.Value.AsNumber()

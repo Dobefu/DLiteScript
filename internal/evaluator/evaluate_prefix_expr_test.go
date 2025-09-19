@@ -77,11 +77,11 @@ func TestEvaluatePrefixExpr(t *testing.T) {
 				t.Errorf("error evaluating '%s': %s", test.input.Expr(), err.Error())
 			}
 
-			if rawResult.Value.DataType().AsString() != test.expected.DataType().AsString() {
+			if rawResult.Value.DataType.AsString() != test.expected.DataType.AsString() {
 				t.Errorf(
 					"expected '%v', got '%v'",
-					test.expected.DataType().AsString(),
-					rawResult.Value.DataType().AsString(),
+					test.expected.DataType.AsString(),
+					rawResult.Value.DataType.AsString(),
 				)
 			}
 		})

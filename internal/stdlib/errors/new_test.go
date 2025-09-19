@@ -44,8 +44,8 @@ func TestGetNewFunction(t *testing.T) {
 				t.Fatalf("expected no error, got %v", err)
 			}
 
-			if result.DataType() != datatype.DataTypeError {
-				t.Fatalf("expected DataTypeError, got %v", result.DataType())
+			if result.DataType != datatype.DataTypeError {
+				t.Fatalf("expected DataTypeError, got %v", result.DataType)
 			}
 
 			if result.ToString() != test.expected {

@@ -13,8 +13,8 @@ func (e *Evaluator) evaluateArrayConcatenation(
 	node *ast.BinaryExpr,
 ) (*controlflow.EvaluationResult, error) {
 	if len(leftArray) > 0 && len(rightArray) > 0 {
-		leftType := leftArray[0].DataType()
-		rightType := rightArray[0].DataType()
+		leftType := leftArray[0].DataType
+		rightType := rightArray[0].DataType
 
 		if leftType != rightType {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(

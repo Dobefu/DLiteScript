@@ -55,7 +55,7 @@ func getPrintfFunction() function.Info {
 			formatArgs := make([]any, len(args)-1)
 
 			for i := 1; i < len(args); i++ {
-				switch args[i].DataType() {
+				switch args[i].DataType {
 				case
 					datatype.DataTypeString:
 					str, _ := args[i].AsString()

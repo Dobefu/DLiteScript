@@ -13,7 +13,7 @@ import (
 
 // Value represents a value in the language.
 type Value struct {
-	dataType datatype.DataType
+	DataType datatype.DataType
 
 	Num    float64
 	Str    string
@@ -24,15 +24,10 @@ type Value struct {
 	Any    any
 }
 
-// DataType returns the data type of the value.
-func (v Value) DataType() datatype.DataType {
-	return v.dataType
-}
-
 // Null creates a new null value.
 func Null() Value {
 	return Value{
-		dataType: datatype.DataTypeNull,
+		DataType: datatype.DataTypeNull,
 
 		Num:    0,
 		Str:    "",
@@ -46,7 +41,7 @@ func Null() Value {
 
 // ToString returns the string representation of the value.
 func (v Value) ToString() string {
-	switch v.dataType {
+	switch v.DataType {
 	case
 		datatype.DataTypeNull:
 		return "null"
@@ -115,7 +110,7 @@ func (v Value) ToString() string {
 // Number creates a new number value.
 func Number(n float64) Value {
 	return Value{
-		dataType: datatype.DataTypeNumber,
+		DataType: datatype.DataTypeNumber,
 
 		Num:    n,
 		Str:    "",
@@ -130,7 +125,7 @@ func Number(n float64) Value {
 // String creates a new string value.
 func String(s string) Value {
 	return Value{
-		dataType: datatype.DataTypeString,
+		DataType: datatype.DataTypeString,
 
 		Num:    0,
 		Str:    s,
@@ -145,7 +140,7 @@ func String(s string) Value {
 // Bool creates a new boolean value.
 func Bool(b bool) Value {
 	return Value{
-		dataType: datatype.DataTypeBool,
+		DataType: datatype.DataTypeBool,
 
 		Num:    0,
 		Str:    "",
@@ -160,7 +155,7 @@ func Bool(b bool) Value {
 // Function creates a new function value.
 func Function(fn *ast.FuncDeclarationStatement) Value {
 	return Value{
-		dataType: datatype.DataTypeFunction,
+		DataType: datatype.DataTypeFunction,
 
 		Num:    0,
 		Str:    "",
@@ -175,7 +170,7 @@ func Function(fn *ast.FuncDeclarationStatement) Value {
 // Tuple creates a new tuple value.
 func Tuple(values ...Value) Value {
 	return Value{
-		dataType: datatype.DataTypeTuple,
+		DataType: datatype.DataTypeTuple,
 
 		Num:    0,
 		Str:    "",
@@ -190,7 +185,7 @@ func Tuple(values ...Value) Value {
 // Array creates a new array value.
 func Array(values ...Value) Value {
 	return Value{
-		dataType: datatype.DataTypeArray,
+		DataType: datatype.DataTypeArray,
 
 		Num:    0,
 		Str:    "",
@@ -205,7 +200,7 @@ func Array(values ...Value) Value {
 // Error creates a new error value.
 func Error(e error) Value {
 	return Value{
-		dataType: datatype.DataTypeError,
+		DataType: datatype.DataTypeError,
 
 		Num:    0,
 		Str:    "",
@@ -220,7 +215,7 @@ func Error(e error) Value {
 // Any creates a new any value.
 func Any(a any) Value {
 	return Value{
-		dataType: datatype.DataTypeAny,
+		DataType: datatype.DataTypeAny,
 
 		Num:    0,
 		Str:    "",
@@ -234,17 +229,17 @@ func Any(a any) Value {
 
 // AsNumber returns the value as a number.
 func (v Value) AsNumber() (float64, error) {
-	if v.dataType == datatype.DataTypeNumber {
+	if v.DataType == datatype.DataTypeNumber {
 		return v.Num, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return 0, errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeNumber.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -290,7 +285,7 @@ func (v Value) AsNumber() (float64, error) {
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeNumber.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 	}
@@ -299,23 +294,23 @@ func (v Value) AsNumber() (float64, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeNumber.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsString returns the value as a string.
 func (v Value) AsString() (string, error) {
-	if v.dataType == datatype.DataTypeString {
+	if v.DataType == datatype.DataTypeString {
 		return v.Str, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return "", errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeString.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -329,7 +324,7 @@ func (v Value) AsString() (string, error) {
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeString.AsString(),
-			v.dataType.AsString(),
+			v.DataType.AsString(),
 		)
 	}
 
@@ -337,23 +332,23 @@ func (v Value) AsString() (string, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeString.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsBool returns the value as a boolean.
 func (v Value) AsBool() (bool, error) {
-	if v.dataType == datatype.DataTypeBool {
+	if v.DataType == datatype.DataTypeBool {
 		return v.Bool, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return false, errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeBool.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -367,7 +362,7 @@ func (v Value) AsBool() (bool, error) {
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeBool.AsString(),
-			v.dataType.AsString(),
+			v.DataType.AsString(),
 		)
 	}
 
@@ -375,23 +370,23 @@ func (v Value) AsBool() (bool, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeBool.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsFunction returns the value as a function.
 func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
-	if v.dataType == datatype.DataTypeFunction {
+	if v.DataType == datatype.DataTypeFunction {
 		return v.Func, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return nil, errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeFunction.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -405,7 +400,7 @@ func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeFunction.AsString(),
-			v.dataType.AsString(),
+			v.DataType.AsString(),
 		)
 	}
 
@@ -413,23 +408,23 @@ func (v Value) AsFunction() (*ast.FuncDeclarationStatement, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeFunction.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsArray returns the value as an array.
 func (v Value) AsArray() ([]Value, error) {
-	if v.dataType == datatype.DataTypeArray {
+	if v.DataType == datatype.DataTypeArray {
 		return v.Values, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return nil, errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeArray.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -443,7 +438,7 @@ func (v Value) AsArray() ([]Value, error) {
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeArray.AsString(),
-			v.dataType.AsString(),
+			v.DataType.AsString(),
 		)
 	}
 
@@ -451,23 +446,23 @@ func (v Value) AsArray() ([]Value, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeArray.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsTuple returns the value as a tuple.
 func (v Value) AsTuple() ([]Value, error) {
-	if v.dataType == datatype.DataTypeTuple {
+	if v.DataType == datatype.DataTypeTuple {
 		return v.Values, nil
 	}
 
-	if v.dataType == datatype.DataTypeAny {
+	if v.DataType == datatype.DataTypeAny {
 		if v.Any == nil {
 			return nil, errorutil.NewError(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeExpected,
 				datatype.DataTypeTuple.AsString(),
-				v.dataType.AsString(),
+				v.DataType.AsString(),
 			)
 		}
 
@@ -481,7 +476,7 @@ func (v Value) AsTuple() ([]Value, error) {
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			datatype.DataTypeTuple.AsString(),
-			v.dataType.AsString(),
+			v.DataType.AsString(),
 		)
 	}
 
@@ -489,13 +484,13 @@ func (v Value) AsTuple() ([]Value, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeTuple.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // AsError returns the value as an error.
 func (v Value) AsError() (error, error) {
-	if v.dataType == datatype.DataTypeError {
+	if v.DataType == datatype.DataTypeError {
 		return v.Error, nil
 	}
 
@@ -503,17 +498,17 @@ func (v Value) AsError() (error, error) {
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgTypeExpected,
 		datatype.DataTypeError.AsString(),
-		v.dataType.AsString(),
+		v.DataType.AsString(),
 	)
 }
 
 // Equals returns if two values are equal.
 func (v Value) Equals(other Value) bool {
-	if v.dataType != other.dataType {
+	if v.DataType != other.DataType {
 		return false
 	}
 
-	switch v.dataType {
+	switch v.DataType {
 	case
 		datatype.DataTypeNull:
 		return true

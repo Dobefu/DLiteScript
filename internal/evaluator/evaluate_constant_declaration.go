@@ -18,13 +18,13 @@ func (e *Evaluator) evaluateConstantDeclaration(
 	}
 
 	if node.Type != datatype.DataTypeAny.AsString() &&
-		value.Value.DataType().AsString() != node.Type {
+		value.Value.DataType.AsString() != node.Type {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeMismatch,
 			node.StartPosition(),
 			node.Type,
-			value.Value.DataType().AsString(),
+			value.Value.DataType.AsString(),
 		)
 	}
 

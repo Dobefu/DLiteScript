@@ -17,7 +17,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if arrayValue.Value.DataType() != datatype.DataTypeArray {
+	if arrayValue.Value.DataType != datatype.DataTypeArray {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
@@ -33,7 +33,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if indexValue.Value.DataType() != datatype.DataTypeNumber {
+	if indexValue.Value.DataType != datatype.DataTypeNumber {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,

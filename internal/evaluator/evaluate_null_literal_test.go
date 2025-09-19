@@ -33,11 +33,11 @@ func TestEvaluateNullLiteral(t *testing.T) {
 				t.Fatalf("error evaluating null literal: \"%s\"", err.Error())
 			}
 
-			if result.Value.DataType().AsString() != test.expected.DataType().AsString() {
+			if result.Value.DataType.AsString() != test.expected.DataType.AsString() {
 				t.Fatalf(
 					"expected \"%v\", got \"%v\" at position %d",
-					test.expected.DataType().AsString(),
-					result.Value.DataType().AsString(),
+					test.expected.DataType.AsString(),
+					result.Value.DataType.AsString(),
 					test.input.StartPosition(),
 				)
 			}

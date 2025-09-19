@@ -15,8 +15,8 @@ func TestDatavalueNull(t *testing.T) {
 
 	value := Null()
 
-	if value.DataType() != datatype.DataTypeNull {
-		t.Errorf("expected DataTypeNull, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeNull {
+		t.Errorf("expected DataTypeNull, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "null" {
@@ -35,8 +35,8 @@ func TestDatavalueNumber(t *testing.T) {
 
 	value := Number(1)
 
-	if value.DataType() != datatype.DataTypeNumber {
-		t.Errorf("expected DataTypeNumber, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeNumber {
+		t.Errorf("expected DataTypeNumber, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "1" {
@@ -83,8 +83,8 @@ func TestDatavalueString(t *testing.T) {
 
 	value := String("test")
 
-	if value.DataType() != datatype.DataTypeString {
-		t.Errorf("expected DataTypeString, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeString {
+		t.Errorf("expected DataTypeString, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "test" {
@@ -113,8 +113,8 @@ func TestDatavalueBool(t *testing.T) {
 
 	value := Bool(true)
 
-	if value.DataType() != datatype.DataTypeBool {
-		t.Errorf("expected DataTypeBool, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeBool {
+		t.Errorf("expected DataTypeBool, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "true" {
@@ -159,8 +159,8 @@ func TestDatavalueFunction(t *testing.T) {
 		EndPos:          3,
 	})
 
-	if value.DataType() != datatype.DataTypeFunction {
-		t.Errorf("expected DataTypeFunction, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeFunction {
+		t.Errorf("expected DataTypeFunction, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "func test" {
@@ -183,8 +183,8 @@ func TestDatavalueTuple(t *testing.T) {
 
 	value := Tuple(Number(1), String("test"))
 
-	if value.DataType() != datatype.DataTypeTuple {
-		t.Errorf("expected DataTypeTuple, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeTuple {
+		t.Errorf("expected DataTypeTuple, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "(1, test)" {
@@ -221,8 +221,8 @@ func TestDatavalueTupleEmpty(t *testing.T) {
 
 	value := Tuple()
 
-	if value.DataType() != datatype.DataTypeTuple {
-		t.Errorf("expected DataTypeTuple, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeTuple {
+		t.Errorf("expected DataTypeTuple, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "()" {
@@ -245,8 +245,8 @@ func TestDatavalueArray(t *testing.T) {
 
 	value := Array(Number(1), String("test"))
 
-	if value.DataType() != datatype.DataTypeArray {
-		t.Errorf("expected DataTypeArray, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeArray {
+		t.Errorf("expected DataTypeArray, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "[1, test]" {
@@ -283,8 +283,8 @@ func TestDatavalueArrayEmpty(t *testing.T) {
 
 	value := Array()
 
-	if value.DataType() != datatype.DataTypeArray {
-		t.Errorf("expected DataTypeArray, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeArray {
+		t.Errorf("expected DataTypeArray, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "[]" {
@@ -307,11 +307,11 @@ func TestDatavalueAny(t *testing.T) {
 
 	value := Any(1)
 
-	if value.DataType() != datatype.DataTypeAny {
+	if value.DataType != datatype.DataTypeAny {
 		t.Errorf(
 			"expected DataType %s, got '%s'",
 			datatype.DataTypeAny.AsString(),
-			value.DataType().AsString(),
+			value.DataType.AsString(),
 		)
 	}
 
@@ -329,8 +329,8 @@ func TestDatavalueError(t *testing.T) {
 
 	value := Error(errors.New("test"))
 
-	if value.DataType() != datatype.DataTypeError {
-		t.Errorf("expected DataTypeError, got '%v'", value.DataType())
+	if value.DataType != datatype.DataTypeError {
+		t.Errorf("expected DataTypeError, got '%v'", value.DataType)
 	}
 
 	if value.ToString() != "test" {
@@ -498,7 +498,7 @@ func TestDatavalueUnknown(t *testing.T) {
 	t.Parallel()
 
 	val := Value{
-		dataType: datatype.DataType(-1),
+		DataType: datatype.DataType(-1),
 		Num:      0,
 		Str:      "",
 		Bool:     false,
@@ -508,8 +508,8 @@ func TestDatavalueUnknown(t *testing.T) {
 		Any:      nil,
 	}
 
-	if val.DataType() != datatype.DataType(-1) {
-		t.Errorf("expected DataType(-1), got '%v'", val.DataType())
+	if val.DataType != datatype.DataType(-1) {
+		t.Errorf("expected DataType(-1), got '%v'", val.DataType)
 	}
 
 	if val.ToString() != errorutil.ErrorMsgTypeUnknownDataType {
@@ -1144,8 +1144,8 @@ func TestDatavalueEquals(t *testing.T) {
 		},
 		{
 			name:        "unknown type",
-			value:       Value{dataType: datatype.DataType(-1)}, //nolint:exhaustruct
-			other:       Value{dataType: datatype.DataType(-1)}, //nolint:exhaustruct
+			value:       Value{DataType: datatype.DataType(-1)}, //nolint:exhaustruct
+			other:       Value{DataType: datatype.DataType(-1)}, //nolint:exhaustruct
 			shouldMatch: false,
 		},
 	}

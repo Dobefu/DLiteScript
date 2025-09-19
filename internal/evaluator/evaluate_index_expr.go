@@ -17,13 +17,13 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if value.Value.DataType() != datatype.DataTypeArray {
+	if value.Value.DataType != datatype.DataTypeArray {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			datatype.DataTypeArray.AsString(),
-			value.Value.DataType().AsString(),
+			value.Value.DataType.AsString(),
 		)
 	}
 
@@ -33,13 +33,13 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if idxValue.Value.DataType() != datatype.DataTypeNumber {
+	if idxValue.Value.DataType != datatype.DataTypeNumber {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			datatype.DataTypeNumber.AsString(),
-			idxValue.Value.DataType().AsString(),
+			idxValue.Value.DataType.AsString(),
 		)
 	}
 

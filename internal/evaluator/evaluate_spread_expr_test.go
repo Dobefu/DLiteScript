@@ -41,12 +41,20 @@ func TestEvaluateSpreadExpr(t *testing.T) {
 				t.Fatalf("expected no error, got %v", err)
 			}
 
-			if result.Value.DataType() != test.expected.DataType() {
-				t.Errorf("expected %s, got %s", test.expected.DataType().AsString(), result.Value.DataType().AsString())
+			if result.Value.DataType != test.expected.DataType {
+				t.Errorf(
+					"expected %s, got %s",
+					test.expected.DataType.AsString(),
+					result.Value.DataType.AsString(),
+				)
 			}
 
 			if result.Value.ToString() != test.expected.ToString() {
-				t.Errorf("expected %s, got %s", test.expected.ToString(), result.Value.ToString())
+				t.Errorf(
+					"expected %s, got %s",
+					test.expected.ToString(),
+					result.Value.ToString(),
+				)
 			}
 		})
 	}

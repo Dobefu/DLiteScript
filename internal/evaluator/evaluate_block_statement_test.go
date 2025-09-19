@@ -50,11 +50,11 @@ func TestEvaluateBlockStatement(t *testing.T) {
 				t.Fatalf("error evaluating %s: %s", test.input.Expr(), err.Error())
 			}
 
-			if rawResult.Value.DataType() != test.expected.DataType() {
+			if rawResult.Value.DataType != test.expected.DataType {
 				t.Fatalf(
 					"expected \"%s\", got \"%s\"",
-					test.expected.DataType().AsString(),
-					rawResult.Value.DataType().AsString(),
+					test.expected.DataType.AsString(),
+					rawResult.Value.DataType.AsString(),
 				)
 			}
 		})

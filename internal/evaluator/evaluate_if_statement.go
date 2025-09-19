@@ -17,13 +17,13 @@ func (e *Evaluator) evaluateIfStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if expr.Value.DataType() != datatype.DataTypeBool {
+	if expr.Value.DataType != datatype.DataTypeBool {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
 			"bool",
-			expr.Value.DataType().AsString(),
+			expr.Value.DataType.AsString(),
 		)
 	}
 

@@ -229,6 +229,27 @@ func TestParsePrefixExpr(t *testing.T) {
 				EndPos:   0,
 			},
 		},
+		{
+			name: "namespaced identifier followed by newline",
+			input: []*token.Token{
+				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
+				{Atom: "math", TokenType: token.TokenTypeIdentifier},
+				{Atom: ".", TokenType: token.TokenTypeDot},
+				{Atom: "PI", TokenType: token.TokenTypeIdentifier},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+			},
+			expected: &ast.PrefixExpr{
+				Operator: token.Token{
+					Atom:      "+",
+					TokenType: token.TokenTypeOperationAdd,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				Operand:  &ast.Identifier{Value: "math.PI", StartPos: 4, EndPos: 5},
+				StartPos: 0,
+				EndPos:   0,
+			},
+		},
 	}
 
 	for _, test := range tests {

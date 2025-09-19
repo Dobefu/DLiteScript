@@ -116,7 +116,7 @@ func (e *Evaluator) evaluateUserFunctionCall(
 			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
-		if result.Value.DataType() == datatype.DataTypeTuple {
+		if result.Value.DataType == datatype.DataTypeTuple {
 			return result, nil
 		}
 
@@ -154,13 +154,13 @@ func (e *Evaluator) evaluateArguments(
 			return nil, err
 		}
 
-		if spreadValue.Value.DataType() == datatype.DataTypeTuple {
+		if spreadValue.Value.DataType == datatype.DataTypeTuple {
 			argValues = append(argValues, spreadValue.Value.Values...)
 
 			continue
 		}
 
-		if spreadValue.Value.DataType() == datatype.DataTypeArray {
+		if spreadValue.Value.DataType == datatype.DataTypeArray {
 			arrayValues, err := spreadValue.Value.AsArray()
 
 			if err != nil {
@@ -169,7 +169,7 @@ func (e *Evaluator) evaluateArguments(
 					errorutil.ErrorMsgTypeExpected,
 					spreadArg.StartPosition(),
 					"array",
-					spreadValue.Value.DataType().AsString(),
+					spreadValue.Value.DataType.AsString(),
 				)
 			}
 
@@ -183,7 +183,7 @@ func (e *Evaluator) evaluateArguments(
 			errorutil.ErrorMsgTypeExpected,
 			spreadArg.StartPosition(),
 			"tuple or array",
-			spreadValue.Value.DataType().AsString(),
+			spreadValue.Value.DataType.AsString(),
 		)
 	}
 
@@ -255,7 +255,7 @@ func (e *Evaluator) validateVariadicArgs(
 			continue
 		}
 
-		if arg.DataType() == expectedType.Type {
+		if arg.DataType == expectedType.Type {
 			continue
 		}
 
@@ -266,7 +266,7 @@ func (e *Evaluator) validateVariadicArgs(
 			functionName,
 			i+1,
 			expectedType.Type.AsString(),
-			arg.DataType().AsString(),
+			arg.DataType.AsString(),
 		)
 	}
 
@@ -315,7 +315,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 				continue
 			}
 
-			if argValues[i].DataType() == variadicType.Type {
+			if argValues[i].DataType == variadicType.Type {
 				continue
 			}
 
@@ -326,7 +326,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 				functionName,
 				i+1,
 				variadicType.Type.AsString(),
-				argValues[i].DataType().AsString(),
+				argValues[i].DataType.AsString(),
 			)
 		}
 	}
@@ -345,7 +345,7 @@ func (e *Evaluator) validateArgTypesMatch(
 			continue
 		}
 
-		if argValues[i].DataType() == expectedType.Type {
+		if argValues[i].DataType == expectedType.Type {
 			continue
 		}
 
@@ -356,7 +356,7 @@ func (e *Evaluator) validateArgTypesMatch(
 			functionName,
 			i+1,
 			expectedType.Type.AsString(),
-			argValues[i].DataType().AsString(),
+			argValues[i].DataType.AsString(),
 		)
 	}
 
@@ -371,7 +371,7 @@ func (e *Evaluator) validateReturnValues(
 	expectedNumValues := userFunction.NumReturnValues
 
 	if expectedNumValues > 1 {
-		if returnValue.DataType() != datatype.DataTypeTuple {
+		if returnValue.DataType != datatype.DataTypeTuple {
 			return errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgFunctionReturnCount,

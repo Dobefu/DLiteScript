@@ -84,17 +84,17 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 	rightValue datavalue.Value,
 	node *ast.BinaryExpr,
 ) (*controlflow.EvaluationResult, error) {
-	if leftValue.DataType() != rightValue.DataType() {
+	if leftValue.DataType != rightValue.DataType {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
 			node.StartPosition(),
-			rightValue.DataType().AsString(),
-			leftValue.DataType().AsString(),
+			rightValue.DataType.AsString(),
+			leftValue.DataType.AsString(),
 		)
 	}
 
-	switch leftValue.DataType() {
+	switch leftValue.DataType {
 	case
 		datatype.DataTypeNumber:
 		return e.evaluateArithmeticBinaryExprNumber(
@@ -133,8 +133,8 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgCannotConcat,
 			node.StartPosition(),
-			leftValue.DataType().AsString(),
-			rightValue.DataType().AsString(),
+			leftValue.DataType.AsString(),
+			rightValue.DataType.AsString(),
 		)
 	}
 }
