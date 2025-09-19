@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"io"
 	"math"
 	"testing"
@@ -8,8 +9,19 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
+
+type unknownNode struct {
+	StartPos int
+	EndPos   int
+}
+
+func (n *unknownNode) EndPosition() int                  { return n.EndPos }
+func (n *unknownNode) StartPosition() int                { return n.StartPos }
+func (n *unknownNode) Expr() string                      { return "unknown" }
+func (n *unknownNode) Walk(fn func(_ ast.ExprNode) bool) { fn(n) }
 
 func TestEvaluate(t *testing.T) {
 	t.Parallel()
@@ -152,6 +164,45 @@ func TestEvaluate(t *testing.T) {
 					test.expected.Value.ToString(),
 					result.Value.ToString(),
 				)
+			}
+		})
+	}
+}
+
+func TestEvaluateErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    ast.ExprNode
+		expected string
+	}{
+		{
+			name:  "unknown node type",
+			input: &unknownNode{StartPos: 0, EndPos: 1},
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(
+					errorutil.ErrorMsgUnknownNodeType,
+					&unknownNode{}, //nolint:exhaustruct
+				),
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}
