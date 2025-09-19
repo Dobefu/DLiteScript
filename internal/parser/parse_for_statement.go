@@ -113,15 +113,6 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 	blockStatement, isBlockStatement := blockNode.(*ast.BlockStatement)
 
 	if !isBlockStatement {
-		if blockNode != nil {
-			return nil, errorutil.NewErrorAt(
-				errorutil.StageParse,
-				errorutil.ErrorMsgBlockStatementExpected,
-				p.tokenIdx,
-				blockNode.Expr(),
-			)
-		}
-
 		blockStartPos := p.GetCurrentCharPos()
 
 		return &ast.BlockStatement{

@@ -518,6 +518,66 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 	}
 }
 
+func TestParseForStatementWithExplicitRangeLoopErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    []*token.Token
+		expected string
+	}{
+		{
+			name: "incomplete from expression in explicit range loop",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "i", TokenType: token.TokenTypeIdentifier},
+				{Atom: "from", TokenType: token.TokenTypeFrom},
+				{Atom: "(", TokenType: token.TokenTypeLParen},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 5",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+		{
+			name: "incomplete to expression in explicit range loop",
+			input: []*token.Token{
+				{Atom: "for", TokenType: token.TokenTypeFor},
+				{Atom: "var", TokenType: token.TokenTypeVar},
+				{Atom: "i", TokenType: token.TokenTypeIdentifier},
+				{Atom: "from", TokenType: token.TokenTypeFrom},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "to", TokenType: token.TokenTypeTo},
+				{Atom: "(", TokenType: token.TokenTypeLParen},
+			},
+			expected: fmt.Sprintf(
+				"%s: %s at position 7",
+				errorutil.StageParse.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			p := NewParser(test.input)
+			_, err := p.Parse()
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Fatalf("expected \"%s\", got \"%s\"", test.expected, err.Error())
+			}
+		})
+	}
+}
+
 func TestParseImplicitRangeLoopWithVariableErr(t *testing.T) {
 	t.Parallel()
 
