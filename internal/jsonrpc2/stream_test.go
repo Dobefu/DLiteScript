@@ -1,6 +1,7 @@
 package jsonrpc2
 
 import (
+	"errors"
 	"strings"
 	"testing"
 )
@@ -33,7 +34,7 @@ func TestStream(t *testing.T) {
 			}
 
 			if string(msg) != test.expected {
-				t.Errorf("expected \"%v\", got \"%v\"", test.expected, string(msg))
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, string(msg))
 			}
 		})
 	}
@@ -88,10 +89,62 @@ func TestStreamErr(t *testing.T) {
 
 			if !strings.Contains(err.Error(), test.expected) {
 				t.Errorf(
-					"expected error to contain \"%v\", got \"%v\"",
+					"expected error to contain \"%s\", got \"%s\"",
 					test.expected,
 					err.Error(),
 				)
+			}
+		})
+	}
+}
+
+type errWriter struct{}
+
+func (e *errWriter) Write(p []byte) (n int, err error) {
+	if strings.Contains(string(p), "Content-Length: 0") {
+		return 0, errors.New("write content length error")
+	}
+
+	if strings.Contains(string(p), "Content-Length: ") {
+		return len(p), nil
+	}
+
+	return 0, errors.New("write message error")
+}
+
+func TestStreamWriteMessageErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name:     "write content length error",
+			input:    "",
+			expected: "could not write content length header: write content length error",
+		},
+		{
+			name:     "write message error",
+			input:    "{\"jsonrpc\": \"2.0\", \"method\": \"test\", \"id\": 1}",
+			expected: "could not write message: write message error",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			stream := NewStream(strings.NewReader(test.input), &errWriter{})
+			err := stream.WriteMessage([]byte(test.input))
+
+			if err == nil {
+				t.Fatalf("expected error, got none")
+			}
+
+			if err.Error() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, err.Error())
 			}
 		})
 	}

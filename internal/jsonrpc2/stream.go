@@ -81,10 +81,6 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 		return nil, fmt.Errorf("could not read the message body: %w", err)
 	}
 
-	if len(buf) != contentLength {
-		return nil, errors.New("message body length does not match Content-Length")
-	}
-
 	return buf, nil
 }
 
