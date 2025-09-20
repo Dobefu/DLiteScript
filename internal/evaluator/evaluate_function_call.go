@@ -112,7 +112,9 @@ func (e *Evaluator) evaluateUserFunctionCall(
 	}
 
 	if result.IsReturnResult() {
-		if err := e.validateReturnValues(result.Value, userFunction, fc); err != nil {
+		err := e.validateReturnValues(result.Value, userFunction, fc)
+
+		if err != nil {
 			return controlflow.NewRegularResult(datavalue.Null()), err
 		}
 
@@ -150,6 +152,7 @@ func (e *Evaluator) evaluateArguments(
 		}
 
 		spreadValue, err := e.Evaluate(spreadArg.Expression)
+
 		if err != nil {
 			return nil, err
 		}

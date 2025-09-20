@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"strings"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -12,90 +11,84 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/function"
+	"github.com/Dobefu/DLiteScript/internal/stdlib"
 )
 
-func evaluateFunctionCallCreateFunctionCall(
-	functionName string,
-	arguments ...ast.ExprNode,
-) ast.ExprNode {
-	namespace := ""
-	fullFunctionName := functionName
-
-	if strings.Contains(functionName, ".") {
-		parts := strings.Split(functionName, ".")
-
-		if len(parts) == 2 {
-			namespace = parts[0]
-			fullFunctionName = parts[1]
-		}
-	}
-
-	if len(arguments) == 0 {
-		return &ast.FunctionCall{
-			Namespace:    namespace,
-			FunctionName: fullFunctionName,
-			Arguments:    arguments,
-			StartPos:     0,
-			EndPos:       0,
-		}
-	}
-
-	return &ast.FunctionCall{
-		Namespace:    namespace,
-		FunctionName: fullFunctionName,
-		Arguments:    arguments,
-		StartPos:     arguments[0].StartPosition(),
-		EndPos:       arguments[len(arguments)-1].EndPosition(),
-	}
-}
-
-func TestEvaluateFunctionCallPrint(t *testing.T) {
+func TestEvaluateFunctionCall(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		name     string
-		input    ast.ExprNode
+		input    *ast.FunctionCall
 		expected string
 	}{
 		{
 			name: "single argument",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"printf",
-				&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "printf",
+				Arguments: []ast.ExprNode{
+					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: "test",
 		},
 		{
 			name: "multiple arguments",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"printf",
-				&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
-				&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
-				&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
-				&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "printf",
+				Arguments: []ast.ExprNode{
+					&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+					&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
+					&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: "testing, 1 2 3\n",
 		},
 		{
 			name: "spread array arguments",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"printf",
-				&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
-				&ast.SpreadExpr{
-					Expression: &ast.ArrayLiteral{
-						Values: []ast.ExprNode{
-							&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
-							&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
-							&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "printf",
+				Arguments: []ast.ExprNode{
+					&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
+					&ast.SpreadExpr{
+						Expression: &ast.ArrayLiteral{
+							Values: []ast.ExprNode{
+								&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+								&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
+								&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+							},
+							StartPos: 10,
+							EndPos:   15,
 						},
 						StartPos: 10,
 						EndPos:   15,
 					},
-					StartPos: 10,
-					EndPos:   15,
 				},
-			),
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: "testing, 1 2 3\n",
+		},
+		{
+			name: "user function",
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "userFunction",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: "",
 		},
 	}
 
@@ -104,7 +97,23 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 			t.Parallel()
 
 			ev := NewEvaluator(io.Discard)
-			_, err := ev.Evaluate(test.input)
+			ev.userFunctions[test.input.FunctionName] = &ast.FuncDeclarationStatement{
+				Name: "test",
+				Args: []ast.FuncParameter{
+					{Name: "a", Type: "number"},
+				},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   0,
+					EndPos:     1,
+				},
+				ReturnValues:    []string{"number"},
+				NumReturnValues: 1,
+				StartPos:        0,
+				EndPos:          1,
+			}
+
+			_, err := ev.evaluateFunctionCall(test.input)
 
 			if err != nil {
 				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
@@ -117,27 +126,36 @@ func TestEvaluateFunctionCallPrint(t *testing.T) {
 	}
 }
 
-func TestEvaluateFunctionCallPrintErr(t *testing.T) {
+func TestEvaluateFunctionCallErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
 		name     string
-		input    ast.ExprNode
+		input    *ast.FunctionCall
 		expected string
 	}{
 		{
 			name: "no arguments",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"printf",
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "printf",
+				Arguments:    []ast.ExprNode{},
+				StartPos:     0,
+				EndPos:       0,
+			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 		},
 		{
 			name: "single argument",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"printf",
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "printf",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: fmt.Sprintf(
 				errorutil.ErrorMsgFunctionArgType,
 				"printf",
@@ -153,7 +171,7 @@ func TestEvaluateFunctionCallPrintErr(t *testing.T) {
 			t.Parallel()
 
 			ev := NewEvaluator(io.Discard)
-			_, err := ev.Evaluate(test.input)
+			_, err := ev.evaluateFunctionCall(test.input)
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
@@ -175,33 +193,74 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 
 	tests := []struct {
 		name     string
-		input    ast.ExprNode
+		input    *ast.FunctionCall
 		expected string
 	}{
 		{
+			name: "undefined namespace",
+			input: &ast.FunctionCall{
+				Namespace:    "bogus",
+				FunctionName: "abs",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedNamespace, "bogus"),
+		},
+		{
 			name: "undefined function",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"bogus",
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "",
+				FunctionName: "bogus",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 		{
 			name: "too many arguments",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"math.abs",
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "math",
+				FunctionName: "abs",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+				},
+				StartPos: 0,
+				EndPos:   3,
+			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.abs", 1, 2),
 		},
 		{
 			name: "invalid argument",
-			input: evaluateFunctionCallCreateFunctionCall(
-				"math.abs",
-				&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
-			),
+			input: &ast.FunctionCall{
+				Namespace:    "math",
+				FunctionName: "abs",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
 			expected: "invalid syntax",
+		},
+		{
+			name: "function handler error",
+			input: &ast.FunctionCall{
+				Namespace:    "test",
+				FunctionName: "functionHandlerError",
+				Arguments: []ast.ExprNode{
+					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: "handler error",
 		},
 	}
 
@@ -209,7 +268,31 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
+			ev := NewEvaluator(io.Discard)
+
+			functionRegistry := stdlib.GetFunctionRegistry()
+			functionRegistry[test.input.FunctionName] = function.PackageInfo{
+				Functions: map[string]function.Info{
+					"test": { //nolint:exhaustruct
+						FunctionType: function.FunctionTypeFixed,
+						Parameters: []function.ArgInfo{
+							{Type: datatype.DataTypeString}, //nolint:exhaustruct
+						},
+						Handler: func(
+							_ function.EvaluatorInterface,
+							_ []datavalue.Value,
+						) (datavalue.Value, error) {
+							return datavalue.Null(), errorutil.NewErrorAt(
+								errorutil.StageEvaluate,
+								"handler error",
+								0,
+							)
+						},
+					},
+				},
+			}
+
+			_, err := ev.evaluateFunctionCall(test.input)
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
@@ -453,6 +536,82 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 			},
 			expected: "invalid syntax",
 		},
+		{
+			name: "multiple return values but single value returned",
+			functionCall: &ast.FunctionCall{
+				FunctionName: "test",
+				Namespace:    "",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			functionDeclaration: &ast.FuncDeclarationStatement{
+				Name: "test",
+				Args: []ast.FuncParameter{
+					{Name: "a", Type: "number"},
+				},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.ReturnStatement{
+							Values: []ast.ExprNode{
+								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+							},
+							NumValues: 1,
+							StartPos:  0,
+							EndPos:    1,
+						},
+					},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				ReturnValues:    []string{"number", "number"},
+				NumReturnValues: 2,
+				StartPos:        0,
+				EndPos:          1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionReturnCount, "test", 2, 1),
+		},
+		{
+			name: "multiple return values but not enough returned",
+			functionCall: &ast.FunctionCall{
+				FunctionName: "test",
+				Namespace:    "",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			functionDeclaration: &ast.FuncDeclarationStatement{
+				Name: "test",
+				Args: []ast.FuncParameter{
+					{Name: "a", Type: "number"},
+				},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.ReturnStatement{
+							Values: []ast.ExprNode{
+								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+								&ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+								&ast.NumberLiteral{Value: "3", StartPos: 4, EndPos: 5},
+							},
+							NumValues: 3,
+							StartPos:  0,
+							EndPos:    5,
+						},
+					},
+					StartPos: 0,
+					EndPos:   5,
+				},
+				ReturnValues:    []string{"number", "number"},
+				NumReturnValues: 2,
+				StartPos:        0,
+				EndPos:          1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionReturnCount, "test", 2, 3),
+		},
 	}
 
 	for _, test := range tests {
@@ -480,6 +639,117 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 	}
 }
 
+func TestEvaluateArgumentsSpreadExprErr(t *testing.T) {
+	t.Parallel()
+
+	input := &ast.FunctionCall{
+		Namespace:    "",
+		FunctionName: "printf",
+		Arguments: []ast.ExprNode{
+			&ast.StringLiteral{Value: "test %g\n", StartPos: 0, EndPos: 1},
+			&ast.SpreadExpr{
+				Expression: &ast.NumberLiteral{Value: "invalid", StartPos: 10, EndPos: 11},
+				StartPos:   10,
+				EndPos:     11,
+			},
+		},
+		StartPos: 0,
+		EndPos:   11,
+	}
+
+	ev := NewEvaluator(io.Discard)
+	_, err := ev.evaluateFunctionCall(input)
+
+	if err == nil {
+		t.Fatalf("expected error, got nil")
+	}
+
+	if errors.Unwrap(err).Error() != "invalid syntax" {
+		t.Errorf(
+			"expected \"invalid syntax\", got \"%s\"",
+			errors.Unwrap(err).Error(),
+		)
+	}
+}
+
+func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
+	t.Parallel()
+
+	functionRegistry := stdlib.GetFunctionRegistry()
+	functionRegistry[""].Functions["test"] = function.Info{ //nolint:exhaustruct
+		FunctionType: function.FunctionTypeFixed,
+		Parameters:   []function.ArgInfo{},
+		Handler: func(
+			_ function.EvaluatorInterface,
+			_ []datavalue.Value,
+		) (datavalue.Value, error) {
+			return datavalue.Tuple(
+				datavalue.Number(1),
+				datavalue.Number(2),
+				datavalue.Number(3),
+			), nil
+		},
+	}
+	functionRegistry["test"] = function.PackageInfo{
+		Functions: map[string]function.Info{
+			"functionHandlerError": { //nolint:exhaustruct
+				FunctionType: function.FunctionTypeFixed,
+				Parameters: []function.ArgInfo{
+					{Type: datatype.DataTypeString}, //nolint:exhaustruct
+				},
+				Handler: func(
+					_ function.EvaluatorInterface,
+					_ []datavalue.Value,
+				) (datavalue.Value, error) {
+					return datavalue.Null(), errorutil.NewErrorAt(
+						errorutil.StageEvaluate,
+						"handler error",
+						0,
+					)
+				},
+			},
+		},
+	}
+
+	input := &ast.FunctionCall{
+		Namespace:    "",
+		FunctionName: "printf",
+		Arguments: []ast.ExprNode{
+			&ast.StringLiteral{
+				Value:    "testing tuple spread: %g %g %g\n",
+				StartPos: 0,
+				EndPos:   1,
+			},
+			&ast.SpreadExpr{
+				Expression: &ast.FunctionCall{
+					Namespace:    "",
+					FunctionName: "test",
+					Arguments:    []ast.ExprNode{},
+					StartPos:     10,
+					EndPos:       15,
+				},
+				StartPos: 10,
+				EndPos:   15,
+			},
+		},
+		StartPos: 0,
+		EndPos:   15,
+	}
+
+	ev := NewEvaluator(io.Discard)
+	_, err := ev.evaluateFunctionCall(input)
+
+	if err != nil {
+		t.Fatalf("expected no error, got: %s", err.Error())
+	}
+
+	expected := "testing tuple spread: 1 2 3\n"
+
+	if ev.buf.String() != expected {
+		t.Errorf("expected \"%s\", got \"%s\"", expected, ev.buf.String())
+	}
+}
+
 func TestValidateVariadicArgs(t *testing.T) {
 	t.Parallel()
 
@@ -487,34 +757,124 @@ func TestValidateVariadicArgs(t *testing.T) {
 		name         string
 		input        []ast.ExprNode
 		functionInfo function.Info
-		expected     string
+		expected     []datavalue.Value
 	}{
+		{
+			name: "no parameters",
+			input: []ast.ExprNode{
+				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+			},
+			functionInfo: function.Info{
+				Documentation: function.Documentation{
+					Name:        "test",
+					Description: "",
+					Since:       "",
+					Examples:    []string{},
+					DeprecationInfo: function.DeprecationInfo{
+						IsDeprecated: false,
+						Description:  "",
+						Version:      "",
+					},
+				},
+				FunctionType: function.FunctionTypeVariadic,
+				PackageName:  "",
+				IsBuiltin:    false,
+				Parameters:   []function.ArgInfo{},
+				ReturnValues: []function.ArgInfo{
+					{
+						Type:        datatype.DataTypeNumber,
+						Name:        "result",
+						Description: "",
+					},
+				},
+				Handler: nil,
+			},
+			expected: []datavalue.Value{datavalue.Number(1)},
+		},
 		{
 			name: "single argument",
 			input: []ast.ExprNode{
 				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
 			},
-			functionInfo: function.Info{ //nolint:exhaustruct
+			functionInfo: function.Info{
+				Documentation: function.Documentation{
+					Name:        "test",
+					Description: "",
+					Since:       "",
+					Examples:    []string{},
+					DeprecationInfo: function.DeprecationInfo{
+						IsDeprecated: false,
+						Description:  "",
+						Version:      "",
+					},
+				},
 				FunctionType: function.FunctionTypeVariadic,
+				PackageName:  "",
+				IsBuiltin:    false,
 				Parameters: []function.ArgInfo{
-					{Type: datatype.DataTypeNumber}, //nolint:exhaustruct
-					{Type: datatype.DataTypeAny},    //nolint:exhaustruct
+					{
+						Name:        "a",
+						Type:        datatype.DataTypeNumber,
+						Description: "",
+					},
+					{
+						Name:        "b",
+						Type:        datatype.DataTypeAny,
+						Description: "",
+					},
+				},
+				ReturnValues: []function.ArgInfo{
+					{
+						Type:        datatype.DataTypeNumber,
+						Name:        "result",
+						Description: "",
+					},
 				},
 				Handler: nil,
 			},
-			expected: "1",
+			expected: []datavalue.Value{datavalue.Number(1)},
 		},
 		{
-			name: "no arguments",
+			name: "any argument",
 			input: []ast.ExprNode{
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.AnyLiteral{
+					Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					StartPos: 0,
+					EndPos:   1,
+				},
 			},
-			functionInfo: function.Info{ //nolint:exhaustruct
+			functionInfo: function.Info{
+				Documentation: function.Documentation{
+					Name:        "test",
+					Description: "",
+					Since:       "",
+					Examples:    []string{},
+					DeprecationInfo: function.DeprecationInfo{
+						IsDeprecated: false,
+						Description:  "",
+						Version:      "",
+					},
+				},
 				FunctionType: function.FunctionTypeVariadic,
-				Parameters:   []function.ArgInfo{},
-				Handler:      nil,
+				PackageName:  "",
+				IsBuiltin:    false,
+				Parameters: []function.ArgInfo{
+					{
+						Name:        "a",
+						Type:        datatype.DataTypeAny,
+						Description: "",
+					},
+				},
+				ReturnValues: []function.ArgInfo{
+					{
+						Type:        datatype.DataTypeNumber,
+						Name:        "result",
+						Description: "",
+					},
+				},
+				Handler: nil,
 			},
-			expected: "1",
+			expected: []datavalue.Value{datavalue.Number(1)},
 		},
 	}
 
@@ -535,7 +895,7 @@ func TestValidateVariadicArgs(t *testing.T) {
 				argValues[i] = value.Value
 			}
 
-			result, err := ev.validateVariadicArgs(
+			_, err := ev.validateVariadicArgs(
 				argValues,
 				test.functionInfo,
 				"test",
@@ -550,14 +910,6 @@ func TestValidateVariadicArgs(t *testing.T) {
 
 			if err != nil {
 				t.Fatalf("expected no error, got: %s", err.Error())
-			}
-
-			if result[0].ToString() != test.expected {
-				t.Errorf(
-					"expected \"%s\", got \"%s\"",
-					test.expected,
-					result[0].ToString(),
-				)
 			}
 		})
 	}
