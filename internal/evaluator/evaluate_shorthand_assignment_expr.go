@@ -4,6 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -45,7 +46,9 @@ func (e *Evaluator) evaluateShorthandAssignmentExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if identifier, ok := node.Left.(*ast.Identifier); ok {
+	identifier, hasIdentifier := node.Left.(*ast.Identifier)
+
+	if hasIdentifier {
 		return e.assignVariable(
 			identifier.Value,
 			result.Value,
@@ -138,7 +141,12 @@ func (e *Evaluator) assignArrayIndex(indexExpr *ast.IndexExpr, result datavalue.
 	}
 
 	if index < 0 || int(index) >= len(array) {
-		return controlflow.NewRegularResult(datavalue.Null()), err
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
+			errorutil.ErrorMsgArrayIndexOutOfBounds,
+			indexExpr.StartPosition(),
+			indexExpr.Index.Expr(),
+		)
 	}
 
 	array[int(index)] = result

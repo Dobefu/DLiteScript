@@ -87,6 +87,47 @@ func TestEvaluateShorthandAssignmentExpr(t *testing.T) {
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(100)),
 		},
+		{
+			name: "array index addition",
+			input: &ast.ShorthandAssignmentExpr{
+				Left: &ast.IndexExpr{
+					Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
+					Index:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Right:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Array(
+				datavalue.Number(0),
+				datavalue.Number(6),
+			)),
+		},
+		{
+			name: "unsupported left operand type",
+			input: &ast.ShorthandAssignmentExpr{
+				Left:     &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 2},
+				Right:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Null()),
+		},
+		{
+			name: "unknown operator type",
+			input: &ast.ShorthandAssignmentExpr{
+				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+				Right:    &ast.NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
+				Operator: *token.NewToken("??=", token.Type(999), 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Number(13)),
+		},
 	}
 
 	for _, test := range tests {
@@ -98,6 +139,11 @@ func TestEvaluateShorthandAssignmentExpr(t *testing.T) {
 			ev.outerScope["x"] = &Variable{
 				Value: datavalue.Number(10),
 				Type:  "number",
+			}
+
+			ev.outerScope["arr"] = &Variable{
+				Value: datavalue.Array(datavalue.Number(0), datavalue.Number(1)),
+				Type:  "array",
 			}
 
 			result, err := ev.Evaluate(test.input)
@@ -126,7 +172,7 @@ func TestEvaluateShorthandAssignmentExprErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name: "evaluation error",
+			name: "evaluation error on right-hand side",
 			input: &ast.ShorthandAssignmentExpr{
 				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
 				Right:    &ast.NumberLiteral{Value: "bogus", StartPos: 0, EndPos: 1},
@@ -137,7 +183,18 @@ func TestEvaluateShorthandAssignmentExprErr(t *testing.T) {
 			expected: "invalid syntax",
 		},
 		{
-			name: "undefined identifier for right",
+			name: "evaluation error on left-hand side",
+			input: &ast.ShorthandAssignmentExpr{
+				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				Operator: *token.NewToken("+=", token.TokenTypeOperationAdd, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+		},
+		{
+			name: "undefined identifier for right-hand side",
 			input: &ast.ShorthandAssignmentExpr{
 				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
 				Right:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 1},
@@ -147,6 +204,17 @@ func TestEvaluateShorthandAssignmentExprErr(t *testing.T) {
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
+		{
+			name: "arithmetic binary expression error",
+			input: &ast.ShorthandAssignmentExpr{
+				Left:     &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 1},
+				Right:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				Operator: *token.NewToken("/=", token.TokenTypeOperationDivAssign, 0, 1),
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: "division by zero",
+		},
 	}
 
 	for _, test := range tests {
@@ -154,7 +222,6 @@ func TestEvaluateShorthandAssignmentExprErr(t *testing.T) {
 			t.Parallel()
 
 			ev := NewEvaluator(io.Discard)
-
 			_, err := ev.Evaluate(test.input)
 
 			if err == nil {
@@ -205,8 +272,12 @@ func TestAssignArrayIndex(t *testing.T) {
 			ev := NewEvaluator(io.Discard)
 
 			ev.outerScope["x"] = &Variable{
-				Value: datavalue.Array(datavalue.Number(0), datavalue.Number(1), datavalue.Number(2)),
-				Type:  "array",
+				Value: datavalue.Array(
+					datavalue.Number(0),
+					datavalue.Number(1),
+					datavalue.Number(2),
+				),
+				Type: "array",
 			}
 
 			result, err := ev.assignArrayIndex(test.input, datavalue.Number(2))
@@ -216,8 +287,134 @@ func TestAssignArrayIndex(t *testing.T) {
 			}
 
 			if !result.Value.Equals(test.expected.Value) {
-				t.Errorf("expected \"%s\", got \"%s\"", test.expected.Value.ToString(), result.Value.ToString())
+				t.Errorf(
+					"expected \"%s\", got \"%s\"",
+					test.expected.Value.ToString(),
+					result.Value.ToString(),
+				)
 			}
 		})
+	}
+}
+
+func TestAssignArrayIndexErr(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    *ast.IndexExpr
+		expected string
+	}{
+		{
+			name: "evaluation error on array expression",
+			input: &ast.IndexExpr{
+				Array:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 12},
+				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
+		},
+		{
+			name: "evaluation error on index expression",
+			input: &ast.IndexExpr{
+				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
+				Index:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 5},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
+		},
+		{
+			name: "evaluation error on array",
+			input: &ast.IndexExpr{
+				Array:    &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 2},
+				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
+		},
+		{
+			name: "index value cannot be converted to number",
+			input: &ast.IndexExpr{
+				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
+				Index:    &ast.StringLiteral{Value: "nan", StartPos: 0, EndPos: 12},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
+		},
+		{
+			name: "index out of bounds",
+			input: &ast.IndexExpr{
+				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
+				Index:    &ast.NumberLiteral{Value: "-1", StartPos: 0, EndPos: 2},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgArrayIndexOutOfBounds, "-1"),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			ev := NewEvaluator(io.Discard)
+			ev.outerScope["arr"] = &Variable{
+				Value: datavalue.Array(datavalue.Number(0), datavalue.Number(1)),
+				Type:  "array",
+			}
+
+			_, err := ev.assignArrayIndex(test.input, datavalue.Number(2))
+
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			if errors.Unwrap(err).Error() != test.expected {
+				t.Errorf(
+					"expected error \"%s\", got \"%s\"",
+					test.expected,
+					errors.Unwrap(err).Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestAssignArrayIndexNonIdentifier(t *testing.T) {
+	t.Parallel()
+
+	expr := &ast.IndexExpr{
+		Array: &ast.ArrayLiteral{
+			Values: []ast.ExprNode{
+				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+			},
+			StartPos: 0,
+			EndPos:   1,
+		},
+		Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+		StartPos: 0,
+		EndPos:   1,
+	}
+
+	ev := NewEvaluator(io.Discard)
+	result, err := ev.assignArrayIndex(expr, datavalue.Number(99))
+
+	if err != nil {
+		t.Fatalf("expected no error, got \"%s\"", err.Error())
+	}
+
+	expected := controlflow.NewRegularResult(datavalue.Number(99))
+
+	if !result.Value.Equals(expected.Value) {
+		t.Errorf(
+			"expected \"%s\", got \"%s\"",
+			expected.Value.ToString(),
+			result.Value.ToString(),
+		)
 	}
 }
