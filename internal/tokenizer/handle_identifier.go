@@ -34,8 +34,9 @@ func (t *Tokenizer) handleIdentifier(
 	}
 
 	identifierText := identifier.String()
+	tokenType, isKeyword := keywords[identifierText]
 
-	if tokenType, isKeyword := keywords[identifierText]; isKeyword {
+	if isKeyword {
 		return token.NewToken(identifierText, tokenType, startPos, t.expIdx), nil
 	}
 
