@@ -174,12 +174,6 @@ func (r *REPL) evaluateInput(input string) {
 		return
 	}
 
-	if result.IsExitResult() {
-		_, _ = fmt.Fprintf(r.OutFile, "Script exited with code %d\n", result.Control.Count)
-
-		return
-	}
-
 	if result.Value.DataType != datatype.DataTypeNull {
 		_, _ = fmt.Fprintf(r.OutFile, "=> %s\n", result.Value.ToString())
 	}
