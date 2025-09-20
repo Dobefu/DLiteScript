@@ -2,7 +2,6 @@ package parser
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
-	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -110,16 +109,7 @@ func (p *Parser) parseThenBlock(endToken token.Type) (*ast.BlockStatement, error
 		}, nil
 	}
 
-	blockStatement, isBlockStatement := thenBlock.(*ast.BlockStatement)
-
-	if !isBlockStatement {
-		return nil, errorutil.NewErrorAt(
-			errorutil.StageParse,
-			errorutil.ErrorMsgBlockStatementExpected,
-			p.tokenIdx,
-			thenBlock.Expr(),
-		)
-	}
+	blockStatement, _ := thenBlock.(*ast.BlockStatement)
 
 	return blockStatement, nil
 }
@@ -145,16 +135,7 @@ func (p *Parser) parseElseBlock(endToken token.Type) (*ast.BlockStatement, error
 		}, nil
 	}
 
-	blockStatement, isBlockStatement := elseBlock.(*ast.BlockStatement)
-
-	if !isBlockStatement {
-		return nil, errorutil.NewErrorAt(
-			errorutil.StageParse,
-			errorutil.ErrorMsgBlockStatementExpected,
-			p.tokenIdx,
-			elseBlock.Expr(),
-		)
-	}
+	blockStatement, _ := elseBlock.(*ast.BlockStatement)
 
 	return blockStatement, nil
 }
