@@ -107,6 +107,8 @@ const (
 	TokenTypeFunc
 	// TokenTypeReturn represents the 'return' keyword.
 	TokenTypeReturn
+	// TokenTypeImport represents the 'import' keyword.
+	TokenTypeImport
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber
