@@ -49,17 +49,8 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	array, err := arrayValue.Value.AsArray()
-
-	if err != nil {
-		return controlflow.NewRegularResult(datavalue.Null()), err
-	}
-
-	index, err := indexValue.Value.AsNumber()
-
-	if err != nil {
-		return controlflow.NewRegularResult(datavalue.Null()), err
-	}
+	array, _ := arrayValue.Value.AsArray()
+	index, _ := indexValue.Value.AsNumber()
 
 	if index < 0 || int(index) >= len(array) {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(

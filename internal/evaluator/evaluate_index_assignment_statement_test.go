@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
@@ -17,6 +18,7 @@ func TestEvaluateIndexAssignmentStatement(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    *ast.IndexAssignmentStatement
+		setup    func(*Evaluator)
 		expected float64
 	}{
 		{
@@ -28,7 +30,31 @@ func TestEvaluateIndexAssignmentStatement(t *testing.T) {
 				StartPos: 0,
 				EndPos:   9,
 			},
+			setup: func(ev *Evaluator) {
+				ev.outerScope["someArray"] = &Variable{
+					Value: datavalue.Array(datavalue.Number(0)),
+					Type:  "array",
+				}
+			},
 			expected: 1,
+		},
+		{
+			name: "assignment to array literal index",
+			input: &ast.IndexAssignmentStatement{
+				Array: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{
+						&ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+					},
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				Right:    &ast.NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
+				StartPos: 0,
+				EndPos:   1,
+			},
+			setup:    func(_ *Evaluator) {},
+			expected: 42,
 		},
 	}
 
@@ -37,11 +63,7 @@ func TestEvaluateIndexAssignmentStatement(t *testing.T) {
 			t.Parallel()
 
 			ev := NewEvaluator(io.Discard)
-
-			ev.outerScope["someArray"] = &Variable{
-				Value: datavalue.Array(datavalue.Number(0)),
-				Type:  "array",
-			}
+			test.setup(ev)
 
 			result, err := ev.evaluateIndexAssignmentStatement(test.input)
 
@@ -49,16 +71,18 @@ func TestEvaluateIndexAssignmentStatement(t *testing.T) {
 				t.Fatalf("expected no error, got: %s", err.Error())
 			}
 
-			array, err := result.Value.AsArray()
+			var num float64
 
-			if err != nil {
-				t.Fatalf("expected no error, got: %s", err.Error())
-			}
+			if result.Value.DataType == datatype.DataTypeArray {
+				array, err := result.Value.AsArray()
 
-			num, err := array[0].AsNumber()
+				if err != nil {
+					t.Fatalf("expected no error, got: %s", err.Error())
+				}
 
-			if err != nil {
-				t.Fatalf("expected no error, got: %s", err.Error())
+				num, _ = array[0].AsNumber()
+			} else {
+				num, _ = result.Value.AsNumber()
 			}
 
 			if num != test.expected {
