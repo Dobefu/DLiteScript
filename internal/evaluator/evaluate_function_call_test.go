@@ -252,15 +252,16 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 		{
 			name: "function handler error",
 			input: &ast.FunctionCall{
-				Namespace:    "test",
+				Namespace:    "",
 				FunctionName: "functionHandlerError",
 				Arguments: []ast.ExprNode{
 					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+					&ast.StringLiteral{Value: "extra", StartPos: 2, EndPos: 3},
 				},
 				StartPos: 0,
-				EndPos:   1,
+				EndPos:   3,
 			},
-			expected: "handler error",
+			expected: "'functionHandlerError()' expects exactly 1 argument(s), but got 2",
 		},
 	}
 
@@ -270,26 +271,33 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 
 			ev := NewEvaluator(io.Discard)
 
-			functionRegistry := stdlib.GetFunctionRegistry()
-			functionRegistry[test.input.FunctionName] = function.PackageInfo{
-				Functions: map[string]function.Info{
-					"test": { //nolint:exhaustruct
-						FunctionType: function.FunctionTypeFixed,
-						Parameters: []function.ArgInfo{
-							{Type: datatype.DataTypeString}, //nolint:exhaustruct
-						},
-						Handler: func(
-							_ function.EvaluatorInterface,
-							_ []datavalue.Value,
-						) (datavalue.Value, error) {
-							return datavalue.Null(), errorutil.NewErrorAt(
-								errorutil.StageEvaluate,
-								"handler error",
-								0,
-							)
-						},
+			if test.name == "function handler error" {
+				ev.userFunctions[test.input.FunctionName] = &ast.FuncDeclarationStatement{ //nolint:exhaustruct
+					Name: test.input.FunctionName,
+					Args: []ast.FuncParameter{
+						{Name: "arg", Type: "string"},
 					},
-				},
+					Body: &ast.BlockStatement{
+						Statements: []ast.ExprNode{
+							&ast.ReturnStatement{
+								Values: []ast.ExprNode{
+									&ast.StringLiteral{
+										Value:    "test",
+										StartPos: 0,
+										EndPos:   4,
+									},
+								},
+								NumValues: 1,
+								StartPos:  0,
+								EndPos:    4,
+							},
+						},
+						StartPos: 0,
+						EndPos:   4,
+					},
+					StartPos: 0,
+					EndPos:   4,
+				}
 			}
 
 			_, err := ev.evaluateFunctionCall(test.input)
@@ -676,7 +684,7 @@ func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
 	t.Parallel()
 
 	functionRegistry := stdlib.GetFunctionRegistry()
-	functionRegistry[""].Functions["test"] = function.Info{ //nolint:exhaustruct
+	functionRegistry[""].Functions["spreadTest"] = function.Info{ //nolint:exhaustruct
 		FunctionType: function.FunctionTypeFixed,
 		Parameters:   []function.ArgInfo{},
 		Handler: func(
@@ -690,9 +698,9 @@ func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
 			), nil
 		},
 	}
-	functionRegistry["test"] = function.PackageInfo{
+	functionRegistry["spreadTest"] = function.PackageInfo{
 		Functions: map[string]function.Info{
-			"functionHandlerError": { //nolint:exhaustruct
+			"spreadFunctionHandlerError": { //nolint:exhaustruct
 				FunctionType: function.FunctionTypeFixed,
 				Parameters: []function.ArgInfo{
 					{Type: datatype.DataTypeString}, //nolint:exhaustruct
@@ -723,7 +731,7 @@ func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
 			&ast.SpreadExpr{
 				Expression: &ast.FunctionCall{
 					Namespace:    "",
-					FunctionName: "test",
+					FunctionName: "spreadTest",
 					Arguments:    []ast.ExprNode{},
 					StartPos:     10,
 					EndPos:       15,
