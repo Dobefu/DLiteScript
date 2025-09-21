@@ -113,6 +113,11 @@ func TestEvaluate(t *testing.T) {
 			),
 		},
 		{
+			name:     "comment literal",
+			input:    &ast.CommentLiteral{Value: "test", StartPos: 0, EndPos: 1},
+			expected: controlflow.NewRegularResult(datavalue.Null()),
+		},
+		{
 			name: "spread expression",
 			input: &ast.SpreadExpr{
 				Expression: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
