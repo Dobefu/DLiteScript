@@ -1,7 +1,6 @@
 package evaluator
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"testing"
@@ -14,14 +13,18 @@ func TestEvaluateStatementList(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
-		name     string
-		input    *ast.StatementList
-		expected string
+		name    string
+		input   *ast.StatementList
+		outFile io.Writer
 	}{
 		{
-			name:     "empty",
-			input:    &ast.StatementList{Statements: []ast.ExprNode{}, StartPos: 0, EndPos: 0},
-			expected: "",
+			name: "empty",
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{},
+				StartPos:   0,
+				EndPos:     0,
+			},
+			outFile: io.Discard,
 		},
 		{
 			name: "single statement",
@@ -36,7 +39,26 @@ func TestEvaluateStatementList(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expected: "1",
+			outFile: io.Discard,
+		},
+		{
+			name: "output to writer",
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.FunctionCall{
+						Namespace:    "",
+						FunctionName: "printf",
+						Arguments: []ast.ExprNode{
+							&ast.StringLiteral{Value: "test\n", StartPos: 0, EndPos: 5},
+						},
+						StartPos: 0,
+						EndPos:   5,
+					},
+				},
+				StartPos: 0,
+				EndPos:   5,
+			},
+			outFile: &discardWriter{},
 		},
 	}
 
@@ -44,7 +66,7 @@ func TestEvaluateStatementList(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			ev := NewEvaluator(io.Discard)
+			ev := NewEvaluator(test.outFile)
 			_, err := ev.evaluateStatementList(test.input)
 
 			if err != nil {
@@ -60,6 +82,7 @@ func TestEvaluateStatementListErr(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    *ast.StatementList
+		outFile  io.Writer
 		expected string
 	}{
 		{
@@ -83,7 +106,32 @@ func TestEvaluateStatementListErr(t *testing.T) {
 				StartPos: 0,
 				EndPos:   0,
 			},
-			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
+			outFile: io.Discard,
+			expected: fmt.Sprintf(
+				"%s: %s at position 0",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
+			),
+		},
+		{
+			name: "write error",
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.FunctionCall{
+						Namespace:    "",
+						FunctionName: "printf",
+						Arguments: []ast.ExprNode{
+							&ast.StringLiteral{Value: "test\n", StartPos: 0, EndPos: 5},
+						},
+						StartPos: 0,
+						EndPos:   5,
+					},
+				},
+				StartPos: 0,
+				EndPos:   5,
+			},
+			outFile:  &errWriter{},
+			expected: "write error",
 		},
 	}
 
@@ -91,18 +139,18 @@ func TestEvaluateStatementListErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			ev := NewEvaluator(io.Discard)
+			ev := NewEvaluator(test.outFile)
 			_, err := ev.evaluateStatementList(test.input)
 
 			if err == nil {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			if err.Error() != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					err.Error(),
 				)
 			}
 		})
