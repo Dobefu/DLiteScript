@@ -19,8 +19,8 @@ type ScriptRunner struct {
 	result string
 }
 
-// RunString executes a DLiteScript script file.
-func (r *ScriptRunner) RunString(str string) (byte, error) {
+// RunString executes a DLiteScript script from a string.
+func (r *ScriptRunner) RunString(str string, filePath ...string) (byte, error) {
 	t := tokenizer.NewTokenizer(str)
 	tokens, err := t.Tokenize()
 
@@ -36,6 +36,11 @@ func (r *ScriptRunner) RunString(str string) (byte, error) {
 	}
 
 	e := evaluator.NewEvaluator(r.OutFile)
+
+	if len(filePath) > 0 && filePath[0] != "" {
+		e.SetCurrentFilePath(filePath[0])
+	}
+
 	result, err := e.Evaluate(ast)
 
 	if err != nil {
@@ -70,7 +75,7 @@ func (r *ScriptRunner) RunScript(file string) (byte, error) {
 		return 1, fmt.Errorf("failed to read file: %s", err.Error())
 	}
 
-	return r.RunString(string(fileContent))
+	return r.RunString(string(fileContent), file)
 }
 
 // Output returns the result of the execution.

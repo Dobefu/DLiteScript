@@ -91,6 +91,9 @@ func (e *Evaluator) Evaluate(
 	case *ast.IndexExpr:
 		return e.evaluateIndexExpr(node)
 
+	case *ast.ImportStatement:
+		return e.evaluateImportStatement(node)
+
 	default:
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,

@@ -18,6 +18,7 @@ type Evaluator struct {
 	outFile         io.Writer
 	shouldTerminate bool
 	exitCode        byte
+	currentFilePath string
 }
 
 // NewEvaluator creates a new evaluator.
@@ -31,6 +32,7 @@ func NewEvaluator(outFile io.Writer) *Evaluator {
 		outFile:         outFile,
 		shouldTerminate: false,
 		exitCode:        0,
+		currentFilePath: "",
 	}
 }
 
@@ -45,4 +47,9 @@ func (e *Evaluator) popBlockScope() {
 		e.blockScopes = e.blockScopes[:e.blockScopesLen-1]
 		e.blockScopesLen--
 	}
+}
+
+// SetCurrentFilePath sets the current file path for import resolution.
+func (e *Evaluator) SetCurrentFilePath(filePath string) {
+	e.currentFilePath = filePath
 }

@@ -1,0 +1,7 @@
+func add(a number, b number) number {
+    return a + b
+}
+
+func multiply(a number, b number) number {
+    return a * b
+}
