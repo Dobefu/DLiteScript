@@ -121,6 +121,14 @@ func TestParse(t *testing.T) {
 			expected: "func x() number",
 		},
 		{
+			name: "import statement",
+			input: []*token.Token{
+				{Atom: "import", TokenType: token.TokenTypeImport},
+				{Atom: "test", TokenType: token.TokenTypeString},
+			},
+			expected: "import \"test\"",
+		},
+		{
 			name: "multiple statements",
 			input: []*token.Token{
 				{Atom: "1", TokenType: token.TokenTypeNumber},
