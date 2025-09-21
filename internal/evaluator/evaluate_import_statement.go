@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
 
@@ -24,6 +25,14 @@ func (e *Evaluator) evaluateImportStatement(
 		resolvedPath = filepath.Join(currentDir, path)
 	}
 
+	filename := filepath.Base(path)
+	ext := filepath.Ext(filename)
+
+	if ext != "" {
+		filename = filename[:len(filename)-len(ext)]
+	}
+
+	namespace := filename
 	fileContent, err := os.ReadFile(filepath.Clean(resolvedPath))
 
 	if err != nil {
@@ -54,13 +63,24 @@ func (e *Evaluator) evaluateImportStatement(
 		)
 	}
 
-	_, err = e.Evaluate(importedAST)
+	e.namespaceFunctions[namespace] = make(map[string]*ast.FuncDeclarationStatement)
+
+	importEvaluator := NewEvaluator(e.outFile)
+	importEvaluator.SetCurrentFilePath(resolvedPath)
+
+	_, err = importEvaluator.Evaluate(importedAST)
 
 	if err != nil {
 		return nil, fmt.Errorf(
 			"failed to evaluate imported file '%s': %s",
 			path, err.Error(),
 		)
+	}
+
+	maps.Copy(e.namespaceFunctions[namespace], importEvaluator.userFunctions)
+
+	for varName, scopedValue := range importEvaluator.outerScope {
+		e.outerScope[fmt.Sprintf("%s.%s", namespace, varName)] = scopedValue
 	}
 
 	return controlflow.NewRegularResult(datavalue.Null()), nil

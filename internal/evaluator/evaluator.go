@@ -10,29 +10,31 @@ import (
 
 // Evaluator defines the actual evaluator struct.
 type Evaluator struct {
-	outerScope      map[string]ScopedValue
-	blockScopes     []map[string]ScopedValue
-	blockScopesLen  int
-	userFunctions   map[string]*ast.FuncDeclarationStatement
-	buf             strings.Builder
-	outFile         io.Writer
-	shouldTerminate bool
-	exitCode        byte
-	currentFilePath string
+	outerScope         map[string]ScopedValue
+	blockScopes        []map[string]ScopedValue
+	blockScopesLen     int
+	userFunctions      map[string]*ast.FuncDeclarationStatement
+	namespaceFunctions map[string]map[string]*ast.FuncDeclarationStatement
+	buf                strings.Builder
+	outFile            io.Writer
+	shouldTerminate    bool
+	exitCode           byte
+	currentFilePath    string
 }
 
 // NewEvaluator creates a new evaluator.
 func NewEvaluator(outFile io.Writer) *Evaluator {
 	return &Evaluator{
-		outerScope:      make(map[string]ScopedValue),
-		blockScopes:     make([]map[string]ScopedValue, 0),
-		blockScopesLen:  0,
-		userFunctions:   make(map[string]*ast.FuncDeclarationStatement),
-		buf:             strings.Builder{},
-		outFile:         outFile,
-		shouldTerminate: false,
-		exitCode:        0,
-		currentFilePath: "",
+		outerScope:         make(map[string]ScopedValue),
+		blockScopes:        make([]map[string]ScopedValue, 0),
+		blockScopesLen:     0,
+		userFunctions:      make(map[string]*ast.FuncDeclarationStatement),
+		namespaceFunctions: make(map[string]map[string]*ast.FuncDeclarationStatement),
+		buf:                strings.Builder{},
+		outFile:            outFile,
+		shouldTerminate:    false,
+		exitCode:           0,
+		currentFilePath:    "",
 	}
 }
 

@@ -17,23 +17,28 @@ var functionRegistry = stdlib.GetFunctionRegistry()
 func (e *Evaluator) evaluateFunctionCall(
 	fc *ast.FunctionCall,
 ) (*controlflow.EvaluationResult, error) {
-	_, hasNamespace := functionRegistry[fc.Namespace]
+	result, err := e.findNamespaceFunction(fc)
 
-	if !hasNamespace {
-		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
-			errorutil.StageEvaluate,
-			errorutil.ErrorMsgUndefinedNamespace,
-			fc.StartPosition(),
-			fc.Namespace,
-		)
+	if result != nil || err != nil {
+		return result, err
 	}
 
-	function, hasFunction := functionRegistry[fc.Namespace].Functions[fc.FunctionName]
+	result, err = e.findRegistryFunction(fc)
 
-	if !hasFunction {
-		userFunction, hasUserFunction := e.userFunctions[fc.FunctionName]
+	if result != nil || err != nil {
+		return result, err
+	}
 
-		if !hasUserFunction {
+	result, err = e.findUserFunction(fc)
+
+	if result != nil || err != nil {
+		return result, err
+	}
+
+	if fc.Namespace != "" {
+		_, hasPkg := functionRegistry[fc.Namespace]
+
+		if hasPkg {
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgUndefinedFunction,
@@ -42,30 +47,76 @@ func (e *Evaluator) evaluateFunctionCall(
 			)
 		}
 
-		return e.evaluateUserFunctionCall(fc, userFunction)
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
+			errorutil.ErrorMsgUndefinedNamespace,
+			fc.StartPosition(),
+			fc.Namespace,
+		)
 	}
 
-	argValues, err := e.evaluateArguments(
-		fc.Arguments,
-		function,
+	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+		errorutil.StageEvaluate,
+		errorutil.ErrorMsgUndefinedFunction,
+		fc.StartPosition(),
 		fc.FunctionName,
-		fc,
 	)
+}
+
+func (e *Evaluator) findNamespaceFunction(fc *ast.FunctionCall) (*controlflow.EvaluationResult, error) {
+	namespaceFunctions, hasNamespace := e.namespaceFunctions[fc.Namespace]
+
+	if !hasNamespace {
+		return nil, nil
+	}
+
+	userFunction, hasFunction := namespaceFunctions[fc.FunctionName]
+
+	if !hasFunction {
+		return nil, nil
+	}
+
+	return e.evaluateUserFunctionCall(fc, userFunction)
+}
+
+func (e *Evaluator) findRegistryFunction(fc *ast.FunctionCall) (*controlflow.EvaluationResult, error) {
+	pkg, hasPkg := functionRegistry[fc.Namespace]
+
+	if !hasPkg {
+		return nil, nil
+	}
+
+	function, hasFunction := pkg.Functions[fc.FunctionName]
+
+	if !hasFunction {
+		return nil, nil
+	}
+
+	argValues, err := e.evaluateArguments(fc.Arguments, function, fc.FunctionName, fc)
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	handlerResult, err := function.Handler(
-		e,
-		argValues,
-	)
+	handlerResult, err := function.Handler(e, argValues)
 
 	if err != nil {
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
 	return controlflow.NewRegularResult(handlerResult), nil
+}
+
+func (e *Evaluator) findUserFunction(
+	fc *ast.FunctionCall,
+) (*controlflow.EvaluationResult, error) {
+	userFunction, hasUserFunction := e.userFunctions[fc.FunctionName]
+
+	if !hasUserFunction {
+		return nil, nil
+	}
+
+	return e.evaluateUserFunctionCall(fc, userFunction)
 }
 
 func (e *Evaluator) evaluateUserFunctionCall(

@@ -5,3 +5,5 @@ func add(a number, b number) number {
 func multiply(a number, b number) number {
     return a * b
 }
+
+var PI number = 3.14159

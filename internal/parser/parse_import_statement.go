@@ -32,7 +32,8 @@ func (p *Parser) parseImportStatement() (ast.ExprNode, error) {
 			StartPos: pathToken.StartPos,
 			EndPos:   pathToken.EndPos,
 		},
-		StartPos: startPos,
-		EndPos:   pathToken.EndPos,
+		Namespace: pathToken.Atom,
+		StartPos:  startPos,
+		EndPos:    pathToken.EndPos,
 	}, nil
 }

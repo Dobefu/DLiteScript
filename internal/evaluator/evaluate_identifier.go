@@ -1,6 +1,8 @@
 package evaluator
 
 import (
+	"strings"
+
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -10,6 +12,21 @@ import (
 func (e *Evaluator) evaluateIdentifier(
 	i *ast.Identifier,
 ) (*controlflow.EvaluationResult, error) {
+	if strings.Contains(i.Value, ".") {
+		scopedValue, hasScopedValue := e.outerScope[i.Value]
+
+		if hasScopedValue {
+			return controlflow.NewRegularResult(scopedValue.GetValue()), nil
+		}
+
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
+			errorutil.ErrorMsgUndefinedIdentifier,
+			i.StartPosition(),
+			i.Value,
+		)
+	}
+
 	for idx := range e.blockScopesLen {
 		scopedValue, hasScopedValue := e.blockScopes[e.blockScopesLen-idx-1][i.Value]
 

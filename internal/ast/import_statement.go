@@ -6,9 +6,10 @@ import (
 
 // ImportStatement represents an import statement in the AST.
 type ImportStatement struct {
-	Path     *StringLiteral
-	StartPos int
-	EndPos   int
+	Path      *StringLiteral
+	Namespace string
+	StartPos  int
+	EndPos    int
 }
 
 // Expr returns the expression of the import statement.
