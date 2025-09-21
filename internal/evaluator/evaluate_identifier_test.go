@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
@@ -68,6 +69,28 @@ func TestEvaluateIdentifier(t *testing.T) {
 			},
 			expected: 1,
 		},
+		{
+			name: "dot notation scoped identifier",
+			input: &ast.StatementList{
+				Statements: []ast.ExprNode{
+					&ast.VariableDeclaration{
+						Name: "module.value",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value:    "42",
+							StartPos: 0,
+							EndPos:   1,
+						},
+						StartPos: 0,
+						EndPos:   0,
+					},
+					&ast.Identifier{Value: "module.value", StartPos: 0, EndPos: 1},
+				},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: 42,
+		},
 	}
 
 	for _, test := range tests {
@@ -106,11 +129,29 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 			input:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 1},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
+		{
+			name:     "undefined scoped identifier",
+			input:    &ast.Identifier{Value: "module.undefined", StartPos: 0, EndPos: 1},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "module.undefined"),
+		},
+		{
+			name:     "identifier handler error",
+			input:    &ast.Identifier{Value: "ERROR", StartPos: 0, EndPos: 1},
+			expected: "test handler error",
+		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
+
+			identifierRegistry["ERROR"] = identifierInfo{
+				handler: func() (datavalue.Value, error) {
+					return datavalue.Null(), errors.New("test handler error")
+				},
+			}
+
+			defer func() { delete(identifierRegistry, "ERROR") }()
 
 			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
@@ -118,11 +159,17 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if errors.Unwrap(err).Error() != test.expected {
+			actualErr := err.Error()
+
+			if errors.Unwrap(err) != nil {
+				actualErr = errors.Unwrap(err).Error()
+			}
+
+			if actualErr != test.expected {
 				t.Errorf(
 					"expected error \"%s\", got \"%s\"",
 					test.expected,
-					errors.Unwrap(err).Error(),
+					actualErr,
 				)
 			}
 		})
