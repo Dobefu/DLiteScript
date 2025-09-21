@@ -15,6 +15,9 @@ func (f *Formatter) formatNode(
 	case *ast.CommentLiteral:
 		f.formatComment(n, result, depth)
 
+	case *ast.NewlineLiteral:
+		f.formatNewline(result)
+
 	case *ast.StatementList:
 		f.formatStatementList(n, result, depth)
 

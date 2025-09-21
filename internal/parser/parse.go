@@ -92,7 +92,7 @@ func (p *Parser) handleStatementEnd(
 	endToken *token.Type,
 ) ([]ast.ExprNode, error) {
 	comments := []ast.ExprNode{}
-	hasNewlines := false
+	newlineCount := 0
 
 	for !p.isEOF {
 		nextToken, _ := p.PeekNextToken()
@@ -103,24 +103,12 @@ func (p *Parser) handleStatementEnd(
 
 		if nextToken.TokenType == token.TokenTypeNewline {
 			_, _ = p.GetNextToken()
-			hasNewlines = true
+			newlineCount++
 
 			continue
 		}
 
-		if nextToken.TokenType == token.TokenTypeComment {
-			token, _ := p.GetNextToken()
-
-			comments = append(comments, &ast.CommentLiteral{
-				Value:    token.Atom,
-				StartPos: token.StartPos,
-				EndPos:   token.EndPos,
-			})
-
-			continue
-		}
-
-		if !hasNewlines {
+		if newlineCount == 0 {
 			return comments, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
@@ -130,6 +118,13 @@ func (p *Parser) handleStatementEnd(
 		}
 
 		break
+	}
+
+	if newlineCount > 1 {
+		comments = append(comments, &ast.NewlineLiteral{
+			StartPos: 0,
+			EndPos:   0,
+		})
 	}
 
 	return comments, nil
@@ -189,29 +184,26 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 
 func (p *Parser) handleOptionalNewlines() []ast.ExprNode {
 	comments := []ast.ExprNode{}
+	newlineCount := 0
 
 	for !p.isEOF {
 		peek, _ := p.PeekNextToken()
 
 		if peek.TokenType == token.TokenTypeNewline {
 			_, _ = p.GetNextToken()
-
-			continue
-		}
-
-		if peek.TokenType == token.TokenTypeComment {
-			token, _ := p.GetNextToken()
-
-			comments = append(comments, &ast.CommentLiteral{
-				Value:    token.Atom,
-				StartPos: token.StartPos,
-				EndPos:   token.EndPos,
-			})
+			newlineCount++
 
 			continue
 		}
 
 		break
+	}
+
+	if newlineCount > 1 {
+		comments = append(comments, &ast.NewlineLiteral{
+			StartPos: 0,
+			EndPos:   0,
+		})
 	}
 
 	return comments
