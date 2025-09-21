@@ -131,6 +131,21 @@ func TestEvaluate(t *testing.T) {
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(0)),
 		},
+		{
+			name: "import statement",
+			input: &ast.ImportStatement{
+				Path: &ast.StringLiteral{
+					Value:    "../../examples/09_imports/test.dl",
+					StartPos: 0,
+					EndPos:   1,
+				},
+				Namespace: "test",
+				Alias:     "",
+				StartPos:  0,
+				EndPos:    1,
+			},
+			expected: controlflow.NewRegularResult(datavalue.Null()),
+		},
 	}
 
 	for _, test := range tests {
@@ -147,7 +162,7 @@ func TestEvaluate(t *testing.T) {
 			result, err := ev.Evaluate(test.input)
 
 			if err != nil {
-				t.Errorf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
+				t.Fatalf("error evaluating \"%s\": %s", test.input.Expr(), err.Error())
 			}
 
 			if result.Value.DataType != test.expected.Value.DataType {
