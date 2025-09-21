@@ -150,7 +150,7 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 		return p.parseReturnStatement()
 
 	case token.TokenTypeImport:
-		return p.parseImportStatement()
+		return p.parseImportStatement(nextToken)
 
 	case token.TokenTypeLBrace:
 		var endToken token.Type = token.TokenTypeRBrace

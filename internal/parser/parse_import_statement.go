@@ -7,8 +7,18 @@ import (
 )
 
 // parseImportStatement parses an import statement.
-func (p *Parser) parseImportStatement() (ast.ExprNode, error) {
-	importToken := p.tokens[p.tokenIdx-1]
+func (p *Parser) parseImportStatement(
+	nextToken *token.Token,
+) (ast.ExprNode, error) {
+	if nextToken == nil {
+		return nil, errorutil.NewErrorAt(
+			errorutil.StageParse,
+			errorutil.ErrorMsgUnexpectedEOF,
+			p.tokenIdx,
+		)
+	}
+
+	importToken := nextToken
 	startPos := importToken.StartPos
 
 	pathToken, err := p.GetNextToken()
@@ -38,34 +48,31 @@ func (p *Parser) parseImportStatement() (ast.ExprNode, error) {
 		EndPos:    pathToken.EndPos,
 	}
 
-	if p.tokenIdx < len(p.tokens) {
-		nextToken, err := p.PeekNextToken()
+	nextToken, err = p.PeekNextToken()
 
-		if err == nil && nextToken.TokenType == token.TokenTypeAs {
-			_, err = p.GetNextToken()
+	if err != nil {
+		return importStmt, nil
+	}
 
-			if err != nil {
-				return nil, err
-			}
+	if nextToken.TokenType == token.TokenTypeAs {
+		_, _ = p.GetNextToken()
+		aliasToken, err := p.GetNextToken()
 
-			aliasToken, err := p.GetNextToken()
-
-			if err != nil {
-				return nil, err
-			}
-
-			if aliasToken.TokenType != token.TokenTypeIdentifier {
-				return nil, errorutil.NewErrorAt(
-					errorutil.StageParse,
-					errorutil.ErrorMsgUnexpectedToken,
-					p.tokenIdx-1,
-					aliasToken.Atom,
-				)
-			}
-
-			importStmt.Alias = aliasToken.Atom
-			importStmt.EndPos = aliasToken.EndPos
+		if err != nil {
+			return nil, err
 		}
+
+		if aliasToken.TokenType != token.TokenTypeIdentifier {
+			return nil, errorutil.NewErrorAt(
+				errorutil.StageParse,
+				errorutil.ErrorMsgUnexpectedToken,
+				p.tokenIdx-1,
+				aliasToken.Atom,
+			)
+		}
+
+		importStmt.Alias = aliasToken.Atom
+		importStmt.EndPos = aliasToken.EndPos
 	}
 
 	return importStmt, nil
