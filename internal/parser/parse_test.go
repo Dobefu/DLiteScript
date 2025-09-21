@@ -46,6 +46,35 @@ func TestParse(t *testing.T) {
 			expected: "1",
 		},
 		{
+			name: "consecutive newlines",
+			input: []*token.Token{
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+			},
+			expected: "1\n\n",
+		},
+		{
+			name: "consecutive newlines with parentheses",
+			input: []*token.Token{
+				{Atom: "(", TokenType: token.TokenTypeLParen},
+				{Atom: "1", TokenType: token.TokenTypeNumber},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
+				{Atom: ")", TokenType: token.TokenTypeRParen},
+			},
+			expected: "1",
+		},
+		{
+			name: "comment",
+			input: []*token.Token{
+				{Atom: "// Comment", TokenType: token.TokenTypeComment},
+			},
+			expected: "// Comment",
+		},
+		{
 			name: "variable declaration",
 			input: []*token.Token{
 				{Atom: "var", TokenType: token.TokenTypeVar},
