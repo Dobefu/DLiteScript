@@ -17,7 +17,7 @@ type Formatter struct {
 func New() *Formatter {
 	return &Formatter{
 		indentSize: 2,
-		indentChar: "  ",
+		indentChar: " ",
 	}
 }
 
