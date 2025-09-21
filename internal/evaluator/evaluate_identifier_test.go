@@ -145,13 +145,13 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			identifierRegistry["ERROR"] = identifierInfo{
-				handler: func() (datavalue.Value, error) {
-					return datavalue.Null(), errors.New("test handler error")
-				},
+			if test.name == "identifier handler error" {
+				identifierRegistry["ERROR"] = identifierInfo{
+					handler: func() (datavalue.Value, error) {
+						return datavalue.Null(), errors.New("test handler error")
+					},
+				}
 			}
-
-			defer func() { delete(identifierRegistry, "ERROR") }()
 
 			_, err := NewEvaluator(io.Discard).Evaluate(test.input)
 
