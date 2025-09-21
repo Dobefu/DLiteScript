@@ -109,6 +109,8 @@ const (
 	TokenTypeReturn
 	// TokenTypeImport represents the 'import' keyword.
 	TokenTypeImport
+	// TokenTypeAs represents the 'as' keyword.
+	TokenTypeAs
 
 	// TokenTypeTypeNumber represents the 'number' type keyword.
 	TokenTypeTypeNumber

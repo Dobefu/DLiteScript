@@ -8,12 +8,17 @@ import (
 type ImportStatement struct {
 	Path      *StringLiteral
 	Namespace string
+	Alias     string
 	StartPos  int
 	EndPos    int
 }
 
 // Expr returns the expression of the import statement.
 func (i *ImportStatement) Expr() string {
+	if i.Alias != "" {
+		return fmt.Sprintf("import %s as %s", i.Path.Expr(), i.Alias)
+	}
+
 	return fmt.Sprintf("import %s", i.Path.Expr())
 }
 

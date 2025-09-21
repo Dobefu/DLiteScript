@@ -26,14 +26,47 @@ func (p *Parser) parseImportStatement() (ast.ExprNode, error) {
 		)
 	}
 
-	return &ast.ImportStatement{
+	importStmt := &ast.ImportStatement{
 		Path: &ast.StringLiteral{
 			Value:    pathToken.Atom,
 			StartPos: pathToken.StartPos,
 			EndPos:   pathToken.EndPos,
 		},
 		Namespace: pathToken.Atom,
+		Alias:     "",
 		StartPos:  startPos,
 		EndPos:    pathToken.EndPos,
-	}, nil
+	}
+
+	if p.tokenIdx < len(p.tokens) {
+		nextToken, err := p.PeekNextToken()
+
+		if err == nil && nextToken.TokenType == token.TokenTypeAs {
+			_, err = p.GetNextToken()
+
+			if err != nil {
+				return nil, err
+			}
+
+			aliasToken, err := p.GetNextToken()
+
+			if err != nil {
+				return nil, err
+			}
+
+			if aliasToken.TokenType != token.TokenTypeIdentifier {
+				return nil, errorutil.NewErrorAt(
+					errorutil.StageParse,
+					errorutil.ErrorMsgUnexpectedToken,
+					p.tokenIdx-1,
+					aliasToken.Atom,
+				)
+			}
+
+			importStmt.Alias = aliasToken.Atom
+			importStmt.EndPos = aliasToken.EndPos
+		}
+	}
+
+	return importStmt, nil
 }

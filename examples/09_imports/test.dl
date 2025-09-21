@@ -1,0 +1,3 @@
+func test() number {
+  return 1
+}

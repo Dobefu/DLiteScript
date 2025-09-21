@@ -1,4 +1,5 @@
 import "./utils.dl"
+import "./test.dl" as _
 
 var x number = 5
 var y number = 3
@@ -10,3 +11,4 @@ printf("x = %g, y = %g\n", x, y)
 printf("x + y = %g\n", sum)
 printf("x * y = %g\n", product)
 printf("PI = %g\n", utils.PI)
+printf("test = %g\n", test())

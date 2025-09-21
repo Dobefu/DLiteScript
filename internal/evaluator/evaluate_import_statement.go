@@ -33,6 +33,11 @@ func (e *Evaluator) evaluateImportStatement(
 	}
 
 	namespace := filename
+
+	if node.Alias != "" {
+		namespace = node.Alias
+	}
+
 	fileContent, err := os.ReadFile(filepath.Clean(resolvedPath))
 
 	if err != nil {
@@ -77,10 +82,15 @@ func (e *Evaluator) evaluateImportStatement(
 		)
 	}
 
-	maps.Copy(e.namespaceFunctions[namespace], importEvaluator.userFunctions)
+	if namespace == "_" {
+		maps.Copy(e.userFunctions, importEvaluator.userFunctions)
+		maps.Copy(e.outerScope, importEvaluator.outerScope)
+	} else {
+		maps.Copy(e.namespaceFunctions[namespace], importEvaluator.userFunctions)
 
-	for varName, scopedValue := range importEvaluator.outerScope {
-		e.outerScope[fmt.Sprintf("%s.%s", namespace, varName)] = scopedValue
+		for varName, scopedValue := range importEvaluator.outerScope {
+			e.outerScope[fmt.Sprintf("%s.%s", namespace, varName)] = scopedValue
+		}
 	}
 
 	return controlflow.NewRegularResult(datavalue.Null()), nil
