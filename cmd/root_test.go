@@ -31,7 +31,7 @@ func TestRootCmd(t *testing.T) {
 			runRootCmd(rootCmd, []string{file})
 
 			if exitCode != 0 {
-				t.Fatalf("Expected non-zero exit code, got %d", exitCode)
+				t.Fatalf("Expected zero exit code, got %d", exitCode)
 			}
 		})
 	}

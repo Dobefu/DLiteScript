@@ -46,6 +46,7 @@ func (p *Parser) parseInfiniteLoop(startPos int) (ast.ExprNode, error) {
 		RangeFrom:        nil,
 		RangeTo:          nil,
 		IsRange:          false,
+		HasExplicitFrom:  false,
 	}, nil
 }
 
@@ -83,6 +84,7 @@ func (p *Parser) parseLoop(startPos int) (ast.ExprNode, error) {
 		RangeFrom:        nil,
 		RangeTo:          nil,
 		IsRange:          false,
+		HasExplicitFrom:  false,
 	}, nil
 }
 
@@ -207,6 +209,7 @@ func (p *Parser) parseVariableDeclarationLoop(
 		RangeFrom:        nil,
 		RangeTo:          nil,
 		IsRange:          false,
+		HasExplicitFrom:  false,
 	}, nil
 }
 
@@ -263,6 +266,7 @@ func (p *Parser) parseExplicitRangeLoop(
 		RangeFrom:        fromExpr,
 		RangeTo:          toExpr,
 		IsRange:          true,
+		HasExplicitFrom:  true,
 	}, nil
 }
 
@@ -290,8 +294,9 @@ func (p *Parser) parseImplicitRangeLoopWithVariable(
 			StartPos: zeroLiteralStartPos,
 			EndPos:   zeroLiteralStartPos + 1,
 		},
-		RangeTo: toExpr,
-		IsRange: true,
+		RangeTo:         toExpr,
+		IsRange:         true,
+		HasExplicitFrom: false,
 	}, nil
 }
 
@@ -316,8 +321,9 @@ func (p *Parser) parseImplicitRangeLoop(startPos int) (ast.ExprNode, error) {
 			StartPos: zeroLiteralStartPos,
 			EndPos:   zeroLiteralStartPos + 1,
 		},
-		RangeTo: toExpr,
-		IsRange: true,
+		RangeTo:         toExpr,
+		IsRange:         true,
+		HasExplicitFrom: false,
 	}, nil
 }
 
@@ -371,6 +377,7 @@ func (p *Parser) parseRangeLoopWithoutVariable(startPos int) (ast.ExprNode, erro
 		RangeFrom:        fromExpr,
 		RangeTo:          toExpr,
 		IsRange:          true,
+		HasExplicitFrom:  true,
 	}, nil
 }
 

@@ -75,14 +75,17 @@ func (p *Parser) parseStatements(endToken *token.Type) ([]ast.ExprNode, error) {
 		}
 
 		statements = append(statements, statement)
+		_, isComment := statement.(*ast.CommentLiteral)
 
-		comments, err = p.handleStatementEnd(endToken)
+		if !isComment {
+			comments, err = p.handleStatementEnd(endToken)
 
-		if err != nil {
-			return nil, err
+			if err != nil {
+				return nil, err
+			}
+
+			statements = append(statements, comments...)
 		}
-
-		statements = append(statements, comments...)
 	}
 
 	return statements, nil

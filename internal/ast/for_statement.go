@@ -15,6 +15,7 @@ type ForStatement struct {
 	RangeFrom        ExprNode
 	RangeTo          ExprNode
 	IsRange          bool
+	HasExplicitFrom  bool
 }
 
 // Expr returns the expression of the for statement.

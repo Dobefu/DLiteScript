@@ -19,6 +19,9 @@ func (e *Evaluator) Evaluate(
 	case *ast.CommentLiteral:
 		return controlflow.NewRegularResult(datavalue.Null()), nil
 
+	case *ast.NewlineLiteral:
+		return controlflow.NewRegularResult(datavalue.Null()), nil
+
 	case *ast.StatementList:
 		return e.evaluateStatementList(node)
 
