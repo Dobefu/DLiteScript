@@ -102,6 +102,12 @@ func (p *Parser) handleStatementEnd(endToken *token.Type) error {
 			continue
 		}
 
+		if nextToken.TokenType == token.TokenTypeComment {
+			_, _ = p.GetNextToken()
+
+			continue
+		}
+
 		if !hasNewlines {
 			return errorutil.NewErrorAt(
 				errorutil.StageParse,
@@ -125,6 +131,13 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 	}
 
 	switch nextToken.TokenType {
+	case token.TokenTypeComment:
+		return &ast.CommentLiteral{
+			Value:    nextToken.Atom,
+			StartPos: nextToken.StartPos,
+			EndPos:   nextToken.EndPos,
+		}, nil
+
 	case token.TokenTypeVar:
 		return p.parseVariableDeclaration()
 
@@ -167,6 +180,12 @@ func (p *Parser) handleOptionalNewlines() {
 		peek, _ := p.PeekNextToken()
 
 		if peek.TokenType == token.TokenTypeNewline {
+			_, _ = p.GetNextToken()
+
+			continue
+		}
+
+		if peek.TokenType == token.TokenTypeComment {
 			_, _ = p.GetNextToken()
 
 			continue

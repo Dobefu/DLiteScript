@@ -1,6 +1,8 @@
 package tokenizer
 
 import (
+	"strings"
+
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -23,15 +25,25 @@ func (t *Tokenizer) handleSlashSign(startPos int) (*token.Token, error) {
 	}
 
 	if next == '/' {
+		var comment strings.Builder
+		comment.WriteString("/")
+
 		for !t.isEOF {
 			next, _ = t.GetNext()
 
 			if next == '\n' {
 				break
 			}
+
+			comment.WriteRune(next)
 		}
 
-		return nil, nil
+		return token.NewToken(
+			comment.String(),
+			token.TokenTypeComment,
+			startPos,
+			t.expIdx,
+		), nil
 	}
 
 	return token.NewToken(

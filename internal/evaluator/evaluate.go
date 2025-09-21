@@ -16,6 +16,9 @@ func (e *Evaluator) Evaluate(
 	}
 
 	switch node := currentAst.(type) {
+	case *ast.CommentLiteral:
+		return controlflow.NewRegularResult(datavalue.Null()), nil
+
 	case *ast.StatementList:
 		return e.evaluateStatementList(node)
 

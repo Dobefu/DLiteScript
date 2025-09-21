@@ -45,6 +45,9 @@ const (
 	// TokenTypeError represents the error keyword.
 	TokenTypeError
 
+	// TokenTypeComment represents a single-line comment.
+	TokenTypeComment
+
 	// TokenTypeLParen represents a left parenthesis.
 	TokenTypeLParen
 	// TokenTypeRParen represents a right parenthesis.

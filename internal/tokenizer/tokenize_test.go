@@ -188,14 +188,18 @@ func TestTokenize(t *testing.T) {
 			},
 		},
 		{
-			name:     "string with newline",
-			input:    "//\n",
-			expected: []*token.Token{},
+			name:  "string with newline",
+			input: "//\n",
+			expected: []*token.Token{
+				{Atom: "//", TokenType: token.TokenTypeComment},
+			},
 		},
 		{
-			name:     "string with comment",
-			input:    "// Comment",
-			expected: []*token.Token{},
+			name:  "string with comment",
+			input: "// Comment",
+			expected: []*token.Token{
+				{Atom: "// Comment", TokenType: token.TokenTypeComment},
+			},
 		},
 		{
 			name:  "variable declaration",
