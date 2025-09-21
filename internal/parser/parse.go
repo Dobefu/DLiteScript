@@ -57,7 +57,8 @@ func (p *Parser) parseStatements(endToken *token.Type) ([]ast.ExprNode, error) {
 	statements := []ast.ExprNode{}
 
 	for !p.isEOF {
-		p.handleOptionalNewlines()
+		comments := p.handleOptionalNewlines()
+		statements = append(statements, comments...)
 
 		if endToken != nil {
 			nextToken, _ := p.PeekNextToken()
@@ -75,17 +76,22 @@ func (p *Parser) parseStatements(endToken *token.Type) ([]ast.ExprNode, error) {
 
 		statements = append(statements, statement)
 
-		err = p.handleStatementEnd(endToken)
+		comments, err = p.handleStatementEnd(endToken)
 
 		if err != nil {
 			return nil, err
 		}
+
+		statements = append(statements, comments...)
 	}
 
 	return statements, nil
 }
 
-func (p *Parser) handleStatementEnd(endToken *token.Type) error {
+func (p *Parser) handleStatementEnd(
+	endToken *token.Type,
+) ([]ast.ExprNode, error) {
+	comments := []ast.ExprNode{}
 	hasNewlines := false
 
 	for !p.isEOF {
@@ -103,13 +109,19 @@ func (p *Parser) handleStatementEnd(endToken *token.Type) error {
 		}
 
 		if nextToken.TokenType == token.TokenTypeComment {
-			_, _ = p.GetNextToken()
+			token, _ := p.GetNextToken()
+
+			comments = append(comments, &ast.CommentLiteral{
+				Value:    token.Atom,
+				StartPos: token.StartPos,
+				EndPos:   token.EndPos,
+			})
 
 			continue
 		}
 
 		if !hasNewlines {
-			return errorutil.NewErrorAt(
+			return comments, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
 				p.tokenIdx,
@@ -120,7 +132,7 @@ func (p *Parser) handleStatementEnd(endToken *token.Type) error {
 		break
 	}
 
-	return nil
+	return comments, nil
 }
 
 func (p *Parser) parseStatement() (ast.ExprNode, error) {
@@ -175,7 +187,9 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 	}
 }
 
-func (p *Parser) handleOptionalNewlines() {
+func (p *Parser) handleOptionalNewlines() []ast.ExprNode {
+	comments := []ast.ExprNode{}
+
 	for !p.isEOF {
 		peek, _ := p.PeekNextToken()
 
@@ -186,11 +200,19 @@ func (p *Parser) handleOptionalNewlines() {
 		}
 
 		if peek.TokenType == token.TokenTypeComment {
-			_, _ = p.GetNextToken()
+			token, _ := p.GetNextToken()
+
+			comments = append(comments, &ast.CommentLiteral{
+				Value:    token.Atom,
+				StartPos: token.StartPos,
+				EndPos:   token.EndPos,
+			})
 
 			continue
 		}
 
 		break
 	}
+
+	return comments
 }
