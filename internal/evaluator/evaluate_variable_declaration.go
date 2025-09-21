@@ -11,7 +11,7 @@ import (
 func (e *Evaluator) evaluateVariableDeclaration(
 	node *ast.VariableDeclaration,
 ) (*controlflow.EvaluationResult, error) {
-	value := controlflow.NewRegularResult(datavalue.Null())
+	var value *controlflow.EvaluationResult
 
 	if node.Value != nil {
 		evaluatedValue, err := e.Evaluate(node.Value)
@@ -21,6 +21,9 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		}
 
 		value = evaluatedValue
+	} else {
+		zeroValue := e.getZeroValueForType(node.Type)
+		value = controlflow.NewRegularResult(zeroValue)
 	}
 
 	if node.Type[:2] != "[]" &&
@@ -49,4 +52,36 @@ func (e *Evaluator) evaluateVariableDeclaration(
 	e.outerScope[node.Name] = variable
 
 	return controlflow.NewRegularResult(datavalue.Null()), nil
+}
+
+// getZeroValueForType returns the zero value for a given type string.
+func (e *Evaluator) getZeroValueForType(typeStr string) datavalue.Value {
+	switch typeStr {
+	case
+		"string":
+		return datavalue.String("")
+
+	case
+		"number":
+		return datavalue.Number(0)
+
+	case
+		"bool":
+		return datavalue.Bool(false)
+
+	case
+		"any":
+		return datavalue.Any(nil)
+
+	case
+		"error":
+		return datavalue.Error(nil)
+
+	default:
+		if len(typeStr) > 2 && typeStr[:2] == "[]" {
+			return datavalue.Array()
+		}
+
+		return datavalue.Null()
+	}
 }
