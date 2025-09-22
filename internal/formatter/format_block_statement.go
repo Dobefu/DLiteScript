@@ -16,6 +16,12 @@ func (f *Formatter) formatBlockStatement(
 		f.addWhitespace(result, depth)
 	}
 
+	if len(node.Statements) == 0 {
+		result.WriteString("{}\n")
+
+		return
+	}
+
 	result.WriteString("{\n")
 
 	for _, statement := range node.Statements {
