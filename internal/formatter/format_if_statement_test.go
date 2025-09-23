@@ -37,6 +37,23 @@ func TestFormatIfStatement(t *testing.T) {
 			expected:  "if true {\n  1\n}\n",
 		},
 		{
+			name: "if statement with empty body",
+			input: &ast.IfStatement{
+				Condition: &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				ThenBlock: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   2,
+					EndPos:     3,
+				},
+				StartPos:  0,
+				EndPos:    5,
+				ElseBlock: nil,
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "if true {}\n",
+		},
+		{
 			name: "if statement with else block",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
@@ -60,6 +77,50 @@ func TestFormatIfStatement(t *testing.T) {
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "if true {\n  1\n} else {\n  2\n}\n",
+		},
+		{
+			name: "if statement with empty else block",
+			input: &ast.IfStatement{
+				Condition: &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				ThenBlock: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					},
+					StartPos: 2,
+					EndPos:   3,
+				},
+				StartPos: 0,
+				EndPos:   5,
+				ElseBlock: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   4,
+					EndPos:     5,
+				},
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "if true {\n  1\n} else {}\n",
+		},
+		{
+			name: "if statement with empty then block and else block",
+			input: &ast.IfStatement{
+				Condition: &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				ThenBlock: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   2,
+					EndPos:     3,
+				},
+				StartPos: 0,
+				EndPos:   5,
+				ElseBlock: &ast.BlockStatement{
+					Statements: []ast.ExprNode{},
+					StartPos:   4,
+					EndPos:     5,
+				},
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "if true {} else {}\n",
 		},
 	}
 
