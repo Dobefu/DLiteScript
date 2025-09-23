@@ -40,10 +40,10 @@ func TestFormatAssignmentStatement(t *testing.T) {
 			t.Parallel()
 
 			builder := &strings.Builder{}
-			test.formatter.formatAssignmentStatement(test.input, builder, test.depth)
+			test.formatter.formatNode(test.input, builder, test.depth)
 
 			if builder.String() != test.expected {
-				t.Errorf("expected '%s', got '%s'", test.expected, builder.String())
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, builder.String())
 			}
 		})
 	}

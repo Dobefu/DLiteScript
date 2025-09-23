@@ -15,6 +15,7 @@ func TestFormatBinaryExpr(t *testing.T) {
 		name      string
 		input     *ast.BinaryExpr
 		formatter *Formatter
+		depth     int
 		expected  string
 	}{
 		{
@@ -32,6 +33,7 @@ func TestFormatBinaryExpr(t *testing.T) {
 				EndPos:   0,
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
 			expected:  "1 + 1\n",
 		},
 	}
@@ -41,10 +43,10 @@ func TestFormatBinaryExpr(t *testing.T) {
 			t.Parallel()
 
 			builder := &strings.Builder{}
-			test.formatter.formatNode(test.input, builder, 0)
+			test.formatter.formatNode(test.input, builder, test.depth)
 
 			if builder.String() != test.expected {
-				t.Errorf("expected '%s', got '%s'", test.expected, builder.String())
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, builder.String())
 			}
 		})
 	}

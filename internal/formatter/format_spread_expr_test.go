@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -33,11 +34,11 @@ func TestFormatSpreadExpr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			formatter := New()
-			result := formatter.Format(test.input)
+			builder := &strings.Builder{}
+			test.formatter.formatNode(test.input, builder, test.depth)
 
-			if result != test.expected {
-				t.Errorf("expected '%s', got '%s'", test.expected, result)
+			if builder.String() != test.expected {
+				t.Errorf("expected \"%s\", got \"%s\"", test.expected, builder.String())
 			}
 		})
 	}
