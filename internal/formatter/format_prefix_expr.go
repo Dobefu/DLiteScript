@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -12,6 +13,7 @@ func (f *Formatter) formatPrefixExpr(
 	depth int,
 ) {
 	f.addWhitespace(result, depth)
-	result.WriteString(node.Expr())
+
+	fmt.Fprintf(result, "%s%s", node.Operator.Atom, node.Operand.Expr())
 	result.WriteString("\n")
 }
