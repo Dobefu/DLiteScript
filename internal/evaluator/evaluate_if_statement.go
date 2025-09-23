@@ -27,11 +27,7 @@ func (e *Evaluator) evaluateIfStatement(
 		)
 	}
 
-	exprResult, err := expr.Value.AsBool()
-
-	if err != nil {
-		return controlflow.NewRegularResult(datavalue.Null()), err
-	}
+	exprResult, _ := expr.Value.AsBool()
 
 	if exprResult {
 		return e.Evaluate(node.ThenBlock)
