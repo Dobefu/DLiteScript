@@ -15,11 +15,26 @@ func (f *Formatter) formatIfStatement(
 	result.WriteString("if ")
 	result.WriteString(node.Condition.Expr())
 	result.WriteString(" ")
-	f.formatBlockStatement(node.ThenBlock, result, depth, false)
 
 	if node.ElseBlock != nil {
-		f.addWhitespace(result, depth)
-		result.WriteString("else ")
+		if len(node.ThenBlock.Statements) == 0 {
+			result.WriteString("{}")
+		} else {
+			result.WriteString("{\n")
+
+			for _, statement := range node.ThenBlock.Statements {
+				if statement != nil {
+					f.formatNode(statement, result, depth+1)
+				}
+			}
+
+			f.addWhitespace(result, depth)
+			result.WriteString("}")
+		}
+
+		result.WriteString(" else ")
 		f.formatBlockStatement(node.ElseBlock, result, depth, false)
+	} else {
+		f.formatBlockStatement(node.ThenBlock, result, depth, false)
 	}
 }

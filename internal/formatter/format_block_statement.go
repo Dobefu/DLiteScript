@@ -25,9 +25,11 @@ func (f *Formatter) formatBlockStatement(
 	result.WriteString("{\n")
 
 	for _, statement := range node.Statements {
-		if statement != nil {
-			f.formatNode(statement, result, depth+1)
+		if statement == nil {
+			continue
 		}
+
+		f.formatNode(statement, result, depth+1)
 	}
 
 	f.addWhitespace(result, depth)
