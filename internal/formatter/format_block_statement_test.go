@@ -18,6 +18,17 @@ func TestFormatBlockStatement(t *testing.T) {
 		expected  string
 	}{
 		{
+			name: "empty block statement",
+			input: &ast.BlockStatement{
+				Statements: []ast.ExprNode{},
+				StartPos:   0,
+				EndPos:     1,
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "{}\n",
+		},
+		{
 			name: "block statement",
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
@@ -29,6 +40,17 @@ func TestFormatBlockStatement(t *testing.T) {
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "{\n  1\n}\n",
+		},
+		{
+			name: "block statement with nil statement",
+			input: &ast.BlockStatement{
+				Statements: []ast.ExprNode{nil},
+				StartPos:   0,
+				EndPos:     1,
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "{\n}\n",
 		},
 	}
 
