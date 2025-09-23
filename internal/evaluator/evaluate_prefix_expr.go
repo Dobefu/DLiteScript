@@ -4,6 +4,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
 
@@ -16,7 +17,8 @@ func (e *Evaluator) evaluatePrefixExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), err
 	}
 
-	if node.Operator.TokenType == token.TokenTypeOperationSub {
+	switch node.Operator.TokenType {
+	case token.TokenTypeOperationSub:
 		number, err := rawResult.Value.AsNumber()
 
 		if err != nil {
@@ -24,9 +26,8 @@ func (e *Evaluator) evaluatePrefixExpr(
 		}
 
 		return controlflow.NewRegularResult(datavalue.Number(-number)), nil
-	}
 
-	if node.Operator.TokenType == token.TokenTypeOperationAdd {
+	case token.TokenTypeOperationAdd:
 		number, err := rawResult.Value.AsNumber()
 
 		if err != nil {
@@ -34,9 +35,8 @@ func (e *Evaluator) evaluatePrefixExpr(
 		}
 
 		return controlflow.NewRegularResult(datavalue.Number(number)), nil
-	}
 
-	if node.Operator.TokenType == token.TokenTypeNot {
+	case token.TokenTypeNot:
 		boolean, err := rawResult.Value.AsBool()
 
 		if err != nil {
@@ -44,7 +44,13 @@ func (e *Evaluator) evaluatePrefixExpr(
 		}
 
 		return controlflow.NewRegularResult(datavalue.Bool(!boolean)), nil
-	}
 
-	return controlflow.NewRegularResult(rawResult.Value), nil
+	default:
+		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
+			errorutil.StageEvaluate,
+			errorutil.ErrorMsgUnknownOperator,
+			node.StartPos,
+			node.Operator.Atom,
+		)
+	}
 }

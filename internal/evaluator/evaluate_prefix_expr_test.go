@@ -97,6 +97,21 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 		expected string
 	}{
 		{
+			name: "operand has incorrect data type",
+			input: &ast.PrefixExpr{
+				Operator: token.Token{
+					Atom:      "-",
+					TokenType: token.TokenTypeOperationSub,
+					StartPos:  0,
+					EndPos:    0,
+				},
+				Operand:  &ast.NumberLiteral{Value: "test", StartPos: 1, EndPos: 2},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: "invalid syntax",
+		},
+		{
 			name: "operand is nil",
 			input: &ast.PrefixExpr{
 				Operator: token.Token{
@@ -140,6 +155,21 @@ func TestEvaluatePrefixExprErr(t *testing.T) {
 				EndPos:   0,
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "null"),
+		},
+		{
+			name: "operator has an unknown type",
+			input: &ast.PrefixExpr{
+				Operator: token.Token{
+					Atom:      "?",
+					TokenType: token.Type(-1),
+					StartPos:  0,
+					EndPos:    0,
+				},
+				Operand:  &ast.NumberLiteral{Value: "5", StartPos: 1, EndPos: 2},
+				StartPos: 0,
+				EndPos:   0,
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, "?"),
 		},
 	}
 
