@@ -12,7 +12,14 @@ import (
 )
 
 var fmtCmd = &cobra.Command{ //nolint:exhaustruct
-	Use:   "fmt",
+	Use: "fmt",
+	Args: cobra.PositionalArgs(func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return fmt.Errorf("usage: %s <file>", cmd.CommandPath())
+		}
+
+		return nil
+	}),
 	Short: "Format DLiteScript code",
 	Run:   runFmtCmd,
 }
