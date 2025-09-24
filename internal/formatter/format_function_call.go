@@ -1,6 +1,7 @@
 package formatter
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -16,7 +17,7 @@ func (f *Formatter) formatFunctionCall(
 	functionName := node.FunctionName
 
 	if node.Namespace != "" {
-		functionName = node.Namespace + "." + node.FunctionName
+		functionName = fmt.Sprintf("%s.%s", node.Namespace, node.FunctionName)
 	}
 
 	result.WriteString(functionName)
@@ -32,7 +33,10 @@ func (f *Formatter) formatFunctionCall(
 				result.WriteString(", ")
 			}
 
-			result.WriteString(arg.Expr())
+			var argBuilder strings.Builder
+			f.formatNode(arg, &argBuilder, 0)
+			argStr := strings.TrimSuffix(argBuilder.String(), "\n")
+			result.WriteString(argStr)
 		}
 	}
 
