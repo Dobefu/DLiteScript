@@ -46,6 +46,10 @@ func (e *Evaluator) pushBlockScope() {
 
 func (e *Evaluator) popBlockScope() {
 	if e.blockScopesLen > 0 {
+		for i := range e.blockScopes[e.blockScopesLen-1] {
+			delete(e.blockScopes[e.blockScopesLen-1], i)
+		}
+
 		e.blockScopes = e.blockScopes[:e.blockScopesLen-1]
 		e.blockScopesLen--
 	}
