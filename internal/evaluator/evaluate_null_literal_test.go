@@ -17,8 +17,13 @@ func TestEvaluateNullLiteral(t *testing.T) {
 		expected datavalue.Value
 	}{
 		{
-			name:     "null literal",
-			input:    &ast.NullLiteral{StartPos: 0, EndPos: 0},
+			name: "null literal",
+			input: &ast.NullLiteral{
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+			},
 			expected: datavalue.Null(),
 		},
 	}
@@ -38,7 +43,7 @@ func TestEvaluateNullLiteral(t *testing.T) {
 					"expected \"%v\", got \"%v\" at position %d",
 					test.expected.DataType.AsString(),
 					result.Value.DataType.AsString(),
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 		})

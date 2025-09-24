@@ -28,10 +28,18 @@ func TestEvaluateFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+					&ast.StringLiteral{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: "test",
 		},
@@ -41,13 +49,39 @@ func TestEvaluateFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
-					&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
-					&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
-					&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+					&ast.StringLiteral{
+						Value: "testing, %g %g %g\n",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "2",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 12, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 13, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "3",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 14, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: "testing, 1 2 3\n",
 		},
@@ -57,23 +91,53 @@ func TestEvaluateFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "testing, %g %g %g\n", StartPos: 0, EndPos: 1},
+					&ast.StringLiteral{
+						Value: "testing, %g %g %g\n",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
 					&ast.SpreadExpr{
 						Expression: &ast.ArrayLiteral{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
-								&ast.NumberLiteral{Value: "2", StartPos: 12, EndPos: 13},
-								&ast.NumberLiteral{Value: "3", StartPos: 14, EndPos: 15},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+									},
+								},
+								&ast.NumberLiteral{
+									Value: "2",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 12, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 13, Line: 0, Column: 0},
+									},
+								},
+								&ast.NumberLiteral{
+									Value: "3",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 14, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+									},
+								},
 							},
-							StartPos: 10,
-							EndPos:   15,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 10,
-						EndPos:   15,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: "testing, 1 2 3\n",
 		},
@@ -83,10 +147,18 @@ func TestEvaluateFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "userFunction",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 10, EndPos: 11},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: "",
 		},
@@ -104,13 +176,17 @@ func TestEvaluateFunctionCall(t *testing.T) {
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			}
 
 			_, err := ev.evaluateFunctionCall(test.input)
@@ -140,8 +216,10 @@ func TestEvaluateFunctionCallErr(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments:    []ast.ExprNode{},
-				StartPos:     0,
-				EndPos:       0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 		},
@@ -151,10 +229,18 @@ func TestEvaluateFunctionCallErr(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				errorutil.ErrorMsgFunctionArgType,
@@ -202,10 +288,18 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				Namespace:    "bogus",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedNamespace, "bogus"),
 		},
@@ -215,10 +309,18 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "bogus",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
@@ -228,11 +330,25 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				Namespace:    "math",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					&ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "math.abs", 1, 2),
 		},
@@ -242,10 +358,18 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				Namespace:    "math",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "a",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "invalid syntax",
 		},
@@ -255,11 +379,25 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "functionHandlerError",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
-					&ast.StringLiteral{Value: "extra", StartPos: 2, EndPos: 3},
+					&ast.StringLiteral{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					&ast.StringLiteral{
+						Value: "extra",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expected: "'functionHandlerError()' expects exactly 1 argument(s), but got 2",
 		},
@@ -282,21 +420,29 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 							&ast.ReturnStatement{
 								Values: []ast.ExprNode{
 									&ast.StringLiteral{
-										Value:    "test",
-										StartPos: 0,
-										EndPos:   4,
+										Value: "test",
+										Range: ast.Range{
+											Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+											End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+										},
 									},
 								},
 								NumValues: 1,
-								StartPos:  0,
-								EndPos:    4,
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+								},
 							},
 						},
-						StartPos: 0,
-						EndPos:   4,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+						},
 					},
-					StartPos: 0,
-					EndPos:   4,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+					},
 				}
 			}
 
@@ -332,10 +478,18 @@ func TestEvaluateUserFunctionCall(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -346,20 +500,32 @@ func TestEvaluateUserFunctionCall(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 1,
-							StartPos:  0,
-							EndPos:    1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "1",
 		},
@@ -369,11 +535,25 @@ func TestEvaluateUserFunctionCall(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					&ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "2",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -385,21 +565,39 @@ func TestEvaluateUserFunctionCall(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-								&ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+								&ast.NumberLiteral{
+									Value: "2",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 2,
-							StartPos:  0,
-							EndPos:    3,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   3,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number", "number"},
 				NumReturnValues: 2,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "(1, 2)",
 		},
@@ -445,10 +643,18 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -460,20 +666,32 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 1,
-							StartPos:  0,
-							EndPos:    1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "test", 2, 1),
 		},
@@ -483,10 +701,18 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "a",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -497,20 +723,32 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 1,
-							StartPos:  0,
-							EndPos:    1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "invalid syntax",
 		},
@@ -520,10 +758,18 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -532,15 +778,25 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "a", StartPos: 0, EndPos: 1},
+						&ast.NumberLiteral{
+							Value: "a",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "invalid syntax",
 		},
@@ -550,10 +806,18 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -564,20 +828,32 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 1,
-							StartPos:  0,
-							EndPos:    1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number", "number"},
 				NumReturnValues: 2,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionReturnCount, "test", 2, 1),
 		},
@@ -587,10 +863,18 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 				FunctionName: "test",
 				Namespace:    "",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			functionDeclaration: &ast.FuncDeclarationStatement{
 				Name: "test",
@@ -601,22 +885,46 @@ func TestEvaluateUserFunctionCallErr(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-								&ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
-								&ast.NumberLiteral{Value: "3", StartPos: 4, EndPos: 5},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+								&ast.NumberLiteral{
+									Value: "2",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+									},
+								},
+								&ast.NumberLiteral{
+									Value: "3",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 3,
-							StartPos:  0,
-							EndPos:    5,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   5,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number", "number"},
 				NumReturnValues: 2,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgFunctionReturnCount, "test", 2, 3),
 		},
@@ -654,15 +962,31 @@ func TestEvaluateArgumentsSpreadExprErr(t *testing.T) {
 		Namespace:    "",
 		FunctionName: "printf",
 		Arguments: []ast.ExprNode{
-			&ast.StringLiteral{Value: "test %g\n", StartPos: 0, EndPos: 1},
+			&ast.StringLiteral{
+				Value: "test %g\n",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			&ast.SpreadExpr{
-				Expression: &ast.NumberLiteral{Value: "invalid", StartPos: 10, EndPos: 11},
-				StartPos:   10,
-				EndPos:     11,
+				Expression: &ast.NumberLiteral{
+					Value: "invalid",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+				},
 			},
 		},
-		StartPos: 0,
-		EndPos:   11,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+		},
 	}
 
 	ev := NewEvaluator(io.Discard)
@@ -724,24 +1048,32 @@ func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
 		FunctionName: "printf",
 		Arguments: []ast.ExprNode{
 			&ast.StringLiteral{
-				Value:    "testing tuple spread: %g %g %g\n",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "testing tuple spread: %g %g %g\n",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			&ast.SpreadExpr{
 				Expression: &ast.FunctionCall{
 					Namespace:    "",
 					FunctionName: "spreadTest",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     10,
-					EndPos:       15,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 10,
-				EndPos:   15,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 10, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+				},
 			},
 		},
-		StartPos: 0,
-		EndPos:   15,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+		},
 	}
 
 	ev := NewEvaluator(io.Discard)
@@ -770,7 +1102,13 @@ func TestValidateVariadicArgs(t *testing.T) {
 		{
 			name: "no parameters",
 			input: []ast.ExprNode{
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
 			functionInfo: function.Info{
 				Documentation: function.Documentation{
@@ -802,7 +1140,13 @@ func TestValidateVariadicArgs(t *testing.T) {
 		{
 			name: "single argument",
 			input: []ast.ExprNode{
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
 			functionInfo: function.Info{
 				Documentation: function.Documentation{
@@ -846,9 +1190,17 @@ func TestValidateVariadicArgs(t *testing.T) {
 			name: "any argument",
 			input: []ast.ExprNode{
 				&ast.AnyLiteral{
-					Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					StartPos: 0,
-					EndPos:   1,
+					Value: &ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 			},
 			functionInfo: function.Info{
@@ -911,8 +1263,10 @@ func TestValidateVariadicArgs(t *testing.T) {
 					FunctionName: "test",
 					Namespace:    "",
 					Arguments:    test.input,
-					StartPos:     0,
-					EndPos:       0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 			)
 
@@ -935,7 +1289,13 @@ func TestValidateVariadicArgsErr(t *testing.T) {
 		{
 			name: "invalid argument type",
 			input: []ast.ExprNode{
-				&ast.StringLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&ast.StringLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
 			functionInfo: function.Info{ //nolint:exhaustruct
 				FunctionType: function.FunctionTypeVariadic,
@@ -974,8 +1334,10 @@ func TestValidateVariadicArgsErr(t *testing.T) {
 					FunctionName: "test",
 					Namespace:    "",
 					Arguments:    test.input,
-					StartPos:     0,
-					EndPos:       0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 			)
 

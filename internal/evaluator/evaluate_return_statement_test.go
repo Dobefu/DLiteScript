@@ -20,8 +20,10 @@ func TestEvaluateReturnStatement(t *testing.T) {
 			statement: &ast.ReturnStatement{
 				Values:    []ast.ExprNode{},
 				NumValues: 0,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -30,14 +32,18 @@ func TestEvaluateReturnStatement(t *testing.T) {
 			statement: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
 					&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(1),
 		},
@@ -46,19 +52,25 @@ func TestEvaluateReturnStatement(t *testing.T) {
 			statement: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
 					&ast.StringLiteral{
-						Value:    "test",
-						StartPos: 0,
-						EndPos:   4,
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+						},
 					},
 					&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 5,
-						EndPos:   6,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 5, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    6,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Tuple(datavalue.String("test"), datavalue.Number(1)),
 		},
@@ -107,14 +119,18 @@ func TestEvaluateReturnStatementErr(t *testing.T) {
 			statement: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
 					&ast.NumberLiteral{
-						Value:    "test",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    6,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+				},
 			},
 			expected: "strconv.ParseFloat: parsing \"test\": invalid syntax",
 		},
@@ -123,19 +139,25 @@ func TestEvaluateReturnStatementErr(t *testing.T) {
 			statement: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
 					&ast.StringLiteral{
-						Value:    "test",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&ast.NumberLiteral{
-						Value:    "test",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "strconv.ParseFloat: parsing \"test\": invalid syntax",
 		},

@@ -8,8 +8,7 @@ import (
 // BlockStatement defines a struct for a block statement.
 type BlockStatement struct {
 	Statements []ExprNode
-	StartPos   int
-	EndPos     int
+	Range      Range
 }
 
 // Expr returns the expression of the block statement.
@@ -31,14 +30,9 @@ func (e *BlockStatement) Expr() string {
 	return fmt.Sprintf("(%s)", strings.Join(statements, " "))
 }
 
-// StartPosition returns the start position of the block statement.
-func (e *BlockStatement) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the block statement.
-func (e *BlockStatement) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the block statement.
+func (e *BlockStatement) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the block statement and its statements.

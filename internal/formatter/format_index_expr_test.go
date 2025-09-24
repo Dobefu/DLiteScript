@@ -20,10 +20,24 @@ func TestFormatIndexExpr(t *testing.T) {
 		{
 			name: "index expression",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "array", StartPos: 0, EndPos: 5},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: &ast.Identifier{
+					Value: "array",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

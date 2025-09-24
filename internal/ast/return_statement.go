@@ -9,8 +9,7 @@ import (
 type ReturnStatement struct {
 	Values    []ExprNode
 	NumValues int
-	StartPos  int
-	EndPos    int
+	Range     Range
 }
 
 // Expr returns the expression of the return statement.
@@ -32,14 +31,9 @@ func (b *ReturnStatement) Expr() string {
 	return fmt.Sprintf("return %s", strings.Join(values, ", "))
 }
 
-// StartPosition returns the start position of the return statement.
-func (b *ReturnStatement) StartPosition() int {
-	return b.StartPos
-}
-
-// EndPosition returns the end position of the return statement.
-func (b *ReturnStatement) EndPosition() int {
-	return b.EndPos
+// GetRange returns the range of the return statement.
+func (b *ReturnStatement) GetRange() Range {
+	return b.Range
 }
 
 // Walk walks the return statement.

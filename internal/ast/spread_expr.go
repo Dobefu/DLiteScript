@@ -5,8 +5,7 @@ import "fmt"
 // SpreadExpr represents a spread expression.
 type SpreadExpr struct {
 	Expression ExprNode
-	StartPos   int
-	EndPos     int
+	Range      Range
 }
 
 // Expr returns the expression of the spread expression.
@@ -18,14 +17,9 @@ func (s *SpreadExpr) Expr() string {
 	return fmt.Sprintf("...%s", s.Expression.Expr())
 }
 
-// StartPosition returns the start position of the spread expression.
-func (s *SpreadExpr) StartPosition() int {
-	return s.StartPos
-}
-
-// EndPosition returns the end position of the spread expression.
-func (s *SpreadExpr) EndPosition() int {
-	return s.EndPos
+// GetRange returns the range of the spread expression.
+func (s *SpreadExpr) GetRange() Range {
+	return s.Range
 }
 
 // Walk walks the spread expression.

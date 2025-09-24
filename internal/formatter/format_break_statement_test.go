@@ -18,15 +18,27 @@ func TestFormatBreakStatement(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "break statement",
-			input:     &ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 1},
+			name: "break statement",
+			input: &ast.BreakStatement{
+				Count: 1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "break\n",
 		},
 		{
-			name:      "break statement with count 2",
-			input:     &ast.BreakStatement{Count: 2, StartPos: 0, EndPos: 1},
+			name: "break statement with count 2",
+			input: &ast.BreakStatement{
+				Count: 2,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "break 2\n",

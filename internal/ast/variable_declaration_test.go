@@ -21,12 +21,16 @@ func TestVariableDeclaration(t *testing.T) {
 				Name: "x",
 				Type: "int",
 				Value: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -36,11 +40,13 @@ func TestVariableDeclaration(t *testing.T) {
 		{
 			name: "variable declaration without value",
 			input: &VariableDeclaration{
-				Name:     "x",
-				Type:     "int",
-				Value:    nil,
-				StartPos: 0,
-				EndPos:   1,
+				Name:  "x",
+				Type:  "int",
+				Value: nil,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -53,12 +59,16 @@ func TestVariableDeclaration(t *testing.T) {
 				Name: "y",
 				Type: "string",
 				Value: &StringLiteral{
-					Value:    "hello",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "hello",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedStartPos: 0,
 			expectedEndPos:   2,
@@ -71,12 +81,16 @@ func TestVariableDeclaration(t *testing.T) {
 				Name: "y",
 				Type: "string",
 				Value: &StringLiteral{
-					Value:    "hello",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "hello",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedStartPos: 0,
 			expectedEndPos:   2,
@@ -89,12 +103,16 @@ func TestVariableDeclaration(t *testing.T) {
 				Name: "z",
 				Type: "bool",
 				Value: &BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -107,19 +125,19 @@ func TestVariableDeclaration(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

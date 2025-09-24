@@ -9,8 +9,7 @@ type IfStatement struct {
 	Condition ExprNode
 	ThenBlock *BlockStatement
 	ElseBlock *BlockStatement
-	StartPos  int
-	EndPos    int
+	Range     Range
 }
 
 // Expr returns the expression of the if statement.
@@ -35,14 +34,9 @@ func (e *IfStatement) Expr() string {
 	)
 }
 
-// StartPosition returns the start position of the if statement.
-func (e *IfStatement) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the if statement.
-func (e *IfStatement) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the if statement.
+func (e *IfStatement) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the if statement and its condition and body.

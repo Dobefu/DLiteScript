@@ -23,10 +23,24 @@ func TestEvaluateIndexExpr(t *testing.T) {
 		{
 			name: "index expression",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "someArray", StartPos: 0, EndPos: 1},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "someArray",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: 0,
 		},
@@ -81,22 +95,46 @@ func TestEvaluateIndexExprErr(t *testing.T) {
 					Namespace:    "",
 					FunctionName: "bogus",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     0,
-					EndPos:       1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 		{
 			name: "not an array",
 			input: &ast.IndexExpr{
-				Array:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
 		},
@@ -105,20 +143,32 @@ func TestEvaluateIndexExprErr(t *testing.T) {
 			input: &ast.IndexExpr{
 				Array: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+						&ast.NumberLiteral{
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Index: &ast.FunctionCall{
 					Namespace:    "",
 					FunctionName: "bogus",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     0,
-					EndPos:       1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
@@ -127,14 +177,30 @@ func TestEvaluateIndexExprErr(t *testing.T) {
 			input: &ast.IndexExpr{
 				Array: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+						&ast.NumberLiteral{
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				Index:    &ast.StringLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Index: &ast.StringLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
 		},
@@ -143,14 +209,30 @@ func TestEvaluateIndexExprErr(t *testing.T) {
 			input: &ast.IndexExpr{
 				Array: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+						&ast.NumberLiteral{
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				Index:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Index: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgArrayIndexOutOfBounds, "1"),
 		},

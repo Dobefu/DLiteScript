@@ -23,7 +23,11 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 	}
 
 	funcName := nextToken.Atom
-	startPos := nextToken.StartPos
+	startPos := ast.Position{
+		Offset: nextToken.StartPos,
+		Line:   p.line,
+		Column: p.column - (nextToken.EndPos - nextToken.StartPos),
+	}
 	args, err := p.getArgs()
 
 	if err != nil {
@@ -55,8 +59,10 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 		Body:            body,
 		ReturnValues:    returnTypes,
 		NumReturnValues: len(returnTypes),
-		StartPos:        startPos,
-		EndPos:          p.GetCurrentCharPos(),
+		Range: ast.Range{
+			Start: startPos,
+			End:   p.GetCurrentPosition(),
+		},
 	}, nil
 }
 

@@ -71,9 +71,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 			name:  "token is not an identifier or index expression",
 			input: []*token.Token{},
 			leftExpr: &ast.NumberLiteral{
-				Value:    "1",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "1",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -85,9 +87,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			leftExpr: &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -101,9 +105,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "x", TokenType: token.TokenTypeIdentifier},
 			},
 			leftExpr: &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 1",
@@ -118,9 +124,11 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
 			leftExpr: &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 2",

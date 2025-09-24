@@ -24,66 +24,150 @@ func TestEvaluateShorthandAssignmentExpr(t *testing.T) {
 		{
 			name: "addition",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(11)),
 		},
 		{
 			name: "subtraction",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("-=", token.TokenTypeOperationSubAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(9)),
 		},
 		{
 			name: "multiplication",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("*=", token.TokenTypeOperationMulAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(20)),
 		},
 		{
 			name: "division",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("/=", token.TokenTypeOperationDivAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(5)),
 		},
 		{
 			name: "modulo",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("%=", token.TokenTypeOperationModAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(0)),
 		},
 		{
 			name: "power",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("**=", token.TokenTypeOperationPowAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(100)),
 		},
@@ -91,15 +175,37 @@ func TestEvaluateShorthandAssignmentExpr(t *testing.T) {
 			name: "array index addition",
 			input: &ast.ShorthandAssignmentExpr{
 				Left: &ast.IndexExpr{
-					Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
-					Index:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					StartPos: 0,
-					EndPos:   1,
+					Array: &ast.Identifier{
+						Value: "arr",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Index: &ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				Right:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Array(
 				datavalue.Number(0),
@@ -109,22 +215,50 @@ func TestEvaluateShorthandAssignmentExpr(t *testing.T) {
 		{
 			name: "unsupported left operand type",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 2},
-				Right:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "10",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Null()),
 		},
 		{
 			name: "unknown operator type",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "3",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("??=", token.Type(999), 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(13)),
 		},
@@ -174,44 +308,100 @@ func TestEvaluateShorthandAssignmentExprErr(t *testing.T) {
 		{
 			name: "evaluation error on right-hand side",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "bogus", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAdd, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "invalid syntax",
 		},
 		{
 			name: "evaluation error on left-hand side",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAdd, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
 		},
 		{
 			name: "undefined identifier for right-hand side",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.Identifier{
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
 		{
 			name: "arithmetic binary expression error",
 			input: &ast.ShorthandAssignmentExpr{
-				Left:     &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "10",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: *token.NewToken("/=", token.TokenTypeOperationDivAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "division by zero",
 		},
@@ -250,10 +440,24 @@ func TestAssignArrayIndex(t *testing.T) {
 		{
 			name: "assignment to array variable index",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Index:    &ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(
 				datavalue.Array(
@@ -308,50 +512,120 @@ func TestAssignArrayIndexErr(t *testing.T) {
 		{
 			name: "evaluation error on array expression",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 12},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
 		{
 			name: "evaluation error on index expression",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
-				Index:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 5},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "arr",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.Identifier{
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
 		{
 			name: "evaluation error on array",
 			input: &ast.IndexExpr{
-				Array:    &ast.NumberLiteral{Value: "10", StartPos: 0, EndPos: 2},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.NumberLiteral{
+					Value: "10",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "array", "number"),
 		},
 		{
 			name: "index value cannot be converted to number",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
-				Index:    &ast.StringLiteral{Value: "nan", StartPos: 0, EndPos: 12},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "arr",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.StringLiteral{
+					Value: "nan",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "string"),
 		},
 		{
 			name: "index out of bounds",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "arr", StartPos: 0, EndPos: 3},
-				Index:    &ast.NumberLiteral{Value: "-1", StartPos: 0, EndPos: 2},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "arr",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "-1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgArrayIndexOutOfBounds, "-1"),
 		},
@@ -390,15 +664,37 @@ func TestAssignArrayIndexNonIdentifier(t *testing.T) {
 	expr := &ast.IndexExpr{
 		Array: &ast.ArrayLiteral{
 			Values: []ast.ExprNode{
-				&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				&ast.NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
+				&ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				&ast.NumberLiteral{
+					Value: "2",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
-			StartPos: 0,
-			EndPos:   1,
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
 		},
-		Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-		StartPos: 0,
-		EndPos:   1,
+		Index: &ast.NumberLiteral{
+			Value: "0",
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
+		},
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+		},
 	}
 
 	ev := NewEvaluator(io.Discard)

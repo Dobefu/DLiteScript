@@ -21,12 +21,16 @@ func TestConstantDeclaration(t *testing.T) {
 				Name: "x",
 				Type: "int",
 				Value: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"const x int = 1", "1", "1"},
 			expectedStartPos: 0,
@@ -39,12 +43,16 @@ func TestConstantDeclaration(t *testing.T) {
 				Name: "y",
 				Type: "string",
 				Value: &StringLiteral{
-					Value:    "hello",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "hello",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes: []string{
 				`const y string = "hello"`,
@@ -58,11 +66,13 @@ func TestConstantDeclaration(t *testing.T) {
 		{
 			name: "constant declaration without value",
 			input: &ConstantDeclaration{
-				Name:     "z",
-				Type:     "bool",
-				Value:    nil,
-				StartPos: 0,
-				EndPos:   1,
+				Name:  "z",
+				Type:  "bool",
+				Value: nil,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{""},
 			expectedStartPos: 0,
@@ -75,12 +85,16 @@ func TestConstantDeclaration(t *testing.T) {
 				Name: "w",
 				Type: "float",
 				Value: &NumberLiteral{
-					Value:    "3.14",
-					StartPos: 0,
-					EndPos:   4,
+					Value: "3.14",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"const w float = 3.14"},
 			expectedStartPos: 0,
@@ -93,12 +107,16 @@ func TestConstantDeclaration(t *testing.T) {
 				Name: "w",
 				Type: "float",
 				Value: &NumberLiteral{
-					Value:    "3.14",
-					StartPos: 0,
-					EndPos:   4,
+					Value: "3.14",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"const w float = 3.14", "3.14"},
 			expectedStartPos: 0,
@@ -111,19 +129,19 @@ func TestConstantDeclaration(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

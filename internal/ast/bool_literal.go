@@ -2,9 +2,8 @@ package ast
 
 // BoolLiteral defines a struct for a literal boolean value.
 type BoolLiteral struct {
-	Value    string
-	StartPos int
-	EndPos   int
+	Value string
+	Range Range
 }
 
 // Expr returns the expression of the boolean literal.
@@ -12,14 +11,9 @@ func (e *BoolLiteral) Expr() string {
 	return e.Value
 }
 
-// StartPosition returns the start position of the boolean literal.
-func (e *BoolLiteral) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the boolean literal.
-func (e *BoolLiteral) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the boolean literal.
+func (e *BoolLiteral) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the boolean literal.

@@ -31,9 +31,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -49,9 +57,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.NumberLiteral{Value: "PI", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.NumberLiteral{
+					Value: "PI",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -70,9 +86,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.NumberLiteral{Value: "abs(1)", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.NumberLiteral{
+					Value: "abs(1)",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -88,9 +112,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.StringLiteral{Value: "test", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.StringLiteral{
+					Value: "test",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -106,9 +138,16 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.NullLiteral{StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.NullLiteral{
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -126,9 +165,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -151,13 +198,23 @@ func TestParsePrefixExpr(t *testing.T) {
 					Namespace:    "",
 					FunctionName: "printf",
 					Arguments: []ast.ExprNode{
-						&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 0},
+						&ast.StringLiteral{
+							Value: "test",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -182,13 +239,23 @@ func TestParsePrefixExpr(t *testing.T) {
 					Namespace:    "math",
 					FunctionName: "abs",
 					Arguments: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 0},
+						&ast.NumberLiteral{
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -204,9 +271,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.Identifier{Value: "PI", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.Identifier{
+					Value: "PI",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -224,9 +299,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.Identifier{Value: "math.PI", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.Identifier{
+					Value: "math.PI",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -245,9 +328,17 @@ func TestParsePrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.Identifier{Value: "math.PI", StartPos: 4, EndPos: 5},
-				StartPos: 0,
-				EndPos:   0,
+				Operand: &ast.Identifier{
+					Value: "math.PI",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

@@ -104,7 +104,7 @@ func (e *Evaluator) Evaluate(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownNodeType,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			node,
 		)
 	}

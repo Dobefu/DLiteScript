@@ -6,7 +6,7 @@ import (
 )
 
 func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
-	startPos := p.GetCurrentCharPos()
+	startPos := p.GetCurrentPosition()
 	nextToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -25,7 +25,7 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 		return nil, err
 	}
 
-	endPos := thenBlock.EndPosition()
+	endPos := thenBlock.GetRange().End
 	var elseBlock *ast.BlockStatement
 
 	if !p.isEOF {
@@ -38,7 +38,7 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 				return nil, err
 			}
 
-			endPos = elseBlock.EndPosition()
+			endPos = elseBlock.GetRange().End
 		}
 	}
 
@@ -46,8 +46,10 @@ func (p *Parser) parseIfStatement() (ast.ExprNode, error) {
 		Condition: expr,
 		ThenBlock: thenBlock,
 		ElseBlock: elseBlock,
-		StartPos:  startPos,
-		EndPos:    endPos,
+		Range: ast.Range{
+			Start: startPos,
+			End:   endPos,
+		},
 	}, nil
 }
 
@@ -74,8 +76,10 @@ func (p *Parser) handleElseBlock() (*ast.BlockStatement, error) {
 
 		return &ast.BlockStatement{
 			Statements: []ast.ExprNode{nestedExpr},
-			StartPos:   nestedExpr.StartPosition(),
-			EndPos:     nestedExpr.EndPosition(),
+			Range: ast.Range{
+				Start: nestedExpr.GetRange().Start,
+				End:   nestedExpr.GetRange().End,
+			},
 		}, nil
 	}
 
@@ -104,8 +108,10 @@ func (p *Parser) parseThenBlock(endToken token.Type) (*ast.BlockStatement, error
 	if thenBlock == nil {
 		return &ast.BlockStatement{
 			Statements: []ast.ExprNode{},
-			StartPos:   p.GetCurrentCharPos(),
-			EndPos:     p.GetCurrentCharPos(),
+			Range: ast.Range{
+				Start: p.GetCurrentPosition(),
+				End:   p.GetCurrentPosition(),
+			},
 		}, nil
 	}
 
@@ -130,8 +136,10 @@ func (p *Parser) parseElseBlock(endToken token.Type) (*ast.BlockStatement, error
 	if elseBlock == nil {
 		return &ast.BlockStatement{
 			Statements: []ast.ExprNode{},
-			StartPos:   p.GetCurrentCharPos(),
-			EndPos:     p.GetCurrentCharPos(),
+			Range: ast.Range{
+				Start: p.GetCurrentPosition(),
+				End:   p.GetCurrentPosition(),
+			},
 		}, nil
 	}
 

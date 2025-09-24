@@ -18,8 +18,13 @@ func TestFormatNullLiteral(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "null literal",
-			input:     &ast.NullLiteral{StartPos: 0, EndPos: 0},
+			name: "null literal",
+			input: &ast.NullLiteral{
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "null\n",

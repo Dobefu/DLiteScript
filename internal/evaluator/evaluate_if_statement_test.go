@@ -22,24 +22,32 @@ func TestEvaluateIfStatement(t *testing.T) {
 			name: "false condition",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "false",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "false",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ThenBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ElseBlock: nil,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -47,24 +55,32 @@ func TestEvaluateIfStatement(t *testing.T) {
 			name: "true condition",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ThenBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ElseBlock: nil,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(1),
 		},
@@ -72,28 +88,38 @@ func TestEvaluateIfStatement(t *testing.T) {
 			name: "false condition, else block",
 			input: &ast.IfStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "false",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "false",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ThenBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ElseBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "2",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "2",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(2),
 		},
@@ -114,7 +140,7 @@ func TestEvaluateIfStatement(t *testing.T) {
 					"expected \"%v\", got \"%v\" at position %d",
 					test.expected.DataType.AsString(),
 					result.Value.DataType.AsString(),
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 		})
@@ -133,24 +159,32 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 			name: "condition is number",
 			input: &ast.IfStatement{
 				Condition: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ThenBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ElseBlock: nil,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -162,24 +196,32 @@ func TestEvaluateIfStatementErr(t *testing.T) {
 			name: "condition is undefined identifier",
 			input: &ast.IfStatement{
 				Condition: &ast.Identifier{
-					Value:    "undefined_var",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "undefined_var",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ThenBlock: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				ElseBlock: nil,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",

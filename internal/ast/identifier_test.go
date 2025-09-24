@@ -17,8 +17,14 @@ func TestIdentifier(t *testing.T) {
 		continueOn       string
 	}{
 		{
-			name:             "identifier PI at position 0",
-			input:            &Identifier{Value: "PI", StartPos: 0, EndPos: 1},
+			name: "identifier PI at position 0",
+			input: &Identifier{
+				Value: "PI",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "PI",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -26,8 +32,14 @@ func TestIdentifier(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "identifier PI at position 1",
-			input:            &Identifier{Value: "PI", StartPos: 1, EndPos: 2},
+			name: "identifier PI at position 1",
+			input: &Identifier{
+				Value: "PI",
+				Range: Range{
+					Start: Position{Offset: 1, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "PI",
 			expectedStartPos: 1,
 			expectedEndPos:   2,
@@ -35,8 +47,14 @@ func TestIdentifier(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "identifier with different value",
-			input:            &Identifier{Value: "count", StartPos: 5, EndPos: 10},
+			name: "identifier with different value",
+			input: &Identifier{
+				Value: "count",
+				Range: Range{
+					Start: Position{Offset: 5, Line: 0, Column: 0},
+					End:   Position{Offset: 10, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "count",
 			expectedStartPos: 5,
 			expectedEndPos:   10,
@@ -44,8 +62,14 @@ func TestIdentifier(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "walk early return after identifier",
-			input:            &Identifier{Value: "x", StartPos: 0, EndPos: 1},
+			name: "walk early return after identifier",
+			input: &Identifier{
+				Value: "x",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "x",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -59,15 +83,27 @@ func TestIdentifier(t *testing.T) {
 			t.Parallel()
 
 			if test.input.Expr() != test.expectedValue {
-				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+				t.Errorf(
+					"expected '%s', got '%s'",
+					test.expectedValue,
+					test.input.Expr(),
+				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedStartPos,
+					test.input.GetRange().Start.Offset,
+				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedEndPos,
+					test.input.GetRange().End.Offset,
+				)
 			}
 
 			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)

@@ -20,10 +20,18 @@ func TestGetAstNodeLabel(t *testing.T) {
 				Namespace:    "math",
 				FunctionName: "sqrt",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
+					&ast.NumberLiteral{
+						Value: "4",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 6, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   10,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+				},
 			},
 			expected: "Function Call",
 		},
@@ -33,10 +41,18 @@ func TestGetAstNodeLabel(t *testing.T) {
 				Namespace:    "bogus",
 				FunctionName: "sqrt",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
+					&ast.NumberLiteral{
+						Value: "4",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 6, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   10,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+				},
 			},
 			expected: "Function Call",
 		},
@@ -46,16 +62,30 @@ func TestGetAstNodeLabel(t *testing.T) {
 				Namespace:    "math",
 				FunctionName: "bogus",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 10},
+					&ast.NumberLiteral{
+						Value: "4",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 6, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   10,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+				},
 			},
 			expected: "Function Call",
 		},
 		{
-			name:     "identifier",
-			node:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+			name: "identifier",
+			node: &ast.Identifier{
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: "Identifier",
 		},
 	}

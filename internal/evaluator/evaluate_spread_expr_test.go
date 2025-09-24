@@ -19,12 +19,16 @@ func TestEvaluateSpreadExpr(t *testing.T) {
 			name: "single number",
 			statement: &ast.SpreadExpr{
 				Expression: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(1),
 		},

@@ -21,7 +21,7 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			datatype.DataTypeArray.AsString(),
 			value.Value.DataType.AsString(),
 		)
@@ -37,7 +37,7 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			datatype.DataTypeNumber.AsString(),
 			idxValue.Value.DataType.AsString(),
 		)
@@ -59,7 +59,7 @@ func (e *Evaluator) evaluateIndexExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgArrayIndexOutOfBounds,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			node.Index.Expr(),
 		)
 	}

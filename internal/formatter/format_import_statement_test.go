@@ -20,14 +20,18 @@ func TestFormatImportStatement(t *testing.T) {
 			name: "imort statement",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "./path/to/file.dl",
-					StartPos: 0,
-					EndPos:   17,
+					Value: "./path/to/file.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 17, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			expected:  "import \"./path/to/file.dl\"\n",
@@ -36,14 +40,18 @@ func TestFormatImportStatement(t *testing.T) {
 			name: "imort statement with alias",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "./path/to/file.dl",
-					StartPos: 0,
-					EndPos:   17,
+					Value: "./path/to/file.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 17, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "",
 				Alias:     "alias",
-				StartPos:  0,
-				EndPos:    1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			expected:  "import \"./path/to/file.dl\" as alias\n",

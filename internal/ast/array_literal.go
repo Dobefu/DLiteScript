@@ -7,9 +7,8 @@ import (
 
 // ArrayLiteral defines a struct for a literal array value.
 type ArrayLiteral struct {
-	Values   []ExprNode
-	StartPos int
-	EndPos   int
+	Values []ExprNode
+	Range  Range
 }
 
 // Expr returns the expression of the array literal.
@@ -35,14 +34,9 @@ func (e *ArrayLiteral) Expr() string {
 	return fmt.Sprintf("[%s]", values.String())
 }
 
-// StartPosition returns the start position of the array literal.
-func (e *ArrayLiteral) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the array literal.
-func (e *ArrayLiteral) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the array literal.
+func (e *ArrayLiteral) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the array literal and its values.

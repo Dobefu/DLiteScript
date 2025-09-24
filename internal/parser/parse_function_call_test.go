@@ -28,10 +28,18 @@ func TestParseFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   6,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -47,11 +55,25 @@ func TestParseFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 5},
-					&ast.NumberLiteral{Value: "1", StartPos: 6, EndPos: 7},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 6, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 7, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   8,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 8, Line: 0, Column: 0},
+				},
 			},
 		},
 	}
@@ -70,19 +92,19 @@ func TestParseFunctionCall(t *testing.T) {
 			t.Errorf("expected no error, got \"%v\"", err)
 		}
 
-		if expr.StartPosition() != test.expected.StartPosition() {
+		if expr.GetRange().Start.Offset != test.expected.Range.Start.Offset {
 			t.Errorf(
 				"expected StartPos to be \"%d\", got \"%d\"",
-				test.expected.StartPosition(),
-				expr.StartPosition(),
+				test.expected.Range.Start.Offset,
+				expr.GetRange().Start.Offset,
 			)
 		}
 
-		if expr.EndPosition() != test.expected.EndPosition() {
+		if expr.GetRange().End.Offset != test.expected.Range.End.Offset {
 			t.Errorf(
 				"expected EndPos to be \"%d\", got \"%d\"",
-				test.expected.EndPosition(),
-				expr.EndPosition(),
+				test.expected.Range.End.Offset,
+				expr.GetRange().End.Offset,
 			)
 		}
 	}

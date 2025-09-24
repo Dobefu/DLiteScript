@@ -19,8 +19,10 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values:    []ExprNode{},
 				NumValues: 0,
-				StartPos:  0,
-				EndPos:    1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return",
 			expectedStartPos: 0,
@@ -33,8 +35,10 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values:    []ExprNode{nil},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return ",
 			expectedStartPos: 0,
@@ -47,14 +51,18 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values: []ExprNode{
 					&NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   3,
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 3, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return 1",
 			expectedStartPos: 0,
@@ -67,19 +75,25 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values: []ExprNode{
 					&NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&NumberLiteral{
-						Value:    "2",
-						StartPos: 2,
-						EndPos:   3,
+						Value: "2",
+						Range: Range{
+							Start: Position{Offset: 2, Line: 0, Column: 0},
+							End:   Position{Offset: 3, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return 1, 2",
 			expectedStartPos: 0,
@@ -92,14 +106,18 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values: []ExprNode{
 					&StringLiteral{
-						Value:    "hello",
-						StartPos: 0,
-						EndPos:   5,
+						Value: "hello",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 5, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return \"hello\"",
 			expectedStartPos: 0,
@@ -112,14 +130,18 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values: []ExprNode{
 					&NumberLiteral{
-						Value:    "42",
-						StartPos: 0,
-						EndPos:   2,
+						Value: "42",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 2, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return 42",
 			expectedStartPos: 0,
@@ -132,19 +154,25 @@ func TestReturnStatement(t *testing.T) {
 			input: &ReturnStatement{
 				Values: []ExprNode{
 					&NumberLiteral{
-						Value:    "10",
-						StartPos: 0,
-						EndPos:   2,
+						Value: "10",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 2, Line: 0, Column: 0},
+						},
 					},
 					&NumberLiteral{
-						Value:    "20",
-						StartPos: 3,
-						EndPos:   5,
+						Value: "20",
+						Range: Range{
+							Start: Position{Offset: 3, Line: 0, Column: 0},
+							End:   Position{Offset: 5, Line: 0, Column: 0},
+						},
 					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "return 10, 20",
 			expectedStartPos: 0,
@@ -166,19 +194,19 @@ func TestReturnStatement(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

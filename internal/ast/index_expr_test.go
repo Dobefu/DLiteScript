@@ -19,10 +19,24 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "index expression",
 			input: &IndexExpr{
-				Array:    &Identifier{Value: "array", StartPos: 0, EndPos: 5},
-				Index:    &NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: &Identifier{
+					Value: "array",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Index: &NumberLiteral{
+					Value: "0",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "array[0]",
 			expectedStartPos: 0,
@@ -33,10 +47,18 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "index expression with nil array",
 			input: &IndexExpr{
-				Array:    nil,
-				Index:    &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: nil,
+				Index: &NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -47,10 +69,18 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "index expression with nil index",
 			input: &IndexExpr{
-				Array:    &Identifier{Value: "list", StartPos: 0, EndPos: 4},
-				Index:    nil,
-				StartPos: 0,
-				EndPos:   5,
+				Array: &Identifier{
+					Value: "list",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
+				},
+				Index: nil,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -61,10 +91,24 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "walk early return after index expression",
 			input: &IndexExpr{
-				Array:    &Identifier{Value: "data", StartPos: 0, EndPos: 4},
-				Index:    &NumberLiteral{Value: "2", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: &Identifier{
+					Value: "data",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
+				},
+				Index: &NumberLiteral{
+					Value: "2",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "data[2]",
 			expectedStartPos: 0,
@@ -75,10 +119,24 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "walk early return after array",
 			input: &IndexExpr{
-				Array:    &Identifier{Value: "items", StartPos: 0, EndPos: 5},
-				Index:    &NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: &Identifier{
+					Value: "items",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
+				Index: &NumberLiteral{
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "items[3]",
 			expectedStartPos: 0,
@@ -89,10 +147,24 @@ func TestIndexExpr(t *testing.T) {
 		{
 			name: "walk early return after index",
 			input: &IndexExpr{
-				Array:    &Identifier{Value: "values", StartPos: 0, EndPos: 6},
-				Index:    &NumberLiteral{Value: "4", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   5,
+				Array: &Identifier{
+					Value: "values",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 6, Line: 0, Column: 0},
+					},
+				},
+				Index: &NumberLiteral{
+					Value: "4",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "values[4]",
 			expectedStartPos: 0,
@@ -114,19 +186,19 @@ func TestIndexExpr(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

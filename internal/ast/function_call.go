@@ -10,8 +10,7 @@ type FunctionCall struct {
 	Namespace    string
 	FunctionName string
 	Arguments    []ExprNode
-	StartPos     int
-	EndPos       int
+	Range        Range
 }
 
 // Expr returns the expression of the function call.
@@ -43,14 +42,9 @@ func (fc *FunctionCall) Expr() string {
 	return fmt.Sprintf("%s(%s)", functionName, args.String())
 }
 
-// StartPosition returns the start position of the function call.
-func (fc *FunctionCall) StartPosition() int {
-	return fc.StartPos
-}
-
-// EndPosition returns the end position of the function call.
-func (fc *FunctionCall) EndPosition() int {
-	return fc.EndPos
+// GetRange returns the range of the function call.
+func (fc *FunctionCall) GetRange() Range {
+	return fc.Range
 }
 
 // Walk walks the function call and its arguments.

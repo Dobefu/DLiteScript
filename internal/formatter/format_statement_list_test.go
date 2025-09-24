@@ -22,13 +22,17 @@ func TestFormatStatementListExpr(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   0,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -38,8 +42,10 @@ func TestFormatStatementListExpr(t *testing.T) {
 			name: "empty statement list",
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{},
-				StartPos:   0,
-				EndPos:     0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -49,8 +55,10 @@ func TestFormatStatementListExpr(t *testing.T) {
 			name: "statement list with nil statement",
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{nil},
-				StartPos:   0,
-				EndPos:     0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

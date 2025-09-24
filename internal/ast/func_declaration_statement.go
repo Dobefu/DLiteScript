@@ -12,8 +12,7 @@ type FuncDeclarationStatement struct {
 	Body            ExprNode
 	ReturnValues    []string
 	NumReturnValues int
-	StartPos        int
-	EndPos          int
+	Range           Range
 }
 
 // Expr returns the expression of the function declaration statement.
@@ -36,14 +35,9 @@ func (b *FuncDeclarationStatement) Expr() string {
 	)
 }
 
-// StartPosition returns the start position of the function declaration statement.
-func (b *FuncDeclarationStatement) StartPosition() int {
-	return b.StartPos
-}
-
-// EndPosition returns the end position of the function declaration statement.
-func (b *FuncDeclarationStatement) EndPosition() int {
-	return b.EndPos
+// GetRange returns the range of the function declaration statement.
+func (b *FuncDeclarationStatement) GetRange() Range {
+	return b.Range
 }
 
 // Walk walks the function declaration statement.

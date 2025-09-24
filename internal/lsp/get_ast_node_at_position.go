@@ -11,11 +11,11 @@ func getAstNodeAtPosition(
 	var bestNode ast.ExprNode
 
 	node.Walk(func(currentNode ast.ExprNode) bool {
-		if charIndex < currentNode.StartPosition() || charIndex >= currentNode.EndPosition() {
+		if charIndex < currentNode.GetRange().Start.Offset || charIndex > currentNode.GetRange().End.Offset {
 			return true
 		}
 
-		nodeSize := currentNode.EndPosition() - currentNode.StartPosition()
+		nodeSize := currentNode.GetRange().End.Offset - currentNode.GetRange().Start.Offset
 
 		if bestNode == nil {
 			bestNode = currentNode
@@ -23,11 +23,11 @@ func getAstNodeAtPosition(
 			return true
 		}
 
-		bestNodeSize := bestNode.EndPosition() - bestNode.StartPosition()
+		bestNodeSize := bestNode.GetRange().End.Offset - bestNode.GetRange().Start.Offset
 
 		if nodeSize <= bestNodeSize &&
-			(currentNode.StartPosition() >= bestNode.StartPosition() &&
-				currentNode.EndPosition() <= bestNode.EndPosition()) {
+			(currentNode.GetRange().Start.Offset >= bestNode.GetRange().Start.Offset &&
+				currentNode.GetRange().End.Offset <= bestNode.GetRange().End.Offset) {
 			bestNode = currentNode
 		}
 

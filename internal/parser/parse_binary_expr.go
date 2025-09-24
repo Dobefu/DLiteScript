@@ -36,7 +36,9 @@ func (p *Parser) parseBinaryExpr(
 		Left:     leftExpr,
 		Right:    rightExpr,
 		Operator: *operatorToken,
-		StartPos: leftExpr.StartPosition(),
-		EndPos:   rightExpr.EndPosition(),
+		Range: ast.Range{
+			Start: leftExpr.GetRange().Start,
+			End:   rightExpr.GetRange().End,
+		},
 	}, nil
 }

@@ -7,8 +7,18 @@ import (
 
 func (p *Parser) parseStringLiteral(token *token.Token) (ast.ExprNode, error) {
 	return &ast.StringLiteral{
-		Value:    token.Atom,
-		StartPos: token.StartPos,
-		EndPos:   token.EndPos,
+		Value: token.Atom,
+		Range: ast.Range{
+			Start: ast.Position{
+				Offset: token.StartPos,
+				Line:   p.line,
+				Column: p.column,
+			},
+			End: ast.Position{
+				Offset: token.EndPos,
+				Line:   p.line,
+				Column: p.column + (token.EndPos - token.StartPos),
+			},
+		},
 	}, nil
 }

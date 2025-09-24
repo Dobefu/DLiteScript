@@ -7,7 +7,7 @@ import (
 )
 
 func (p *Parser) parseReturnStatement() (ast.ExprNode, error) {
-	startPos := p.GetCurrentCharPos()
+	startPos := p.GetCurrentPosition()
 	nextToken, err := p.PeekNextToken()
 
 	if err != nil {
@@ -18,8 +18,10 @@ func (p *Parser) parseReturnStatement() (ast.ExprNode, error) {
 		return &ast.ReturnStatement{
 			Values:    []ast.ExprNode{},
 			NumValues: 0,
-			StartPos:  startPos,
-			EndPos:    p.GetCurrentCharPos(),
+			Range: ast.Range{
+				Start: startPos,
+				End:   p.GetCurrentPosition(),
+			},
 		}, nil
 	}
 
@@ -32,8 +34,10 @@ func (p *Parser) parseReturnStatement() (ast.ExprNode, error) {
 	return &ast.ReturnStatement{
 		Values:    returnValues,
 		NumValues: len(returnValues),
-		StartPos:  startPos,
-		EndPos:    p.GetCurrentCharPos(),
+		Range: ast.Range{
+			Start: startPos,
+			End:   p.GetCurrentPosition(),
+		},
 	}, nil
 }
 

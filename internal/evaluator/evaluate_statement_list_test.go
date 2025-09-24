@@ -21,8 +21,10 @@ func TestEvaluateStatementList(t *testing.T) {
 			name: "empty",
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{},
-				StartPos:   0,
-				EndPos:     0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			outFile: io.Discard,
 		},
@@ -31,13 +33,17 @@ func TestEvaluateStatementList(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			outFile: io.Discard,
 		},
@@ -49,14 +55,24 @@ func TestEvaluateStatementList(t *testing.T) {
 						Namespace:    "",
 						FunctionName: "printf",
 						Arguments: []ast.ExprNode{
-							&ast.StringLiteral{Value: "test\n", StartPos: 0, EndPos: 5},
+							&ast.StringLiteral{
+								Value: "test\n",
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+								},
+							},
 						},
-						StartPos: 0,
-						EndPos:   5,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			outFile: &discardWriter{},
 		},
@@ -94,17 +110,23 @@ func TestEvaluateStatementListErr(t *testing.T) {
 						FunctionName: "bogus",
 						Arguments: []ast.ExprNode{
 							&ast.NumberLiteral{
-								Value:    "1",
-								StartPos: 0,
-								EndPos:   1,
+								Value: "1",
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+								},
 							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			outFile: io.Discard,
 			expected: fmt.Sprintf(
@@ -121,14 +143,24 @@ func TestEvaluateStatementListErr(t *testing.T) {
 						Namespace:    "",
 						FunctionName: "printf",
 						Arguments: []ast.ExprNode{
-							&ast.StringLiteral{Value: "test\n", StartPos: 0, EndPos: 5},
+							&ast.StringLiteral{
+								Value: "test\n",
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+								},
+							},
 						},
-						StartPos: 0,
-						EndPos:   5,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			outFile:  &errWriter{},
 			expected: "write error",

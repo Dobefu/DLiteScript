@@ -24,8 +24,10 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
@@ -33,8 +35,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -44,14 +48,18 @@ func TestFormatForStatement(t *testing.T) {
 			name: "loop with condition",
 			input: &ast.ForStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
@@ -59,8 +67,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -72,21 +82,27 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
 				RangeFrom:        nil,
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
-				StartPos:        0,
-				EndPos:          0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -98,21 +114,27 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "i",
 				RangeVariable:    "i",
 				RangeFrom:        nil,
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
-				StartPos:        0,
-				EndPos:          0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -124,25 +146,33 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "10",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: true,
-				StartPos:        0,
-				EndPos:          0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -154,25 +184,33 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "i",
 				RangeVariable:    "i",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "10",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: true,
-				StartPos:        0,
-				EndPos:          0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -184,8 +222,10 @@ func TestFormatForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "item",
@@ -193,8 +233,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          true,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -205,9 +247,11 @@ func TestFormatForStatement(t *testing.T) {
 			input: &ast.ForStatement{
 				Condition: &ast.BinaryExpr{
 					Left: &ast.Identifier{
-						Value:    "i",
-						StartPos: 0,
-						EndPos:   0,
+						Value: "i",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					Operator: token.Token{
 						Atom:      "<",
@@ -216,17 +260,23 @@ func TestFormatForStatement(t *testing.T) {
 						EndPos:    0,
 					},
 					Right: &ast.NumberLiteral{
-						Value:    "10",
-						StartPos: 0,
-						EndPos:   0,
+						Value: "10",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "i",
 				RangeVariable:    "",
@@ -234,8 +284,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -245,14 +297,18 @@ func TestFormatForStatement(t *testing.T) {
 			name: "loop with declared variable and simple condition",
 			input: &ast.ForStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "running",
 				RangeVariable:    "",
@@ -260,8 +316,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -272,9 +330,11 @@ func TestFormatForStatement(t *testing.T) {
 			input: &ast.ForStatement{
 				Condition: &ast.BinaryExpr{
 					Left: &ast.Identifier{
-						Value:    "x",
-						StartPos: 0,
-						EndPos:   0,
+						Value: "x",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					Operator: token.Token{
 						Atom:      ">",
@@ -283,17 +343,23 @@ func TestFormatForStatement(t *testing.T) {
 						EndPos:    0,
 					},
 					Right: &ast.NumberLiteral{
-						Value:    "5",
-						StartPos: 0,
-						EndPos:   0,
+						Value: "5",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
@@ -301,8 +367,10 @@ func TestFormatForStatement(t *testing.T) {
 				RangeTo:          nil,
 				IsRange:          false,
 				HasExplicitFrom:  false,
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

@@ -19,16 +19,20 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 		Name: "printf",
 		Args: []ast.FuncParameter{},
 		Body: &ast.StringLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   3,
+			Value: "1",
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+			},
 		},
 		ReturnValues: []string{
 			"string",
 		},
 		NumReturnValues: 1,
-		StartPos:        0,
-		EndPos:          18,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 18, Line: 0, Column: 0},
+		},
 	}
 
 	tests := []struct {
@@ -43,16 +47,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.Number(5),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -61,16 +79,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.String("5"),
 			inputRight: datavalue.String("5"),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.StringLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -79,16 +111,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.Bool(true),
 			inputRight: datavalue.Bool(true),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
-				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
+				Left: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -98,14 +144,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputRight: datavalue.Any(1),
 			inputNode: &ast.BinaryExpr{
 				Left: &ast.AnyLiteral{
-					Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					StartPos: 0,
-					EndPos:   1,
+					Value: &ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &ast.AnyLiteral{
-					Value:    &ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
-					StartPos: 2,
-					EndPos:   3,
+					Value: &ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "==",
@@ -113,8 +175,10 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -123,16 +187,28 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.Null(),
 			inputRight: datavalue.Null(),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.NullLiteral{StartPos: 0, EndPos: 1},
-				Right: &ast.NullLiteral{StartPos: 2, EndPos: 3},
+				Left: &ast.NullLiteral{
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NullLiteral{
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -149,8 +225,10 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -167,8 +245,10 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -185,8 +265,10 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -195,16 +277,30 @@ func TestEvaluateEqualityBinaryExpr(t *testing.T) {
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.String("5"),
 			inputNode: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.StringLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(false),
 		},
@@ -250,11 +346,24 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 			inputLeft:  datavalue.Number(5),
 			inputRight: datavalue.Any(nil),
 			inputNode: &ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.AnyLiteral{
-					Value:    &ast.NullLiteral{StartPos: 2, EndPos: 3},
-					StartPos: 2,
-					EndPos:   3,
+					Value: &ast.NullLiteral{
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "==",
@@ -262,8 +371,10 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"could not get binary expr value as number: %s: %s",
@@ -276,11 +387,24 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 			inputLeft:  datavalue.String("5"),
 			inputRight: datavalue.Any(nil),
 			inputNode: &ast.BinaryExpr{
-				Left: &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.AnyLiteral{
-					Value:    &ast.NullLiteral{StartPos: 2, EndPos: 3},
-					StartPos: 2,
-					EndPos:   3,
+					Value: &ast.NullLiteral{
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "==",
@@ -288,8 +412,10 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"could not get binary expr value as string: %s: %s",
@@ -302,11 +428,24 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 			inputLeft:  datavalue.Bool(true),
 			inputRight: datavalue.Any(nil),
 			inputNode: &ast.BinaryExpr{
-				Left: &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Left: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.AnyLiteral{
-					Value:    &ast.NullLiteral{StartPos: 2, EndPos: 3},
-					StartPos: 2,
-					EndPos:   3,
+					Value: &ast.NullLiteral{
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "==",
@@ -314,8 +453,10 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"could not get binary expr value as bool: %s: %s",
@@ -333,19 +474,34 @@ func TestEvaluateEqualityBinaryExprErr(t *testing.T) {
 			},
 			inputNode: &ast.BinaryExpr{
 				Left: &ast.AnyLiteral{
-					Value:    &ast.NullLiteral{StartPos: 0, EndPos: 1},
-					StartPos: 0,
-					EndPos:   1,
+					Value: &ast.NullLiteral{
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
+				Right: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",

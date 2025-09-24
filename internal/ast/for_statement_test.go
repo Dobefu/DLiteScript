@@ -21,13 +21,15 @@ func TestForStatement(t *testing.T) {
 				DeclaredVariable: "",
 				Condition:        nil,
 				Body:             nil,
-				StartPos:         0,
-				EndPos:           0,
-				RangeVariable:    "",
-				RangeFrom:        nil,
-				RangeTo:          nil,
-				IsRange:          false,
-				HasExplicitFrom:  false,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
+				RangeVariable:   "",
+				RangeFrom:       nil,
+				RangeTo:         nil,
+				IsRange:         false,
+				HasExplicitFrom: false,
 			},
 			expectedNodes:    []string{"for { }"},
 			expectedStartPos: 0,
@@ -42,16 +44,22 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable:   "",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -74,23 +82,31 @@ func TestForStatement(t *testing.T) {
 			statement: &ForStatement{
 				DeclaredVariable: "i",
 				Condition: &BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable:   "i",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -115,23 +131,31 @@ func TestForStatement(t *testing.T) {
 			statement: &ForStatement{
 				DeclaredVariable: "",
 				Condition: &BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable:   "",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -159,26 +183,36 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable: "",
 				RangeFrom: &NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "0",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -206,26 +240,36 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable: "i",
 				RangeFrom: &NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "0",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -253,22 +297,30 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable: "",
 				RangeFrom:     nil,
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -294,22 +346,30 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 				RangeVariable: "i",
 				RangeFrom:     nil,
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -335,16 +395,22 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   2,
+							Value: "42",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   2,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 				RangeVariable:   "",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -361,23 +427,31 @@ func TestForStatement(t *testing.T) {
 			statement: &ForStatement{
 				DeclaredVariable: "",
 				Condition: &BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   4,
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   2,
+							Value: "42",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   2,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 				RangeVariable:   "",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -397,26 +471,36 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   2,
+							Value: "42",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   2,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 				RangeVariable: "",
 				RangeFrom: &NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "0",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -434,26 +518,36 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   2,
+							Value: "42",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   2,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:      0,
-				EndPos:        2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 				RangeVariable: "",
 				RangeFrom: &NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "0",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &NumberLiteral{
-					Value:    "10",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "10",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -471,16 +565,22 @@ func TestForStatement(t *testing.T) {
 				Body: &BlockStatement{
 					Statements: []ExprNode{
 						&NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   2,
+							Value: "42",
+							Range: Range{
+								Start: Position{Offset: 0, Line: 0, Column: 0},
+								End:   Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   2,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos:        0,
-				EndPos:          2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 				RangeVariable:   "",
 				RangeFrom:       nil,
 				RangeTo:         nil,
@@ -498,19 +598,19 @@ func TestForStatement(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.statement.StartPosition() != test.expectedStartPos {
+			if test.statement.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.statement.StartPosition(),
+					test.statement.GetRange().Start.Offset,
 				)
 			}
 
-			if test.statement.EndPosition() != test.expectedEndPos {
+			if test.statement.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.statement.EndPosition(),
+					test.statement.GetRange().End.Offset,
 				)
 			}
 

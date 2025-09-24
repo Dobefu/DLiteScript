@@ -18,8 +18,14 @@ func TestFormatComment(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "comment literal",
-			input:     &ast.CommentLiteral{Value: "Comment", StartPos: 0, EndPos: 1},
+			name: "comment literal",
+			input: &ast.CommentLiteral{
+				Value: "Comment",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "Comment\n",

@@ -8,7 +8,13 @@ import (
 func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 	// The "var" keyword has already been consumed,
 	// so we should get the start position from the previous token.
-	startPos := p.tokens[p.tokenIdx-1].StartPos
+	prevToken := p.tokens[p.tokenIdx-1]
+
+	startPos := ast.Position{
+		Offset: prevToken.StartPos,
+		Line:   p.line,
+		Column: p.column - (prevToken.EndPos - prevToken.StartPos),
+	}
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {
@@ -16,7 +22,7 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 	}
 
 	var value ast.ExprNode
-	endPos := p.GetCurrentCharPos()
+	endPos := p.GetCurrentPosition()
 
 	if !p.isEOF {
 		nextToken, err := p.PeekNextToken()
@@ -36,15 +42,17 @@ func (p *Parser) parseVariableDeclaration() (*ast.VariableDeclaration, error) {
 				return nil, err
 			}
 
-			endPos = value.EndPosition()
+			endPos = value.GetRange().End
 		}
 	}
 
 	return &ast.VariableDeclaration{
-		Name:     varName,
-		Type:     varType,
-		Value:    value,
-		StartPos: startPos,
-		EndPos:   endPos,
+		Name:  varName,
+		Type:  varType,
+		Value: value,
+		Range: ast.Range{
+			Start: startPos,
+			End:   endPos,
+		},
 	}, nil
 }

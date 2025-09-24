@@ -20,9 +20,17 @@ func TestEvaluateAnyLiteral(t *testing.T) {
 		{
 			name: "any literal",
 			input: &ast.AnyLiteral{
-				Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Value: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Any(1)),
 		},

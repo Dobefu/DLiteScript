@@ -31,9 +31,8 @@ func (e *Evaluator) evaluateShorthandAssignmentExpr(
 			node.Operator.StartPos,
 			node.Operator.EndPos,
 		),
-		Right:    node.Right,
-		StartPos: node.StartPos,
-		EndPos:   node.EndPos,
+		Right: node.Right,
+		Range: node.GetRange(),
 	}
 
 	result, err := e.evaluateArithmeticBinaryExpr(
@@ -52,7 +51,7 @@ func (e *Evaluator) evaluateShorthandAssignmentExpr(
 		return e.assignVariable(
 			identifier.Value,
 			result.Value,
-			identifier.StartPosition(),
+			identifier.GetRange().Start.Offset,
 		)
 	}
 
@@ -115,7 +114,10 @@ func (e *Evaluator) getBaseOperatorString(shorthandType token.Type) string {
 	}
 }
 
-func (e *Evaluator) assignArrayIndex(indexExpr *ast.IndexExpr, result datavalue.Value) (*controlflow.EvaluationResult, error) {
+func (e *Evaluator) assignArrayIndex(
+	indexExpr *ast.IndexExpr,
+	result datavalue.Value,
+) (*controlflow.EvaluationResult, error) {
 	arrayValue, err := e.Evaluate(indexExpr.Array)
 
 	if err != nil {
@@ -144,7 +146,7 @@ func (e *Evaluator) assignArrayIndex(indexExpr *ast.IndexExpr, result datavalue.
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgArrayIndexOutOfBounds,
-			indexExpr.StartPosition(),
+			indexExpr.GetRange().Start.Offset,
 			indexExpr.Index.Expr(),
 		)
 	}
@@ -153,7 +155,11 @@ func (e *Evaluator) assignArrayIndex(indexExpr *ast.IndexExpr, result datavalue.
 	identifier, hasIdentifier := indexExpr.Array.(*ast.Identifier)
 
 	if hasIdentifier {
-		return e.assignVariable(identifier.Value, datavalue.Array(array...), indexExpr.StartPosition())
+		return e.assignVariable(
+			identifier.Value,
+			datavalue.Array(array...),
+			indexExpr.GetRange().Start.Offset,
+		)
 	}
 
 	return controlflow.NewRegularResult(result), nil

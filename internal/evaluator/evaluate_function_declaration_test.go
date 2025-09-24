@@ -24,13 +24,17 @@ func TestEvaluateFunctionDeclaration(t *testing.T) {
 			},
 			Body: &ast.BlockStatement{
 				Statements: []ast.ExprNode{},
-				StartPos:   0,
-				EndPos:     1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			ReturnValues:    []string{datatype.DataTypeNumber.AsString()},
 			NumReturnValues: 1,
-			StartPos:        0,
-			EndPos:          1,
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
 		},
 	)
 

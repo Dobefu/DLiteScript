@@ -19,16 +19,32 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "if statement without else",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: nil,
 			},
 			expectedValue:    "if true { (1) }",
@@ -48,22 +64,46 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "if statement with else",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "2", StartPos: 4, EndPos: 5},
+						&NumberLiteral{
+							Value: "2",
+							Range: Range{
+								Start: Position{Offset: 4, Line: 0, Column: 0},
+								End:   Position{Offset: 5, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 4,
-					EndPos:   5,
+					Range: Range{
+						Start: Position{Offset: 4, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 			},
 			expectedValue:    "if true { (1) } else { (2) }",
@@ -90,13 +130,23 @@ func TestIfStatement(t *testing.T) {
 				Condition: nil,
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: nil,
 			},
 			expectedValue:    "",
@@ -114,16 +164,32 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "walk early return after if statement",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "false", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "false",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: nil,
 			},
 			expectedValue:    "if false { (1) }",
@@ -137,16 +203,32 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "walk early return after condition",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: nil,
 			},
 			expectedValue:    "if true { (1) }",
@@ -161,16 +243,32 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "walk early return after then block",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: nil,
 			},
 			expectedValue:    "if true { (1) }",
@@ -187,22 +285,46 @@ func TestIfStatement(t *testing.T) {
 		{
 			name: "walk early return after else block",
 			input: &IfStatement{
-				Condition: &BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
+				Condition: &BoolLiteral{
+					Value: "true",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				ThenBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+						&NumberLiteral{
+							Value: "1",
+							Range: Range{
+								Start: Position{Offset: 2, Line: 0, Column: 0},
+								End:   Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 				ElseBlock: &BlockStatement{
 					Statements: []ExprNode{
-						&NumberLiteral{Value: "2", StartPos: 4, EndPos: 5},
+						&NumberLiteral{
+							Value: "2",
+							Range: Range{
+								Start: Position{Offset: 4, Line: 0, Column: 0},
+								End:   Position{Offset: 5, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 4,
-					EndPos:   5,
+					Range: Range{
+						Start: Position{Offset: 4, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 			},
 			expectedValue:    "if true { (1) } else { (2) }",
@@ -234,19 +356,19 @@ func TestIfStatement(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

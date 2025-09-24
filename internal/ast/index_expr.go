@@ -6,10 +6,9 @@ import (
 
 // IndexExpr defines a struct for an index expression.
 type IndexExpr struct {
-	Array    ExprNode
-	Index    ExprNode
-	StartPos int
-	EndPos   int
+	Array ExprNode
+	Index ExprNode
+	Range Range
 }
 
 // Expr returns the expression of the index expression.
@@ -21,14 +20,9 @@ func (e *IndexExpr) Expr() string {
 	return fmt.Sprintf("%s[%s]", e.Array.Expr(), e.Index.Expr())
 }
 
-// StartPosition returns the start position of the index expression.
-func (e *IndexExpr) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the index expression.
-func (e *IndexExpr) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the index expression.
+func (e *IndexExpr) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the index expression and its array and index nodes.

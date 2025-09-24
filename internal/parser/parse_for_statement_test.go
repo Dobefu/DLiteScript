@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -291,7 +292,7 @@ func TestParseLoopErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.parseLoop(0)
+			_, err := p.parseLoop(ast.Position{Offset: 0, Line: 0, Column: 0})
 
 			if err == nil {
 				t.Fatalf("expected error, got none")
@@ -418,7 +419,9 @@ func TestParseVariableDeclarationLoopErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.parseVariableDeclarationLoop(0)
+			_, err := p.parseVariableDeclarationLoop(
+				ast.Position{Offset: 0, Line: 0, Column: 0},
+			)
 
 			if err == nil {
 				t.Fatalf("expected error, got none")
@@ -505,7 +508,10 @@ func TestParseExplicitRangeLoopErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.parseExplicitRangeLoop(0, "")
+			_, err := p.parseExplicitRangeLoop(
+				ast.Position{Offset: 0, Line: 0, Column: 0},
+				"",
+			)
 
 			if err == nil {
 				t.Fatalf("expected error, got none")
@@ -602,7 +608,10 @@ func TestParseImplicitRangeLoopWithVariableErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.parseImplicitRangeLoopWithVariable(0, "")
+			_, err := p.parseImplicitRangeLoopWithVariable(
+				ast.Position{Offset: 0, Line: 0, Column: 0},
+				"",
+			)
 
 			if err == nil {
 				t.Fatalf("expected error, got none")
@@ -689,7 +698,9 @@ func TestParseRangeLoopWithoutVariableErr(t *testing.T) {
 			t.Parallel()
 
 			p := NewParser(test.input)
-			_, err := p.parseRangeLoopWithoutVariable(0)
+			_, err := p.parseRangeLoopWithoutVariable(
+				ast.Position{Offset: 0, Line: 0, Column: 0},
+			)
 
 			if err == nil {
 				t.Fatalf("expected error, got none")

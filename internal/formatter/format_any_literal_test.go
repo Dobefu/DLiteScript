@@ -18,8 +18,14 @@ func TestFormatAnyLiteral(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "any literal",
-			input:     &ast.AnyLiteral{Value: nil, StartPos: 0, EndPos: 1},
+			name: "any literal",
+			input: &ast.AnyLiteral{
+				Value: nil,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "any\n",

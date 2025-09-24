@@ -10,8 +10,7 @@ import (
 type PrefixExpr struct {
 	Operator token.Token
 	Operand  ExprNode
-	StartPos int
-	EndPos   int
+	Range    Range
 }
 
 // Expr returns the expression of the prefix expression.
@@ -23,14 +22,9 @@ func (e *PrefixExpr) Expr() string {
 	return fmt.Sprintf("(%s %s)", e.Operator.Atom, e.Operand.Expr())
 }
 
-// StartPosition returns the start position of the prefix expression.
-func (e *PrefixExpr) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the prefix expression.
-func (e *PrefixExpr) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the prefix expression.
+func (e *PrefixExpr) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the prefix expression and its operand.

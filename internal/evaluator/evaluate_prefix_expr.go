@@ -49,7 +49,7 @@ func (e *Evaluator) evaluatePrefixExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
-			node.StartPos,
+			node.GetRange().Start.Offset,
 			node.Operator.Atom,
 		)
 	}

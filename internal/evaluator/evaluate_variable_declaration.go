@@ -32,7 +32,7 @@ func (e *Evaluator) evaluateVariableDeclaration(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeMismatch,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			node.Type,
 			value.Value.DataType.AsString(),
 		)

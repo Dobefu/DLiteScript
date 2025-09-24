@@ -18,9 +18,17 @@ func TestAnyLiteral(t *testing.T) {
 		{
 			name: "any literal",
 			input: &AnyLiteral{
-				Value:    &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Value: &NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"any", "1", "1"},
 			expectedStartPos: 0,
@@ -30,9 +38,17 @@ func TestAnyLiteral(t *testing.T) {
 		{
 			name: "walk early return after first node",
 			input: &AnyLiteral{
-				Value:    &NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Value: &NumberLiteral{
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"any"},
 			expectedStartPos: 0,
@@ -42,9 +58,17 @@ func TestAnyLiteral(t *testing.T) {
 		{
 			name: "walk early return after value node",
 			input: &AnyLiteral{
-				Value:    &NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Value: &NumberLiteral{
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"any", "42"},
 			expectedStartPos: 0,
@@ -61,19 +85,19 @@ func TestAnyLiteral(t *testing.T) {
 				t.Errorf("expected \"any\", got \"%s\"", test.input.Expr())
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

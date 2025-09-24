@@ -270,9 +270,11 @@ func TestHandleArrayToken(t *testing.T) {
 				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
 			},
 			leftExpr: &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			minPrecedence: bindingPowerAssignment,
 			expected:      "x",
@@ -285,9 +287,11 @@ func TestHandleArrayToken(t *testing.T) {
 				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
 			},
 			leftExpr: &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			minPrecedence: bindingPowerDefault,
 			expected:      "x[1]",
@@ -453,9 +457,11 @@ func TestHandleShorthandAssignmentToken(t *testing.T) {
 			t.Parallel()
 
 			leftExpr := &ast.Identifier{
-				Value:    "x",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			}
 
 			p := NewParser(test.input[1:])
@@ -537,9 +543,11 @@ func TestHandleShorthandAssignmentTokenErr(t *testing.T) {
 			_, err := p.handleShorthandAssignmentToken(
 				firstToken,
 				&ast.Identifier{
-					Value:    "x",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				0,
 				0,

@@ -18,6 +18,6 @@ func (e *Evaluator) evaluateAssignmentStatement(
 	return e.assignVariable(
 		node.Left.Value,
 		rightValue.Value,
-		node.Left.StartPosition(),
+		node.Left.GetRange().Start.Offset,
 	)
 }

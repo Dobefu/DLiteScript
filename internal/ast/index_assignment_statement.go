@@ -6,11 +6,10 @@ import (
 
 // IndexAssignmentStatement represents an assignment to an array index.
 type IndexAssignmentStatement struct {
-	Array    ExprNode
-	Index    ExprNode
-	Right    ExprNode
-	StartPos int
-	EndPos   int
+	Array ExprNode
+	Index ExprNode
+	Right ExprNode
+	Range Range
 }
 
 // Expr returns the expression of the index assignment statement.
@@ -27,14 +26,9 @@ func (a *IndexAssignmentStatement) Expr() string {
 	)
 }
 
-// StartPosition returns the start position of the index assignment statement.
-func (a *IndexAssignmentStatement) StartPosition() int {
-	return a.StartPos
-}
-
-// EndPosition returns the end position of the index assignment statement.
-func (a *IndexAssignmentStatement) EndPosition() int {
-	return a.EndPos
+// GetRange returns the range of the index assignment statement.
+func (a *IndexAssignmentStatement) GetRange() Range {
+	return a.Range
 }
 
 // Walk walks the index assignment statement and its array, index, and right nodes.

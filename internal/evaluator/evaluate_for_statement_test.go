@@ -24,13 +24,23 @@ func TestEvaluateForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+						&ast.BreakStatement{
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
 				RangeFrom:        nil,
@@ -46,22 +56,30 @@ func TestEvaluateForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "i",
 				RangeVariable:    "i",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -72,19 +90,31 @@ func TestEvaluateForStatement(t *testing.T) {
 			name: "loop with condition",
 			input: &ast.ForStatement{
 				Condition: &ast.BoolLiteral{
-					Value:    "true",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+						&ast.BreakStatement{
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
 				RangeFrom:        nil,
@@ -101,27 +131,37 @@ func TestEvaluateForStatement(t *testing.T) {
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
 						&ast.ContinueStatement{
-							Count:    1,
-							StartPos: 0,
-							EndPos:   0,
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "i",
 				RangeVariable:    "",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -134,24 +174,38 @@ func TestEvaluateForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.BreakStatement{Count: 3, StartPos: 0, EndPos: 0},
+						&ast.BreakStatement{
+							Count: 3,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "i",
 				RangeVariable:    "i",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -164,24 +218,38 @@ func TestEvaluateForStatement(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.ContinueStatement{Count: 2, StartPos: 0, EndPos: 0},
+						&ast.ContinueStatement{
+							Count: 2,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "i",
 				RangeVariable:    "i",
 				RangeFrom: &ast.NumberLiteral{
-					Value:    "0",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				RangeTo: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				IsRange:         true,
 				HasExplicitFrom: false,
@@ -202,7 +270,7 @@ func TestEvaluateForStatement(t *testing.T) {
 				"expected \"%v\", got \"%v\" at position %d",
 				test.expected.DataType.AsString(),
 				result.Value.DataType.AsString(),
-				test.input.StartPosition(),
+				test.input.GetRange().Start.Offset,
 			)
 		}
 	}
@@ -222,13 +290,23 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				Condition: nil,
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+						&ast.BreakStatement{
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "i",
 				RangeVariable:    "",
 				RangeFrom:        ast.ExprNode(nil),
@@ -253,38 +331,56 @@ func TestEvaluateForStatementErr(t *testing.T) {
 						Name: "i",
 						Type: "number",
 						Value: &ast.NumberLiteral{
-							Value:    "0",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 					&ast.ForStatement{
 						Condition: nil,
 						Body: &ast.BlockStatement{
 							Statements: []ast.ExprNode{
-								&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+								&ast.BreakStatement{
+									Count: 1,
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+									},
+								},
 							},
-							StartPos: 0,
-							EndPos:   0,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
-						StartPos:         0,
-						EndPos:           0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 						DeclaredVariable: "i",
 						RangeVariable:    "",
 						RangeFrom: &ast.NumberLiteral{
-							Value:    "0",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
 						RangeTo:         nil,
 						IsRange:         true,
 						HasExplicitFrom: false,
 					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s",
@@ -299,19 +395,31 @@ func TestEvaluateForStatementErr(t *testing.T) {
 			name: "invalid condition",
 			input: &ast.ForStatement{
 				Condition: &ast.StringLiteral{
-					Value:    "not_a_bool",
-					StartPos: 0,
-					EndPos:   0,
+					Value: "not_a_bool",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 0},
+						&ast.BreakStatement{
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos:         0,
-				EndPos:           0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 				DeclaredVariable: "",
 				RangeVariable:    "",
 				RangeFrom:        nil,

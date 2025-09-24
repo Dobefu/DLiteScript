@@ -18,8 +18,10 @@ func TestFormatHoverContent(t *testing.T) {
 		{
 			name: "null literal node",
 			node: &ast.NullLiteral{
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			isDebugMode: false,
 			expected:    "",
@@ -27,8 +29,10 @@ func TestFormatHoverContent(t *testing.T) {
 		{
 			name: "null literal node in debug mode",
 			node: &ast.NullLiteral{
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			isDebugMode: true,
 			expected:    "**🔴 Debug Mode** | **Unknown Node**\n\n---\n\nUnknown Node: *ast.NullLiteral",

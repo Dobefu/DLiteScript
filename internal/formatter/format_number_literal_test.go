@@ -18,15 +18,27 @@ func TestFormatNumberLiteral(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "number literal 1",
-			input:     &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+			name: "number literal 1",
+			input: &ast.NumberLiteral{
+				Value: "1",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "1\n",
 		},
 		{
-			name:      "number literal 1.1",
-			input:     &ast.NumberLiteral{Value: "1.1", StartPos: 0, EndPos: 3},
+			name: "number literal 1.1",
+			input: &ast.NumberLiteral{
+				Value: "1.1",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "1.1\n",

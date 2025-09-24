@@ -20,9 +20,17 @@ func TestFormatSpreadExpr(t *testing.T) {
 		{
 			name: "spread expression",
 			input: &ast.SpreadExpr{
-				Expression: &ast.NumberLiteral{Value: "1.1", StartPos: 0, EndPos: 3},
-				StartPos:   0,
-				EndPos:     3,
+				Expression: &ast.NumberLiteral{
+					Value: "1.1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

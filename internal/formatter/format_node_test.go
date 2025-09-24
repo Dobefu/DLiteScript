@@ -8,10 +8,20 @@ import (
 
 type unknownNode struct{}
 
-func (n *unknownNode) EndPosition() int                  { return 0 }
-func (n *unknownNode) StartPosition() int                { return 0 }
-func (n *unknownNode) Expr() string                      { return "unknown" }
-func (n *unknownNode) Walk(fn func(_ ast.ExprNode) bool) { fn(n) }
+func (n *unknownNode) GetRange() ast.Range {
+	return ast.Range{
+		Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+		End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+	}
+}
+
+func (n *unknownNode) Expr() string {
+	return "unknown"
+}
+
+func (n *unknownNode) Walk(fn func(_ ast.ExprNode) bool) {
+	fn(n)
+}
 
 func TestFormatNodeUnknownASTNode(t *testing.T) {
 	t.Parallel()

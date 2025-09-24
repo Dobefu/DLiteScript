@@ -20,9 +20,11 @@ func TestFormatArrayLiteral(t *testing.T) {
 		{
 			name: "empty array literal",
 			input: &ast.ArrayLiteral{
-				Values:   []ast.ExprNode{},
-				StartPos: 0,
-				EndPos:   1,
+				Values: []ast.ExprNode{},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -32,10 +34,18 @@ func TestFormatArrayLiteral(t *testing.T) {
 			name: "array literal with one element",
 			input: &ast.ArrayLiteral{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -45,11 +55,25 @@ func TestFormatArrayLiteral(t *testing.T) {
 			name: "array literal with two elements",
 			input: &ast.ArrayLiteral{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					&ast.StringLiteral{Value: "test", StartPos: 1, EndPos: 6},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					&ast.StringLiteral{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   6,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

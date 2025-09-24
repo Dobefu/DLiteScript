@@ -25,13 +25,17 @@ func TestFormatFuncDeclarationStatement(t *testing.T) {
 				Args: []ast.FuncParameter{},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{},
-					StartPos:   0,
-					EndPos:     1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -44,15 +48,25 @@ func TestFormatFuncDeclarationStatement(t *testing.T) {
 				Args: []ast.FuncParameter{},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{
-						&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+						&ast.NumberLiteral{
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -65,13 +79,17 @@ func TestFormatFuncDeclarationStatement(t *testing.T) {
 				Args: []ast.FuncParameter{},
 				Body: &ast.BlockStatement{
 					Statements: []ast.ExprNode{nil},
-					StartPos:   0,
-					EndPos:     1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -89,21 +107,39 @@ func TestFormatFuncDeclarationStatement(t *testing.T) {
 					Statements: []ast.ExprNode{
 						&ast.ReturnStatement{
 							Values: []ast.ExprNode{
-								&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-								&ast.StringLiteral{Value: "test", StartPos: 1, EndPos: 6},
+								&ast.NumberLiteral{
+									Value: "1",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+								&ast.StringLiteral{
+									Value: "test",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+									},
+								},
 							},
 							NumValues: 1,
-							StartPos:  0,
-							EndPos:    6,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number", "string"},
 				NumReturnValues: 2,
-				StartPos:        0,
-				EndPos:          1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -118,16 +154,32 @@ func TestFormatFuncDeclarationStatement(t *testing.T) {
 					{Name: "y", Type: "number"},
 				},
 				Body: &ast.BinaryExpr{
-					Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+					Left: &ast.Identifier{
+						Value: "x",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 					Operator: token.Token{Atom: "+", TokenType: token.TokenTypeOperationAdd, StartPos: 1, EndPos: 2},
-					Right:    &ast.Identifier{Value: "y", StartPos: 2, EndPos: 3},
-					StartPos: 0,
-					EndPos:   3,
+					Right: &ast.Identifier{
+						Value: "y",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
-				StartPos:        0,
-				EndPos:          3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

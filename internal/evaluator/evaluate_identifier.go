@@ -22,7 +22,7 @@ func (e *Evaluator) evaluateIdentifier(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUndefinedIdentifier,
-			i.StartPosition(),
+			i.GetRange().Start.Offset,
 			i.Value,
 		)
 	}
@@ -47,7 +47,7 @@ func (e *Evaluator) evaluateIdentifier(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUndefinedIdentifier,
-			i.StartPosition(),
+			i.GetRange().Start.Offset,
 			i.Value,
 		)
 	}

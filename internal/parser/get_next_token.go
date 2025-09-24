@@ -17,8 +17,7 @@ func (p *Parser) GetNextToken() (*token.Token, error) {
 
 	next := p.tokens[p.tokenIdx]
 	p.tokenIdx++
-
-	p.charIdx = next.EndPos
+	p.AdvancePosition(next)
 
 	if p.tokenIdx >= p.tokenLen {
 		p.isEOF = true

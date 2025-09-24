@@ -18,9 +18,11 @@ func TestBreakStatement(t *testing.T) {
 		{
 			name: "break statement with count 1",
 			input: &BreakStatement{
-				Count:    1,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"break"},
 			expectedStartPos: 0,
@@ -30,9 +32,11 @@ func TestBreakStatement(t *testing.T) {
 		{
 			name: "break statement with count 2",
 			input: &BreakStatement{
-				Count:    2,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"break 2"},
 			expectedStartPos: 0,
@@ -42,9 +46,11 @@ func TestBreakStatement(t *testing.T) {
 		{
 			name: "break statement with count 0",
 			input: &BreakStatement{
-				Count:    0,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"break 0"},
 			expectedStartPos: 0,
@@ -54,9 +60,11 @@ func TestBreakStatement(t *testing.T) {
 		{
 			name: "walk early return after break statement",
 			input: &BreakStatement{
-				Count:    3,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"break 3"},
 			expectedStartPos: 0,
@@ -69,19 +77,19 @@ func TestBreakStatement(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

@@ -18,8 +18,13 @@ func TestFormatNewline(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "newline literal",
-			input:     &ast.NewlineLiteral{StartPos: 0, EndPos: 0},
+			name: "newline literal",
+			input: &ast.NewlineLiteral{
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "\n",

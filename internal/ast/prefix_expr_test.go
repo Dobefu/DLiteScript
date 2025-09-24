@@ -28,19 +28,35 @@ func TestPrefixExpr(t *testing.T) {
 					EndPos:    0,
 				},
 				Operand: &BinaryExpr{
-					Left:  &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					Right: &NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+					Left: &NumberLiteral{
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					Right: &NumberLiteral{
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 2, Line: 0, Column: 0},
+							End:   Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
 					Operator: token.Token{
 						Atom:      "+",
 						TokenType: token.TokenTypeOperationAdd,
 						StartPos:  0,
 						EndPos:    0,
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(+ (1 + 1))",
 			expectedStartPos: 0,
@@ -65,9 +81,17 @@ func TestPrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &NumberLiteral{Value: "5", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Operand: &NumberLiteral{
+					Value: "5",
+					Range: Range{
+						Start: Position{Offset: 1, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(- 5)",
 			expectedStartPos: 0,
@@ -88,9 +112,11 @@ func TestPrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  nil,
-				StartPos: 0,
-				EndPos:   1,
+				Operand: nil,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -109,9 +135,17 @@ func TestPrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &NumberLiteral{Value: "3", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Operand: &NumberLiteral{
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 1, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(~ 3)",
 			expectedStartPos: 0,
@@ -130,9 +164,17 @@ func TestPrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &NumberLiteral{Value: "7", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Operand: &NumberLiteral{
+					Value: "7",
+					Range: Range{
+						Start: Position{Offset: 1, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(+ 7)",
 			expectedStartPos: 0,
@@ -157,19 +199,19 @@ func TestPrefixExpr(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

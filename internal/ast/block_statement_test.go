@@ -19,10 +19,18 @@ func TestBlockStatement(t *testing.T) {
 			name: "block statement with single statement",
 			input: &BlockStatement{
 				Statements: []ExprNode{
-					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&NumberLiteral{
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"(1)", "1", "1"},
 			expectedStartPos: 0,
@@ -33,8 +41,10 @@ func TestBlockStatement(t *testing.T) {
 			name: "block statement with nil statement",
 			input: &BlockStatement{
 				Statements: []ExprNode{nil},
-				StartPos:   0,
-				EndPos:     0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"()"},
 			expectedStartPos: 0,
@@ -45,8 +55,10 @@ func TestBlockStatement(t *testing.T) {
 			name: "empty block statement",
 			input: &BlockStatement{
 				Statements: []ExprNode{},
-				StartPos:   0,
-				EndPos:     0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"()"},
 			expectedStartPos: 0,
@@ -57,11 +69,25 @@ func TestBlockStatement(t *testing.T) {
 			name: "block statement with multiple statements",
 			input: &BlockStatement{
 				Statements: []ExprNode{
-					&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-					&NumberLiteral{Value: "2", StartPos: 1, EndPos: 2},
+					&NumberLiteral{
+						Value: "1",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+					&NumberLiteral{
+						Value: "2",
+						Range: Range{
+							Start: Position{Offset: 1, Line: 0, Column: 0},
+							End:   Position{Offset: 2, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"(1 2)", "1", "1", "2", "2"},
 			expectedStartPos: 0,
@@ -72,10 +98,18 @@ func TestBlockStatement(t *testing.T) {
 			name: "walk early return after block node",
 			input: &BlockStatement{
 				Statements: []ExprNode{
-					&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
+					&NumberLiteral{
+						Value: "42",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 2, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"(42)"},
 			expectedStartPos: 0,
@@ -86,11 +120,25 @@ func TestBlockStatement(t *testing.T) {
 			name: "walk early return after first statement",
 			input: &BlockStatement{
 				Statements: []ExprNode{
-					&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
-					&NumberLiteral{Value: "24", StartPos: 2, EndPos: 4},
+					&NumberLiteral{
+						Value: "42",
+						Range: Range{
+							Start: Position{Offset: 0, Line: 0, Column: 0},
+							End:   Position{Offset: 2, Line: 0, Column: 0},
+						},
+					},
+					&NumberLiteral{
+						Value: "24",
+						Range: Range{
+							Start: Position{Offset: 2, Line: 0, Column: 0},
+							End:   Position{Offset: 4, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"(42 24)", "42"},
 			expectedStartPos: 0,
@@ -103,19 +151,19 @@ func TestBlockStatement(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

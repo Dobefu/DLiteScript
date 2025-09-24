@@ -19,8 +19,10 @@ func TestNullLiteral(t *testing.T) {
 		{
 			name: "null literal",
 			input: &NullLiteral{
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "null",
 			expectedStartPos: 0,
@@ -31,8 +33,10 @@ func TestNullLiteral(t *testing.T) {
 		{
 			name: "null literal at different position",
 			input: &NullLiteral{
-				StartPos: 5,
-				EndPos:   9,
+				Range: Range{
+					Start: Position{Offset: 5, Line: 0, Column: 0},
+					End:   Position{Offset: 9, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "null",
 			expectedStartPos: 5,
@@ -43,8 +47,10 @@ func TestNullLiteral(t *testing.T) {
 		{
 			name: "walk early return after null literal",
 			input: &NullLiteral{
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "null",
 			expectedStartPos: 0,
@@ -66,19 +72,19 @@ func TestNullLiteral(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Errorf(
 					"expected pos %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Errorf(
 					"expected pos %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

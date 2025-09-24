@@ -7,9 +7,8 @@ import (
 )
 
 func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
-	// The "const" keyword has already been consumed,
-	// so we should get the start position from the previous token.
-	startPos := p.tokens[p.tokenIdx-1].StartPos
+	// Get start position from current position
+	startPos := p.GetCurrentPosition()
 	varName, varType, err := p.parseDeclarationHeader()
 
 	if err != nil {
@@ -44,10 +43,12 @@ func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
 	}
 
 	return &ast.ConstantDeclaration{
-		Name:     varName,
-		Type:     varType,
-		Value:    value,
-		StartPos: startPos,
-		EndPos:   value.EndPosition(),
+		Name:  varName,
+		Type:  varType,
+		Value: value,
+		Range: ast.Range{
+			Start: startPos,
+			End:   p.GetCurrentPosition(),
+		},
 	}, nil
 }

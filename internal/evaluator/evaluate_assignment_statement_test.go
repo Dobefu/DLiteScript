@@ -23,21 +23,45 @@ func TestEvaluateAssignmentStatement(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.VariableDeclaration{
-						Name:     "x",
-						Type:     "number",
-						Value:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-						StartPos: 0,
-						EndPos:   1,
+						Name: "x",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&ast.AssignmentStatement{
-						Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-						Right:    &ast.NumberLiteral{Value: "1", StartPos: 4, EndPos: 7},
-						StartPos: 0,
-						EndPos:   7,
+						Left: &ast.Identifier{
+							Value: "x",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Right: &ast.NumberLiteral{
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 7, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 7, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   7,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 7, Line: 0, Column: 0},
+				},
 			},
 			expected: 1.0,
 		},
@@ -46,34 +70,68 @@ func TestEvaluateAssignmentStatement(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.VariableDeclaration{
-						Name:     "x",
-						Type:     "number",
-						Value:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-						StartPos: 0,
-						EndPos:   1,
+						Name: "x",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value: "0",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&ast.BlockStatement{
 						Statements: []ast.ExprNode{
 							&ast.VariableDeclaration{
-								Name:     "x",
-								Type:     "number",
-								Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-								StartPos: 0,
-								EndPos:   1,
+								Name: "x",
+								Type: "number",
+								Value: &ast.NumberLiteral{
+									Value: "5",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+								},
 							},
 							&ast.AssignmentStatement{
-								Left:     &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-								Right:    &ast.NumberLiteral{Value: "42", StartPos: 4, EndPos: 6},
-								StartPos: 0,
-								EndPos:   6,
+								Left: &ast.Identifier{
+									Value: "x",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+								Right: &ast.NumberLiteral{
+									Value: "42",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+									},
+								},
+								Range: ast.Range{
+									Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+									End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+								},
 							},
 						},
-						StartPos: 0,
-						EndPos:   6,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   6,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 6, Line: 0, Column: 0},
+				},
 			},
 			expected: 42.0,
 		},
@@ -118,10 +176,24 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 		{
 			name: "assignment to undefined variable",
 			input: &ast.AssignmentStatement{
-				Left:     &ast.Identifier{Value: "undefined_var", StartPos: 0, EndPos: 13},
-				Right:    &ast.NumberLiteral{Value: "1", StartPos: 16, EndPos: 17},
-				StartPos: 0,
-				EndPos:   17,
+				Left: &ast.Identifier{
+					Value: "undefined_var",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 13, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 16, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 17, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 17, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -134,21 +206,45 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 			input: &ast.StatementList{
 				Statements: []ast.ExprNode{
 					&ast.ConstantDeclaration{
-						Name:     "const_var",
-						Type:     "number",
-						Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-						StartPos: 0,
-						EndPos:   1,
+						Name: "const_var",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value: "5",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&ast.AssignmentStatement{
-						Left:     &ast.Identifier{Value: "const_var", StartPos: 0, EndPos: 9},
-						Right:    &ast.NumberLiteral{Value: "10", StartPos: 12, EndPos: 14},
-						StartPos: 0,
-						EndPos:   14,
+						Left: &ast.Identifier{
+							Value: "const_var",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 9, Line: 0, Column: 0},
+							},
+						},
+						Right: &ast.NumberLiteral{
+							Value: "10",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 12, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 14, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 14, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   14,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 14, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -161,21 +257,45 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
 					&ast.ConstantDeclaration{
-						Name:     "block_const",
-						Type:     "number",
-						Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-						StartPos: 0,
-						EndPos:   1,
+						Name: "block_const",
+						Type: "number",
+						Value: &ast.NumberLiteral{
+							Value: "5",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 					&ast.AssignmentStatement{
-						Left:     &ast.Identifier{Value: "block_const", StartPos: 0, EndPos: 11},
-						Right:    &ast.NumberLiteral{Value: "10", StartPos: 14, EndPos: 16},
-						StartPos: 0,
-						EndPos:   16,
+						Left: &ast.Identifier{
+							Value: "block_const",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 11, Line: 0, Column: 0},
+							},
+						},
+						Right: &ast.NumberLiteral{
+							Value: "10",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 14, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 16, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 16, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   16,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 16, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -186,16 +306,26 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 		{
 			name: "assignment with right side evaluation error",
 			input: &ast.AssignmentStatement{
-				Left: &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.FunctionCall{
 					Namespace:    "",
 					FunctionName: "undefined_func",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     4,
-					EndPos:       18,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 18, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   18,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 18, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 4",

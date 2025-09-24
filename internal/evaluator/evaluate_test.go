@@ -18,10 +18,20 @@ type unknownNode struct {
 	EndPos   int
 }
 
-func (n *unknownNode) EndPosition() int                  { return n.EndPos }
-func (n *unknownNode) StartPosition() int                { return n.StartPos }
-func (n *unknownNode) Expr() string                      { return "unknown" }
-func (n *unknownNode) Walk(fn func(_ ast.ExprNode) bool) { fn(n) }
+func (n *unknownNode) GetRange() ast.Range {
+	return ast.Range{
+		Start: ast.Position{Offset: n.StartPos, Line: 0, Column: 0},
+		End:   ast.Position{Offset: n.EndPos, Line: 0, Column: 0},
+	}
+}
+
+func (n *unknownNode) Expr() string {
+	return "unknown"
+}
+
+func (n *unknownNode) Walk(fn func(_ ast.ExprNode) bool) {
+	fn(n)
+}
 
 func TestEvaluate(t *testing.T) {
 	t.Parallel()
@@ -31,13 +41,17 @@ func TestEvaluate(t *testing.T) {
 		Args: []ast.FuncParameter{},
 		Body: &ast.BlockStatement{
 			Statements: []ast.ExprNode{},
-			StartPos:   0,
-			EndPos:     1,
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
 		},
 		ReturnValues:    []string{},
 		NumReturnValues: 0,
-		StartPos:        0,
-		EndPos:          1,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+		},
 	}
 
 	tests := []struct {
@@ -48,9 +62,21 @@ func TestEvaluate(t *testing.T) {
 		{
 			name: "binary expression",
 			input: &ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.BinaryExpr{
-					Left: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+					Left: &ast.NumberLiteral{
+						Value: "5",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
+					},
 					Right: &ast.PrefixExpr{
 						Operator: token.Token{
 							Atom:      "-",
@@ -62,13 +88,23 @@ func TestEvaluate(t *testing.T) {
 							Namespace:    "math",
 							FunctionName: "abs",
 							Arguments: []ast.ExprNode{
-								&ast.Identifier{Value: "PI", StartPos: 4, EndPos: 5},
+								&ast.Identifier{
+									Value: "PI",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+									},
+								},
 							},
-							StartPos: 0,
-							EndPos:   0,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 					Operator: token.Token{
 						Atom:      "+",
@@ -76,8 +112,10 @@ func TestEvaluate(t *testing.T) {
 						StartPos:  0,
 						EndPos:    0,
 					},
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "+",
@@ -85,8 +123,10 @@ func TestEvaluate(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(
 				datavalue.Number(5 + math.Abs(-5+math.Pi)),
@@ -95,11 +135,31 @@ func TestEvaluate(t *testing.T) {
 		{
 			name: "index assignment statement",
 			input: &ast.IndexAssignmentStatement{
-				Array:    &ast.Identifier{Value: "someArray", StartPos: 0, EndPos: 1},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				Right:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "someArray",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(
 				datavalue.Array(datavalue.Number(1)),
@@ -113,26 +173,54 @@ func TestEvaluate(t *testing.T) {
 			),
 		},
 		{
-			name:     "comment literal",
-			input:    &ast.CommentLiteral{Value: "test", StartPos: 0, EndPos: 1},
+			name: "comment literal",
+			input: &ast.CommentLiteral{
+				Value: "test",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: controlflow.NewRegularResult(datavalue.Null()),
 		},
 		{
 			name: "spread expression",
 			input: &ast.SpreadExpr{
-				Expression: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos:   0,
-				EndPos:     1,
+				Expression: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(1)),
 		},
 		{
 			name: "index expression",
 			input: &ast.IndexExpr{
-				Array:    &ast.Identifier{Value: "someArray", StartPos: 0, EndPos: 1},
-				Index:    &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Array: &ast.Identifier{
+					Value: "someArray",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Index: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Number(0)),
 		},
@@ -140,14 +228,18 @@ func TestEvaluate(t *testing.T) {
 			name: "import statement",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "../../examples/09_imports/test.dl",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "../../examples/09_imports/test.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(datavalue.Null()),
 		},
@@ -242,10 +334,18 @@ func TestOutput(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+					&ast.StringLiteral{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: "test",
 		},
@@ -274,28 +374,60 @@ func BenchmarkEvaluate(b *testing.B) {
 	for b.Loop() {
 		_, _ = NewEvaluator(io.Discard).Evaluate(
 			&ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.BinaryExpr{
 					Left: &ast.PrefixExpr{
 						Operator: *token.NewToken("-", token.TokenTypeOperationSub, 0, 0),
-						Operand:  &ast.NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
-						StartPos: 0,
-						EndPos:   0,
+						Operand: &ast.NumberLiteral{
+							Value: "2",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+							},
+						},
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 					Right: &ast.BinaryExpr{
-						Left:     &ast.NumberLiteral{Value: "3", StartPos: 4, EndPos: 5},
-						Right:    &ast.NumberLiteral{Value: "4", StartPos: 6, EndPos: 7},
+						Left: &ast.NumberLiteral{
+							Value: "3",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+							},
+						},
+						Right: &ast.NumberLiteral{
+							Value: "4",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 6, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 7, Line: 0, Column: 0},
+							},
+						},
 						Operator: *token.NewToken("/", token.TokenTypeOperationDiv, 0, 0),
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
 					Operator: *token.NewToken("*", token.TokenTypeOperationMul, 0, 0),
-					StartPos: 0,
-					EndPos:   0,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		)
 	}

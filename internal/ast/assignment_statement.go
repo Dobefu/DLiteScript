@@ -6,10 +6,9 @@ import (
 
 // AssignmentStatement represents an assignment statement.
 type AssignmentStatement struct {
-	Left     *Identifier
-	Right    ExprNode
-	StartPos int
-	EndPos   int
+	Left  *Identifier
+	Right ExprNode
+	Range Range
 }
 
 // Expr returns the expression of the assignment statement.
@@ -21,14 +20,9 @@ func (a *AssignmentStatement) Expr() string {
 	return fmt.Sprintf("%s = %s", a.Left.Expr(), a.Right.Expr())
 }
 
-// StartPosition returns the start position of the assignment statement.
-func (a *AssignmentStatement) StartPosition() int {
-	return a.StartPos
-}
-
-// EndPosition returns the end position of the assignment statement.
-func (a *AssignmentStatement) EndPosition() int {
-	return a.EndPos
+// GetRange returns the range of the assignment statement.
+func (a *AssignmentStatement) GetRange() Range {
+	return a.Range
 }
 
 // Walk walks the assignment statement and its left and right nodes.

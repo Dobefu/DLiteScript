@@ -36,7 +36,7 @@ func (e *Evaluator) evaluateComparisonBinaryExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
-			node.StartPosition(),
+			node.GetRange().Start.Offset,
 			node.Operator.Atom,
 		)
 	}

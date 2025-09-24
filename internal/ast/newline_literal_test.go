@@ -17,8 +17,13 @@ func TestNewlineLiteral(t *testing.T) {
 		continueOn       string
 	}{
 		{
-			name:             "newline literal",
-			input:            &NewlineLiteral{StartPos: 0, EndPos: 1},
+			name: "newline literal",
+			input: &NewlineLiteral{
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "\n",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -33,15 +38,27 @@ func TestNewlineLiteral(t *testing.T) {
 		})
 
 		if test.input.Expr() != test.expectedValue {
-			t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+			t.Errorf(
+				"expected '%s', got '%s'",
+				test.expectedValue,
+				test.input.Expr(),
+			)
 		}
 
-		if test.input.StartPosition() != test.expectedStartPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+		if test.input.GetRange().Start.Offset != test.expectedStartPos {
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedStartPos,
+				test.input.GetRange().Start.Offset,
+			)
 		}
 
-		if test.input.EndPosition() != test.expectedEndPos {
-			t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+		if test.input.GetRange().End.Offset != test.expectedEndPos {
+			t.Errorf(
+				"expected pos '%d', got '%d'",
+				test.expectedEndPos,
+				test.input.GetRange().End.Offset,
+			)
 		}
 
 		WalkUntil(t, test.input, test.expectedNodes, test.continueOn)

@@ -22,8 +22,10 @@ func TestFormatReturnStatement(t *testing.T) {
 			input: &ast.ReturnStatement{
 				Values:    []ast.ExprNode{},
 				NumValues: 0,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -33,11 +35,19 @@ func TestFormatReturnStatement(t *testing.T) {
 			name: "return statement with one value",
 			input: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 0},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
 				},
 				NumValues: 1,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -47,12 +57,26 @@ func TestFormatReturnStatement(t *testing.T) {
 			name: "return statement with two values",
 			input: &ast.ReturnStatement{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 0},
-					&ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 0},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
+					&ast.StringLiteral{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
+					},
 				},
 				NumValues: 2,
-				StartPos:  0,
-				EndPos:    0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

@@ -23,22 +23,32 @@ func TestEvaluateVariableDeclaration(t *testing.T) {
 		{
 			name: "variable declaration with value",
 			input: &ast.VariableDeclaration{
-				Name:     "x",
-				Type:     datatype.DataTypeNumber.AsString(),
-				Value:    &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Name: "x",
+				Type: datatype.DataTypeNumber.AsString(),
+				Value: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(1),
 		},
 		{
 			name: "variable declaration without value",
 			input: &ast.VariableDeclaration{
-				Name:     "x",
-				Type:     datatype.DataTypeNumber.AsString(),
-				Value:    nil,
-				StartPos: 0,
-				EndPos:   1,
+				Name:  "x",
+				Type:  datatype.DataTypeNumber.AsString(),
+				Value: nil,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(0),
 		},
@@ -89,22 +99,34 @@ func TestEvaluateVariableDeclarationErr(t *testing.T) {
 					Namespace:    "",
 					FunctionName: "bogus",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     4,
-					EndPos:       18,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   18,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 18, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 		{
 			name: "type mismatch",
 			input: &ast.VariableDeclaration{
-				Name:     "x",
-				Type:     "int",
-				Value:    &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				StartPos: 0,
-				EndPos:   1,
+				Name: "x",
+				Type: "int",
+				Value: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeMismatch, "int", "string"),
 		},

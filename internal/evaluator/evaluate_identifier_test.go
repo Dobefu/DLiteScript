@@ -21,8 +21,14 @@ func TestEvaluateIdentifier(t *testing.T) {
 		expected float64
 	}{
 		{
-			name:     "PI",
-			input:    &ast.Identifier{Value: "PI", StartPos: 0, EndPos: 1},
+			name: "PI",
+			input: &ast.Identifier{
+				Value: "PI",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: math.Pi,
 		},
 		{
@@ -33,17 +39,29 @@ func TestEvaluateIdentifier(t *testing.T) {
 						Name: "test",
 						Type: "number",
 						Value: &ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   0,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
-					&ast.Identifier{Value: "test", StartPos: 0, EndPos: 1},
+					&ast.Identifier{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: 1,
 		},
@@ -55,17 +73,29 @@ func TestEvaluateIdentifier(t *testing.T) {
 						Name: "test",
 						Type: "number",
 						Value: &ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
-					&ast.Identifier{Value: "test", StartPos: 0, EndPos: 1},
+					&ast.Identifier{
+						Value: "test",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: 1,
 		},
@@ -77,17 +107,29 @@ func TestEvaluateIdentifier(t *testing.T) {
 						Name: "module.value",
 						Type: "number",
 						Value: &ast.NumberLiteral{
-							Value:    "42",
-							StartPos: 0,
-							EndPos:   1,
+							Value: "42",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
 						},
-						StartPos: 0,
-						EndPos:   0,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					},
-					&ast.Identifier{Value: "module.value", StartPos: 0, EndPos: 1},
+					&ast.Identifier{
+						Value: "module.value",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expected: 42,
 		},
@@ -125,18 +167,36 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "undefined identifier",
-			input:    &ast.Identifier{Value: "bogus", StartPos: 0, EndPos: 1},
+			name: "undefined identifier",
+			input: &ast.Identifier{
+				Value: "bogus",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
 		},
 		{
-			name:     "undefined scoped identifier",
-			input:    &ast.Identifier{Value: "module.undefined", StartPos: 0, EndPos: 1},
+			name: "undefined scoped identifier",
+			input: &ast.Identifier{
+				Value: "module.undefined",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "module.undefined"),
 		},
 		{
-			name:     "identifier handler error",
-			input:    &ast.Identifier{Value: "ERROR", StartPos: 0, EndPos: 1},
+			name: "identifier handler error",
+			input: &ast.Identifier{
+				Value: "ERROR",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expected: "test handler error",
 		},
 	}

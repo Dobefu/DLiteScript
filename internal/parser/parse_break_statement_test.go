@@ -23,9 +23,11 @@ func TestParseBreakStatement(t *testing.T) {
 				token.NewToken("break", token.TokenTypeBreak, 0, 0),
 			},
 			expected: &ast.BreakStatement{
-				Count:    1,
-				StartPos: 0,
-				EndPos:   0,
+				Count: 1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -35,9 +37,11 @@ func TestParseBreakStatement(t *testing.T) {
 				token.NewToken("2", token.TokenTypeNumber, 0, 0),
 			},
 			expected: &ast.BreakStatement{
-				Count:    2,
-				StartPos: 0,
-				EndPos:   0,
+				Count: 2,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

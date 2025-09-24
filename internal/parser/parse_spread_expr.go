@@ -28,7 +28,17 @@ func (p *Parser) parseSpreadExpr(
 
 	return &ast.SpreadExpr{
 		Expression: expr,
-		StartPos:   currentToken.StartPos,
-		EndPos:     nextToken.EndPos,
+		Range: ast.Range{
+			Start: ast.Position{
+				Offset: currentToken.StartPos,
+				Line:   p.line,
+				Column: p.column,
+			},
+			End: ast.Position{
+				Offset: nextToken.EndPos,
+				Line:   p.line,
+				Column: p.column + (nextToken.EndPos - currentToken.StartPos),
+			},
+		},
 	}, nil
 }

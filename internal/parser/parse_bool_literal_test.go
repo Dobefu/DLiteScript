@@ -19,18 +19,22 @@ func TestParseBoolLiteral(t *testing.T) {
 			name:  "true",
 			input: token.NewToken("true", token.TokenTypeBool, 0, 0),
 			expected: &ast.BoolLiteral{
-				Value:    "true",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "true",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name:  "false",
 			input: token.NewToken("false", token.TokenTypeBool, 0, 0),
 			expected: &ast.BoolLiteral{
-				Value:    "false",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "false",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

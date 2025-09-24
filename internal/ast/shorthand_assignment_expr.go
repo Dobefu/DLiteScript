@@ -11,8 +11,7 @@ type ShorthandAssignmentExpr struct {
 	Left     ExprNode
 	Right    ExprNode
 	Operator token.Token
-	StartPos int
-	EndPos   int
+	Range    Range
 }
 
 // Expr returns the expression of the shorthand assignment expression.
@@ -29,14 +28,9 @@ func (s *ShorthandAssignmentExpr) Expr() string {
 	)
 }
 
-// StartPosition returns the start position of the shorthand assignment expression.
-func (s *ShorthandAssignmentExpr) StartPosition() int {
-	return s.StartPos
-}
-
-// EndPosition returns the end position of the shorthand assignment expression.
-func (s *ShorthandAssignmentExpr) EndPosition() int {
-	return s.EndPos
+// GetRange returns the range of the shorthand assignment expression.
+func (s *ShorthandAssignmentExpr) GetRange() Range {
+	return s.Range
 }
 
 // Walk walks the shorthand assignment expreession.

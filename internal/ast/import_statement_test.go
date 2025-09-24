@@ -19,11 +19,19 @@ func TestImportStatement(t *testing.T) {
 		{
 			name: "import statement",
 			input: &ImportStatement{
-				Path:      &StringLiteral{Value: "test", StartPos: 0, EndPos: 5},
+				Path: &StringLiteral{
+					Value: "test",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    `import "test"`,
 			expectedStartPos: 0,
@@ -36,11 +44,19 @@ func TestImportStatement(t *testing.T) {
 		{
 			name: "import statement with alias",
 			input: &ImportStatement{
-				Path:      &StringLiteral{Value: "test", StartPos: 0, EndPos: 5},
+				Path: &StringLiteral{
+					Value: "test",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
 				Namespace: "test",
 				Alias:     "test",
-				StartPos:  0,
-				EndPos:    5,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    `import "test" as test`,
 			expectedStartPos: 0,
@@ -57,15 +73,27 @@ func TestImportStatement(t *testing.T) {
 			t.Parallel()
 
 			if test.input.Expr() != test.expectedValue {
-				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+				t.Errorf(
+					"expected '%s', got '%s'",
+					test.expectedValue,
+					test.input.Expr(),
+				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedStartPos,
+					test.input.GetRange().Start.Offset,
+				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedEndPos,
+					test.input.GetRange().End.Offset,
+				)
 			}
 
 			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)

@@ -23,10 +23,18 @@ func TestFormatFunctionCall(t *testing.T) {
 				Namespace:    "math",
 				FunctionName: "abs",
 				Arguments: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -38,11 +46,25 @@ func TestFormatFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments: []ast.ExprNode{
-					&ast.StringLiteral{Value: "test %s", StartPos: 0, EndPos: 8},
-					&ast.NumberLiteral{Value: "1", StartPos: 9, EndPos: 10},
+					&ast.StringLiteral{
+						Value: "test %s",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 8, Line: 0, Column: 0},
+						},
+					},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 9, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   10,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 10, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
@@ -54,8 +76,10 @@ func TestFormatFunctionCall(t *testing.T) {
 				Namespace:    "",
 				FunctionName: "printf",
 				Arguments:    []ast.ExprNode{nil, nil},
-				StartPos:     0,
-				EndPos:       8,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 8, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

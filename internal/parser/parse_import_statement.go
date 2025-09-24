@@ -38,14 +38,34 @@ func (p *Parser) parseImportStatement(
 
 	importStmt := &ast.ImportStatement{
 		Path: &ast.StringLiteral{
-			Value:    pathToken.Atom,
-			StartPos: pathToken.StartPos,
-			EndPos:   pathToken.EndPos,
+			Value: pathToken.Atom,
+			Range: ast.Range{
+				Start: ast.Position{
+					Offset: pathToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: pathToken.EndPos,
+					Line:   p.line,
+					Column: p.column + (pathToken.EndPos - pathToken.StartPos),
+				},
+			},
 		},
 		Namespace: pathToken.Atom,
 		Alias:     "",
-		StartPos:  startPos,
-		EndPos:    pathToken.EndPos,
+		Range: ast.Range{
+			Start: ast.Position{
+				Offset: startPos,
+				Line:   p.line,
+				Column: p.column,
+			},
+			End: ast.Position{
+				Offset: pathToken.EndPos,
+				Line:   p.line,
+				Column: p.column + (pathToken.EndPos - pathToken.StartPos),
+			},
+		},
 	}
 
 	nextToken, err = p.PeekNextToken()
@@ -72,7 +92,11 @@ func (p *Parser) parseImportStatement(
 		}
 
 		importStmt.Alias = aliasToken.Atom
-		importStmt.EndPos = aliasToken.EndPos
+		importStmt.Range.End = ast.Position{
+			Offset: aliasToken.EndPos,
+			Line:   p.line,
+			Column: p.column + (aliasToken.EndPos - aliasToken.StartPos),
+		}
 	}
 
 	return importStmt, nil

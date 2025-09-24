@@ -25,14 +25,18 @@ func TestEvaluateImportStatement(t *testing.T) {
 			name: "import statement",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "../examples/09_imports/test.dl",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "../examples/09_imports/test.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -40,14 +44,18 @@ func TestEvaluateImportStatement(t *testing.T) {
 			name: "import statement with alias",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "../examples/09_imports/utils.dl",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "../examples/09_imports/utils.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "test",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -55,14 +63,18 @@ func TestEvaluateImportStatement(t *testing.T) {
 			name: "import statement in current namespace",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "../examples/09_imports/utils.dl",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "../examples/09_imports/utils.dl",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "_",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -110,14 +122,18 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			name: "import statement with invalid path",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "bogus",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			content:  "",
 			expected: "no such file or directory",
@@ -126,14 +142,18 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			name: "import statement with invalid UTF-8 character in file",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			content: "\x80",
 			expected: fmt.Sprintf(
@@ -146,14 +166,18 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			name: "import statement parse error",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			content: "func(",
 			expected: fmt.Sprintf(
@@ -166,14 +190,18 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			name: "import statement evaluate error",
 			input: &ast.ImportStatement{
 				Path: &ast.StringLiteral{
-					Value:    "",
-					StartPos: 0,
-					EndPos:   5,
+					Value: "",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
 				},
 				Namespace: "test",
 				Alias:     "_",
-				StartPos:  0,
-				EndPos:    5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			content: "_",
 			expected: fmt.Sprintf(

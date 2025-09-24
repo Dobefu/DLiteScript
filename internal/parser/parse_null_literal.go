@@ -5,11 +5,17 @@ import (
 )
 
 func (p *Parser) parseNullLiteral() (ast.ExprNode, error) {
-	endPos := p.GetCurrentCharPos()
-	startPos := endPos - 4
+	endPos := p.GetCurrentPosition()
+	startPos := ast.Position{
+		Offset: endPos.Offset - 4,
+		Line:   endPos.Line,
+		Column: endPos.Column - 4,
+	}
 
 	return &ast.NullLiteral{
-		StartPos: startPos,
-		EndPos:   endPos,
+		Range: ast.Range{
+			Start: startPos,
+			End:   endPos,
+		},
 	}, nil
 }

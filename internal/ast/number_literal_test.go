@@ -17,8 +17,14 @@ func TestNumberLiteral(t *testing.T) {
 		continueOn       string
 	}{
 		{
-			name:             "number literal 1 at position 0",
-			input:            &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+			name: "number literal 1 at position 0",
+			input: &NumberLiteral{
+				Value: "1",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "1",
 			expectedStartPos: 0,
 			expectedEndPos:   1,
@@ -26,8 +32,14 @@ func TestNumberLiteral(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "number literal 1 at position 1",
-			input:            &NumberLiteral{Value: "1", StartPos: 1, EndPos: 2},
+			name: "number literal 1 at position 1",
+			input: &NumberLiteral{
+				Value: "1",
+				Range: Range{
+					Start: Position{Offset: 1, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "1",
 			expectedStartPos: 1,
 			expectedEndPos:   2,
@@ -35,8 +47,14 @@ func TestNumberLiteral(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "number literal with different value",
-			input:            &NumberLiteral{Value: "42", StartPos: 5, EndPos: 7},
+			name: "number literal with different value",
+			input: &NumberLiteral{
+				Value: "42",
+				Range: Range{
+					Start: Position{Offset: 5, Line: 0, Column: 0},
+					End:   Position{Offset: 7, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "42",
 			expectedStartPos: 5,
 			expectedEndPos:   7,
@@ -44,8 +62,14 @@ func TestNumberLiteral(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "number literal with decimal",
-			input:            &NumberLiteral{Value: "3.14", StartPos: 0, EndPos: 4},
+			name: "number literal with decimal",
+			input: &NumberLiteral{
+				Value: "3.14",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "3.14",
 			expectedStartPos: 0,
 			expectedEndPos:   4,
@@ -53,8 +77,14 @@ func TestNumberLiteral(t *testing.T) {
 			continueOn:       "",
 		},
 		{
-			name:             "walk early return after number literal",
-			input:            &NumberLiteral{Value: "100", StartPos: 0, EndPos: 3},
+			name: "walk early return after number literal",
+			input: &NumberLiteral{
+				Value: "100",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
+			},
 			expectedValue:    "100",
 			expectedStartPos: 0,
 			expectedEndPos:   3,
@@ -75,19 +105,19 @@ func TestNumberLiteral(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

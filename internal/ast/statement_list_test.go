@@ -19,7 +19,13 @@ func TestStatementList(t *testing.T) {
 		{
 			name: "single statement",
 			input: []ExprNode{
-				&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
 			expectedValue:    "1",
 			expectedStartPos: 0,
@@ -30,8 +36,20 @@ func TestStatementList(t *testing.T) {
 		{
 			name: "multiple statements",
 			input: []ExprNode{
-				&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				&NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+				&NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				&NumberLiteral{
+					Value: "2",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 			},
 			expectedValue:    "1\n2",
 			expectedStartPos: 0,
@@ -42,8 +60,20 @@ func TestStatementList(t *testing.T) {
 		{
 			name: "walk early return after statement list",
 			input: []ExprNode{
-				&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
-				&NumberLiteral{Value: "24", StartPos: 3, EndPos: 5},
+				&NumberLiteral{
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				&NumberLiteral{
+					Value: "24",
+					Range: Range{
+						Start: Position{Offset: 3, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
 			},
 			expectedValue:    "42\n24",
 			expectedStartPos: 0,
@@ -54,8 +84,20 @@ func TestStatementList(t *testing.T) {
 		{
 			name: "walk early return after first statement",
 			input: []ExprNode{
-				&NumberLiteral{Value: "42", StartPos: 0, EndPos: 2},
-				&NumberLiteral{Value: "24", StartPos: 3, EndPos: 5},
+				&NumberLiteral{
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				&NumberLiteral{
+					Value: "24",
+					Range: Range{
+						Start: Position{Offset: 3, Line: 0, Column: 0},
+						End:   Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
 			},
 			expectedValue:    "42\n24",
 			expectedStartPos: 0,
@@ -76,7 +118,13 @@ func TestStatementList(t *testing.T) {
 			name: "statement list with nil statement",
 			input: []ExprNode{
 				nil,
-				&NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+				&NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 			},
 			expectedValue:    "1",
 			expectedStartPos: 0,
@@ -92,27 +140,29 @@ func TestStatementList(t *testing.T) {
 
 			ast := &StatementList{
 				Statements: test.input,
-				StartPos:   test.expectedStartPos,
-				EndPos:     test.expectedEndPos,
+				Range: Range{
+					Start: Position{Offset: test.expectedStartPos, Line: 0, Column: 0},
+					End:   Position{Offset: test.expectedEndPos, Line: 0, Column: 0},
+				},
 			}
 
 			if ast.Expr() != test.expectedValue {
 				t.Fatalf("expected '%s', got '%s'", test.expectedValue, ast.Expr())
 			}
 
-			if ast.StartPosition() != test.expectedStartPos {
+			if ast.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					ast.StartPosition(),
+					ast.GetRange().Start.Offset,
 				)
 			}
 
-			if ast.EndPosition() != test.expectedEndPos {
+			if ast.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					ast.EndPosition(),
+					ast.GetRange().End.Offset,
 				)
 			}
 

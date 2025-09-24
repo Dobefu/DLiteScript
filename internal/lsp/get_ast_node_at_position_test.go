@@ -20,8 +20,10 @@ func TestGetAstNodeAtPosition(t *testing.T) {
 		{
 			name: "null literal node",
 			input: &ast.NullLiteral{
-				StartPos: 0,
-				EndPos:   4,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			charIndex: 5,
 			expected:  nil,
@@ -29,33 +31,57 @@ func TestGetAstNodeAtPosition(t *testing.T) {
 		{
 			name: "string literal node",
 			input: &ast.StringLiteral{
-				Value:    "test",
-				StartPos: 0,
-				EndPos:   4,
+				Value: "test",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			charIndex: 0,
 			expected: &ast.StringLiteral{
-				Value:    "test",
-				StartPos: 0,
-				EndPos:   4,
+				Value: "test",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "binary expression",
 			input: &ast.BinaryExpr{
-				Left:  &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 4, EndPos: 5},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 4, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  2,
 					EndPos:    3,
 				},
-				StartPos: 0,
-				EndPos:   5,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			charIndex: 0,
-			expected:  &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+			expected: &ast.Identifier{
+				Value: "x",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 		},
 	}
 

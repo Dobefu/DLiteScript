@@ -11,8 +11,7 @@ type BinaryExpr struct {
 	Left     ExprNode
 	Right    ExprNode
 	Operator token.Token
-	StartPos int
-	EndPos   int
+	Range    Range
 }
 
 // Expr returns the expression of the binary expression.
@@ -29,14 +28,9 @@ func (e *BinaryExpr) Expr() string {
 	)
 }
 
-// StartPosition returns the start position of the binary expression.
-func (e *BinaryExpr) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the binary expression.
-func (e *BinaryExpr) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the binary expression.
+func (e *BinaryExpr) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the binary expression and its left and right nodes.

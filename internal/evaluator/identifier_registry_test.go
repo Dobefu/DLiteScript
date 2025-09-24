@@ -17,49 +17,61 @@ func TestIdentifierRegistry(t *testing.T) {
 		{
 			name: "PI",
 			input: &ast.Identifier{
-				Value:    "PI",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "PI",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "TAU",
 			input: &ast.Identifier{
-				Value:    "TAU",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "TAU",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "E",
 			input: &ast.Identifier{
-				Value:    "E",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "E",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "PHI",
 			input: &ast.Identifier{
-				Value:    "PHI",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "PHI",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "LN2",
 			input: &ast.Identifier{
-				Value:    "LN2",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "LN2",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
 			name: "LN10",
 			input: &ast.Identifier{
-				Value:    "LN10",
-				StartPos: 0,
-				EndPos:   0,
+				Value: "LN10",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

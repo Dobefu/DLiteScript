@@ -23,10 +23,18 @@ func TestEvaluateArrayLiteral(t *testing.T) {
 			name: "array literal",
 			input: &ast.ArrayLiteral{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewRegularResult(
 				datavalue.Array(datavalue.Number(1)),
@@ -68,17 +76,27 @@ func TestEvaluateArrayLiteralErr(t *testing.T) {
 			name: "evaluation error",
 			input: &ast.ArrayLiteral{
 				Values: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 					&ast.FunctionCall{
 						Namespace:    "",
 						FunctionName: "bogus",
 						Arguments:    []ast.ExprNode{},
-						StartPos:     0,
-						EndPos:       1,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",

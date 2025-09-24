@@ -18,8 +18,14 @@ func TestFormatStringLiteral(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "string literal",
-			input:     &ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
+			name: "string literal",
+			input: &ast.StringLiteral{
+				Value: "test",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "\"test\"\n",

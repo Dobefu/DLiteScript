@@ -20,20 +20,36 @@ func TestFormatter(t *testing.T) {
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
 					&ast.BinaryExpr{
-						Left:  &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-						Right: &ast.NumberLiteral{Value: "2", StartPos: 1, EndPos: 2},
+						Left: &ast.NumberLiteral{
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+						Right: &ast.NumberLiteral{
+							Value: "2",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+							},
+						},
 						Operator: token.Token{
 							Atom:      "+",
 							TokenType: token.TokenTypeOperationAdd,
 							StartPos:  0,
 							EndPos:    1,
 						},
-						StartPos: 0,
-						EndPos:   1,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "{\n  1 + 2\n}\n",
 		},

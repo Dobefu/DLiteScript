@@ -42,18 +42,22 @@ func (p *Parser) parseAssignmentExpr(
 
 	if isIdentifier {
 		return &ast.AssignmentStatement{
-			Left:     identifier,
-			Right:    rightExpr,
-			StartPos: leftExpr.StartPosition(),
-			EndPos:   rightExpr.EndPosition(),
+			Left:  identifier,
+			Right: rightExpr,
+			Range: ast.Range{
+				Start: leftExpr.GetRange().Start,
+				End:   rightExpr.GetRange().End,
+			},
 		}, nil
 	}
 
 	return &ast.IndexAssignmentStatement{
-		Array:    indexExpr.Array,
-		Index:    indexExpr.Index,
-		Right:    rightExpr,
-		StartPos: leftExpr.StartPosition(),
-		EndPos:   rightExpr.EndPosition(),
+		Array: indexExpr.Array,
+		Index: indexExpr.Index,
+		Right: rightExpr,
+		Range: ast.Range{
+			Start: leftExpr.GetRange().Start,
+			End:   rightExpr.GetRange().End,
+		},
 	}, nil
 }

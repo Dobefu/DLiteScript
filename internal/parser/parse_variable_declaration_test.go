@@ -25,11 +25,13 @@ func TestParseVariableDeclaration(t *testing.T) {
 				{Atom: "number", TokenType: token.TokenTypeTypeNumber},
 			},
 			expected: &ast.VariableDeclaration{
-				Name:     "x",
-				Type:     "number",
-				Value:    nil,
-				StartPos: 0,
-				EndPos:   1,
+				Name:  "x",
+				Type:  "number",
+				Value: nil,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 		{
@@ -45,12 +47,16 @@ func TestParseVariableDeclaration(t *testing.T) {
 				Name: "x",
 				Type: "number",
 				Value: &ast.NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

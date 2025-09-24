@@ -18,12 +18,16 @@ func TestSpreadExpr(t *testing.T) {
 			name: "spread expression",
 			input: &SpreadExpr{
 				Expression: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   3,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "...1",
 			expectedStartPos: 0,
@@ -35,12 +39,16 @@ func TestSpreadExpr(t *testing.T) {
 			name: "walk early return after spread node",
 			input: &SpreadExpr{
 				Expression: &NumberLiteral{
-					Value:    "42",
-					StartPos: 0,
-					EndPos:   4,
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "...42",
 			expectedStartPos: 0,
@@ -52,12 +60,16 @@ func TestSpreadExpr(t *testing.T) {
 			name: "walk early return after expression",
 			input: &SpreadExpr{
 				Expression: &NumberLiteral{
-					Value:    "42",
-					StartPos: 0,
-					EndPos:   4,
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 4, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   4,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "...42",
 			expectedStartPos: 0,
@@ -69,8 +81,10 @@ func TestSpreadExpr(t *testing.T) {
 			name: "spread expression with nil",
 			input: &SpreadExpr{
 				Expression: nil,
-				StartPos:   0,
-				EndPos:     3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "...",
 			expectedStartPos: 0,
@@ -92,19 +106,19 @@ func TestSpreadExpr(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

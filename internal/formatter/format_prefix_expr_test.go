@@ -27,9 +27,17 @@ func TestFormatPrefixExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				Operand:  &ast.BoolLiteral{Value: "true", StartPos: 1, EndPos: 2},
-				StartPos: 0,
-				EndPos:   2,
+				Operand: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 1, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

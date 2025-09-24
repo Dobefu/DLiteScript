@@ -81,13 +81,15 @@ func (p *Parser) parseUnaryOperator(
 		return nil, err
 	}
 
-	startPos := p.GetCurrentCharPos()
+	startPos := p.GetCurrentPosition()
 
 	return &ast.PrefixExpr{
 		Operator: *operatorToken,
 		Operand:  operand,
-		StartPos: startPos,
-		EndPos:   operand.EndPosition(),
+		Range: ast.Range{
+			Start: startPos,
+			End:   operand.GetRange().End,
+		},
 	}, nil
 }
 
@@ -162,7 +164,7 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				functionNameOrIdentifierToken.StartPos,
+				p.tokenIdx,
 				functionNameOrIdentifierToken.Atom,
 			)
 		}
@@ -171,9 +173,19 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 
 		if err != nil {
 			return &ast.Identifier{
-				Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
-				StartPos: functionNameOrIdentifierToken.StartPos,
-				EndPos:   functionNameOrIdentifierToken.EndPos,
+				Value: fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
+				Range: ast.Range{
+					Start: ast.Position{
+						Offset: functionNameOrIdentifierToken.StartPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: functionNameOrIdentifierToken.EndPos,
+						Line:   p.line,
+						Column: p.column + (functionNameOrIdentifierToken.EndPos - functionNameOrIdentifierToken.StartPos),
+					},
+				},
 			}, nil
 		}
 
@@ -186,9 +198,19 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 		}
 
 		return &ast.Identifier{
-			Value:    fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
-			StartPos: functionNameOrIdentifierToken.StartPos,
-			EndPos:   functionNameOrIdentifierToken.EndPos,
+			Value: fmt.Sprintf("%s.%s", namespace, functionNameOrIdentifierToken.Atom),
+			Range: ast.Range{
+				Start: ast.Position{
+					Offset: functionNameOrIdentifierToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: functionNameOrIdentifierToken.EndPos,
+					Line:   p.line,
+					Column: p.column + (functionNameOrIdentifierToken.EndPos - functionNameOrIdentifierToken.StartPos),
+				},
+			},
 		}, nil
 	}
 

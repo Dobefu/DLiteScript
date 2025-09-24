@@ -13,7 +13,13 @@ func (p *Parser) parseFunctionCall(
 ) (ast.ExprNode, error) {
 	// The function name has already been consumed,
 	// so we should get the start position from the previous token.
-	startCharPos := p.tokens[p.tokenIdx-1].StartPos
+	prevToken := p.tokens[p.tokenIdx-1]
+
+	startPos := ast.Position{
+		Offset: prevToken.StartPos,
+		Line:   p.line,
+		Column: p.column - (prevToken.EndPos - prevToken.StartPos),
+	}
 	lparenToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -69,8 +75,10 @@ func (p *Parser) parseFunctionCall(
 		Namespace:    namespace,
 		FunctionName: functionName,
 		Arguments:    args,
-		StartPos:     startCharPos,
-		EndPos:       p.GetCurrentCharPos(),
+		Range: ast.Range{
+			Start: startPos,
+			End:   p.GetCurrentPosition(),
+		},
 	}, nil
 }
 

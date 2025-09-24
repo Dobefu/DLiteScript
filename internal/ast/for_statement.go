@@ -8,8 +8,7 @@ import (
 type ForStatement struct {
 	Condition        ExprNode
 	Body             *BlockStatement
-	StartPos         int
-	EndPos           int
+	Range            Range
 	DeclaredVariable string
 	RangeVariable    string
 	RangeFrom        ExprNode
@@ -76,14 +75,9 @@ func (f *ForStatement) Expr() string {
 	return fmt.Sprintf("for %s { %s }", f.Condition.Expr(), f.Body.Expr())
 }
 
-// StartPosition returns the start position of the for statement.
-func (f *ForStatement) StartPosition() int {
-	return f.StartPos
-}
-
-// EndPosition returns the end position of the for statement.
-func (f *ForStatement) EndPosition() int {
-	return f.EndPos
+// GetRange returns the range of the for statement.
+func (f *ForStatement) GetRange() Range {
+	return f.Range
 }
 
 // Walk walks the for statement and its condition and body.

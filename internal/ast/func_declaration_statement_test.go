@@ -22,12 +22,16 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
 				Body: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   3,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "func test()",
 			expectedStartPos: 0,
@@ -48,12 +52,16 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				ReturnValues:    []string{"number"},
 				NumReturnValues: 1,
 				Body: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   3,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "func test(a number) number",
 			expectedStartPos: 0,
@@ -74,12 +82,16 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				ReturnValues:    []string{"number", "string"},
 				NumReturnValues: 2,
 				Body: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   3,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 3, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "func test(a number) number, string",
 			expectedStartPos: 0,
@@ -99,12 +111,16 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
 				Body: &NumberLiteral{
-					Value:    "42",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "func test()",
 			expectedStartPos: 0,
@@ -120,12 +136,16 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				ReturnValues:    []string{},
 				NumReturnValues: 0,
 				Body: &NumberLiteral{
-					Value:    "42",
-					StartPos: 0,
-					EndPos:   2,
+					Value: "42",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   2,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 2, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "func test()",
 			expectedStartPos: 0,
@@ -147,19 +167,19 @@ func TestFuncDeclarationStatement(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

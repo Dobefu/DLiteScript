@@ -19,9 +19,11 @@ func TestCommentLiteral(t *testing.T) {
 		{
 			name: "comment literal",
 			input: &CommentLiteral{
-				Value:    "Comment",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "Comment",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "Comment",
 			expectedNodes:    []string{},
@@ -39,12 +41,12 @@ func TestCommentLiteral(t *testing.T) {
 				t.Errorf("expected '%s', got '%s'", test.expectedNodes, test.input.Expr())
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
+				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.GetRange().Start.Offset)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
+				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.GetRange().End.Offset)
 			}
 
 			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)

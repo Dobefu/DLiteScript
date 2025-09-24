@@ -37,8 +37,10 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 	if endToken != nil {
 		return &ast.BlockStatement{
 			Statements: statements,
-			StartPos:   statements[0].StartPosition(),
-			EndPos:     statements[len(statements)-1].EndPosition(),
+			Range: ast.Range{
+				Start: statements[0].GetRange().Start,
+				End:   statements[len(statements)-1].GetRange().End,
+			},
 		}, nil
 	}
 
@@ -48,8 +50,10 @@ func (p *Parser) parseBlock(endToken *token.Type) (ast.ExprNode, error) {
 
 	return &ast.StatementList{
 		Statements: statements,
-		StartPos:   statements[0].StartPosition(),
-		EndPos:     statements[len(statements)-1].EndPosition(),
+		Range: ast.Range{
+			Start: statements[0].GetRange().Start,
+			End:   statements[len(statements)-1].GetRange().End,
+		},
 	}, nil
 }
 
@@ -125,8 +129,18 @@ func (p *Parser) handleStatementEnd(
 
 	if newlineCount > 1 {
 		comments = append(comments, &ast.NewlineLiteral{
-			StartPos: 0,
-			EndPos:   0,
+			Range: ast.Range{
+				Start: ast.Position{
+					Offset: 0,
+					Line:   0,
+					Column: 0,
+				},
+				End: ast.Position{
+					Offset: 0,
+					Line:   0,
+					Column: 0,
+				},
+			},
 		})
 	}
 
@@ -143,9 +157,19 @@ func (p *Parser) parseStatement() (ast.ExprNode, error) {
 	switch nextToken.TokenType {
 	case token.TokenTypeComment:
 		return &ast.CommentLiteral{
-			Value:    nextToken.Atom,
-			StartPos: nextToken.StartPos,
-			EndPos:   nextToken.EndPos,
+			Value: nextToken.Atom,
+			Range: ast.Range{
+				Start: ast.Position{
+					Offset: nextToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: nextToken.EndPos,
+					Line:   p.line,
+					Column: p.column + (nextToken.EndPos - nextToken.StartPos),
+				},
+			},
 		}, nil
 
 	case token.TokenTypeVar:
@@ -204,8 +228,18 @@ func (p *Parser) handleOptionalNewlines() []ast.ExprNode {
 
 	if newlineCount > 1 {
 		comments = append(comments, &ast.NewlineLiteral{
-			StartPos: 0,
-			EndPos:   0,
+			Range: ast.Range{
+				Start: ast.Position{
+					Offset: 0,
+					Line:   0,
+					Column: 0,
+				},
+				End: ast.Position{
+					Offset: 0,
+					Line:   0,
+					Column: 0,
+				},
+			},
 		})
 	}
 

@@ -19,18 +19,22 @@ func TestEvaluateBreakStatement(t *testing.T) {
 		{
 			name: "zero count",
 			input: &ast.BreakStatement{
-				Count:    0,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewBreakResult(0),
 		},
 		{
 			name: "one count",
 			input: &ast.BreakStatement{
-				Count:    1,
-				StartPos: 0,
-				EndPos:   1,
+				Count: 1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: controlflow.NewBreakResult(1),
 		},

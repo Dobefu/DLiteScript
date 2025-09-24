@@ -22,144 +22,270 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 		{
 			name: "number addition",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(10),
 		},
 		{
 			name: "number subtraction",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(0),
 		},
 		{
 			name: "number multiplication",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "*",
 					TokenType: token.TokenTypeOperationMul,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(25),
 		},
 		{
 			name: "number division",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "/",
 					TokenType: token.TokenTypeOperationDiv,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(1),
 		},
 		{
 			name: "number modulo",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "%",
 					TokenType: token.TokenTypeOperationMod,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(0),
 		},
 		{
 			name: "number power",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "^",
 					TokenType: token.TokenTypeOperationPow,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(3125),
 		},
 		{
 			name: "number equality",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "==",
 					TokenType: token.TokenTypeEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
 		{
 			name: "number greater than or equal",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "6", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "6",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      ">=",
 					TokenType: token.TokenTypeGreaterThanOrEqual,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(false),
 		},
 		{
 			name: "boolean logical and",
 			input: &ast.BinaryExpr{
-				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
-				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
+				Left: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "&&",
 					TokenType: token.TokenTypeLogicalAnd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Bool(true),
 		},
@@ -168,21 +294,29 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 			input: &ast.BinaryExpr{
 				Left: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 0,
-						EndPos:   1,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
 					}},
-					StartPos: 0,
-					EndPos:   1,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{&ast.NumberLiteral{
-						Value:    "2",
-						StartPos: 2,
-						EndPos:   3,
+						Value: "2",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
 					}},
-					StartPos: 2,
-					EndPos:   3,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "+",
@@ -190,8 +324,10 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Array(
 				datavalue.Number(1),
@@ -201,16 +337,30 @@ func TestEvaluateBinaryExpr(t *testing.T) {
 		{
 			name: "string addition",
 			input: &ast.BinaryExpr{
-				Left:  &ast.StringLiteral{Value: "test", StartPos: 0, EndPos: 1},
-				Right: &ast.StringLiteral{Value: "test", StartPos: 2, EndPos: 3},
+				Left: &ast.StringLiteral{
+					Value: "test",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.StringLiteral{
+					Value: "test",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.String("testtest"),
 		},
@@ -248,19 +398,27 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "left operand is nil",
 			input: &ast.BinaryExpr{
-				Left:  nil,
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: nil,
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
@@ -268,7 +426,13 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "right operand is nil",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: nil,
 				Operator: token.Token{
 					Atom:      "+",
@@ -276,11 +440,13 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "null", "number"),
 			),
@@ -288,19 +454,33 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "division by zero",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "/",
 					TokenType: token.TokenTypeOperationDiv,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				errorutil.ErrorMsgDivByZero,
 			),
@@ -308,19 +488,33 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "modulo by zero",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "%",
 					TokenType: token.TokenTypeOperationMod,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				errorutil.ErrorMsgModByZero,
 			),
@@ -328,19 +522,33 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "unknown operator",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "0", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      ",",
 					TokenType: token.TokenTypeComma,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ","),
 			),
@@ -348,16 +556,30 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "undefined identifier",
 			input: &ast.BinaryExpr{
-				Left:  &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
+				Left: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -368,16 +590,30 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "undefined identifier",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "0", StartPos: 2, EndPos: 3},
-				Right: &ast.Identifier{Value: "x", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.Identifier{
+					Value: "x",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s at position 0",
@@ -388,19 +624,33 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 		{
 			name: "boolean addition",
 			input: &ast.BinaryExpr{
-				Left:  &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 1},
-				Right: &ast.BoolLiteral{Value: "true", StartPos: 2, EndPos: 3},
+				Left: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.BoolLiteral{
+					Value: "true",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgCannotConcat, "bool", "bool"),
 			),
@@ -443,16 +693,30 @@ func TestEvaluateArithmeticBinaryExprNumberErr(t *testing.T) {
 			left:  datavalue.Null(),
 			right: datavalue.Null(),
 			node: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"could not get binary expr value as number: %s: %s",
@@ -498,19 +762,33 @@ func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
 		{
 			name: "addition",
 			node: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "",
 					TokenType: token.Type(-1),
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
 			),
@@ -557,17 +835,27 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 			left:  datavalue.Number(5),
 			right: datavalue.Array(datavalue.Number(1)),
 			node: &ast.BinaryExpr{
-				Left: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Right: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 2,
-							EndPos:   3,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
 				Operator: token.Token{
 					Atom:      "+",
@@ -575,8 +863,10 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s",
@@ -592,23 +882,35 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				Left: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{
 						&ast.NumberLiteral{
-							Value:    "1",
-							StartPos: 2,
-							EndPos:   3,
+							Value: "1",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+							},
 						},
 					},
-					StartPos: 2,
-					EndPos:   3,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				"%s: %s",
@@ -623,25 +925,37 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 			node: &ast.BinaryExpr{
 				Left: &ast.ArrayLiteral{
 					Values: []ast.ExprNode{&ast.NumberLiteral{
-						Value:    "1",
-						StartPos: 2,
-						EndPos:   3,
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+						},
 					}},
-					StartPos: 2,
-					EndPos:   3,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
 				},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "",
 					TokenType: token.Type(-1),
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s at position 0",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
 			),
@@ -687,16 +1001,30 @@ func TestEvaluateArithmeticBinaryExprStringErr(t *testing.T) {
 			left:  datavalue.Number(5),
 			right: datavalue.String("5"),
 			node: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.StringLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "string", "number"),
 		},
@@ -705,16 +1033,30 @@ func TestEvaluateArithmeticBinaryExprStringErr(t *testing.T) {
 			left:  datavalue.String("5"),
 			right: datavalue.String("5"),
 			node: &ast.BinaryExpr{
-				Left:  &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "5", StartPos: 2, EndPos: 3},
+				Left: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "",
 					TokenType: token.Type(-1),
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 1,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
 		},

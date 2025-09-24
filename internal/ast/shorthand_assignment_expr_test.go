@@ -22,18 +22,24 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "shorthand assignment with addition",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "x",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "x",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &NumberLiteral{
-					Value:    "1",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "x += 1",
 			expectedStartPos: 0,
@@ -45,18 +51,24 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "shorthand assignment with subtraction",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "y",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "y",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &NumberLiteral{
-					Value:    "2",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "2",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("-=", token.TokenTypeOperationSubAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "y -= 2",
 			expectedStartPos: 0,
@@ -69,13 +81,17 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			input: &ShorthandAssignmentExpr{
 				Left: nil,
 				Right: &NumberLiteral{
-					Value:    "3",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("*=", token.TokenTypeOperationMulAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -87,14 +103,18 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "shorthand assignment with nil right",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "z",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "z",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right:    nil,
 				Operator: *token.NewToken("/=", token.TokenTypeOperationDivAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -106,18 +126,24 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "walk early return after shorthand assignment",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "a",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "a",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &NumberLiteral{
-					Value:    "5",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "5",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("%=", token.TokenTypeOperationModAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "a %= 5",
 			expectedStartPos: 0,
@@ -129,18 +155,24 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "walk early return after left operand",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "b",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "b",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &NumberLiteral{
-					Value:    "6",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "6",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("**=", token.TokenTypeOperationPowAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "b **= 6",
 			expectedStartPos: 0,
@@ -152,18 +184,24 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			name: "walk early return after right operand",
 			input: &ShorthandAssignmentExpr{
 				Left: &Identifier{
-					Value:    "c",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "c",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Right: &NumberLiteral{
-					Value:    "7",
-					StartPos: 0,
-					EndPos:   1,
+					Value: "7",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
 				Operator: *token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
-				StartPos: 0,
-				EndPos:   1,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "c += 7",
 			expectedStartPos: 0,
@@ -178,15 +216,27 @@ func TestShorthandAssignmentExpr(t *testing.T) {
 			t.Parallel()
 
 			if test.input.Expr() != test.expectedValue {
-				t.Errorf("expected '%s', got '%s'", test.expectedValue, test.input.Expr())
+				t.Errorf(
+					"expected '%s', got '%s'",
+					test.expectedValue,
+					test.input.Expr(),
+				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedStartPos, test.input.StartPosition())
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedStartPos,
+					test.input.GetRange().Start.Offset,
+				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
-				t.Errorf("expected pos '%d', got '%d'", test.expectedEndPos, test.input.EndPosition())
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
+				t.Errorf(
+					"expected pos '%d', got '%d'",
+					test.expectedEndPos,
+					test.input.GetRange().End.Offset,
+				)
 			}
 
 			WalkUntil(t, test.input, test.expectedNodes, test.continueOn)

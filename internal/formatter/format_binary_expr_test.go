@@ -21,16 +21,30 @@ func TestFormatBinaryExpr(t *testing.T) {
 		{
 			name: "binary expression",
 			input: &ast.BinaryExpr{
-				Left:  &ast.NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				Right: &ast.NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+				Left: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 2, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,

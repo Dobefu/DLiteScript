@@ -147,16 +147,20 @@ func TestDatavalueFunction(t *testing.T) {
 			{Name: "a", Type: "number"},
 		},
 		Body: &ast.NumberLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   3,
+			Value: "1",
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
 		},
 		ReturnValues: []string{
 			"number",
 		},
 		NumReturnValues: 1,
-		StartPos:        0,
-		EndPos:          3,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+		},
 	})
 
 	if value.DataType != datatype.DataTypeFunction {
@@ -1045,16 +1049,20 @@ func TestDatavalueEquals(t *testing.T) {
 			{Name: "a", Type: "number"},
 		},
 		Body: &ast.NumberLiteral{
-			Value:    "1",
-			StartPos: 0,
-			EndPos:   3,
+			Value: "1",
+			Range: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+			},
 		},
 		ReturnValues: []string{
 			"number",
 		},
 		NumReturnValues: 1,
-		StartPos:        0,
-		EndPos:          3,
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+		},
 	}
 
 	tests := []struct {

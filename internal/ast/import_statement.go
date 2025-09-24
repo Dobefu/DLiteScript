@@ -9,8 +9,7 @@ type ImportStatement struct {
 	Path      *StringLiteral
 	Namespace string
 	Alias     string
-	StartPos  int
-	EndPos    int
+	Range     Range
 }
 
 // Expr returns the expression of the import statement.
@@ -22,14 +21,9 @@ func (i *ImportStatement) Expr() string {
 	return fmt.Sprintf("import %s", i.Path.Expr())
 }
 
-// StartPosition returns the start position of the import statement.
-func (i *ImportStatement) StartPosition() int {
-	return i.StartPos
-}
-
-// EndPosition returns the end position of the import statement.
-func (i *ImportStatement) EndPosition() int {
-	return i.EndPos
+// GetRange returns the range of the import statement.
+func (i *ImportStatement) GetRange() Range {
+	return i.Range
 }
 
 // Walk walks the import statement.

@@ -18,15 +18,27 @@ func TestFormatBoolLiteral(t *testing.T) {
 		expected  string
 	}{
 		{
-			name:      "true literal",
-			input:     &ast.BoolLiteral{Value: "true", StartPos: 0, EndPos: 0},
+			name: "true literal",
+			input: &ast.BoolLiteral{
+				Value: "true",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "true\n",
 		},
 		{
-			name:      "false literal",
-			input:     &ast.BoolLiteral{Value: "false", StartPos: 0, EndPos: 0},
+			name: "false literal",
+			input: &ast.BoolLiteral{
+				Value: "false",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
+				},
+			},
 			formatter: &Formatter{indentSize: 2, indentChar: " "},
 			depth:     0,
 			expected:  "false\n",

@@ -9,7 +9,7 @@ import (
 func (p *Parser) parseArrayLiteral(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
-	startPos := p.GetCurrentCharPos()
+	startPos := p.GetCurrentPosition()
 	var values []ast.ExprNode
 
 	p.handleOptionalNewlines()
@@ -23,9 +23,11 @@ func (p *Parser) parseArrayLiteral(
 		_, _ = p.GetNextToken()
 
 		return &ast.ArrayLiteral{
-			Values:   values,
-			StartPos: startPos,
-			EndPos:   p.GetCurrentCharPos(),
+			Values: values,
+			Range: ast.Range{
+				Start: startPos,
+				End:   p.GetCurrentPosition(),
+			},
 		}, nil
 	}
 
@@ -36,9 +38,11 @@ func (p *Parser) parseArrayLiteral(
 	}
 
 	return &ast.ArrayLiteral{
-		Values:   values,
-		StartPos: startPos,
-		EndPos:   p.GetCurrentCharPos(),
+		Values: values,
+		Range: ast.Range{
+			Start: startPos,
+			End:   p.GetCurrentPosition(),
+		},
 	}, nil
 }
 

@@ -18,9 +18,11 @@ func TestBoolLiteral(t *testing.T) {
 		{
 			name: "true literal",
 			input: &BoolLiteral{
-				Value:    "true",
-				StartPos: 0,
-				EndPos:   1,
+				Value: "true",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"true"},
 			expectedStartPos: 0,
@@ -30,9 +32,11 @@ func TestBoolLiteral(t *testing.T) {
 		{
 			name: "false literal",
 			input: &BoolLiteral{
-				Value:    "false",
-				StartPos: 0,
-				EndPos:   5,
+				Value: "false",
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 5, Line: 0, Column: 0},
+				},
 			},
 			expectedNodes:    []string{"false"},
 			expectedStartPos: 0,
@@ -45,19 +49,19 @@ func TestBoolLiteral(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Fatalf(
 					"expected %d, got %d",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

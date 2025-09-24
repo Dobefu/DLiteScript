@@ -29,8 +29,10 @@ func TestBinaryExpr(t *testing.T) {
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "",
 			expectedStartPos: 0,
@@ -41,16 +43,30 @@ func TestBinaryExpr(t *testing.T) {
 		{
 			name: "binary expression addition",
 			input: &BinaryExpr{
-				Left:  &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				Right: &NumberLiteral{Value: "1", StartPos: 2, EndPos: 3},
+				Left: &NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "+",
 					TokenType: token.TokenTypeOperationAdd,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(1 + 1)",
 			expectedStartPos: 0,
@@ -61,16 +77,30 @@ func TestBinaryExpr(t *testing.T) {
 		{
 			name: "binary expression multiplication",
 			input: &BinaryExpr{
-				Left:  &NumberLiteral{Value: "1", StartPos: 0, EndPos: 1},
-				Right: &NumberLiteral{Value: "2", StartPos: 2, EndPos: 3},
+				Left: &NumberLiteral{
+					Value: "1",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &NumberLiteral{
+					Value: "2",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "*",
 					TokenType: token.TokenTypeOperationMul,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(1 * 2)",
 			expectedStartPos: 0,
@@ -81,16 +111,30 @@ func TestBinaryExpr(t *testing.T) {
 		{
 			name: "walk early return after binary expression node",
 			input: &BinaryExpr{
-				Left:  &NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
-				Right: &NumberLiteral{Value: "4", StartPos: 2, EndPos: 3},
+				Left: &NumberLiteral{
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &NumberLiteral{
+					Value: "4",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(3 - 4)",
 			expectedStartPos: 0,
@@ -101,16 +145,30 @@ func TestBinaryExpr(t *testing.T) {
 		{
 			name: "walk early return after left operand",
 			input: &BinaryExpr{
-				Left:  &NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
-				Right: &NumberLiteral{Value: "4", StartPos: 2, EndPos: 3},
+				Left: &NumberLiteral{
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &NumberLiteral{
+					Value: "4",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(3 - 4)",
 			expectedStartPos: 0,
@@ -121,16 +179,30 @@ func TestBinaryExpr(t *testing.T) {
 		{
 			name: "walk early return after right operand",
 			input: &BinaryExpr{
-				Left:  &NumberLiteral{Value: "3", StartPos: 0, EndPos: 1},
-				Right: &NumberLiteral{Value: "4", StartPos: 2, EndPos: 3},
+				Left: &NumberLiteral{
+					Value: "3",
+					Range: Range{
+						Start: Position{Offset: 0, Line: 0, Column: 0},
+						End:   Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Right: &NumberLiteral{
+					Value: "4",
+					Range: Range{
+						Start: Position{Offset: 2, Line: 0, Column: 0},
+						End:   Position{Offset: 3, Line: 0, Column: 0},
+					},
+				},
 				Operator: token.Token{
 					Atom:      "-",
 					TokenType: token.TokenTypeOperationSub,
 					StartPos:  0,
 					EndPos:    0,
 				},
-				StartPos: 0,
-				EndPos:   0,
+				Range: Range{
+					Start: Position{Offset: 0, Line: 0, Column: 0},
+					End:   Position{Offset: 0, Line: 0, Column: 0},
+				},
 			},
 			expectedValue:    "(3 - 4)",
 			expectedStartPos: 0,
@@ -152,19 +224,19 @@ func TestBinaryExpr(t *testing.T) {
 				)
 			}
 
-			if test.input.StartPosition() != test.expectedStartPos {
+			if test.input.GetRange().Start.Offset != test.expectedStartPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedStartPos,
-					test.input.StartPosition(),
+					test.input.GetRange().Start.Offset,
 				)
 			}
 
-			if test.input.EndPosition() != test.expectedEndPos {
+			if test.input.GetRange().End.Offset != test.expectedEndPos {
 				t.Errorf(
 					"expected pos '%d', got '%d'",
 					test.expectedEndPos,
-					test.input.EndPosition(),
+					test.input.GetRange().End.Offset,
 				)
 			}
 

@@ -32,10 +32,18 @@ func TestEvaluateBlockStatement(t *testing.T) {
 			name: "single statement",
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "5",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Number(5),
 		},
@@ -43,10 +51,18 @@ func TestEvaluateBlockStatement(t *testing.T) {
 			name: "break statement",
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
-					&ast.BreakStatement{Count: 1, StartPos: 0, EndPos: 1},
+					&ast.BreakStatement{
+						Count: 1,
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   3,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: datavalue.Null(),
 		},
@@ -87,10 +103,18 @@ func TestEvaluateBlockStatementErr(t *testing.T) {
 			name: "write error",
 			input: &ast.BlockStatement{
 				Statements: []ast.ExprNode{
-					&ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
+					&ast.NumberLiteral{
+						Value: "5",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
 				},
-				StartPos: 0,
-				EndPos:   1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: "write error",
 		},

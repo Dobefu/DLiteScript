@@ -202,10 +202,12 @@ func (p *Parser) handleArrayToken(
 	}
 
 	indexExpr := &ast.IndexExpr{
-		Array:    leftExpr,
-		Index:    expr,
-		StartPos: leftExpr.StartPosition(),
-		EndPos:   p.GetCurrentCharPos(),
+		Array: leftExpr,
+		Index: expr,
+		Range: ast.Range{
+			Start: leftExpr.GetRange().Start,
+			End:   p.GetCurrentPosition(),
+		},
 	}
 
 	return p.parseExpr(nil, indexExpr, minPrecedence, recursionDepth+1)
@@ -247,7 +249,9 @@ func (p *Parser) handleShorthandAssignmentToken(
 		Left:     leftExpr,
 		Right:    rightExpr,
 		Operator: *operator,
-		StartPos: leftExpr.StartPosition(),
-		EndPos:   rightExpr.EndPosition(),
+		Range: ast.Range{
+			Start: leftExpr.GetRange().Start,
+			End:   rightExpr.GetRange().End,
+		},
 	}, nil
 }

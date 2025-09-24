@@ -21,11 +21,19 @@ func TestEvaluateConstantDeclaration(t *testing.T) {
 		{
 			name: "number",
 			input: &ast.ConstantDeclaration{
-				Name:     "x",
-				Value:    &ast.NumberLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Type:     datatype.DataTypeNumber.AsString(),
-				StartPos: 0,
-				EndPos:   1,
+				Name: "x",
+				Value: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Type: datatype.DataTypeNumber.AsString(),
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 		},
 	}
@@ -54,11 +62,19 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 		{
 			name: "type mismatch",
 			input: &ast.ConstantDeclaration{
-				Name:     "x",
-				Value:    &ast.StringLiteral{Value: "5", StartPos: 0, EndPos: 1},
-				Type:     datatype.DataTypeNumber.AsString(),
-				StartPos: 0,
-				EndPos:   1,
+				Name: "x",
+				Value: &ast.StringLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Type: datatype.DataTypeNumber.AsString(),
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				errorutil.ErrorMsgTypeMismatch,
@@ -75,11 +91,15 @@ func TestEvaluateConstantDeclarationErr(t *testing.T) {
 					Namespace:    "",
 					FunctionName: "bogus",
 					Arguments:    []ast.ExprNode{},
-					StartPos:     4,
-					EndPos:       18,
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
 				},
-				StartPos: 0,
-				EndPos:   18,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 18, Line: 0, Column: 0},
+				},
 			},
 			expected: fmt.Sprintf(
 				errorutil.ErrorMsgUndefinedFunction,

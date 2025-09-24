@@ -17,8 +17,10 @@ func TestParseNullLiteral(t *testing.T) {
 		{
 			input: token.NewToken("null", token.TokenTypeNull, 0, 0),
 			expected: &ast.NullLiteral{
-				StartPos: 0,
-				EndPos:   0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 4, Line: 0, Column: 0},
+				},
 			},
 		},
 	}

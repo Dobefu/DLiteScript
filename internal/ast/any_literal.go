@@ -2,9 +2,8 @@ package ast
 
 // AnyLiteral defines a struct for a literal any value.
 type AnyLiteral struct {
-	Value    ExprNode
-	StartPos int
-	EndPos   int
+	Value ExprNode
+	Range Range
 }
 
 // Expr returns the expression of the any literal.
@@ -12,14 +11,9 @@ func (e *AnyLiteral) Expr() string {
 	return "any"
 }
 
-// StartPosition returns the start position of the any literal.
-func (e *AnyLiteral) StartPosition() int {
-	return e.StartPos
-}
-
-// EndPosition returns the end position of the any literal.
-func (e *AnyLiteral) EndPosition() int {
-	return e.EndPos
+// GetRange returns the range of the any literal.
+func (e *AnyLiteral) GetRange() Range {
+	return e.Range
 }
 
 // Walk walks the any literal.

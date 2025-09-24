@@ -6,11 +6,10 @@ import (
 
 // ConstantDeclaration represents a constant declaration.
 type ConstantDeclaration struct {
-	Name     string
-	Type     string
-	Value    ExprNode
-	StartPos int
-	EndPos   int
+	Name  string
+	Type  string
+	Value ExprNode
+	Range Range
 }
 
 // Expr returns the expression of the constant declaration.
@@ -22,14 +21,9 @@ func (c *ConstantDeclaration) Expr() string {
 	return fmt.Sprintf("const %s %s = %s", c.Name, c.Type, c.Value.Expr())
 }
 
-// StartPosition returns the start position of the constant declaration.
-func (c *ConstantDeclaration) StartPosition() int {
-	return c.StartPos
-}
-
-// EndPosition returns the end position of the constant declaration.
-func (c *ConstantDeclaration) EndPosition() int {
-	return c.EndPos
+// GetRange returns the range of the constant declaration.
+func (c *ConstantDeclaration) GetRange() Range {
+	return c.Range
 }
 
 // Walk walks the constant declaration and its value.
