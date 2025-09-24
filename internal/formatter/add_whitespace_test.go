@@ -16,13 +16,13 @@ func TestAddWhitespace(t *testing.T) {
 	}{
 		{
 			name:      "depth 0",
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			depth:     0,
 			expected:  "",
 		},
 		{
 			name:      "depth 1",
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			depth:     1,
 			expected:  "  ",
 		},

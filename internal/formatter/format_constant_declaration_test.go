@@ -34,7 +34,7 @@ func TestFormatConstantDeclaration(t *testing.T) {
 					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
 				},
 			},
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			depth:     0,
 			expected:  "const x int = 1\n",
 		},

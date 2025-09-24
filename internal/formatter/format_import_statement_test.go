@@ -33,7 +33,7 @@ func TestFormatImportStatement(t *testing.T) {
 					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
 				},
 			},
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			expected:  "import \"./path/to/file.dl\"\n",
 		},
 		{
@@ -53,7 +53,7 @@ func TestFormatImportStatement(t *testing.T) {
 					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
 				},
 			},
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			expected:  "import \"./path/to/file.dl\" as alias\n",
 		},
 	}

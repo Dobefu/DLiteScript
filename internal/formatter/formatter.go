@@ -9,15 +9,17 @@ import (
 
 // Formatter represents a formatter for DLiteScript code.
 type Formatter struct {
-	indentSize int
-	indentChar string
+	indentSize    int
+	indentChar    string
+	maxLineLength int
 }
 
 // New creates a new formatter for DLiteScript code.
 func New() *Formatter {
 	return &Formatter{
-		indentSize: 2,
-		indentChar: " ",
+		indentSize:    2,
+		indentChar:    " ",
+		maxLineLength: 80,
 	}
 }
 

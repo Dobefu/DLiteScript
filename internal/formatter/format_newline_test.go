@@ -25,7 +25,7 @@ func TestFormatNewline(t *testing.T) {
 					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
 				},
 			},
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			depth:     0,
 			expected:  "\n",
 		},

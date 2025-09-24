@@ -39,7 +39,7 @@ func TestFormatIndexExpr(t *testing.T) {
 					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
 				},
 			},
-			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
 			depth:     0,
 			expected:  "array[0]\n",
 		},
