@@ -72,7 +72,7 @@ func TestFormatVariableDeclaration(t *testing.T) {
 			},
 			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 0},
 			depth:     0,
-			expected:  "var x []string = [\n  \"test1\",\n  \"test2\"\n]\n",
+			expected:  "var x []string = [\n  \"test1\",\n  \"test2\",\n]\n",
 		},
 		{
 			name: "variable declaration without value",

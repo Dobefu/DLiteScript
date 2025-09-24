@@ -50,15 +50,10 @@ func (f *Formatter) formatArrayLiteral(
 	if totalLength > f.maxLineLength {
 		result.WriteString("[\n")
 
-		for i, value := range validValues {
+		for _, value := range validValues {
 			f.addWhitespace(result, depth+1)
 			result.WriteString(value.Expr())
-
-			if i < len(validValues)-1 {
-				result.WriteString(",")
-			}
-
-			result.WriteString("\n")
+			result.WriteString(",\n")
 		}
 
 		f.addWhitespace(result, depth)

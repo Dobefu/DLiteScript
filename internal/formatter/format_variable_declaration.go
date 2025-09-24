@@ -29,19 +29,14 @@ func (f *Formatter) formatVariableDeclaration(
 		result.WriteString(varDeclarationPrefix)
 		result.WriteString("[\n")
 
-		for i, value := range arrayLiteral.Values {
+		for _, value := range arrayLiteral.Values {
 			if value == nil {
 				continue
 			}
 
 			f.addWhitespace(result, depth+1)
 			result.WriteString(value.Expr())
-
-			if i < len(arrayLiteral.Values)-1 {
-				result.WriteString(",")
-			}
-
-			result.WriteString("\n")
+			result.WriteString(",\n")
 		}
 
 		f.addWhitespace(result, depth)
