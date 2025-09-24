@@ -38,6 +38,48 @@ func TestFormatConstantDeclaration(t *testing.T) {
 			depth:     0,
 			expected:  "const x int = 1\n",
 		},
+		{
+			name: "constant declaration without value",
+			input: &ast.ConstantDeclaration{
+				Name:  "x",
+				Type:  "int",
+				Value: nil,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 80},
+			depth:     0,
+			expected:  "const x int\n",
+		},
+		{
+			name: "constant declaration with array literal that should wrap",
+			input: &ast.ConstantDeclaration{
+				Name: "x",
+				Type: "int",
+				Value: &ast.ArrayLiteral{
+					Values: []ast.ExprNode{
+						nil,
+						&ast.NumberLiteral{Value: "1", Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						}},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " ", maxLineLength: 0},
+			depth:     0,
+			expected:  "const x int = [\n  1,\n]\n",
+		},
 	}
 
 	for _, test := range tests {
