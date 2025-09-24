@@ -20,7 +20,7 @@ var evalCmd = &cobra.Command{ //nolint:exhaustruct
 
 		return nil
 	}),
-	Short: "Start the DLiteScript Language Server",
+	Short: "Evaluate a DLiteScript expression",
 	Run:   runEvalCmd,
 }
 
