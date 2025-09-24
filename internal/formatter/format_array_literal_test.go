@@ -31,6 +31,19 @@ func TestFormatArrayLiteral(t *testing.T) {
 			expected:  "[]\n",
 		},
 		{
+			name: "array literal with nil element",
+			input: &ast.ArrayLiteral{
+				Values: []ast.ExprNode{nil},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
+			formatter: &Formatter{indentSize: 2, indentChar: " "},
+			depth:     0,
+			expected:  "[]\n",
+		},
+		{
 			name: "array literal with one element",
 			input: &ast.ArrayLiteral{
 				Values: []ast.ExprNode{
