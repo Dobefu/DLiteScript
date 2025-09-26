@@ -81,7 +81,7 @@ func TestParseContinueStatementErr(t *testing.T) {
 			name:  "no input",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -93,7 +93,7 @@ func TestParseContinueStatementErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 14",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgInvalidNumber, "bogus"),
 			),
@@ -105,7 +105,7 @@ func TestParseContinueStatementErr(t *testing.T) {
 				token.NewToken("-1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 11",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgContinueCountLessThanOne,
 			),

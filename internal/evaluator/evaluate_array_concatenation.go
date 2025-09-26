@@ -20,7 +20,7 @@ func (e *Evaluator) evaluateArrayConcatenation(
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgTypeMismatch,
-				node.GetRange().Start.Offset,
+				node.GetRange(),
 				leftType.AsString(),
 				rightType.AsString(),
 			)

@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+
+	"github.com/Dobefu/DLiteScript/internal/ast"
 )
 
 func TestNewError(t *testing.T) {
@@ -55,12 +57,15 @@ func TestNewErrorAt(t *testing.T) {
 
 	tests := []struct {
 		input    ErrorMsg
-		pos      int
+		pos      ast.Range
 		expected string
 	}{
 		{
 			input: ErrorMsgParenNotClosedAtEOF,
-			pos:   0,
+			pos: ast.Range{
+				Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+				End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+			},
 			expected: fmt.Sprintf(
 				"%s: %s",
 				StageTokenize.String(),
@@ -77,9 +82,9 @@ func TestNewErrorAt(t *testing.T) {
 		}
 
 		expected := fmt.Sprintf(
-			"%s at position %d",
+			"%s %s",
 			test.expected,
-			test.pos,
+			test.pos.String(),
 		)
 
 		if err.Error() != expected {

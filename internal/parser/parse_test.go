@@ -282,7 +282,7 @@ func TestParseStatementErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

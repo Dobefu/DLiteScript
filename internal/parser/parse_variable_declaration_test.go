@@ -98,7 +98,7 @@ func TestParseVariableDeclarationErr(t *testing.T) {
 				{Atom: "var", TokenType: token.TokenTypeVar},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -112,7 +112,7 @@ func TestParseVariableDeclarationErr(t *testing.T) {
 				{Atom: "=", TokenType: token.TokenTypeAssign},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 1 at position 9",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -127,7 +127,7 @@ func TestParseVariableDeclarationErr(t *testing.T) {
 				{Atom: "+", TokenType: token.TokenTypeOperationAdd},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 5",
+				"%s: %s line 1 at position 10",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

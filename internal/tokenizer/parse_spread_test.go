@@ -55,7 +55,7 @@ func TestParseSpreadErr(t *testing.T) {
 			name:  "empty expression",
 			input: "",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgInvalidUTF8Char,
 			),
@@ -64,7 +64,7 @@ func TestParseSpreadErr(t *testing.T) {
 			name:  "unexpected end of expression",
 			input: ".",
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

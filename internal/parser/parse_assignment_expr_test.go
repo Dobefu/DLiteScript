@@ -78,7 +78,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "1"),
 			),
@@ -94,7 +94,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -112,7 +112,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -131,7 +131,7 @@ func TestParseAssignmentExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 3",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "="),
 			),

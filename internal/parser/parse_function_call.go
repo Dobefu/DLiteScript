@@ -30,7 +30,18 @@ func (p *Parser) parseFunctionCall(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedOpenParen,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			lparenToken.Atom,
 		)
 	}
@@ -43,7 +54,18 @@ func (p *Parser) parseFunctionCall(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -67,7 +89,18 @@ func (p *Parser) parseFunctionCall(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -136,7 +169,18 @@ func (p *Parser) isEndOfArguments() (bool, error) {
 		return false, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -152,7 +196,18 @@ func (p *Parser) consumeComma() error {
 		return errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -160,7 +215,18 @@ func (p *Parser) consumeComma() error {
 		return errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}
@@ -179,7 +245,18 @@ func (p *Parser) isTrailingComma() (bool, error) {
 		return false, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -193,7 +270,18 @@ func (p *Parser) parseArgument(recursionDepth int) (ast.ExprNode, error) {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 

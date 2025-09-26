@@ -95,7 +95,7 @@ func TestParseImportStatementErr(t *testing.T) {
 			input:     []*token.Token{},
 			nextToken: nil,
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -110,7 +110,7 @@ func TestParseImportStatementErr(t *testing.T) {
 				EndPos:    6,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -127,7 +127,7 @@ func TestParseImportStatementErr(t *testing.T) {
 				EndPos:    6,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 5",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "test"),
 			),
@@ -145,7 +145,7 @@ func TestParseImportStatementErr(t *testing.T) {
 				EndPos:    6,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -164,7 +164,7 @@ func TestParseImportStatementErr(t *testing.T) {
 				EndPos:    6,
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 10",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "123"),
 			),

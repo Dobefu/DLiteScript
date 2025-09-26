@@ -105,7 +105,18 @@ func (p *Parser) parseLoopBody() (*ast.BlockStatement, error) {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgBlockStatementExpected,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.TokenType,
 		)
 	}
@@ -154,7 +165,18 @@ func (p *Parser) parseVariableDeclarationLoop(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedIdentifier,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}
@@ -263,7 +285,18 @@ func (p *Parser) parseExplicitRangeLoop(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			toToken.Atom,
 		)
 	}
@@ -396,7 +429,18 @@ func (p *Parser) parseRangeLoopWithoutVariable(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			toToken.Atom,
 		)
 	}

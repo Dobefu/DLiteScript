@@ -52,7 +52,7 @@ func TestScriptRunner(t *testing.T) {
 			_, err = tmpFile.WriteString(test.script)
 
 			if err != nil {
-				t.Fatalf("expected no error writing script, got %v", err)
+				t.Fatalf("expected no error writing script, got: \"%s\"", err.Error())
 			}
 
 			defer func() { _ = tmpFile.Close() }()
@@ -65,7 +65,7 @@ func TestScriptRunner(t *testing.T) {
 			}).RunScript(tmpFile.Name())
 
 			if err != nil {
-				t.Fatalf("expected no error, got %s", err.Error())
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if outputBuffer.String() != test.expected {
@@ -102,7 +102,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			outFile:    &bytes.Buffer{},
 			script:     "\x80",
 			expected: fmt.Sprintf(
-				"failed to tokenize file: %s: %s at position 0",
+				"failed to tokenize file: %s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgInvalidUTF8Char,
 			),
@@ -113,7 +113,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			outFile:    &bytes.Buffer{},
 			script:     "1 +",
 			expected: fmt.Sprintf(
-				"failed to tokenize file: %s: %s at position 3",
+				"failed to tokenize file: %s: %s line 1 at position 4",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -124,7 +124,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			outFile:    &bytes.Buffer{},
 			script:     "printf()",
 			expected: fmt.Sprintf(
-				"failed to evaluate file: %s: %s at position 0",
+				"failed to evaluate file: %s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
 			),
@@ -135,7 +135,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			outFile:    &bytes.Buffer{},
 			script:     "1 + }",
 			expected: fmt.Sprintf(
-				"failed to parse file: %s: %s at position 3",
+				"failed to parse file: %s: %s line 1 at position 4",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
 			),
@@ -205,7 +205,7 @@ func TestOutput(t *testing.T) {
 	tmpFile, err := os.CreateTemp("", "test")
 
 	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
+		t.Fatalf("expected no error, got: \"%s\"", err.Error())
 	}
 
 	defer func() { _ = os.Remove(tmpFile.Name()) }()
@@ -218,7 +218,7 @@ func TestOutput(t *testing.T) {
 	exitCode, err := scriptRunner.RunScript(tmpFile.Name())
 
 	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
+		t.Fatalf("expected no error, got: \"%s\"", err.Error())
 	}
 
 	if exitCode != 0 {

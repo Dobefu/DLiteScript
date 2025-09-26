@@ -67,7 +67,7 @@ func TestHandleAmpersandSignErr(t *testing.T) {
 			name:  "unexpected end of expression",
 			input: "",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -76,7 +76,7 @@ func TestHandleAmpersandSignErr(t *testing.T) {
 			name:  "unexpected character",
 			input: "|",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedChar, "|"),
 			),

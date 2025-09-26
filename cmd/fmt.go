@@ -31,7 +31,7 @@ func init() {
 func runFmtCmd(_ *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no file specified")
-		exitCode = 1
+		setExitCode(1)
 
 		return
 	}
@@ -40,7 +40,7 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to read file: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 
 		return
 	}
@@ -50,7 +50,7 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to tokenize file: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 
 		return
 	}
@@ -60,7 +60,7 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to parse file: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 
 		return
 	}

@@ -121,7 +121,7 @@ func TestHandleHoverErr(t *testing.T) {
 				}
 			}`),
 			expected: fmt.Sprintf(
-				"failed to tokenize file: %s: %s at position 12",
+				"failed to tokenize file: %s: %s line 1 at position 13",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

@@ -293,7 +293,7 @@ func TestEvaluateErr(t *testing.T) {
 			name:  "unknown node type",
 			input: &unknownNode{StartPos: 0, EndPos: 1},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(
 					errorutil.ErrorMsgUnknownNodeType,

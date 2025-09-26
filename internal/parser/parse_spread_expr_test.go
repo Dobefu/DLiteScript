@@ -58,7 +58,7 @@ func TestParseSpreadExprErr(t *testing.T) {
 				token.NewToken("...", token.TokenTypeOperationSpread, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 4",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -70,7 +70,7 @@ func TestParseSpreadExprErr(t *testing.T) {
 				token.NewToken("+", token.TokenTypeOperationAdd, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 5",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

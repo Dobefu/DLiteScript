@@ -196,7 +196,7 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "undefined_var"),
 			),
@@ -247,7 +247,7 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgReassignmentToConstant, "const_var"),
 			),
@@ -298,7 +298,7 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgReassignmentToConstant, "block_const"),
 			),
@@ -328,7 +328,7 @@ func TestEvaluateAssignmentStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "undefined_func"),
 			),

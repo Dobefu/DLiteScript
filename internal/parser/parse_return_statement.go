@@ -56,7 +56,18 @@ func (p *Parser) parseReturnValues() ([]ast.ExprNode, error) {
 				return nil, errorutil.NewErrorAt(
 					errorutil.StageParse,
 					errorutil.ErrorMsgUnexpectedToken,
-					p.tokenIdx+1,
+					ast.Range{
+						Start: ast.Position{
+							Offset: p.tokenIdx + 1,
+							Line:   p.line,
+							Column: p.column,
+						},
+						End: ast.Position{
+							Offset: p.tokenIdx + 1,
+							Line:   p.line,
+							Column: p.column,
+						},
+					},
 					nextToken.Atom,
 				)
 			}

@@ -23,7 +23,7 @@ func TestEvalCmd(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
@@ -37,8 +37,8 @@ func TestEvalCmd(t *testing.T) {
 			_ = evalCmd.Flags().Set("quiet", "true")
 			runEvalCmd(evalCmd, []string{test.input})
 
-			if exitCode != 0 {
-				t.Fatalf("expected exit code 0, got %d", exitCode)
+			if getExitCode() != 0 {
+				t.Fatalf("expected exit code 0, got %d", getExitCode())
 			}
 		})
 	}
@@ -67,7 +67,7 @@ func TestEvalCmdErr(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
@@ -88,7 +88,7 @@ func TestEvalCmdErr(t *testing.T) {
 			evalCmd.SetArgs(input)
 			runEvalCmd(evalCmd, input)
 
-			if exitCode == 0 {
+			if getExitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})

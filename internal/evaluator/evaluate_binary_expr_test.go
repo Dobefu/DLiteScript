@@ -418,7 +418,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
 			),
@@ -446,7 +446,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "null", "number"),
 			),
@@ -480,7 +480,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				errorutil.ErrorMsgDivByZero,
 			),
@@ -514,7 +514,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				errorutil.ErrorMsgModByZero,
 			),
@@ -548,7 +548,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ","),
 			),
@@ -582,7 +582,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
 			),
@@ -616,7 +616,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
 			),
@@ -650,7 +650,7 @@ func TestEvaluateBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgCannotConcat, "bool", "bool"),
 			),
@@ -788,7 +788,7 @@ func TestEvaluateArithmeticBinaryExprErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
 			),
@@ -955,7 +955,7 @@ func TestEvaluateArithmeticBinaryExprArrayErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnknownOperator, ""),
 			),

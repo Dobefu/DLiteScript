@@ -16,7 +16,18 @@ func (p *Parser) parseBinaryExpr(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			operatorToken.Atom,
 		)
 	}

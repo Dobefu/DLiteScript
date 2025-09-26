@@ -21,7 +21,7 @@ func (e *Evaluator) evaluateIfStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			"bool",
 			expr.Value.DataType.AsString(),
 		)

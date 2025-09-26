@@ -17,7 +17,18 @@ func (p *Parser) parseFunctionDeclaration() (ast.ExprNode, error) {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			nextToken.StartPos,
+			ast.Range{
+				Start: ast.Position{
+					Offset: nextToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: nextToken.EndPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}
@@ -77,7 +88,18 @@ func (p *Parser) getArgs() ([]ast.FuncParameter, error) {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			nextToken.StartPos,
+			ast.Range{
+				Start: ast.Position{
+					Offset: nextToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: nextToken.EndPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}
@@ -116,7 +138,18 @@ func (p *Parser) parseFunctionArgument(nameToken *token.Token) (ast.FuncParamete
 		return ast.FuncParameter{}, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			nameToken.StartPos,
+			ast.Range{
+				Start: ast.Position{
+					Offset: nameToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: nameToken.EndPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nameToken.Atom,
 		)
 	}
@@ -204,7 +237,18 @@ func (p *Parser) parseReturnTypes(
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				nextToken.StartPos,
+				ast.Range{
+					Start: ast.Position{
+						Offset: nextToken.StartPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: nextToken.EndPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				nextToken.Atom,
 			)
 		}

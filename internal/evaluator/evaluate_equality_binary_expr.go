@@ -82,7 +82,7 @@ func (e *Evaluator) evaluateEqualityBinaryExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeUnknownDataType,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			leftValue.DataType.AsString(),
 		)
 	}

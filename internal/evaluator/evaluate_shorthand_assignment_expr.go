@@ -51,7 +51,7 @@ func (e *Evaluator) evaluateShorthandAssignmentExpr(
 		return e.assignVariable(
 			identifier.Value,
 			result.Value,
-			identifier.GetRange().Start.Offset,
+			identifier.GetRange(),
 		)
 	}
 
@@ -146,7 +146,7 @@ func (e *Evaluator) assignArrayIndex(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgArrayIndexOutOfBounds,
-			indexExpr.GetRange().Start.Offset,
+			indexExpr.GetRange(),
 			indexExpr.Index.Expr(),
 		)
 	}
@@ -158,7 +158,7 @@ func (e *Evaluator) assignArrayIndex(
 		return e.assignVariable(
 			identifier.Value,
 			datavalue.Array(array...),
-			indexExpr.GetRange().Start.Offset,
+			indexExpr.GetRange(),
 		)
 	}
 

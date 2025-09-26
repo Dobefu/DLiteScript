@@ -3,6 +3,7 @@ package tokenizer
 import (
 	"strings"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -62,9 +63,11 @@ func (t *Tokenizer) handleString(startPos int) (*token.Token, error) {
 		str.WriteRune(next)
 	}
 
+	pos := t.GetCurrentPosition()
+
 	return nil, errorutil.NewErrorAt(
 		errorutil.StageTokenize,
 		errorutil.ErrorMsgUnexpectedEOF,
-		t.byteIdx,
+		ast.Range{Start: pos, End: pos},
 	)
 }

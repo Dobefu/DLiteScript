@@ -59,7 +59,7 @@ func TestHandleIdentifierErr(t *testing.T) {
 			name:  "unexpected end of expression",
 			input: []rune(""),
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgInvalidUTF8Char,
 			),

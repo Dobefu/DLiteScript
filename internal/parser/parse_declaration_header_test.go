@@ -70,7 +70,7 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 			name:  "unexpected EOF",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -81,7 +81,7 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedIdentifier, "1"),
 			),
@@ -93,7 +93,7 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeString, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
 			),
@@ -104,7 +104,7 @@ func TestParseDeclarationHeaderErr(t *testing.T) {
 				token.NewToken("x", token.TokenTypeIdentifier, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -191,7 +191,7 @@ func TestParseDataTypeErr(t *testing.T) {
 				token.NewToken("[", token.TokenTypeLBracket, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -203,7 +203,7 @@ func TestParseDataTypeErr(t *testing.T) {
 				token.NewToken("number", token.TokenTypeTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "number"),
 			),
@@ -215,7 +215,7 @@ func TestParseDataTypeErr(t *testing.T) {
 				token.NewToken("]", token.TokenTypeRBracket, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -228,7 +228,7 @@ func TestParseDataTypeErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeIdentifier, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "bogus"),
 			),

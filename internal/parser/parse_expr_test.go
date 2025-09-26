@@ -131,7 +131,7 @@ func TestHandleBasicOperatorTokensErr(t *testing.T) {
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -143,7 +143,7 @@ func TestHandleBasicOperatorTokensErr(t *testing.T) {
 				token.NewToken("+", token.TokenTypeOperationAdd, 0, 1),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -156,7 +156,7 @@ func TestHandleBasicOperatorTokensErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeIdentifier, 3, 8),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "+"),
 			),
@@ -199,7 +199,7 @@ func TestHandlePowTokenErr(t *testing.T) {
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -211,7 +211,7 @@ func TestHandlePowTokenErr(t *testing.T) {
 				token.NewToken("**", token.TokenTypeOperationPow, 0, 1),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 3",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -224,7 +224,7 @@ func TestHandlePowTokenErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeIdentifier, 3, 8),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 8",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "**"),
 			),
@@ -340,7 +340,7 @@ func TestHandleArrayTokenErr(t *testing.T) {
 				token.NewToken("1", token.TokenTypeNumber, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -352,7 +352,7 @@ func TestHandleArrayTokenErr(t *testing.T) {
 				token.NewToken("[", token.TokenTypeLBracket, 0, 1),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -365,7 +365,7 @@ func TestHandleArrayTokenErr(t *testing.T) {
 				token.NewToken("]", token.TokenTypeRBracket, 1, 2),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 3",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "]"),
 			),
@@ -378,7 +378,7 @@ func TestHandleArrayTokenErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeIdentifier, 1, 6),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -392,7 +392,7 @@ func TestHandleArrayTokenErr(t *testing.T) {
 				token.NewToken("bogus", token.TokenTypeIdentifier, 1, 6),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 8",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgExpectedCloseBracket, "bogus"),
 			),
@@ -495,7 +495,7 @@ func TestHandleShorthandAssignmentTokenErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -507,7 +507,7 @@ func TestHandleShorthandAssignmentTokenErr(t *testing.T) {
 				token.NewToken("+=", token.TokenTypeOperationAddAssign, 0, 1),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 3",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -520,7 +520,7 @@ func TestHandleShorthandAssignmentTokenErr(t *testing.T) {
 				token.NewToken("(", token.TokenTypeLParen, 1, 6),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 4",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -16,7 +17,18 @@ func (p *Parser) parseDeclarationHeader() (string, string, error) {
 		return "", "", errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedIdentifier,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}
@@ -49,7 +61,18 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 			return "", errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				nextToken.StartPos,
+				ast.Range{
+					Start: ast.Position{
+						Offset: nextToken.StartPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: nextToken.EndPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				nextToken.Atom,
 			)
 		}
@@ -64,7 +87,18 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 			return "", errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				elementTypeToken.StartPos,
+				ast.Range{
+					Start: ast.Position{
+						Offset: elementTypeToken.StartPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: elementTypeToken.EndPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				elementTypeToken.Atom,
 			)
 		}
@@ -76,7 +110,18 @@ func (p *Parser) parseDataType(typeToken *token.Token) (string, error) {
 		return "", errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			typeToken.StartPos,
+			ast.Range{
+				Start: ast.Position{
+					Offset: typeToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: typeToken.EndPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			typeToken.Atom,
 		)
 	}

@@ -157,7 +157,7 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			},
 			content: "\x80",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgInvalidUTF8Char,
 			),
@@ -181,7 +181,7 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			},
 			content: "func(",
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 1 at position 6",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "("),
 			),
@@ -205,7 +205,7 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 			},
 			content: "_",
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 2",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "_"),
 			),

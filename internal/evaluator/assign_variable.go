@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/controlflow"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
@@ -9,7 +10,7 @@ import (
 func (e *Evaluator) assignVariable(
 	varName string,
 	value datavalue.Value,
-	startPos int,
+	startPos ast.Range,
 ) (*controlflow.EvaluationResult, error) {
 	for idx := range e.blockScopesLen {
 		_, hasScopedValue := e.blockScopes[e.blockScopesLen-idx-1][varName]
@@ -21,7 +22,10 @@ func (e *Evaluator) assignVariable(
 				return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 					errorutil.StageEvaluate,
 					errorutil.ErrorMsgReassignmentToConstant,
-					startPos,
+					ast.Range{
+						Start: startPos.Start,
+						End:   startPos.End,
+					},
 					varName,
 				)
 			}

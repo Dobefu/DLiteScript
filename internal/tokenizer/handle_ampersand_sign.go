@@ -1,6 +1,7 @@
 package tokenizer
 
 import (
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -23,10 +24,12 @@ func (t *Tokenizer) handleAmpersandSign(startPos int) (*token.Token, error) {
 		), nil
 	}
 
+	pos := t.GetCurrentPosition()
+
 	return nil, errorutil.NewErrorAt(
 		errorutil.StageTokenize,
 		errorutil.ErrorMsgUnexpectedChar,
-		t.expIdx,
+		ast.Range{Start: pos, End: pos},
 		string(next),
 	)
 }

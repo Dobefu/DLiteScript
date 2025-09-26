@@ -74,7 +74,7 @@ func (e *Evaluator) evaluateBinaryExpr(
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgUnknownOperator,
-		node.GetRange().Start.Offset,
+		node.GetRange(),
 		node.Operator.Atom,
 	)
 }
@@ -88,7 +88,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			rightValue.DataType.AsString(),
 			leftValue.DataType.AsString(),
 		)
@@ -132,7 +132,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExpr(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgCannotConcat,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			leftValue.DataType.AsString(),
 			rightValue.DataType.AsString(),
 		)
@@ -158,7 +158,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgDivByZero,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 		)
 	}
 
@@ -167,7 +167,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgModByZero,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 		)
 	}
 
@@ -206,7 +206,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			node.Operator.Atom,
 		)
 	}
@@ -312,7 +312,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprArray(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			node.Operator.Atom,
 		)
 	}
@@ -342,7 +342,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprString(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUnknownOperator,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			node.Operator.Atom,
 		)
 	}

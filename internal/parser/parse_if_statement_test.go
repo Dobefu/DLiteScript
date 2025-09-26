@@ -108,7 +108,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("if", token.TokenTypeIf, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 3",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -120,7 +120,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 4",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "{"),
 			),
@@ -132,7 +132,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("true", token.TokenTypeBool, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -147,7 +147,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("}", token.TokenTypeRBrace, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 1 at position 9",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "="),
 			),
@@ -162,7 +162,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("else", token.TokenTypeElse, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 5",
+				"%s: %s line 1 at position 13",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -178,7 +178,7 @@ func TestParseIfStatementErr(t *testing.T) {
 				token.NewToken("{", token.TokenTypeLBrace, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 6",
+				"%s: %s line 1 at position 14",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -215,7 +215,7 @@ func TestHandleElseBlockErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -228,7 +228,7 @@ func TestHandleElseBlockErr(t *testing.T) {
 				token.NewToken("true", token.TokenTypeBool, 0, 0),
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 3",
+				"%s: %s line 1 at position 8",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -292,7 +292,7 @@ func TestParseElseBlockErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

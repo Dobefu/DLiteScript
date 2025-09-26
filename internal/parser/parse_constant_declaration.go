@@ -25,7 +25,18 @@ func (p *Parser) parseConstantDeclaration() (ast.ExprNode, error) {
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgConstantDeclarationWithNoValue,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			varName,
 		)
 	}

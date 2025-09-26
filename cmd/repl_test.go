@@ -9,13 +9,13 @@ func TestReplCmd(t *testing.T) {
 
 	cmdMutex.Lock()
 	defer func() {
-		exitCode = 0
+		resetExitCode()
 		cmdMutex.Unlock()
 	}()
 
 	runReplCmd(replCmd, nil)
 
-	if exitCode != 0 {
-		t.Fatalf("Expected exit code 0, got %d", exitCode)
+	if getExitCode() != 0 {
+		t.Fatalf("Expected exit code 0, got %d", getExitCode())
 	}
 }

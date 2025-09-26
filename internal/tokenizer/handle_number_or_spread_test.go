@@ -79,7 +79,7 @@ func TestHandleNumberOrSpreadErr(t *testing.T) {
 			name:  "unexpected end of expression",
 			input: []rune("."),
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 2",
 				errorutil.StageTokenize.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

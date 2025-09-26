@@ -34,16 +34,16 @@ func Execute() byte {
 	err := rootCmd.Execute()
 
 	if err != nil {
-		exitCode = 1
+		setExitCode(1)
 	}
 
-	return exitCode
+	return getExitCode()
 }
 
 func runRootCmd(cmd *cobra.Command, args []string) {
 	if len(args) == 0 {
 		slog.Error("no file specified")
-		exitCode = 1
+		setExitCode(1)
 
 		return
 	}
@@ -60,10 +60,11 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 	}
 
 	var err error
-	exitCode, err = runner.RunScript(args[0])
+	code, err := runner.RunScript(args[0])
+	setExitCode(code)
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to run script: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 	}
 }

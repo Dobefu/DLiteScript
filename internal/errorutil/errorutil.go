@@ -4,6 +4,8 @@ package errorutil
 import (
 	"errors"
 	"fmt"
+
+	"github.com/Dobefu/DLiteScript/internal/ast"
 )
 
 // ErrorMsg represents a predefined error message.
@@ -91,24 +93,38 @@ const (
 // Error represents an error with a message.
 type Error struct {
 	msg   ErrorMsg
-	pos   int
+	pos   ast.Range
 	stage Stage
 }
 
 // NewError creates a new error with the given message.
 func NewError(phase Stage, msg ErrorMsg, args ...any) *Error {
 	return &Error{
-		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
-		pos:   -1,
+		msg: ErrorMsg(fmt.Sprintf(string(msg), args...)),
+		pos: ast.Range{
+			Start: ast.Position{Offset: -1, Line: -1, Column: -1},
+			End:   ast.Position{Offset: -1, Line: -1, Column: -1},
+		},
 		stage: phase,
 	}
 }
 
 // NewErrorAt creates a new error with the given message at a specific position.
-func NewErrorAt(phase Stage, msg ErrorMsg, pos int, args ...any) *Error {
+func NewErrorAt(phase Stage, msg ErrorMsg, pos ast.Range, args ...any) *Error {
 	return &Error{
-		msg:   ErrorMsg(fmt.Sprintf(string(msg), args...)),
-		pos:   pos,
+		msg: ErrorMsg(fmt.Sprintf(string(msg), args...)),
+		pos: ast.Range{
+			Start: ast.Position{
+				Offset: pos.Start.Offset,
+				Line:   pos.Start.Line,
+				Column: pos.Start.Column,
+			},
+			End: ast.Position{
+				Offset: pos.End.Offset,
+				Line:   pos.End.Line,
+				Column: pos.End.Column,
+			},
+		},
 		stage: phase,
 	}
 }
@@ -118,11 +134,11 @@ func (e *Error) Error() string {
 	msg := fmt.Sprintf("%s: %s", e.stage.String(), string(e.msg))
 
 	// If the position is less than 0, there's no position information to return.
-	if e.pos < 0 {
+	if e.pos.Start.Offset < 0 {
 		return msg
 	}
 
-	return fmt.Sprintf("%s at position %d", msg, e.pos)
+	return fmt.Sprintf("%s %s", msg, e.pos.String())
 }
 
 // Unwrap returns the error message without any additional information.
@@ -131,6 +147,6 @@ func (e *Error) Unwrap() error {
 }
 
 // Position gets the position of the error.
-func (e *Error) Position() int {
+func (e *Error) Position() ast.Range {
 	return e.pos
 }

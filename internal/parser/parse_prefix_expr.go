@@ -55,7 +55,18 @@ func (p *Parser) parsePrefixExpr(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			currentToken.Atom,
 		)
 	}
@@ -116,7 +127,18 @@ func (p *Parser) parseParenthesizedExpr(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgParenNotClosedAtEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -124,7 +146,18 @@ func (p *Parser) parseParenthesizedExpr(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedCloseParen,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			rparenToken.Atom,
 		)
 	}
@@ -164,7 +197,18 @@ func (p *Parser) parseFunctionCallOrIdentifier(
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				p.tokenIdx,
+				ast.Range{
+					Start: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				functionNameOrIdentifierToken.Atom,
 			)
 		}

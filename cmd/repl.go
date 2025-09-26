@@ -28,6 +28,6 @@ func runReplCmd(_ *cobra.Command, _ []string) {
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to run REPL: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 	}
 }

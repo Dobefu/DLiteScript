@@ -27,7 +27,18 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgInvalidNumber,
-				p.tokenIdx,
+				ast.Range{
+					Start: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				nextToken.Atom,
 			)
 		}
@@ -36,7 +47,18 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgBreakCountLessThanOne,
-				p.tokenIdx,
+				ast.Range{
+					Start: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: p.tokenIdx,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 			)
 		}
 

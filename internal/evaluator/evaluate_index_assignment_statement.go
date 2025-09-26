@@ -21,7 +21,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			datatype.DataTypeArray.AsString(),
 			node.Array.Expr(),
 		)
@@ -37,7 +37,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			datatype.DataTypeNumber.AsString(),
 			node.Index.Expr(),
 		)
@@ -56,7 +56,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgArrayIndexOutOfBounds,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			node.Index.Expr(),
 		)
 	}
@@ -68,7 +68,7 @@ func (e *Evaluator) evaluateIndexAssignmentStatement(
 		return e.assignVariable(
 			identifier.Value,
 			datavalue.Array(array...),
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 		)
 	}
 

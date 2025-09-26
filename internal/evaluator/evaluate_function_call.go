@@ -42,7 +42,7 @@ func (e *Evaluator) evaluateFunctionCall(
 			return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgUndefinedFunction,
-				fc.GetRange().Start.Offset,
+				fc.GetRange(),
 				fc.FunctionName,
 			)
 		}
@@ -50,7 +50,7 @@ func (e *Evaluator) evaluateFunctionCall(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgUndefinedNamespace,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			fc.Namespace,
 		)
 	}
@@ -58,7 +58,7 @@ func (e *Evaluator) evaluateFunctionCall(
 	return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 		errorutil.StageEvaluate,
 		errorutil.ErrorMsgUndefinedFunction,
-		fc.GetRange().Start.Offset,
+		fc.GetRange(),
 		fc.FunctionName,
 	)
 }
@@ -127,7 +127,7 @@ func (e *Evaluator) evaluateUserFunctionCall(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			getFullFunctionName(fc),
 			len(userFunction.Args),
 			len(fc.Arguments),
@@ -221,7 +221,7 @@ func (e *Evaluator) evaluateArguments(
 				return nil, errorutil.NewErrorAt(
 					errorutil.StageEvaluate,
 					errorutil.ErrorMsgTypeExpected,
-					spreadArg.GetRange().Start.Offset,
+					spreadArg.GetRange(),
 					"array",
 					spreadValue.Value.DataType.AsString(),
 				)
@@ -235,7 +235,7 @@ func (e *Evaluator) evaluateArguments(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeExpected,
-			spreadArg.GetRange().Start.Offset,
+			spreadArg.GetRange(),
 			"tuple or array",
 			spreadValue.Value.DataType.AsString(),
 		)
@@ -277,7 +277,7 @@ func (e *Evaluator) validateFixedArgs(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			getFullFunctionName(fc),
 			expectedCount,
 			len(argValues),
@@ -316,7 +316,7 @@ func (e *Evaluator) validateVariadicArgs(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionArgType,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			functionName,
 			i+1,
 			expectedType.Type.AsString(),
@@ -343,7 +343,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionNumArgs,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			getFullFunctionName(fc),
 			requiredParams,
 			len(argValues),
@@ -376,7 +376,7 @@ func (e *Evaluator) validateMixedVariadicArgs(
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgFunctionArgType,
-				fc.GetRange().Start.Offset,
+				fc.GetRange(),
 				functionName,
 				i+1,
 				variadicType.Type.AsString(),
@@ -406,7 +406,7 @@ func (e *Evaluator) validateArgTypesMatch(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgFunctionArgType,
-			fc.GetRange().Start.Offset,
+			fc.GetRange(),
 			functionName,
 			i+1,
 			expectedType.Type.AsString(),
@@ -429,7 +429,7 @@ func (e *Evaluator) validateReturnValues(
 			return errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgFunctionReturnCount,
-				fc.GetRange().Start.Offset,
+				fc.GetRange(),
 				userFunction.Name,
 				expectedNumValues,
 				1,
@@ -442,7 +442,7 @@ func (e *Evaluator) validateReturnValues(
 			return errorutil.NewErrorAt(
 				errorutil.StageEvaluate,
 				errorutil.ErrorMsgFunctionReturnCount,
-				fc.GetRange().Start.Offset,
+				fc.GetRange(),
 				userFunction.Name,
 				expectedNumValues,
 				numValues,

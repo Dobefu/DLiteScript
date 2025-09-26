@@ -3,9 +3,12 @@ package repl
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"strings"
 	"testing"
+
+	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 type errReader struct {
@@ -65,7 +68,7 @@ func TestRun(t *testing.T) {
 			err := repl.Run()
 
 			if err != nil {
-				t.Fatalf("expected no error, got %s", err.Error())
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if test.expected != "" && test.outFile != io.Discard {
@@ -106,16 +109,24 @@ func TestEvaluateInputErr(t *testing.T) {
 		expected string
 	}{
 		{
-			name:     "tokenization error",
-			input:    "1 + 1 +",
-			outFile:  &bytes.Buffer{},
-			expected: "Tokenization error: tokenize: unexpected end of expression at position 7\n",
+			name:    "tokenization error",
+			input:   "1 + 1 +",
+			outFile: &bytes.Buffer{},
+			expected: fmt.Sprintf(
+				"Tokenization error: %s: %s line 1 at position 8\n",
+				errorutil.StageTokenize.String(),
+				errorutil.ErrorMsgUnexpectedEOF,
+			),
 		},
 		{
-			name:     "evaluation error",
-			input:    "1 + x",
-			outFile:  &bytes.Buffer{},
-			expected: "Evaluation error: evaluate: undefined identifier: 'x' at position 4\n",
+			name:    "evaluation error",
+			input:   "1 + x",
+			outFile: &bytes.Buffer{},
+			expected: fmt.Sprintf(
+				"Evaluation error: %s: %s line 1 at position 4\n",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "x"),
+			),
 		},
 	}
 

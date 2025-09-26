@@ -196,7 +196,18 @@ func (p *Parser) handleArrayToken(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgExpectedCloseBracket,
-			nextToken.StartPos,
+			ast.Range{
+				Start: ast.Position{
+					Offset: nextToken.StartPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: nextToken.EndPos,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			nextToken.Atom,
 		)
 	}

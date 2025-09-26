@@ -24,14 +24,14 @@ func TestRootCmd(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
 			runRootCmd(rootCmd, []string{file})
 
-			if exitCode != 0 {
-				t.Fatalf("Expected zero exit code, got %d", exitCode)
+			if getExitCode() != 0 {
+				t.Fatalf("Expected zero exit code, got %d", getExitCode())
 			}
 		})
 	}
@@ -60,7 +60,7 @@ func TestRootCmdErr(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
@@ -81,7 +81,7 @@ func TestRootCmdErr(t *testing.T) {
 			rootCmd.SetArgs(input)
 			runRootCmd(rootCmd, input)
 
-			if exitCode == 0 {
+			if getExitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})
@@ -93,7 +93,7 @@ func TestExecute(t *testing.T) {
 
 	cmdMutex.Lock()
 	defer func() {
-		exitCode = 0
+		resetExitCode()
 		cmdMutex.Unlock()
 	}()
 
@@ -116,7 +116,7 @@ func TestExecuteErr(t *testing.T) {
 
 	cmdMutex.Lock()
 	defer func() {
-		exitCode = 0
+		resetExitCode()
 		cmdMutex.Unlock()
 	}()
 

@@ -30,10 +30,11 @@ func runLSPCmd(cmd *cobra.Command, _ []string) {
 	slog.Info("Starting DLiteScript LSP server...")
 
 	var err error
-	exitCode, err = server.Start()
+	code, err := server.Start()
+	setExitCode(code)
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to start LSP server: %s", err.Error()))
-		exitCode = 1
+		setExitCode(1)
 	}
 }

@@ -22,7 +22,7 @@ func (e *Evaluator) evaluateConstantDeclaration(
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
 			errorutil.StageEvaluate,
 			errorutil.ErrorMsgTypeMismatch,
-			node.GetRange().Start.Offset,
+			node.GetRange(),
 			node.Type,
 			value.Value.DataType.AsString(),
 		)

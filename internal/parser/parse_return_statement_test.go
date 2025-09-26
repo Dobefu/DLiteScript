@@ -182,7 +182,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 1",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),
@@ -204,7 +204,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 13",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "return"),
 			),
@@ -226,7 +226,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 2",
+				"%s: %s line 1 at position 7",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, ","),
 			),
@@ -260,7 +260,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 2 at position 1",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
 			),
@@ -294,7 +294,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 4",
+				"%s: %s line 2 at position 1",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
 			),
@@ -334,7 +334,7 @@ func TestParseReturnStatementErr(t *testing.T) {
 				},
 			},
 			expected: fmt.Sprintf(
-				"%s: %s at position 5",
+				"%s: %s line 2 at position 1",
 				errorutil.StageParse.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "\n"),
 			),
@@ -371,7 +371,7 @@ func TestParseReturnValueErr(t *testing.T) {
 			name:  "no tokens",
 			input: []*token.Token{},
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageParse.String(),
 				errorutil.ErrorMsgUnexpectedEOF,
 			),

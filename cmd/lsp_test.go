@@ -9,13 +9,13 @@ func TestLSPCmd(t *testing.T) {
 
 	cmdMutex.Lock()
 	defer func() {
-		exitCode = 0
+		resetExitCode()
 		cmdMutex.Unlock()
 	}()
 
 	runLSPCmd(lspCmd, nil)
 
-	if exitCode == 0 {
-		t.Fatalf("Expected non-zero exit code, got %d", exitCode)
+	if getExitCode() == 0 {
+		t.Fatalf("Expected non-zero exit code, got %d", getExitCode())
 	}
 }

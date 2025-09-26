@@ -1036,7 +1036,10 @@ func TestEvaluateArgumentsSpreadTuple(t *testing.T) {
 					return datavalue.Null(), errorutil.NewErrorAt(
 						errorutil.StageEvaluate,
 						"handler error",
-						0,
+						ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+						},
 					)
 				},
 			},

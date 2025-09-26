@@ -3,6 +3,7 @@ package tokenizer
 import (
 	"strings"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
@@ -126,10 +127,12 @@ func (t *Tokenizer) createNumberErr(
 
 	literalString := t.exp[literalStartIdx:literalEndIdx]
 
+	pos := t.GetCurrentPosition()
+
 	return errorutil.NewErrorAt(
 		errorutil.StageTokenize,
 		errMsg,
-		literalStartIdx,
+		ast.Range{Start: pos, End: pos},
 		literalString,
 	)
 }

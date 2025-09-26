@@ -14,7 +14,18 @@ func (p *Parser) parseImportStatement(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedEOF,
-			p.tokenIdx,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 		)
 	}
 
@@ -31,7 +42,18 @@ func (p *Parser) parseImportStatement(
 		return nil, errorutil.NewErrorAt(
 			errorutil.StageParse,
 			errorutil.ErrorMsgUnexpectedToken,
-			p.tokenIdx-1,
+			ast.Range{
+				Start: ast.Position{
+					Offset: p.tokenIdx - 1,
+					Line:   p.line,
+					Column: p.column,
+				},
+				End: ast.Position{
+					Offset: p.tokenIdx - 1,
+					Line:   p.line,
+					Column: p.column,
+				},
+			},
 			pathToken.Atom,
 		)
 	}
@@ -86,7 +108,18 @@ func (p *Parser) parseImportStatement(
 			return nil, errorutil.NewErrorAt(
 				errorutil.StageParse,
 				errorutil.ErrorMsgUnexpectedToken,
-				p.tokenIdx-1,
+				ast.Range{
+					Start: ast.Position{
+						Offset: p.tokenIdx - 1,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: p.tokenIdx - 1,
+						Line:   p.line,
+						Column: p.column,
+					},
+				},
 				aliasToken.Atom,
 			)
 		}

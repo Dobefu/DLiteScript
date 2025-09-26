@@ -23,7 +23,7 @@ func TestFmtCmd(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
@@ -36,8 +36,8 @@ func TestFmtCmd(t *testing.T) {
 			fmtCmd.SetArgs([]string{test.input})
 			runFmtCmd(fmtCmd, []string{test.input})
 
-			if exitCode != 0 {
-				t.Fatalf("Expected exit code 0, got %d", exitCode)
+			if getExitCode() != 0 {
+				t.Fatalf("Expected exit code 0, got %d", getExitCode())
 			}
 		})
 	}
@@ -66,7 +66,7 @@ func TestFmtCmdErr(t *testing.T) {
 
 			cmdMutex.Lock()
 			defer func() {
-				exitCode = 0
+				resetExitCode()
 				cmdMutex.Unlock()
 			}()
 
@@ -87,7 +87,7 @@ func TestFmtCmdErr(t *testing.T) {
 			fmtCmd.SetArgs(input)
 			runFmtCmd(fmtCmd, input)
 
-			if exitCode == 0 {
+			if getExitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})

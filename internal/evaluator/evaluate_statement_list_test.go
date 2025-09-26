@@ -130,7 +130,7 @@ func TestEvaluateStatementListErr(t *testing.T) {
 			},
 			outFile: io.Discard,
 			expected: fmt.Sprintf(
-				"%s: %s at position 0",
+				"%s: %s line 1 at position 1",
 				errorutil.StageEvaluate.String(),
 				fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 			),
