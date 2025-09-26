@@ -20,5 +20,6 @@ func GetMathFunctions() map[string]function.Info {
 		"ceil":  getCeilFunction(),
 		"min":   getMinFunction(),
 		"max":   getMaxFunction(),
+		"pow":   getPowFunction(),
 	}
 }
