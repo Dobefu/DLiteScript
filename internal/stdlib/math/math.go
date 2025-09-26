@@ -21,5 +21,6 @@ func GetMathFunctions() map[string]function.Info {
 		"min":   getMinFunction(),
 		"max":   getMaxFunction(),
 		"pow":   getPowFunction(),
+		"mod":   getModFunction(),
 	}
 }
