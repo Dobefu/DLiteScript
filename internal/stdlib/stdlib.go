@@ -9,6 +9,7 @@ import (
 	stdliberrors "github.com/Dobefu/DLiteScript/internal/stdlib/errors"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
 	stdlibstrings "github.com/Dobefu/DLiteScript/internal/stdlib/strings"
+	stdlibtime "github.com/Dobefu/DLiteScript/internal/stdlib/time"
 )
 
 var functionRegistry = map[string]function.PackageInfo{
@@ -32,6 +33,9 @@ func init() {
 	}
 	functionRegistry["strings"] = function.PackageInfo{
 		Functions: stdlibstrings.GetStringsFunctions(),
+	}
+	functionRegistry["time"] = function.PackageInfo{
+		Functions: stdlibtime.GetTimeFunctions(),
 	}
 }
 
