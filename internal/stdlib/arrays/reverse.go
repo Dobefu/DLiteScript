@@ -2,27 +2,27 @@ package arrays
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getLenFunction() function.Info {
+func getReverseFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "len",
-			Description: "Returns the length of an array.",
-			Since:       "v0.1.0",
+			Name:        "reverse",
+			Description: "Reverses the order of elements in an array.",
+			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
 				Description:  "",
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf("%s.len([]) // returns 0", packageName),
-				fmt.Sprintf("%s.len([1, 2, 3]) // returns 3", packageName),
-				fmt.Sprintf("%s.len([1, 2, 3, 4, 5, 6]) // returns 6", packageName),
+				fmt.Sprintf("%s.reverse([1, 2, 3]) // returns [3, 2, 1]", packageName),
+				fmt.Sprintf("%s.reverse(['a', 'b', 'c']) // returns ['c', 'b', 'a']", packageName),
 			},
 		},
 		packageName,
@@ -31,21 +31,16 @@ func getLenFunction() function.Info {
 			{
 				Type:        datatype.DataTypeArray,
 				Name:        "arr",
-				Description: "The array to get the length of.",
+				Description: "The array to reverse.",
 			},
 		},
-		[]function.ArgInfo{
-			{
-				Type:        datatype.DataTypeNumber,
-				Name:        "length",
-				Description: "The length of the array.",
-			},
-		},
+		[]function.ArgInfo{},
 		true,
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			array, _ := args[0].AsArray()
+			slices.Reverse(array)
 
-			return datavalue.Number(float64(len(array)))
+			return datavalue.Array(array...)
 		},
 	)
 }

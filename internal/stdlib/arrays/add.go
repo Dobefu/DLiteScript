@@ -1,6 +1,8 @@
 package arrays
 
 import (
+	"fmt"
+
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
@@ -18,8 +20,8 @@ func getAddFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				"add([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]",
-				"add([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]",
+				fmt.Sprintf("%s.add([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]", packageName),
+				fmt.Sprintf("%s.add([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]", packageName),
 			},
 		},
 		packageName,

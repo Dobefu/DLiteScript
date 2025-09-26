@@ -10,7 +10,8 @@ const packageName = "arrays"
 // GetArrayFunctions returns the array functions for the standard library.
 func GetArrayFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"add": getAddFunction(),
-		"len": getLenFunction(),
+		"add":     getAddFunction(),
+		"len":     getLenFunction(),
+		"reverse": getReverseFunction(),
 	}
 }
