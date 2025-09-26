@@ -8,6 +8,7 @@ import (
 	stdlibarrays "github.com/Dobefu/DLiteScript/internal/stdlib/arrays"
 	stdliberrors "github.com/Dobefu/DLiteScript/internal/stdlib/errors"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
+	stdlibstrings "github.com/Dobefu/DLiteScript/internal/stdlib/strings"
 )
 
 var functionRegistry = map[string]function.PackageInfo{
@@ -28,6 +29,9 @@ func init() {
 	}
 	functionRegistry["errors"] = function.PackageInfo{
 		Functions: stdliberrors.GetErrorFunctions(),
+	}
+	functionRegistry["strings"] = function.PackageInfo{
+		Functions: stdlibstrings.GetStringsFunctions(),
 	}
 }
 
