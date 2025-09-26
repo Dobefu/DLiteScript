@@ -21,10 +21,10 @@ func getSqrtFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf("%s.sqrt(4) // returns 2", packageName),
-				fmt.Sprintf("%s.sqrt(16) // returns 4", packageName),
-				fmt.Sprintf("%s.sqrt(0) // returns 0", packageName),
-				fmt.Sprintf("%s.sqrt(-1) // returns null", packageName),
+				fmt.Sprintf("%s.sqrt(4) // returns (2, null)", packageName),
+				fmt.Sprintf("%s.sqrt(16) // returns (4, null)", packageName),
+				fmt.Sprintf("%s.sqrt(0) // returns (0, null)", packageName),
+				fmt.Sprintf("%s.sqrt(-1) // returns (null, err)", packageName),
 			},
 		},
 		packageName,
@@ -42,6 +42,11 @@ func getSqrtFunction() function.Info {
 				Name:        "result",
 				Description: "The square root of the provided number.",
 			},
+			{
+				Type:        datatype.DataTypeError,
+				Name:        "err",
+				Description: "An error if the square root cannot be calculated.",
+			},
 		},
 		true,
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
@@ -50,10 +55,21 @@ func getSqrtFunction() function.Info {
 			sqrt := math.Sqrt(num)
 
 			if math.IsNaN(sqrt) {
-				return datavalue.Null()
+				return datavalue.Tuple(
+					datavalue.Null(),
+					datavalue.Error(
+						fmt.Errorf(
+							"cannot calculate square root of negative number: %f",
+							num,
+						),
+					),
+				)
 			}
 
-			return datavalue.Number(sqrt)
+			return datavalue.Tuple(
+				datavalue.Number(sqrt),
+				datavalue.Null(),
+			)
 		},
 	)
 }

@@ -1,6 +1,7 @@
 package math
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -15,9 +16,12 @@ func TestGetMaxFunction(t *testing.T) {
 		expected datavalue.Value
 	}{
 		{
-			name:     "no input",
-			input:    []datavalue.Value{},
-			expected: datavalue.Null(),
+			name:  "no input",
+			input: []datavalue.Value{},
+			expected: datavalue.Tuple(
+				datavalue.Null(),
+				datavalue.Error(errors.New("max requires at least 2 arguments, got 0")),
+			),
 		},
 		{
 			name: "positive numbers (1, 2, 3)",
@@ -26,7 +30,7 @@ func TestGetMaxFunction(t *testing.T) {
 				datavalue.Number(2),
 				datavalue.Number(3),
 			},
-			expected: datavalue.Number(3),
+			expected: datavalue.Tuple(datavalue.Number(3), datavalue.Null()),
 		},
 		{
 			name: "positive numbers (1.5, 2.5, 3.5)",
@@ -35,7 +39,7 @@ func TestGetMaxFunction(t *testing.T) {
 				datavalue.Number(2.5),
 				datavalue.Number(3.5),
 			},
-			expected: datavalue.Number(3.5),
+			expected: datavalue.Tuple(datavalue.Number(3.5), datavalue.Null()),
 		},
 		{
 			name: "negative numbers (-1, -2, -3)",
@@ -44,7 +48,7 @@ func TestGetMaxFunction(t *testing.T) {
 				datavalue.Number(-2),
 				datavalue.Number(-3),
 			},
-			expected: datavalue.Number(-1),
+			expected: datavalue.Tuple(datavalue.Number(-1), datavalue.Null()),
 		},
 		{
 			name: "negative numbers (-1.5, -2.5, -3.5)",
@@ -53,7 +57,7 @@ func TestGetMaxFunction(t *testing.T) {
 				datavalue.Number(-2.5),
 				datavalue.Number(-3.5),
 			},
-			expected: datavalue.Number(-1.5),
+			expected: datavalue.Tuple(datavalue.Number(-1.5), datavalue.Null()),
 		},
 	}
 

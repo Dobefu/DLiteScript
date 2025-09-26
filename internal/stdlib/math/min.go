@@ -20,10 +20,10 @@ func getMinFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf("%s.min(1, 2, 3) // returns 1", packageName),
-				fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns 1.5", packageName),
-				fmt.Sprintf("%s.min(-1, -2, -3) // returns -3", packageName),
-				fmt.Sprintf("%s.min(-1.5, -2.5, -3.5) // returns -3.5", packageName),
+				fmt.Sprintf("%s.min(1, 2, 3) // returns (1, null)", packageName),
+				fmt.Sprintf("%s.min(1.5, 2.5, 3.5) // returns (1.5, null)", packageName),
+				fmt.Sprintf("%s.min(-1, -2, -3) // returns (-3, null)", packageName),
+				fmt.Sprintf("%s.min(-1.5, -2.5, -3.5) // returns (-3.5, null)", packageName),
 			},
 		},
 		packageName,
@@ -41,11 +41,24 @@ func getMinFunction() function.Info {
 				Name:        "result",
 				Description: "The smallest of the provided numbers.",
 			},
+			{
+				Type:        datatype.DataTypeError,
+				Name:        "err",
+				Description: "An error if the minimum cannot be calculated.",
+			},
 		},
 		true,
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			if len(args) < 2 {
-				return datavalue.Null()
+				return datavalue.Tuple(
+					datavalue.Null(),
+					datavalue.Error(
+						fmt.Errorf(
+							"min requires at least 2 arguments, got %d",
+							len(args),
+						),
+					),
+				)
 			}
 
 			minValue, _ := args[0].AsNumber()
@@ -58,7 +71,7 @@ func getMinFunction() function.Info {
 				}
 			}
 
-			return datavalue.Number(minValue)
+			return datavalue.Tuple(datavalue.Number(minValue), datavalue.Null())
 		},
 	)
 }

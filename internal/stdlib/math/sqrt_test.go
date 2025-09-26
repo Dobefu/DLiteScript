@@ -1,6 +1,7 @@
 package math
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -17,22 +18,29 @@ func TestGetSqrtFunction(t *testing.T) {
 		{
 			name:     "positive number (4)",
 			input:    datavalue.Number(4),
-			expected: datavalue.Number(2),
+			expected: datavalue.Tuple(datavalue.Number(2), datavalue.Null()),
 		},
 		{
 			name:     "positive number (16)",
 			input:    datavalue.Number(16),
-			expected: datavalue.Number(4),
+			expected: datavalue.Tuple(datavalue.Number(4), datavalue.Null()),
 		},
 		{
 			name:     "positive number (0)",
 			input:    datavalue.Number(0),
-			expected: datavalue.Number(0),
+			expected: datavalue.Tuple(datavalue.Number(0), datavalue.Null()),
 		},
 		{
-			name:     "negative number (-1)",
-			input:    datavalue.Number(-1),
-			expected: datavalue.Null(),
+			name:  "negative number (-1)",
+			input: datavalue.Number(-1),
+			expected: datavalue.Tuple(
+				datavalue.Null(),
+				datavalue.Error(
+					fmt.Errorf(
+						"cannot calculate square root of negative number: %f", -1.0,
+					),
+				),
+			),
 		},
 	}
 
