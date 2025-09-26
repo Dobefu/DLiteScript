@@ -8,21 +8,21 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getLenFunction() function.Info {
+func getLengthFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "len",
+			Name:        "length",
 			Description: "Returns the length of an array.",
-			Since:       "v0.1.0",
+			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
 				Description:  "",
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf("%s.len([]) // returns 0", packageName),
-				fmt.Sprintf("%s.len([1, 2, 3]) // returns 3", packageName),
-				fmt.Sprintf("%s.len([1, 2, 3, 4, 5, 6]) // returns 6", packageName),
+				fmt.Sprintf("%s.length([]) // returns 0", packageName),
+				fmt.Sprintf("%s.length([1, 2, 3]) // returns 3", packageName),
+				fmt.Sprintf("%s.length([1, 2, 3, 4, 5, 6]) // returns 6", packageName),
 			},
 		},
 		packageName,

@@ -6,7 +6,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
-func TestGetLenFunction(t *testing.T) {
+func TestGetLengthFunction(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -53,31 +53,31 @@ func TestGetLenFunction(t *testing.T) {
 		},
 	}
 
-	lenFunc := getLenFunction()
+	lengthFunc := getLengthFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := lenFunc.Handler(
+			result, err := lengthFunc.Handler(
 				nil,
 				[]datavalue.Value{test.input, test.args},
 			)
 
 			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			expectedNumber, _ := test.expected.AsNumber()
 			number, err := result.AsNumber()
 
 			if err != nil {
-				t.Fatalf("expected no error, got %v", err)
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			if number != expectedNumber {
 				t.Fatalf(
-					"expected %v, got %v",
+					"expected %g, got %g",
 					expectedNumber,
 					number,
 				)
