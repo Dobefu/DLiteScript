@@ -61,7 +61,7 @@ func (r *ScriptRunner) RunString(str string, filePath ...string) (byte, error) {
 	}
 
 	if result.IsExitResult() {
-		return byte(result.Control.Count), nil
+		return byte(result.Control.Count & 0xFF), nil
 	}
 
 	return 0, nil
