@@ -22,5 +22,6 @@ func GetMathFunctions() map[string]function.Info {
 		"max":   getMaxFunction(),
 		"pow":   getPowFunction(),
 		"mod":   getModFunction(),
+		"sign":  getSignFunction(),
 	}
 }
