@@ -24,5 +24,6 @@ func GetMathFunctions() map[string]function.Info {
 		"mod":   getModFunction(),
 		"sign":  getSignFunction(),
 		"log":   getLogFunction(),
+		"log10": getLog10Function(),
 	}
 }
