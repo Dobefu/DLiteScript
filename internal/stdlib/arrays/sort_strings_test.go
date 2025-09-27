@@ -7,7 +7,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
-func TestGetSortNumbersFunction(t *testing.T) {
+func TestGetSortStringsFunction(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -16,44 +16,27 @@ func TestGetSortNumbersFunction(t *testing.T) {
 		expected []datavalue.Value
 	}{
 		{
-			name: "sort numbers",
+			name: "sort strings",
 			arr: []datavalue.Value{
-				datavalue.Number(3),
-				datavalue.Number(1),
-				datavalue.Number(4),
-				datavalue.Number(1),
-				datavalue.Number(5),
+				datavalue.String("c"),
+				datavalue.String("b"),
+				datavalue.String("a"),
 			},
 			expected: []datavalue.Value{
-				datavalue.Number(1),
-				datavalue.Number(1),
-				datavalue.Number(3),
-				datavalue.Number(4),
-				datavalue.Number(5),
-			},
-		},
-		{
-			name: "sort numbers with multi-digit",
-			arr: []datavalue.Value{
-				datavalue.Number(1),
-				datavalue.Number(2),
-				datavalue.Number(10),
-			},
-			expected: []datavalue.Value{
-				datavalue.Number(1),
-				datavalue.Number(2),
-				datavalue.Number(10),
+				datavalue.String("a"),
+				datavalue.String("b"),
+				datavalue.String("c"),
 			},
 		},
 	}
 
-	sortNumbersFunc := getSortNumbersFunction()
+	sortStringsFunc := getSortStringsFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := sortNumbersFunc.Handler(
+			result, err := sortStringsFunc.Handler(
 				nil,
 				[]datavalue.Value{datavalue.Array(test.arr...)},
 			)
@@ -85,7 +68,7 @@ func TestGetSortNumbersFunction(t *testing.T) {
 	}
 }
 
-func TestGetSortNumbersFunctionErr(t *testing.T) {
+func TestGetSortStringsFunctionErr(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -104,13 +87,13 @@ func TestGetSortNumbersFunctionErr(t *testing.T) {
 		},
 	}
 
-	sortNumbersFunc := getSortNumbersFunction()
+	sortStringsFunc := getSortStringsFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := sortNumbersFunc.Handler(
+			result, err := sortStringsFunc.Handler(
 				nil,
 				[]datavalue.Value{datavalue.Array(test.arr...)},
 			)

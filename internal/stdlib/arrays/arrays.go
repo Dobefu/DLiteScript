@@ -18,5 +18,6 @@ func GetArrayFunctions() map[string]function.Info {
 		"slice":       getSliceFunction(),
 		"splice":      getSpliceFunction(),
 		"sortNumbers": getSortNumbersFunction(),
+		"sortStrings": getSortStringsFunction(),
 	}
 }
