@@ -19,5 +19,6 @@ func GetArrayFunctions() map[string]function.Info {
 		"splice":      getSpliceFunction(),
 		"sortNumbers": getSortNumbersFunction(),
 		"sortStrings": getSortStringsFunction(),
+		"filter":      getFilterFunction(),
 	}
 }

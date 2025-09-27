@@ -83,7 +83,7 @@ func TestGetSortStringsFunctionErr(t *testing.T) {
 				datavalue.String("hello"),
 				datavalue.Number(1),
 			},
-			expected: "array contains non-numbers",
+			expected: "array contains non-strings",
 		},
 	}
 
