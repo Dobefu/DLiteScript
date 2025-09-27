@@ -10,6 +10,7 @@ const packageName = "time"
 // GetTimeFunctions returns the time functions for the standard library.
 func GetTimeFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"now": getNowFunction(),
+		"now":   getNowFunction(),
+		"sleep": getSleepFunction(),
 	}
 }
