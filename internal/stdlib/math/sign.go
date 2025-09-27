@@ -12,7 +12,7 @@ func getSignFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "sign",
-			Description: "Returns the sign of a number: -1 for negative, 0 for zero, 1 for positive.",
+			Description: "Gets the sign of a number: -1 for negative, 0 for zero, 1 for positive.",
 			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

@@ -13,7 +13,7 @@ func getLogFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "log",
-			Description: "Returns the natural logarithm (base e) of a number.",
+			Description: "Gets the natural logarithm (base e) of a number.",
 			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

@@ -13,7 +13,7 @@ func getSqrtFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "sqrt",
-			Description: "Returns the square root of a number.",
+			Description: " the square root of a number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

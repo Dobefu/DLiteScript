@@ -12,7 +12,7 @@ func getMaxFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "max",
-			Description: "Returns the larger of two provided numbers.",
+			Description: "Gets the larger of two provided numbers.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

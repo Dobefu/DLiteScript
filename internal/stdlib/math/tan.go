@@ -13,7 +13,7 @@ func getTanFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "tan",
-			Description: "Returns the tangent value of a number.",
+			Description: "Gets the tangent value of a number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

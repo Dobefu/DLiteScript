@@ -13,7 +13,7 @@ func getIndexOfFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "indexOf",
-			Description: "Returns the index of the first occurrence of a substring in a string.",
+			Description: "Gets the index of the first occurrence of a substring in a string.",
 			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

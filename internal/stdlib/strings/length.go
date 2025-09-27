@@ -12,7 +12,7 @@ func getLengthFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "length",
-			Description: "Returns the length of a string.",
+			Description: "Gets the length of a string.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

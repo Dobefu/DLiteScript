@@ -12,7 +12,7 @@ func getMinFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "min",
-			Description: "Returns the smaller of two provided numbers.",
+			Description: "Gets the smaller of two provided numbers.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

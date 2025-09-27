@@ -13,7 +13,7 @@ func getAbsFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "abs",
-			Description: "Returns the absolute value of a number.",
+			Description: "Gets the absolute value of a number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

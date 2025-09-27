@@ -13,7 +13,7 @@ func getCeilFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "ceil",
-			Description: "Returns the input number, rounded up to the nearest whole number.",
+			Description: "Gets the input number, rounded up to the nearest whole number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

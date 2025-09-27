@@ -9,21 +9,22 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getFindFunction() function.Info {
+func getLastIndexOfFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "find",
-			Description: "Gets the index of the first occurrence of a substring in a string.",
-			Since:       "v0.1.0",
+			Name:        "lastIndexOf",
+			Description: "Gets the index of the last occurrence of a substring in a string.",
+			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
 				Description:  "",
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.find("some test string", "") // returns 0`, packageName),
-				fmt.Sprintf(`%s.find("some test string", "test") // returns 5`, packageName),
-				fmt.Sprintf(`%s.find("some test string", "bogus") // returns -1`, packageName),
+				fmt.Sprintf(`%s.lastIndexOf("Hello World Hello", "Hello") // returns 12`, packageName),
+				fmt.Sprintf(`%s.lastIndexOf("Hello World Hello", "World") // returns 6`, packageName),
+				fmt.Sprintf(`%s.lastIndexOf("Hello World Hello", "xyz") // returns -1`, packageName),
+				fmt.Sprintf(`%s.lastIndexOf("Hello World Hello", "") // returns 17`, packageName),
 			},
 		},
 		packageName,
@@ -43,8 +44,8 @@ func getFindFunction() function.Info {
 		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeNumber,
-				Name:        "index",
-				Description: "The index of the first occurrence of the substring in the string.",
+				Name:        "result",
+				Description: "The index of the last occurrence, or -1 if not found.",
 			},
 		},
 		true,
@@ -52,7 +53,9 @@ func getFindFunction() function.Info {
 			str, _ := args[0].AsString()
 			substr, _ := args[1].AsString()
 
-			return datavalue.Number(float64(strings.Index(str, substr)))
+			index := strings.LastIndex(str, substr)
+
+			return datavalue.Number(float64(index))
 		},
 	)
 }

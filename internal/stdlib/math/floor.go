@@ -13,7 +13,7 @@ func getFloorFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "floor",
-			Description: "Returns the input number, rounded down to the nearest whole number.",
+			Description: "Gets the input number, rounded down to the nearest whole number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

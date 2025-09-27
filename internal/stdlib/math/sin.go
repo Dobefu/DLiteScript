@@ -13,7 +13,7 @@ func getSinFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "sin",
-			Description: "Returns the sine value of a number.",
+			Description: "Gets the sine value of a number.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,

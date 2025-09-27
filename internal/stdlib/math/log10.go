@@ -13,7 +13,7 @@ func getLog10Function() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "log10",
-			Description: "Returns the base 10 logarithm of a number.",
+			Description: "Gets the base 10 logarithm of a number.",
 			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
