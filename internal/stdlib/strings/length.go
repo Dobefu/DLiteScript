@@ -8,10 +8,10 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getLenFunction() function.Info {
+func getLengthFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "len",
+			Name:        "length",
 			Description: "Returns the length of a string.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
@@ -20,8 +20,8 @@ func getLenFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.len("") // returns 0`, packageName),
-				fmt.Sprintf(`%s.len("test") // returns 4`, packageName),
+				fmt.Sprintf(`%s.length("") // returns 0`, packageName),
+				fmt.Sprintf(`%s.length("test") // returns 4`, packageName),
 			},
 		},
 		packageName,

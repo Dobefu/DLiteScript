@@ -6,7 +6,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
-func TestGetLenFunction(t *testing.T) {
+func TestGetLengthFunction(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -29,13 +29,13 @@ func TestGetLenFunction(t *testing.T) {
 		},
 	}
 
-	lenFunc := getLenFunction()
+	lengthFunc := getLengthFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := lenFunc.Handler(
+			result, err := lengthFunc.Handler(
 				nil,
 				[]datavalue.Value{test.input, test.args},
 			)
