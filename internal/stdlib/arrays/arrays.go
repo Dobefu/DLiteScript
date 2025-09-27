@@ -20,5 +20,6 @@ func GetArrayFunctions() map[string]function.Info {
 		"sortNumbers": getSortNumbersFunction(),
 		"sortStrings": getSortStringsFunction(),
 		"filter":      getFilterFunction(),
+		"contains":    getContainsFunction(),
 	}
 }
