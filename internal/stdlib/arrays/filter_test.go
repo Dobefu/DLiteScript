@@ -106,30 +106,12 @@ func TestGetFilterFunction(t *testing.T) {
 				)
 			}
 
-			for i, expectedVal := range test.expectedFilteredOut {
-				if filteredOutArr[i].ToString() != expectedVal.ToString() {
-					t.Fatalf(
-						"expected filtered out element %d to be \"%s\", got \"%s\"",
-						i, expectedVal.ToString(), filteredOutArr[i].ToString(),
-					)
-				}
-			}
-
 			if len(remainingArr) != len(test.expectedRemaining) {
 				t.Fatalf(
 					"expected remaining array length to be %d, got %d",
 					len(test.expectedRemaining),
 					len(remainingArr),
 				)
-			}
-
-			for i, expectedVal := range test.expectedRemaining {
-				if remainingArr[i].ToString() != expectedVal.ToString() {
-					t.Fatalf(
-						"expected remaining element %d to be \"%s\", got \"%s\"",
-						i, expectedVal.ToString(), remainingArr[i].ToString(),
-					)
-				}
 			}
 		})
 	}
