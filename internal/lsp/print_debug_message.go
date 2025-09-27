@@ -19,11 +19,7 @@ func (h *Handler) printDebugMessage(
 		fmt.Fprintf(os.Stderr, "Error unmarshalling params: %s\n", err)
 	}
 
-	formattedParamsJSON, err := json.MarshalIndent(formattedParams, "", "  ")
-
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error marshalling params: %s\n", err)
-	}
+	formattedParamsJSON, _ := json.MarshalIndent(formattedParams, "", "  ")
 
 	fmt.Fprintf(os.Stderr, "Params: %s\n", string(formattedParamsJSON))
 	fmt.Fprintf(os.Stderr, "---\n\n")
