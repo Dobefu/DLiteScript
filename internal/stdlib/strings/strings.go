@@ -24,5 +24,6 @@ func GetStringsFunctions() map[string]function.Info {
 		"substring":  getSubstringFunction(),
 		"startsWith": getStartsWithFunction(),
 		"endsWith":   getEndsWithFunction(),
+		"indexOf":    getIndexOfFunction(),
 	}
 }
