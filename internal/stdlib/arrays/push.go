@@ -8,11 +8,11 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getAddFunction() function.Info {
+func getPushFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "add",
-			Description: "Adds an arbitrary number of values to an array.",
+			Name:        "push",
+			Description: "Pushes an arbitrary number of values to an array.",
 			Since:       "v0.1.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -20,8 +20,8 @@ func getAddFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf("%s.add([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]", packageName),
-				fmt.Sprintf("%s.add([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]", packageName),
+				fmt.Sprintf("%s.push([1, 2, 3], 4, 5, 6) // returns [1, 2, 3, 4, 5, 6]", packageName),
+				fmt.Sprintf("%s.push([1, 2, 3], [4, 5, 6]) // returns [1, 2, 3, 4, 5, 6]", packageName),
 			},
 		},
 		packageName,
@@ -30,12 +30,12 @@ func getAddFunction() function.Info {
 			{
 				Type:        datatype.DataTypeArray,
 				Name:        "arr",
-				Description: "The array to add the values to.",
+				Description: "The array to push the values to.",
 			},
 			{
 				Type:        datatype.DataTypeAny,
 				Name:        "...values",
-				Description: "The values to add to the array.",
+				Description: "The values to push to the array.",
 			},
 		},
 		[]function.ArgInfo{},

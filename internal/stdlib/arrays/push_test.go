@@ -6,7 +6,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
-func TestGetAddFunction(t *testing.T) {
+func TestGetPushFunction(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -43,13 +43,13 @@ func TestGetAddFunction(t *testing.T) {
 		},
 	}
 
-	addFunc := getAddFunction()
+	pushFunc := getPushFunction()
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			result, err := addFunc.Handler(
+			result, err := pushFunc.Handler(
 				nil,
 				[]datavalue.Value{test.input, test.args},
 			)
