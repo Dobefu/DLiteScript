@@ -20,6 +20,7 @@ func (p *Parser) parseFunctionCall(
 		Line:   p.line,
 		Column: p.column - (prevToken.EndPos - prevToken.StartPos),
 	}
+
 	lparenToken, err := p.GetNextToken()
 
 	if err != nil {
@@ -79,30 +80,7 @@ func (p *Parser) parseFunctionCall(
 		}
 	}
 
-	nextToken, err = p.GetNextToken()
-
-	if err != nil {
-		return nil, err
-	}
-
-	if nextToken.TokenType != token.TokenTypeRParen {
-		return nil, errorutil.NewErrorAt(
-			errorutil.StageParse,
-			errorutil.ErrorMsgParenNotClosedAtEOF,
-			ast.Range{
-				Start: ast.Position{
-					Offset: p.tokenIdx,
-					Line:   p.line,
-					Column: p.column,
-				},
-				End: ast.Position{
-					Offset: p.tokenIdx,
-					Line:   p.line,
-					Column: p.column,
-				},
-			},
-		)
-	}
+	_, _ = p.GetNextToken()
 
 	return &ast.FunctionCall{
 		Namespace:    namespace,
