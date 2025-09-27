@@ -564,3 +564,47 @@ func (v Value) Equals(other Value) bool {
 		return false
 	}
 }
+
+// IsTruthy checks if the provided value is truthy.
+func (v Value) IsTruthy() bool {
+	switch v.DataType {
+	case
+		datatype.DataTypeBool:
+		boolVal, _ := v.AsBool()
+
+		return boolVal
+
+	case
+		datatype.DataTypeNumber:
+		numVal, _ := v.AsNumber()
+
+		return numVal != 0
+
+	case
+		datatype.DataTypeString:
+		strVal, _ := v.AsString()
+
+		return strVal != ""
+
+	case
+		datatype.DataTypeNull:
+		return false
+
+	case
+		datatype.DataTypeAny:
+		return v.Any != nil
+
+	case
+		datatype.DataTypeArray:
+		return len(v.Values) > 0
+
+	case
+		datatype.DataTypeFunction,
+		datatype.DataTypeTuple,
+		datatype.DataTypeError:
+		return true
+
+	default:
+		return false
+	}
+}

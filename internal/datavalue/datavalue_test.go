@@ -1172,3 +1172,89 @@ func TestDatavalueEquals(t *testing.T) {
 		})
 	}
 }
+
+func TestDatavalueIsTruthy(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		input    Value
+		expected bool
+	}{
+		{
+			name:     "true",
+			input:    Bool(true),
+			expected: true,
+		},
+		{
+			name:     "false",
+			input:    Bool(false),
+			expected: false,
+		},
+		{
+			name:     "truthy number",
+			input:    Number(1),
+			expected: true,
+		},
+		{
+			name:     "falsy number",
+			input:    Number(0),
+			expected: false,
+		},
+		{
+			name:     "truthy string",
+			input:    String("test"),
+			expected: true,
+		},
+		{
+			name:     "falsy string",
+			input:    String(""),
+			expected: false,
+		},
+		{
+			name:     "null",
+			input:    Null(),
+			expected: false,
+		},
+		{
+			name:     "truthy any",
+			input:    Any(1),
+			expected: true,
+		},
+		{
+			name:     "falsy any",
+			input:    Any(nil),
+			expected: false,
+		},
+		{
+			name:     "truthy array",
+			input:    Array(Number(1)),
+			expected: true,
+		},
+		{
+			name:     "falsy array",
+			input:    Array(),
+			expected: false,
+		},
+		{
+			name:     "error",
+			input:    Error(errors.New("test")),
+			expected: true,
+		},
+		{
+			name:     "unknown type",
+			input:    Value{DataType: datatype.DataType(-1)}, //nolint:exhaustruct
+			expected: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			if test.input.IsTruthy() != test.expected {
+				t.Errorf("expected %t, got %t", test.expected, test.input.IsTruthy())
+			}
+		})
+	}
+}
