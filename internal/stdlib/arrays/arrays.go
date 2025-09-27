@@ -16,5 +16,6 @@ func GetArrayFunctions() map[string]function.Info {
 		"join":    getJoinFunction(),
 		"pop":     getPopFunction(),
 		"slice":   getSliceFunction(),
+		"splice":  getSpliceFunction(),
 	}
 }
