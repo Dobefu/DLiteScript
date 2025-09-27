@@ -14,5 +14,6 @@ func GetArrayFunctions() map[string]function.Info {
 		"length":  getLengthFunction(),
 		"reverse": getReverseFunction(),
 		"join":    getJoinFunction(),
+		"pop":     getPopFunction(),
 	}
 }
