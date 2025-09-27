@@ -15,5 +15,6 @@ func GetStringsFunctions() map[string]function.Info {
 		"has":        getHasFunction(),
 		"replace":    getReplaceFunction(),
 		"replaceAll": getReplaceAllFunction(),
+		"split":      getSplitFunction(),
 	}
 }
