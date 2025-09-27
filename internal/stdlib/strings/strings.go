@@ -23,5 +23,6 @@ func GetStringsFunctions() map[string]function.Info {
 		"toLower":    getToLowerFunction(),
 		"substring":  getSubstringFunction(),
 		"startsWith": getStartsWithFunction(),
+		"endsWith":   getEndsWithFunction(),
 	}
 }

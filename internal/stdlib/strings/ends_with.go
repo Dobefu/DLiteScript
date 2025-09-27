@@ -9,11 +9,11 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
-func getStartsWithFunction() function.Info {
+func getEndsWithFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
-			Name:        "startsWith",
-			Description: "Checks if a string starts with a given substring.",
+			Name:        "endsWith",
+			Description: "Checks if a string ends with a given substring.",
 			Since:       "v0.1.1",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,10 +21,10 @@ func getStartsWithFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.startsWith("Hello World", "Hello") // returns true`, packageName),
-				fmt.Sprintf(`%s.startsWith("Hello World", "World") // returns false`, packageName),
-				fmt.Sprintf(`%s.startsWith("Hello World", "") // returns true`, packageName),
-				fmt.Sprintf(`%s.startsWith("", "Hello") // returns false`, packageName),
+				fmt.Sprintf(`%s.endsWith("Hello World", "World") // returns true`, packageName),
+				fmt.Sprintf(`%s.endsWith("Hello World", "Hello") // returns false`, packageName),
+				fmt.Sprintf(`%s.endsWith("Hello World", "") // returns true`, packageName),
+				fmt.Sprintf(`%s.endsWith("", "World") // returns false`, packageName),
 			},
 		},
 		packageName,
@@ -45,15 +45,15 @@ func getStartsWithFunction() function.Info {
 			{
 				Type:        datatype.DataTypeBool,
 				Name:        "result",
-				Description: "True if the string starts with the substring, false otherwise.",
+				Description: "True if the string ends with the substring, false otherwise.",
 			},
 		},
 		true,
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			str, _ := args[0].AsString()
-			prefix, _ := args[1].AsString()
+			suffix, _ := args[1].AsString()
 
-			return datavalue.Bool(strings.HasPrefix(str, prefix))
+			return datavalue.Bool(strings.HasSuffix(str, suffix))
 		},
 	)
 }
