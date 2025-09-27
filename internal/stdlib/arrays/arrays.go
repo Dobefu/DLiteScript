@@ -10,12 +10,13 @@ const packageName = "arrays"
 // GetArrayFunctions returns the array functions for the standard library.
 func GetArrayFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"push":    getPushFunction(),
-		"length":  getLengthFunction(),
-		"reverse": getReverseFunction(),
-		"join":    getJoinFunction(),
-		"pop":     getPopFunction(),
-		"slice":   getSliceFunction(),
-		"splice":  getSpliceFunction(),
+		"push":        getPushFunction(),
+		"length":      getLengthFunction(),
+		"reverse":     getReverseFunction(),
+		"join":        getJoinFunction(),
+		"pop":         getPopFunction(),
+		"slice":       getSliceFunction(),
+		"splice":      getSpliceFunction(),
+		"sortNumbers": getSortNumbersFunction(),
 	}
 }
