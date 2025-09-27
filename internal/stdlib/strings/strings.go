@@ -21,5 +21,6 @@ func GetStringsFunctions() map[string]function.Info {
 		"trimRight":  getTrimRightFunction(),
 		"toUpper":    getToUpperFunction(),
 		"toLower":    getToLowerFunction(),
+		"substring":  getSubstringFunction(),
 	}
 }
