@@ -17,5 +17,7 @@ func GetStringsFunctions() map[string]function.Info {
 		"replaceAll": getReplaceAllFunction(),
 		"split":      getSplitFunction(),
 		"trim":       getTrimFunction(),
+		"trimLeft":   getTrimLeftFunction(),
+		"trimRight":  getTrimRightFunction(),
 	}
 }
