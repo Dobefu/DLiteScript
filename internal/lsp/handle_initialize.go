@@ -5,13 +5,14 @@ import (
 
 	"github.com/Dobefu/DLiteScript/internal/jsonrpc2"
 	"github.com/Dobefu/DLiteScript/internal/lsp/lsptypes"
+	"github.com/Dobefu/DLiteScript/internal/version"
 )
 
 func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
 	result := lsptypes.InitializeResult{
 		ServerInfo: lsptypes.ServerInfo{
 			Name:    "DLiteScript",
-			Version: "0.1.0",
+			Version: version.GetVersion(),
 		},
 		Capabilities: lsptypes.ServerCapabilities{
 			TextDocumentSync: lsptypes.TextDocumentSync{

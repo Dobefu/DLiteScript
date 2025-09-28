@@ -30,7 +30,7 @@ jobs:
         run: go get .
 
       - name: Build the application
-        run: go build
+        run: go build -buildvcs
 
       - name: Lint the code
         uses: golangci/golangci-lint-action@v8

@@ -105,7 +105,7 @@ Check out the `examples/` directory for examples covering:
 git clone https://github.com/Dobefu/DLiteScript.git
 cd DLiteScript
 go mod download
-go build -o dlitescript ./cmd
+go build -buildvcs
 ```
 
 ## Development
@@ -115,7 +115,7 @@ go build -o dlitescript ./cmd
 go test ./...
 
 # Build binary
-go build -o dlitescript .
+go build -buildvcs
 ```
 
 ## Contributing
