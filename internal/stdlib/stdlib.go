@@ -8,6 +8,7 @@ import (
 	stdlibarrays "github.com/Dobefu/DLiteScript/internal/stdlib/arrays"
 	stdliberrors "github.com/Dobefu/DLiteScript/internal/stdlib/errors"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
+	stdlibos "github.com/Dobefu/DLiteScript/internal/stdlib/os"
 	stdlibstrings "github.com/Dobefu/DLiteScript/internal/stdlib/strings"
 	stdlibtime "github.com/Dobefu/DLiteScript/internal/stdlib/time"
 )
@@ -36,6 +37,9 @@ func init() {
 	}
 	functionRegistry["time"] = function.PackageInfo{
 		Functions: stdlibtime.GetTimeFunctions(),
+	}
+	functionRegistry["os"] = function.PackageInfo{
+		Functions: stdlibos.GetOSFunctions(),
 	}
 }
 
