@@ -202,6 +202,81 @@ func TestEvaluateFunctionCall(t *testing.T) {
 	}
 }
 
+func TestEvaluateNamespaceFunctionCall(t *testing.T) {
+	t.Parallel()
+
+	input := &ast.FunctionCall{
+		Namespace:    "testNamespace",
+		FunctionName: "testFunc",
+		Arguments: []ast.ExprNode{
+			&ast.NumberLiteral{
+				Value: "42",
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+				},
+			},
+		},
+		Range: ast.Range{
+			Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+			End:   ast.Position{Offset: 2, Line: 0, Column: 0},
+		},
+	}
+
+	ev := NewEvaluator(io.Discard)
+	ev.namespaceFunctions = map[string]map[string]*ast.FuncDeclarationStatement{
+		"testNamespace": {
+			"testFunc": {
+				Name: "testFunc",
+				Args: []ast.FuncParameter{
+					{Name: "a", Type: "number"},
+				},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.ReturnStatement{
+							Values: []ast.ExprNode{
+								&ast.Identifier{
+									Value: "a",
+									Range: ast.Range{
+										Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+										End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+									},
+								},
+							},
+							NumValues: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+							},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+					},
+				},
+				ReturnValues:    []string{"number"},
+				NumReturnValues: 1,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
+		},
+	}
+
+	result, err := ev.evaluateFunctionCall(input)
+
+	if err != nil {
+		t.Fatalf("error evaluating namespace function call: %s", err.Error())
+	}
+
+	expected := "42"
+	if result.Value.ToString() != expected {
+		t.Errorf("expected \"%s\", got \"%s\"", expected, result.Value.ToString())
+	}
+}
+
 func TestEvaluateFunctionCallErr(t *testing.T) {
 	t.Parallel()
 
@@ -400,6 +475,27 @@ func TestEvaluateFunctionCallFixedArgsErr(t *testing.T) {
 				},
 			},
 			expected: "'functionHandlerError()' expects exactly 1 argument(s), but got 2",
+		},
+		{
+			name: "undefined function in existing namespace",
+			input: &ast.FunctionCall{
+				Namespace:    "math",
+				FunctionName: "bogus",
+				Arguments: []ast.ExprNode{
+					&ast.NumberLiteral{
+						Value: "1",
+						Range: ast.Range{
+							Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+							End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+						},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 1, Line: 0, Column: 0},
+				},
+			},
+			expected: fmt.Sprintf(errorutil.ErrorMsgUndefinedFunction, "bogus"),
 		},
 	}
 
