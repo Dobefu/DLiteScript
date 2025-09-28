@@ -59,7 +59,9 @@ func (r *MissingReturn) checkFunctionForMissingReturn(
 	hasReturn := false
 
 	funcDecl.Body.Walk(func(n ast.ExprNode) bool {
-		if _, isReturn := n.(*ast.ReturnStatement); isReturn {
+		_, isReturn := n.(*ast.ReturnStatement)
+
+		if isReturn {
 			hasReturn = true
 
 			return false
