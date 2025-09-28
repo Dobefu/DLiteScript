@@ -37,7 +37,7 @@ func (r *Reporter) HasIssues() bool {
 
 // PrintIssues prints all issues to the output file.
 func (r *Reporter) PrintIssues(filename string) {
-	if r.outFile == nil {
+	if r.outFile == io.Discard {
 		return
 	}
 
