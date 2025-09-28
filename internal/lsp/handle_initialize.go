@@ -30,15 +30,7 @@ func (h *Handler) handleInitialize() (json.RawMessage, *jsonrpc2.Error) {
 		},
 	}
 
-	data, err := json.Marshal(result)
-
-	if err != nil {
-		return nil, jsonrpc2.NewError(
-			jsonrpc2.ErrorCodeInternalError,
-			err.Error(),
-			nil,
-		)
-	}
+	data, _ := json.Marshal(result)
 
 	return data, nil
 }
