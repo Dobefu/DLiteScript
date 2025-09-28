@@ -11,5 +11,6 @@ const packageName = "os"
 func GetOSFunctions() map[string]function.Info {
 	return map[string]function.Info{
 		"getEnvVariable": getGetEnvVariableFunction(),
+		"setEnvVariable": getSetEnvVariableFunction(),
 	}
 }
