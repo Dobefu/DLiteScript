@@ -43,17 +43,8 @@ func (e *Evaluator) evaluateIndexExpr(
 		)
 	}
 
-	array, err := value.Value.AsArray()
-
-	if err != nil {
-		return controlflow.NewRegularResult(datavalue.Null()), err
-	}
-
-	idx, err := idxValue.Value.AsNumber()
-
-	if err != nil {
-		return controlflow.NewRegularResult(datavalue.Null()), err
-	}
+	array, _ := value.Value.AsArray()
+	idx, _ := idxValue.Value.AsNumber()
 
 	if idx < 0 || int(idx) >= len(array) {
 		return controlflow.NewRegularResult(datavalue.Null()), errorutil.NewErrorAt(
