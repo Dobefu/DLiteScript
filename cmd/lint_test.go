@@ -58,6 +58,18 @@ func TestLintCmdErr(t *testing.T) {
 			name:  "invalid file path",
 			input: "bogus",
 		},
+		{
+			name:  "syntax error",
+			input: "./testfiles/syntax_error.dl",
+		},
+		{
+			name:  "parse error",
+			input: "./testfiles/parse_error.dl",
+		},
+		{
+			name:  "linter error",
+			input: "./testfiles/linter_error.dl",
+		},
 	}
 
 	for _, test := range tests {
