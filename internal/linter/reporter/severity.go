@@ -1,7 +1,5 @@
 package reporter
 
-import "github.com/Dobefu/DLiteScript/internal/errorutil"
-
 // Severity represents the severity level of a linting issue.
 type Severity int
 
@@ -28,19 +26,5 @@ func (s Severity) String() string {
 
 	default:
 		return "unknown"
-	}
-}
-
-// ToErrorutilStage converts severity to errorutil stage for consistent error reporting.
-func (s Severity) ToErrorutilStage() errorutil.Stage {
-	switch s {
-	case SeverityError:
-		return errorutil.StageParse
-
-	case SeverityWarning, SeverityInfo:
-		return errorutil.StageParse
-
-	default:
-		return errorutil.StageParse
 	}
 }

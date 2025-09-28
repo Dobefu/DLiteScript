@@ -2,8 +2,6 @@ package reporter
 
 import (
 	"testing"
-
-	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
 func TestSeverity(t *testing.T) {
@@ -42,14 +40,6 @@ func TestSeverity(t *testing.T) {
 
 			if test.severity.String() != test.expected {
 				t.Fatalf("expected %s, got %s", test.expected, test.severity.String())
-			}
-
-			if test.severity.ToErrorutilStage() != errorutil.StageParse {
-				t.Fatalf(
-					"expected %s, got %s",
-					errorutil.StageParse,
-					test.severity.ToErrorutilStage(),
-				)
 			}
 		})
 	}
