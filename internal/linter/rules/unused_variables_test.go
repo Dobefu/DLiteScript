@@ -303,7 +303,7 @@ func TestUnusedVariables(t *testing.T) {
 
 			if len(rule.reporter.GetIssues()) != len(test.expected) {
 				t.Fatalf(
-					"expected %d issues, got %d",
+					"expected %d issue(s), got %d",
 					len(test.expected),
 					len(rule.reporter.GetIssues()),
 				)
