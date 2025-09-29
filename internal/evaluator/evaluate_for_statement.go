@@ -119,15 +119,6 @@ func (e *Evaluator) evaluateNodeCondition(
 		return !conditionResult, nil
 	}
 
-	if !node.IsRange {
-		return false, errorutil.NewErrorAt(
-			errorutil.StageEvaluate,
-			errorutil.ErrorMsgInvalidForStatement,
-			node.GetRange(),
-			node.Condition.Expr(),
-		)
-	}
-
 	varName := node.DeclaredVariable
 
 	var currentVar ScopedValue

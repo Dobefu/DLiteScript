@@ -436,6 +436,102 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
 			),
 		},
+		{
+			name: "declareLoopVariable error with invalid range from",
+			input: &ast.ForStatement{
+				Condition: nil,
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.BreakStatement{
+							Count: 1,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+				DeclaredVariable: "i",
+				RangeVariable:    "",
+				RangeFrom: &ast.Identifier{
+					Value: "bogus",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value: "5",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				IsRange:         true,
+				HasExplicitFrom: false,
+			},
+			expected: fmt.Sprintf(
+				"%s: %s line 1 at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
+			),
+		},
+		{
+			name: "executeForIteration error with invalid body",
+			input: &ast.ForStatement{
+				Condition: nil,
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.Identifier{
+							Value: "bogus",
+							Range: ast.Range{
+								Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+							},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+				DeclaredVariable: "i",
+				RangeVariable:    "",
+				RangeFrom: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				IsRange:         true,
+				HasExplicitFrom: false,
+			},
+			expected: fmt.Sprintf(
+				"%s: %s line 1 at position 1",
+				errorutil.StageEvaluate.String(),
+				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
+			),
+		},
 	}
 
 	for _, test := range tests {
@@ -453,6 +549,73 @@ func TestEvaluateForStatementErr(t *testing.T) {
 					"expected \"%s\", got \"%s\"",
 					test.expected,
 					err.Error(),
+				)
+			}
+		})
+	}
+}
+
+func TestDeclareLoopVariable(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		node     *ast.ForStatement
+		expected error
+	}{
+		{
+			name: "declareLoopVariable with outerScope assignment",
+			node: &ast.ForStatement{
+				DeclaredVariable: "outerVar",
+				RangeVariable:    "",
+				RangeFrom: &ast.NumberLiteral{
+					Value: "0",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				RangeTo: &ast.NumberLiteral{
+					Value: "1",
+					Range: ast.Range{
+						Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+					},
+				},
+				IsRange:         true,
+				HasExplicitFrom: false,
+				Condition:       nil,
+				Body:            nil,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
+				},
+			},
+			expected: nil,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
+			evaluator := NewEvaluator(io.Discard)
+			err := evaluator.declareLoopVariable(test.node)
+
+			if err != nil && test.expected == nil {
+				t.Fatalf("expected no error, got \"%s\"", err.Error())
+			}
+
+			if err == nil && test.expected != nil {
+				t.Fatalf("expected error, got nil")
+			}
+
+			_, exists := evaluator.outerScope[test.node.DeclaredVariable]
+
+			if !exists {
+				t.Fatalf(
+					"variable \"%s\" not found in outerScope",
+					test.node.DeclaredVariable,
 				)
 			}
 		})
