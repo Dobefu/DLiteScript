@@ -1,0 +1,4 @@
+baseURL = 'https://dlitescript.com'
+languageCode = 'en-us'
+title = 'DLiteScript'
+theme = 'default'
