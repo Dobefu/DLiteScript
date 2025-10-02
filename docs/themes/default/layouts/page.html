@@ -6,5 +6,5 @@
   <time datetime="{{- $dateMachine -}}">{{- $dateHuman -}}</time>
 
   {{- .Content -}}
-  {{- partial "terms.gohtml" (dict "taxonomy" "page" .) -}}
+  {{- partial "terms.html" (dict "page" .) -}}
 {{- end -}}

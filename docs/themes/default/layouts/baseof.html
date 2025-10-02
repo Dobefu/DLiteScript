@@ -4,12 +4,12 @@
   dir="{{- or site.Language.LanguageDirection `ltr` -}}"
 >
   <head>
-    {{- partial "head.gohtml" . -}}
+    {{- partial "head.html" . -}}
   </head>
 
   <body>
     <header>
-      {{- partial "header.gohtml" . -}}
+      {{- partial "header.html" . -}}
     </header>
 
     <main>
@@ -17,7 +17,7 @@
     </main>
 
     <footer>
-      {{- partial "footer.gohtml" . -}}
+      {{- partial "footer.html" . -}}
     </footer>
   </body>
 </html>

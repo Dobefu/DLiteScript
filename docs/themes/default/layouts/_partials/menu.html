@@ -4,7 +4,7 @@ Renders a menu for the given menu ID.
 @context {page} page The current page.
 @context {string} menuID The menu ID.
 
-@example: {{ partial "menu.gohtml" (dict "menuID" "main" "page" .) }}
+@example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
 */}}
 
 {{- $page := .page -}}
@@ -13,12 +13,12 @@ Renders a menu for the given menu ID.
 {{- with index site.Menus $menuID -}}
   <nav>
     <ul>
-      {{- partial "inline/menu/walk.gohtml" (dict "page" $page "menuEntries" .) -}}
+      {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) -}}
     </ul>
   </nav>
 {{- end -}}
 
-{{- define "_partials/inline/menu/walk.gohtml" -}}
+{{- define "_partials/inline/menu/walk.html" -}}
   {{- $page := .page -}}
 
   {{- range .menuEntries -}}
@@ -51,7 +51,7 @@ Renders a menu for the given menu ID.
 
       {{- with .Children -}}
         <ul>
-          {{- partial "inline/menu/walk.gohtml" (dict "page" $page "menuEntries" .) -}}
+          {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) -}}
         </ul>
       {{- end -}}
     </li>
