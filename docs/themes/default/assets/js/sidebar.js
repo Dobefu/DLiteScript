@@ -12,7 +12,7 @@
     '[data-action="toggle-sidebar"]',
   );
 
-  sidebarToggles.forEach((toggle) => {
+  for (const toggle of sidebarToggles) {
     toggle.addEventListener("click", (e) => {
       e.preventDefault();
 
@@ -23,5 +23,5 @@
         sidebar.classList.remove("is-transitioning");
       }, 200);
     });
-  });
+  }
 })();
