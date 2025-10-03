@@ -3,22 +3,15 @@
   lang="{{- site.Language.LanguageCode -}}"
   dir="{{- or site.Language.LanguageDirection `ltr` -}}"
 >
-  <head>
-    {{- partial "head.html" . -}}
-  </head>
+  {{- partial "head.html" . -}}
 
   <body>
-    <header>
-      {{- partial "header.html" . -}}
-    </header>
+    {{- partial "header.html" . -}}
+    {{- partial "sidebar.html" . -}}
 
-    <main>
+    <main id="main-content">
       {{- block "main" . -}}{{- end -}}
     </main>
-
-    <footer>
-      {{- partial "footer.html" . -}}
-    </footer>
 
     {{- partialCached "head/js.html" . -}}
   </body>

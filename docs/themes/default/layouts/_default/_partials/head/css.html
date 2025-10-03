@@ -1,0 +1,20 @@
+{{- $cssFiles := resources.Match "css/**.css" -}}
+
+{{- if $cssFiles -}}
+  {{- $cssBundle := $cssFiles | resources.Concat "css/style.css" -}}
+
+  {{- if hugo.IsDevelopment -}}
+    {{- range $cssFiles -}}
+      <link rel="stylesheet" href="{{- .RelPermalink -}}">
+    {{- end -}}
+  {{- else -}}
+    {{- with $cssBundle | minify | fingerprint -}}
+      <link
+        rel="stylesheet"
+        href="{{- .RelPermalink -}}"
+        integrity="{{- .Data.Integrity -}}"
+        crossorigin="anonymous"
+      >
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

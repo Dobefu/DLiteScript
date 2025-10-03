@@ -1,0 +1,18 @@
+<aside class="sidebar">
+  <div class="sidebar__content">
+    <button
+      class="sidebar__close"
+      data-action="toggle-sidebar"
+      title="{{- i18n "sidebar.close" -}}"
+    ></button>
+
+    {{ range .Site.AllPages }}
+      <a class="sidebar__link" href="{{- .Permalink -}}">
+        {{- .LinkTitle | default .Title -}}
+      </a>
+    {{ end }}
+
+  </div>
+
+  {{- partial "footer.html" . -}}
+</aside>

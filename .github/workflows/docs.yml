@@ -2,7 +2,7 @@ name: Deploy documentation site to GitHub Pages
 
 on:
   push:
-    branches: ["main", "feature/documentation"]
+    branches: ["main"]
 
 permissions:
   contents: read

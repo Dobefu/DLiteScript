@@ -2,6 +2,14 @@ baseURL = 'https://example.org/'
 languageCode = 'en-US'
 title = 'My New Hugo Site'
 
+disableKinds = ['taxonomy', 'term']
+
+[params]
+  shortName = 'My New Hugo Site'
+  description = 'A new Hugo site'
+  backgroundColor = '#ffffff'
+  themeColor = '#000000'
+
 [menus]
   [[menus.main]]
     name = 'Home'
@@ -12,3 +20,6 @@ title = 'My New Hugo Site'
   [module.hugoVersion]
     extended = false
     min = '0.146.0'
+
+[outputs]
+  home = ['html', 'rss', 'webappmanifest']

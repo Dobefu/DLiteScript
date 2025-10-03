@@ -1,0 +1,12 @@
+:root {
+  --color-background: #fff;
+  --color-foreground: #000;
+  --color-header-background: #ddd;
+  --color-header-foreground: #000;
+  --color-footer-background: #eee;
+  --color-footer-foreground: #000;
+  --color-sidebar-background: #eee;
+  --color-sidebar-foreground: #000;
+  --color-main-background: #fff;
+  --color-main-foreground: #000;
+}
