@@ -1,7 +1,6 @@
 (() => {
   "use strict";
 
-  console.log("sidebar.js");
   const sidebar = document.querySelector(".sidebar");
 
   if (!sidebar) {
