@@ -27,5 +27,5 @@ for platform in "${PLATFORMS[@]}"; do
     OUTPUT="output/dlitescript-${platform_key}"
 
     echo "Compiling ${platform_key}"
-    GOOS=$goos GOARCH=$goarch go build -buildvcs -ldflags="-s -w" -o "$OUTPUT" .
+    GOOS="$goos" GOARCH="$goarch" go build -buildvcs -ldflags="-s -w" -o "$OUTPUT" .
 done
