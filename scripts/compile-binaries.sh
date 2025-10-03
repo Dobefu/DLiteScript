@@ -23,9 +23,9 @@ PLATFORMS=(
 
 # Build the DLiteScript binary for all platforms.
 for platform in "${PLATFORMS[@]}"; do
-    IFS=':' read -r platform_key goos goarch <<< "$platform"
+    IFS=':' read -r platform_key goos goarch <<< "${platform}"
     OUTPUT="output/dlitescript-${platform_key}"
 
     echo "Compiling ${platform_key}"
-    GOOS="$goos" GOARCH="$goarch" go build -buildvcs -ldflags="-s -w" -o "$OUTPUT" .
+    GOOS="${goos}" GOARCH="${goarch}" go build -buildvcs -ldflags="-s -w" -o "${OUTPUT}" .
 done
