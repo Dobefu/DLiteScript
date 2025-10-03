@@ -64,7 +64,7 @@ jobs:
         id: cache-restore
         uses: actions/cache/restore@v4
         with:
-          path: ${{ runner.temp }}/hugo_cache
+          path: ${{ runner.temp }}/hugo_docs_cache
           key: hugo_docs-${{ github.run_id }}
           restore-keys: hugo_docs-
 
@@ -86,7 +86,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./docs/public
 
   deploy:
     environment:
