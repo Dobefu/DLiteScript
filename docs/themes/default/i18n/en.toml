@@ -1,0 +1,5 @@
+[header]
+  toggle-sidebar = "Toggle sidebar"
+
+[sidebar]
+  close = "Close sidebar"

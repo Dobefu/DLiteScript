@@ -1,0 +1,17 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>
+    {{- if .IsHome -}}
+      {{- site.Title -}}
+    {{- else -}}
+      {{- printf "%s | %s" .Title site.Title -}}
+    {{- end -}}
+  </title>
+  <meta name="description" content="{{ .Description }}">
+
+  <link rel="canonical" href="{{ .Permalink }}">
+  <link rel="manifest" href="{{ .Site.BaseURL }}manifest.webmanifest">
+
+  {{- partialCached "head/css.html" . -}}
+</head>

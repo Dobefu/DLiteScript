@@ -1,0 +1,9 @@
+{
+  "name": "{{ site.Title }}",
+  "short_name": "{{ site.Params.shortName | default site.Title }}",
+  "description": "{{ site.Params.description | default site.Title }}",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "{{ site.Params.backgroundColor | default "#ffffff" }}",
+  "theme_color": "{{ site.Params.themeColor | default "#000000" }}"
+}

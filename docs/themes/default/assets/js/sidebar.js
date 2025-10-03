@@ -1,0 +1,27 @@
+(() => {
+  "use strict";
+
+  console.log("sidebar.js");
+  const sidebar = document.querySelector(".sidebar");
+
+  if (!sidebar) {
+    return;
+  }
+
+  const sidebarToggles = document.querySelectorAll(
+    '[data-action="toggle-sidebar"]',
+  );
+
+  sidebarToggles.forEach((toggle) => {
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      sidebar.classList.add("is-transitioning");
+      sidebar.classList.toggle("open");
+
+      setTimeout(() => {
+        sidebar.classList.remove("is-transitioning");
+      }, 200);
+    });
+  });
+})();

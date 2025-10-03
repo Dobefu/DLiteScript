@@ -1,0 +1,30 @@
+baseURL = 'https://dlitescript.com'
+languageCode = 'en-US'
+title = 'DLiteScript'
+theme = 'default'
+
+disableKinds = ['taxonomy', 'term']
+
+[params]
+  shortName = 'DLiteScript'
+  description = 'A delightfully simple scripting language.'
+  backgroundColor = '#ffffff'
+  themeColor = '#000000'
+
+disableHugoGeneratorInject = true
+enableEmoji = true
+enableGitInfo = true
+enableRobotsTXT = true
+newContentEditor = 'nvim'
+printUnusedTemplates = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[outputs]
+  home = ['html', 'rss', 'webappmanifest']
+
+[security]
+  [security.exec]
+    allow = ['^go$', '^git$', '^nvim$']
