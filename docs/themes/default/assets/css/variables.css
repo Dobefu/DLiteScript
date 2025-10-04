@@ -1,12 +1,14 @@
 :root {
   --color-background: #fff;
   --color-foreground: #000;
-  --color-header-background: #ddd;
+  --color-header-background: #f2f3f5;
   --color-header-foreground: #000;
-  --color-footer-background: #eee;
+  --color-footer-background: #0000;
   --color-footer-foreground: #000;
-  --color-sidebar-background: #eee;
+  --color-sidebar-background: #f7f9fa;
   --color-sidebar-foreground: #000;
   --color-main-background: #fff;
   --color-main-foreground: #000;
+
+  --shadow-md: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
 }
