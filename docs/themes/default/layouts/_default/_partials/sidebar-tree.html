@@ -3,14 +3,25 @@
 
 {{- range $child := $node.Sections.ByWeight -}}
   <li>
-    <a class="sidebar__section--header" href="{{ $child.Permalink }}">
-      {{- $child.LinkTitle | default $child.Title -}}
-    </a>
-
     {{- if or ($child.Sections) ($child.Pages) -}}
-      <ul class="sidebar__section--pages">
-        {{- partial "sidebar-tree.html" (dict "node" $child "current" $current) -}}
-      </ul>
+      {{- $isCurrentSection := eq $child.RelPermalink $current.RelPermalink -}}
+      {{- $hasCurrentPage := or $isCurrentSection (hasPrefix $current.RelPermalink $child.RelPermalink) -}}
+
+      <details class="sidebar__section"{{ if $hasCurrentPage }} open{{ end }}>
+        <summary class="sidebar__section--header">
+          <a href="{{ $child.Permalink }}">
+            {{- $child.LinkTitle | default $child.Title -}}
+          </a>
+        </summary>
+
+        <ul class="sidebar__section--pages">
+          {{- partial "sidebar-tree.html" (dict "node" $child "current" $current) -}}
+        </ul>
+      </details>
+    {{- else -}}
+      <a class="sidebar__section--header" href="{{ $child.Permalink }}">
+        {{- $child.LinkTitle | default $child.Title -}}
+      </a>
     {{- end -}}
   </li>
 {{- end -}}
