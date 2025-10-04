@@ -2,5 +2,6 @@
 title = '{{ replace .File.ContentBaseName "-" " " | title }}'
 linkTitle = '{{ replace .File.ContentBaseName "-" " " | title }}'
 description = ''
-draft = true
+weight = 0
+draft = false
 +++
