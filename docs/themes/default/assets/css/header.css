@@ -42,12 +42,9 @@
   text-decoration: none;
 }
 
-.header .menu {
-  display: flex;
-  gap: var(--spacing-md);
-}
-
 .header .menu > ul {
+  display: flex;
+  gap: var(--spacing-sm);
   list-style: none;
   padding: 0;
 }
