@@ -45,7 +45,8 @@
 }
 
 .sidebar__close::before {
-  background-image: url('/icons/x.svg');
+  background-color: var(--color-sidebar-foreground);
+  mask: url("/icons/x.svg") no-repeat center;
   content: '';
   display: block;
   height: 100%;

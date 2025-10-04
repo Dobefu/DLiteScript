@@ -23,7 +23,8 @@
 }
 
 .header__menu--toggle::before {
-  background-image: url('/icons/menu.svg');
+  background-color: var(--color-header-foreground);
+  mask: url("/icons/menu.svg") no-repeat center;
   content: '';
   display: block;
   height: 100%;
