@@ -1,0 +1,33 @@
+{{- $node := .node -}}
+{{- $current := .current -}}
+
+{{- range $child := $node.Sections.ByWeight -}}
+  <li>
+    <a class="sidebar__section--header" href="{{ $child.Permalink }}">
+      {{- $child.LinkTitle | default $child.Title -}}
+    </a>
+
+    {{- if or ($child.Sections) ($child.Pages) -}}
+      <ul class="sidebar__section--pages">
+        {{- partial "sidebar-tree.html" (dict "node" $child "current" $current) -}}
+      </ul>
+    {{- end -}}
+  </li>
+{{- end -}}
+
+{{- range $page := $node.Pages.ByWeight -}}
+  {{- if not $page.IsSection -}}
+    {{- $isActive := eq $page.RelPermalink $current.RelPermalink -}}
+
+    <li>
+      <a
+        class="sidebar__link{{ if $isActive }} is-active{{ end }}"
+        href="{{ $page.Permalink }}"
+      >
+        {{- $page.LinkTitle | default $page.Title -}}
+      </a>
+    </li>
+  {{- end -}}
+{{- end -}}
+
+

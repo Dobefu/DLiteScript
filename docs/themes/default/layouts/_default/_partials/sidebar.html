@@ -7,17 +7,24 @@
     ></button>
 
     <nav class="sidebar__nav">
-      {{ range .Site.AllPages }}
-        <a class="sidebar__link" href="{{- .Permalink -}}">
-          {{- .LinkTitle | default .Title -}}
-        </a>
-        <a class="sidebar__link" href="{{- .Permalink -}}">
-          {{- .LinkTitle | default .Title -}}
-        </a>
-        <a class="sidebar__link" href="{{- .Permalink -}}">
-          {{- .LinkTitle | default .Title -}}
-        </a>
-      {{ end }}
+      {{- if .IsHome -}}
+        <ul class="sidebar__section--pages">
+          {{- range site.Menus.main -}}
+            <li>
+              <a class="sidebar__section--header" href="{{ .URL }}">{{ .Name }}</a>
+            </li>
+          {{- end -}}
+        </ul>
+      {{- else -}}
+        {{- $root := site.GetPage "section" .Section -}}
+        {{- $current := . -}}
+
+        {{- if $root -}}
+          <ul class="sidebar__section--pages">
+            {{- partial "sidebar-tree.html" (dict "node" $root "current" $current) -}}
+          </ul>
+        {{- end -}}
+      {{- end -}}
     </nav>
 
   </div>

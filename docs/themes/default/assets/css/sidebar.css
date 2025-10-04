@@ -90,6 +90,31 @@
   padding: var(--spacing-md);
 }
 
+.sidebar__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.sidebar__section--header {
+  color: var(--color-sidebar-foreground);
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar__section--pages {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar__section--pages .sidebar__section--pages {
+  border-inline-start: 1px solid var(--color-sidebar-border);
+  list-style: none;
+  padding: 0 0 0 var(--spacing-md);
+}
+
 .sidebar__link {
   color: var(--color-sidebar-foreground);
   display: block;
