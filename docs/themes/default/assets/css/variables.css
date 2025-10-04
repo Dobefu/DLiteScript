@@ -14,4 +14,8 @@
   --color-main-foreground: #000;
 
   --shadow-md: 0 0 0.5rem 0 rgba(0, 0, 0, 0.1);
+
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
 }

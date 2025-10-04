@@ -2,6 +2,6 @@
   background-color: var(--color-footer-background);
   border-block-start: 1px solid var(--color-footer-border);
   color: var(--color-footer-foreground);
-  padding: 1rem;
+  padding: var(--spacing-md);
   text-align: center;
 }

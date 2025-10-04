@@ -5,7 +5,7 @@
   display: flex;
   grid-area: sidebar;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--spacing-md);
   min-height: 0;
 }
 
@@ -31,7 +31,7 @@
 @media (max-width: 48rem) {
   .sidebar {
     position: absolute;
-    inset: 0.25rem;
+    inset: var(--spacing-xs);
     transform: translateX(calc(-100% - 0.5rem));
     will-change: transform;
     z-index: 1;
@@ -54,9 +54,9 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
   overflow: auto;
-  padding: 1rem;
+  padding: var(--spacing-md);
 }
 
 .sidebar__link {

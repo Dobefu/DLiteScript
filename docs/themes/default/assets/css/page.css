@@ -1,13 +1,13 @@
 .page {
   display: grid;
   flex: 1;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 #main-content {
   background-color: var(--color-main-background);
   box-shadow: inset var(--shadow-md);
   color: var(--color-main-foreground);
-  padding: 1rem;
+  padding: var(--spacing-md);
   grid-area: main;
 }
