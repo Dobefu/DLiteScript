@@ -14,7 +14,7 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
-  background-color: var(--color-background);
+  background: var(--color-background);
   color: var(--color-foreground);
   font-family: sans-serif;
   height: 100%;
