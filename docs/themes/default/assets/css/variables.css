@@ -12,8 +12,6 @@
   --color-sidebar-foreground: #000;
   --color-sidebar-border: #e2e8f0;
   --color-sidebar-link: #333;
-  --color-main-background: #fff;
-  --color-main-foreground: #000;
 
   --color-heading: #0369a1;
 
@@ -30,4 +28,24 @@
   --border-radius-sm: 0.5rem;
   --border-radius-md: 1rem;
   --border-radius-full: 9rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0a0a0a;
+    --color-foreground: #fff;
+    --color-header-background: #171717;
+    --color-header-foreground: #fff;
+    --color-header-border: #262626;
+    --color-header-link: #a3a3a3;
+    --color-footer-background: #0000;
+    --color-footer-foreground: #fff;
+    --color-footer-border: #262626;
+    --color-sidebar-background: #171717;
+    --color-sidebar-foreground: #fff;
+    --color-sidebar-border: #262626;
+    --color-sidebar-link: #a3a3a3;
+
+    --color-heading: #60a5fa;
+  }
 }
