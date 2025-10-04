@@ -21,5 +21,7 @@
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
 
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 1rem;
   --border-radius-full: 9rem;
 }
