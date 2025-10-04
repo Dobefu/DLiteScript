@@ -8,6 +8,12 @@
   margin: 0;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
 html {
   height: 100%;
 }

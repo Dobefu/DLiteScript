@@ -9,4 +9,5 @@
   color: var(--color-foreground);
   padding: var(--spacing-md);
   grid-area: main;
+  overflow: auto;
 }

@@ -8,12 +8,43 @@ body {
   min-height: 100vh;
 }
 
+body.has-toc {
+  grid-template-areas:
+    "header header header"
+    "sidebar main toc";
+  grid-template-columns: 20rem 1fr 16rem;
+}
+
+@media (max-width: 64rem) {
+  body {
+    grid-template-areas:
+      "header header"
+      "sidebar main";
+    grid-template-columns: 20rem 1fr;
+  }
+
+  body.has-toc {
+    grid-template-areas:
+      "header header"
+      "sidebar toc"
+      "sidebar main";
+    grid-template-columns: 20rem 1fr;
+  }
+}
+
 @media (max-width: 48rem) {
   body {
     grid-template-areas:
       "header"
       "main";
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+  }
+
+  body.has-toc {
+    grid-template-areas:
+      "header"
+      "toc"
+      "main";
+    grid-template-columns: 1fr;
   }
 }

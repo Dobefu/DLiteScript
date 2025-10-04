@@ -28,3 +28,8 @@ printUnusedTemplates = true
 [security]
   [security.exec]
     allow = ['^go$', '^git$', '^nvim$']
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4

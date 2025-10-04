@@ -28,3 +28,8 @@ disableKinds = ['taxonomy', 'term']
 
 [outputs]
   home = ['html', 'rss', 'webappmanifest']
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4

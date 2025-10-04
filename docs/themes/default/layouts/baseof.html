@@ -4,14 +4,30 @@
   dir="{{- or site.Language.LanguageDirection `ltr` -}}"
 >
   {{- partial "head.html" . -}}
+  {{- $hasToc := (strings.Contains .TableOfContents "<li>") -}}
 
-  <body>
+  <body class="{{- if $hasToc -}}has-toc{{- end -}}">
     {{- partial "header.html" . -}}
     {{- partial "sidebar.html" . -}}
 
     <main id="main-content">
       {{- block "main" . -}}{{- end -}}
     </main>
+
+    {{- if $hasToc -}}
+      <aside id="toc" class="toc">
+        <div class="toc__header" data-action="toggle-toc">
+          <h3 class="toc__title">{{- i18n "toc.title" -}}</h3>
+          <div
+            class="toc__toggle"
+            aria-label="{{- i18n "toc.toggle" -}}"
+          ></div>
+        </div>
+        <div class="toc__content">
+          {{- .TableOfContents -}}
+        </div>
+      </aside>
+    {{- end -}}
 
     {{- partialCached "head/js.html" . -}}
   </body>
