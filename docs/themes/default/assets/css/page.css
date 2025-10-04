@@ -6,7 +6,6 @@
 
 #main-content {
   background: var(--color-main-background);
-  box-shadow: inset var(--shadow-md);
   color: var(--color-main-foreground);
   padding: var(--spacing-md);
   grid-area: main;
