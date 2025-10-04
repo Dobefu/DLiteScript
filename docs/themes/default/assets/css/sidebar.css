@@ -59,6 +59,10 @@
   padding: var(--spacing-md);
 }
 
+.sidebar__content a {
+  color: var(--color-sidebar-link);
+}
+
 .sidebar__link {
   color: var(--color-sidebar-foreground);
   display: block;
