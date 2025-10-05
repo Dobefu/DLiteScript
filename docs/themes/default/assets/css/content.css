@@ -10,6 +10,17 @@ a:visited {
   color: var(--color-link-visited);
 }
 
+ol,
+ul {
+  padding-inline-start: var(--spacing-lg);
+}
+
+ol > li::marker,
+ul > li::marker {
+  color: var(--color-heading);
+  font-weight: 500;
+}
+
 hr {
   border: 1px solid var(--color-hr);
   margin-block-start: var(--spacing-xl);
