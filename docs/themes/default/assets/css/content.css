@@ -26,6 +26,21 @@ hr {
   margin-block-start: var(--spacing-xl);
 }
 
+dl {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+dl > dt {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+dl > dd {
+  margin-inline-start: var(--spacing-lg);
+}
+
 .footnote-ref {
   text-decoration: none;
 }
