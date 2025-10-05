@@ -3,11 +3,13 @@
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
   color: var(--color-chroma-foreground);
+  overflow: auto;
   padding: var(--spacing-sm);
 }
 
 .chroma .chroma {
   box-shadow: none;
+  overflow: visible;
   padding: 0;
 }
 
