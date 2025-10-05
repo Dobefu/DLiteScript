@@ -18,6 +18,22 @@
 
   --color-heading: #0369a1;
 
+  --color-chroma-background: #f8fafc;
+  --color-chroma-foreground: #000;
+  --color-chroma-border: #e5e7eb;
+  --color-chroma-highlight-background: #e5e7eb;
+  --color-chroma-highlight-foreground: #3f3f3f;
+  --color-chroma-line: #3f3f3f;
+  --color-chroma-keyword: #685d1a;
+  --color-chroma-type: #99610c;
+  --color-chroma-constant: #3f3f3f;
+  --color-chroma-variable: #3f3f3f;
+  --color-chroma-function: #1d7271;
+  --color-chroma-string: #32743f;
+  --color-chroma-number: #bd2f2f;
+  --color-chroma-comment: #1c7ca1;
+  --color-chroma-comment-preprocessor: #1c7ca1;
+
   --shadow-sm: 0 0 .25rem 0 #00000014;
   --shadow-md: 0 0 .5rem 0 #0000001a;
   --shadow-lg: 0 0 1rem 0 #0000001f;
@@ -28,6 +44,7 @@
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
 
+  --border-radius-xs: 0.25rem;
   --border-radius-sm: 0.5rem;
   --border-radius-md: 1rem;
   --border-radius-full: 9rem;
