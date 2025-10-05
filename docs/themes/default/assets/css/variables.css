@@ -17,6 +17,8 @@
   --color-card-border: #e2e8f0;
 
   --color-heading: #0369a1;
+  --color-link: #1357b1;
+  --color-link-visited: #1357b1;
 
   --color-chroma-background: #f8fafc;
   --color-chroma-foreground: #000;
@@ -70,6 +72,8 @@
     --color-card-border: #262626;
 
     --color-heading: #60a5fa;
+    --color-link: #579cf0;
+    --color-link-visited: #579cf0;
 
     --color-chroma-background: #171717;
     --color-chroma-foreground: #f8f8f8;
