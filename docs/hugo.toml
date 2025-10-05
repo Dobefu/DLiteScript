@@ -3,7 +3,13 @@ languageCode = 'en-US'
 title = 'DLiteScript'
 theme = 'default'
 
+disableHugoGeneratorInject = true
 disableKinds = ['taxonomy', 'term']
+enableEmoji = true
+enableGitInfo = true
+enableRobotsTXT = true
+newContentEditor = 'nvim'
+printUnusedTemplates = true
 
 [params]
   shortName = 'DLiteScript'
@@ -11,12 +17,8 @@ disableKinds = ['taxonomy', 'term']
   backgroundColor = '#ffffff'
   themeColor = '#000000'
 
-disableHugoGeneratorInject = true
-enableEmoji = true
-enableGitInfo = true
-enableRobotsTXT = true
-newContentEditor = 'nvim'
-printUnusedTemplates = true
+  [params.socialLinks]
+    github = 'https://github.com/Dobefu/DLiteScript'
 
 [caches]
   [caches.images]

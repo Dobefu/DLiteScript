@@ -7,3 +7,18 @@
 [toc]
   title = "On this page"
   toggle = "Toggle table of contents"
+
+[socialLinks]
+  bluesky = "Bluesky"
+  discord = "Discord"
+  facebook = "Facebook"
+  github = "GitHub"
+  instagram = "Instagram"
+  linkedin = "LinkedIn"
+  pinterest = "Pinterest"
+  reddit = "Reddit"
+  telegram = "Telegram"
+  tiktok = "TikTok"
+  twitter = "Twitter"
+  whatsapp = "WhatsApp"
+  youtube = "YouTube"

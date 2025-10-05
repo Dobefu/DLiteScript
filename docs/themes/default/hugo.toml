@@ -10,6 +10,23 @@ disableKinds = ['taxonomy', 'term']
   backgroundColor = '#ffffff'
   themeColor = '#000000'
 
+  [params.socialLinks]
+    # Enable social links by uncommenting any of the following lines.
+    #
+    # bluesky = 'https://bsky.app/profile/<your-bluesky-username>'
+    # discord = 'https://discord.gg/<your-discord-server-invite-link>'
+    # facebook = 'https://www.facebook.com/<your-facebook-username>'
+    # github = 'https://github.com/<your-github-username>/<your-repository-name>'
+    # instagram = 'https://www.instagram.com/<your-instagram-username>'
+    # linkedin = 'https://www.linkedin.com/company/<your-linkedin-company-name>'
+    # pinterest = 'https://www.pinterest.com/<your-pinterest-username>'
+    # reddit = 'https://www.reddit.com/r/<your-reddit-subreddit-name>'
+    # telegram = 'https://t.me/<your-telegram-username>'
+    # tiktok = 'https://www.tiktok.com/@<your-tiktok-username>'
+    # twitter = 'https://twitter.com/<your-twitter-username>'
+    # whatsapp = 'https://wa.me/<your-whatsapp-number>'
+    # youtube = 'https://www.youtube.com/@<your-youtube-username>'
+
 [menus]
   [[menus.main]]
     name = 'Home'

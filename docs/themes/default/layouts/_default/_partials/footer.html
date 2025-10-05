@@ -1,3 +1,18 @@
 <footer class="footer">
-  <p>Copyright &copy; {{ now.Year -}}</p>
+  <div class="footer__social-links">
+    {{- range $key, $value := .Site.Params.SocialLinks -}}
+      <a href="{{ $value }}" target="_blank" rel="noopener noreferrer">
+        {{- $iconPath := printf "static/icons/%s.svg" $key -}}
+        {{- $iconContent := readFile $iconPath -}}
+
+        {{- if $iconContent -}}
+          <div title="{{ i18n (printf "socialLinks.%s" $key) }}">
+            {{- $iconContent | safeHTML -}}
+          </div>
+        {{- else -}}
+          {{- warnf "Icon %s not found" $iconPath -}}
+        {{- end -}}
+      </a>
+    {{- end -}}
+  </div>
 </footer>

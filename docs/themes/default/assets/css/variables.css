@@ -8,6 +8,7 @@
   --color-footer-background: #0000;
   --color-footer-foreground: #000;
   --color-footer-border: #e5e7eb;
+  --color-footer-link: #333;
   --color-sidebar-background: #f8fafc;
   --color-sidebar-foreground: #000;
   --color-sidebar-border: #e2e8f0;
@@ -70,6 +71,7 @@
     --color-footer-background: #0000;
     --color-footer-foreground: #fff;
     --color-footer-border: #262626;
+    --color-footer-link: #a3a3a3;
     --color-sidebar-background: #171717;
     --color-sidebar-foreground: #fff;
     --color-sidebar-border: #262626;
