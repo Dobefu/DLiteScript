@@ -115,7 +115,8 @@ a.sidebar__section--header {
 
 summary.sidebar__section--header::after {
   align-self: center;
-  background-image: url('/icons/caret-down.svg');
+  background-color: var(--color-sidebar-foreground);
+  mask: url('/icons/caret-down.svg') no-repeat center;
   background-size: contain;
   content: '';
   min-height: var(--spacing-lg);
