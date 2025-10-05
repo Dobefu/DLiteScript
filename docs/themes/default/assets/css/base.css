@@ -29,6 +29,7 @@ body.has-toc {
       "sidebar toc"
       "sidebar main";
     grid-template-columns: 20rem 1fr;
+    grid-template-rows: auto auto 1fr;
   }
 }
 
