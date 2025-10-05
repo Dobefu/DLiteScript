@@ -70,5 +70,21 @@
     --color-card-border: #262626;
 
     --color-heading: #60a5fa;
+
+    --color-chroma-background: #171717;
+    --color-chroma-foreground: #f8f8f8;
+    --color-chroma-border: #262626;
+    --color-chroma-highlight-background: #262626;
+    --color-chroma-highlight-foreground: #a3a3a3;
+    --color-chroma-line: #a3a3a3;
+    --color-chroma-keyword: #f1e161;
+    --color-chroma-type: #ffc266;
+    --color-chroma-constant: #e0e2ea;
+    --color-chroma-variable: #e0e2ea;
+    --color-chroma-function: #8cf8f7;
+    --color-chroma-string: #b3f6c0;
+    --color-chroma-number: #ff8080;
+    --color-chroma-comment: #87ceeb;
+    --color-chroma-comment-preprocessor: #87ceeb;
   }
 }
