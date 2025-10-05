@@ -20,6 +20,10 @@
   --color-link: #1357b1;
   --color-link-visited: #1357b1;
   --color-hr: #e2e8f0;
+  --color-table-border: #e2e8f0;
+  --color-table-header-background: #f8fafc;
+  --color-table-header-foreground: #171717;
+  --color-table-foreground: #171717;
 
   --color-chroma-background: #f8fafc;
   --color-chroma-foreground: #000;
@@ -76,6 +80,10 @@
     --color-link: #579cf0;
     --color-link-visited: #579cf0;
     --color-hr: #262626;
+    --color-table-border: #262626;
+    --color-table-header-background: #171717;
+    --color-table-header-foreground: #f8fafc;
+    --color-table-foreground: #f8fafc;
 
     --color-chroma-background: #171717;
     --color-chroma-foreground: #f8f8f8;
