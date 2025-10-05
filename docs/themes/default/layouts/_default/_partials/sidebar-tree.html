@@ -1,33 +1,40 @@
 {{- $node := .node -}}
 {{- $current := .current -}}
 
-{{- range $child := $node.Sections.ByWeight -}}
-  <li>
-    {{- if or ($child.Sections) ($child.Pages) -}}
-      {{- $isCurrentSection := eq $child.RelPermalink $current.RelPermalink -}}
-      {{- $hasCurrentPage := or $isCurrentSection (hasPrefix $current.RelPermalink $child.RelPermalink) -}}
+{{- $items := slice -}}
 
-      <details class="sidebar__section"{{ if $hasCurrentPage }} open{{ end }}>
-        <summary class="sidebar__section--header">
-          <a href="{{ $child.Permalink }}">
-            {{- $child.LinkTitle | default $child.Title -}}
-          </a>
-        </summary>
-
-        <ul class="sidebar__section--pages">
-          {{- partial "sidebar-tree.html" (dict "node" $child "current" $current) -}}
-        </ul>
-      </details>
-    {{- else -}}
-      <a class="sidebar__section--header" href="{{ $child.Permalink }}">
-        {{- $child.LinkTitle | default $child.Title -}}
-      </a>
-    {{- end -}}
-  </li>
+{{- range $page := $node.Pages -}}
+  {{- $items = $items | append $page -}}
 {{- end -}}
 
-{{- range $page := $node.Pages.ByWeight -}}
-  {{- if not $page.IsSection -}}
+{{- range $item := sort $items "Weight" -}}
+  {{- if $item.IsSection -}}
+    {{- $child := $item -}}
+
+    <li>
+      {{- if or ($child.Sections) ($child.Pages) -}}
+        {{- $isCurrentSection := eq $child.RelPermalink $current.RelPermalink -}}
+        {{- $hasCurrentPage := or $isCurrentSection (hasPrefix $current.RelPermalink $child.RelPermalink) -}}
+
+        <details class="sidebar__section"{{ if $hasCurrentPage }} open{{ end }}>
+          <summary class="sidebar__section--header">
+            <a href="{{ $child.Permalink }}">
+              {{- $child.LinkTitle | default $child.Title -}}
+            </a>
+          </summary>
+
+          <ul class="sidebar__section--pages">
+            {{- partial "sidebar-tree.html" (dict "node" $child "current" $current) -}}
+          </ul>
+        </details>
+      {{- else -}}
+        <a class="sidebar__section--header" href="{{ $child.Permalink }}">
+          {{- $child.LinkTitle | default $child.Title -}}
+        </a>
+      {{- end -}}
+    </li>
+  {{- else -}}
+    {{- $page := $item -}}
     {{- $isActive := eq $page.RelPermalink $current.RelPermalink -}}
 
     <li>
@@ -40,5 +47,3 @@
     </li>
   {{- end -}}
 {{- end -}}
-
-
