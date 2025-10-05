@@ -41,6 +41,13 @@ dl > dd {
   margin-inline-start: var(--spacing-lg);
 }
 
+mark {
+  background-color: var(--color-mark-background);
+  border-radius: var(--border-radius-xs);
+  color: var(--color-mark-foreground);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
 .footnote-ref {
   text-decoration: none;
 }

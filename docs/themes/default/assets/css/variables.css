@@ -24,6 +24,8 @@
   --color-table-header-background: #f8fafc;
   --color-table-header-foreground: #171717;
   --color-table-foreground: #171717;
+  --color-mark-background: #e5e7eb;
+  --color-mark-foreground: #171717;
 
   --color-chroma-background: #f8fafc;
   --color-chroma-foreground: #000;
@@ -84,6 +86,8 @@
     --color-table-header-background: #171717;
     --color-table-header-foreground: #f8fafc;
     --color-table-foreground: #f8fafc;
+    --color-mark-background: #262626;
+    --color-mark-foreground: #f8fafc;
 
     --color-chroma-background: #171717;
     --color-chroma-foreground: #f8f8f8;

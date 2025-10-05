@@ -37,3 +37,12 @@ printUnusedTemplates = true
   [markup.highlight]
     lineNos = true
     noClasses = false
+
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      strikethrough = false
+      extras.delete.enable = true
+      extras.mark.enable = true
+      extras.insert.enable = true
+      extras.subscript.enable = true
+      extras.superscript.enable = true
