@@ -1,3 +1,7 @@
+.highlight {
+  margin-block-end: var(--spacing-md);
+}
+
 .chroma {
   background: var(--color-chroma-background);
   border-radius: var(--border-radius-sm);
