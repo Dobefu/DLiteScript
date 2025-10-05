@@ -9,6 +9,10 @@
   text-decoration: none;
 }
 
+.card:visited {
+  color: var(--color-card-foreground);
+}
+
 .card h3 {
   margin: 0;
 }
