@@ -1,3 +1,9 @@
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
 .card {
   background: var(--color-card-background);
   border: 1px solid var(--color-card-border);
