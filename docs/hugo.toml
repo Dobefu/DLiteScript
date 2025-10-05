@@ -41,8 +41,18 @@ printUnusedTemplates = true
   [markup.goldmark]
     [markup.goldmark.extensions]
       strikethrough = false
-      extras.delete.enable = true
-      extras.mark.enable = true
-      extras.insert.enable = true
-      extras.subscript.enable = true
-      extras.superscript.enable = true
+
+      [markup.goldmark.extensions.extras]
+        delete.enable = true
+        mark.enable = true
+        insert.enable = true
+        subscript.enable = true
+        superscript.enable = true
+
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]']]
+          inline = [['\(', '\)']]
+

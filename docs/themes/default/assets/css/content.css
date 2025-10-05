@@ -26,6 +26,11 @@ hr {
   margin-block-start: var(--spacing-xl);
 }
 
+math {
+  text-align: start;
+  margin-block-end: var(--spacing-md);
+}
+
 dl {
   display: flex;
   flex-direction: column;
