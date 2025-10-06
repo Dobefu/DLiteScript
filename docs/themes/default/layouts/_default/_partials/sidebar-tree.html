@@ -15,9 +15,10 @@
       {{- if or ($child.Sections) ($child.Pages) -}}
         {{- $isCurrentSection := eq $child.RelPermalink $current.RelPermalink -}}
         {{- $hasCurrentPage := or $isCurrentSection (hasPrefix $current.RelPermalink $child.RelPermalink) -}}
+        {{- $isActive := eq $child.RelPermalink $current.RelPermalink -}}
 
         <details class="sidebar__section"{{ if $hasCurrentPage }} open{{ end }}>
-          <summary class="sidebar__section--header">
+          <summary class="sidebar__section--header{{ if $isActive }} is-active{{ end }}">
             <a href="{{ $child.Permalink }}">
               {{- $child.LinkTitle | default $child.Title -}}
             </a>

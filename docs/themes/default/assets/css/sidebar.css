@@ -99,6 +99,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   justify-content: space-between;
+  position: relative;
   text-decoration: none;
 }
 
@@ -149,5 +150,17 @@ summary.sidebar__section--header::after {
   color: var(--color-sidebar-foreground);
   display: block;
   padding: var(--spacing-sm) 0;
+  position: relative;
   text-decoration: none;
+}
+
+.sidebar__section--header.is-active::before,
+.sidebar__link.is-active::before {
+  background: var(--color-sidebar-link-active);
+  content: '';
+  position: absolute;
+  inset-block: var(--spacing-sm);
+  inset-inline-end: auto;
+  inset-inline-start: calc(var(--spacing-md) * -1);
+  width: 0.125rem;
 }

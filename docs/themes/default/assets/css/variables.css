@@ -13,6 +13,7 @@
   --color-sidebar-foreground: #000;
   --color-sidebar-border: #e2e8f0;
   --color-sidebar-link: #333;
+  --color-sidebar-link-active: #0369a1;
   --color-toc-border: #e2e8f0;
   --color-card-background: #f8fafc;
   --color-card-border: #e2e8f0;
@@ -76,6 +77,7 @@
     --color-sidebar-foreground: #fff;
     --color-sidebar-border: #262626;
     --color-sidebar-link: #a3a3a3;
+    --color-sidebar-link-active: #60a5fa;
     --color-toc-border: #262626;
     --color-card-background: #171717;
     --color-card-border: #262626;
