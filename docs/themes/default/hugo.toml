@@ -33,11 +33,6 @@ disableKinds = ['taxonomy', 'term']
     pageRef = '/'
     weight = 10
 
-  [[menus.main]]
-    name = 'Documentation'
-    pageRef = '/docs'
-    weight = 20
-
 [module]
   [module.hugoVersion]
     extended = false

@@ -20,6 +20,17 @@ printUnusedTemplates = true
   [params.socialLinks]
     github = 'https://github.com/Dobefu/DLiteScript'
 
+[menus]
+  [[menus.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 10
+
+  [[menus.main]]
+    name = 'Documentation'
+    pageRef = '/docs'
+    weight = 20
+
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
