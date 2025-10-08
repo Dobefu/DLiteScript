@@ -21,8 +21,14 @@
   --color-input-foreground: #000;
   --color-input-border: #e2e8f0;
   --color-button-background: #0369a1;
+  --color-button-background--hover: #035b8c;
+  --color-button-background--active: #035380;
   --color-button-foreground: #fff;
-  --color-button-border: #0369a1;
+  --color-button-foreground--hover: #fff;
+  --color-button-foreground--active: #fff;
+  --color-button-border: #035280;
+  --color-button-border--hover: #035280;
+  --color-button-border--active: #034a73;
 
   --color-heading: #0369a1;
   --color-link: #1357b1;
@@ -90,9 +96,15 @@
     --color-input-background: #171717;
     --color-input-foreground: #fff;
     --color-input-border: #262626;
-    --color-button-background: #60a5fa;
+    --color-button-background: #457bbd;
+    --color-button-background--hover: #4071ac;
+    --color-button-background--active: #38679f;
     --color-button-foreground: #fff;
-    --color-button-border: #60a5fa;
+    --color-button-foreground--hover: #fff;
+    --color-button-foreground--active: #fff;
+    --color-button-border: #5999e8;
+    --color-button-border--hover: #508dd9;
+    --color-button-border--active: #4982c8;
 
     --color-heading: #60a5fa;
     --color-link: #579cf0;

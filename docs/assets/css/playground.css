@@ -6,7 +6,7 @@
 
 .playground__textarea {
   background: var(--color-input-background);
-  border: 1px solid var(--color-input-background);
+  border: 1px solid var(--color-input-border);
   border-radius: var(--border-radius-sm);
   color: var(--color-input-foreground);
   min-height: 8rem;
@@ -17,7 +17,20 @@
 .playground__run-btn {
   background: var(--color-button-background);
   border: 1px solid var(--color-button-border);
-  border-radius: var(--border-radius-full);
+  border-radius: var(--border-radius-sm);
   color: var(--color-button-foreground);
+  cursor: pointer;
   font-weight: 600;
+}
+
+.playground__run-btn:hover {
+  background: var(--color-button-background--hover);
+  border: 1px solid var(--color-button-border--hover);
+  color: var(--color-button-foreground--hover);
+}
+
+.playground__run-btn:active {
+  background: var(--color-button-background--active);
+  border: 1px solid var(--color-button-border--active);
+  color: var(--color-button-foreground--active);
 }
