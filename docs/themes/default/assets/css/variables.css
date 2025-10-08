@@ -17,6 +17,12 @@
   --color-toc-border: #e2e8f0;
   --color-card-background: #f8fafc;
   --color-card-border: #e2e8f0;
+  --color-input-background: #f8fafc;
+  --color-input-foreground: #000;
+  --color-input-border: #e2e8f0;
+  --color-button-background: #0369a1;
+  --color-button-foreground: #fff;
+  --color-button-border: #0369a1;
 
   --color-heading: #0369a1;
   --color-link: #1357b1;
@@ -45,8 +51,8 @@
   --color-chroma-comment: #1c7ca1;
   --color-chroma-comment-preprocessor: #1c7ca1;
 
-  --shadow-sm: 0 0 .25rem 0 #00000014;
-  --shadow-md: 0 0 .5rem 0 #0000001a;
+  --shadow-sm: 0 0 0.25rem 0 #00000014;
+  --shadow-md: 0 0 0.5rem 0 #0000001a;
   --shadow-lg: 0 0 1rem 0 #0000001f;
 
   --spacing-xs: 0.25rem;
@@ -81,6 +87,12 @@
     --color-toc-border: #262626;
     --color-card-background: #171717;
     --color-card-border: #262626;
+    --color-input-background: #171717;
+    --color-input-foreground: #fff;
+    --color-input-border: #262626;
+    --color-button-background: #60a5fa;
+    --color-button-foreground: #fff;
+    --color-button-border: #60a5fa;
 
     --color-heading: #60a5fa;
     --color-link: #579cf0;

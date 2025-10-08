@@ -1,0 +1,11 @@
+{{- define "main" -}}
+  <h1>{{- .Title -}}</h1>
+
+  <div class="playground">
+    <textarea class="playground__textarea"></textarea>
+
+    <button class="playground__run-btn">Run code</button>
+  </div>
+
+  {{- .Content -}}
+{{- end -}}

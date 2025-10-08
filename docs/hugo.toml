@@ -27,9 +27,14 @@ printUnusedTemplates = true
     weight = 10
 
   [[menus.main]]
+    name = 'Playground'
+    pageRef = '/playground'
+    weight = 20
+
+  [[menus.main]]
     name = 'Documentation'
     pageRef = '/docs'
-    weight = 20
+    weight = 30
 
 [caches]
   [caches.images]
