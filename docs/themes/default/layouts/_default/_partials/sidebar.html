@@ -1,35 +1,34 @@
-<aside class="sidebar">
-  <div class="sidebar__content">
-    <button
-      class="sidebar__close"
-      data-action="toggle-sidebar"
-      title="{{- i18n "sidebar.close" -}}"
-    ></button>
+{{- $root := site.GetPage "section" .Section -}}
 
-    <nav class="sidebar__nav">
-      {{- if .IsHome -}}
-        <ul class="sidebar__section--pages">
-          {{- range site.Menus.main -}}
-            <li>
-              <a class="sidebar__section--header" href="{{ .URL }}">{{ .Name }}</a>
-            </li>
-          {{- end -}}
-        </ul>
-      {{- else -}}
-        {{- $root := site.GetPage "section" .Section -}}
-        {{- $current := . -}}
+{{- if $root.Pages -}}
+  <aside class="sidebar">
+    <div class="sidebar__content">
+      <button
+        class="sidebar__close"
+        data-action="toggle-sidebar"
+        title="{{- i18n "sidebar.close" -}}"
+      ></button>
 
-        {{- if $root -}}
+      <nav class="sidebar__nav">
+        {{- if .IsHome -}}
           <ul class="sidebar__section--pages">
-            {{- partial "sidebar-tree.html" (dict "node" $root "current" $current) -}}
+            {{- range site.Menus.main -}}
+              <li>
+                <a class="sidebar__section--header" href="{{ .URL }}">{{ .Name }}</a>
+              </li>
+            {{- end -}}
+          </ul>
+        {{- else if $root -}}
+          <ul class="sidebar__section--pages">
+            {{- partial "sidebar-tree.html" (dict "node" $root "current" .) -}}
           </ul>
         {{- end -}}
-      {{- end -}}
-    </nav>
+      </nav>
 
-  </div>
+    </div>
 
-  {{- partial "footer.html" . -}}
-</aside>
+    {{- partial "footer.html" . -}}
+  </aside>
 
-<div class="sidebar__backdrop" data-action="toggle-sidebar"></div>
+  <div class="sidebar__backdrop" data-action="toggle-sidebar"></div>
+{{- end -}}

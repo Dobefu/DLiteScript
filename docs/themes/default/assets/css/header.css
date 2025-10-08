@@ -17,6 +17,7 @@
   border: none;
   cursor: pointer;
   display: none;
+  flex-shrink: 0;
   height: 1.5rem;
   padding: 0;
   width: 1.5rem;
@@ -25,13 +26,13 @@
 .header__menu--toggle::before {
   background-color: var(--color-header-foreground);
   mask: url("/icons/menu.svg") no-repeat center;
-  content: '';
+  content: "";
   display: block;
   height: 100%;
   width: 100%;
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 64rem) {
   .header__menu--toggle {
     display: block;
   }

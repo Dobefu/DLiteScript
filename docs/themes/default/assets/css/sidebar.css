@@ -9,7 +9,7 @@
   z-index: 99;
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 64rem) {
   .sidebar.open + .sidebar__backdrop,
   .sidebar.is-transitioning + .sidebar__backdrop {
     pointer-events: auto;
@@ -47,13 +47,13 @@
 .sidebar__close::before {
   background-color: var(--color-sidebar-foreground);
   mask: url("/icons/x.svg") no-repeat center;
-  content: '';
+  content: "";
   display: block;
   height: 100%;
   width: 100%;
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 64rem) {
   .sidebar {
     border-radius: var(--border-radius-sm);
     inset: var(--spacing-sm);
@@ -117,9 +117,9 @@ a.sidebar__section--header {
 summary.sidebar__section--header::after {
   align-self: center;
   background-color: var(--color-sidebar-foreground);
-  mask: url('/icons/caret-down.svg') no-repeat center;
+  mask: url("/icons/caret-down.svg") no-repeat center;
   background-size: contain;
-  content: '';
+  content: "";
   min-height: var(--spacing-lg);
   transition: transform 0.2s ease-in-out;
   min-width: var(--spacing-lg);
@@ -129,7 +129,9 @@ summary.sidebar__section--header::after {
   transform: rotate(-90deg);
 }
 
-[dir="rtl"] .sidebar__section:not([open]) > summary.sidebar__section--header::after {
+[dir="rtl"]
+  .sidebar__section:not([open])
+  > summary.sidebar__section--header::after {
   transform: rotate(90deg);
 }
 
@@ -157,7 +159,7 @@ summary.sidebar__section--header::after {
 .sidebar__section--header.is-active::before,
 .sidebar__link.is-active::before {
   background: var(--color-sidebar-link-active);
-  content: '';
+  content: "";
   position: absolute;
   inset-block: var(--spacing-sm);
   inset-inline-end: auto;

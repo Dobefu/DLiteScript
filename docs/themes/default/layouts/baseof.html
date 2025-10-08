@@ -5,8 +5,11 @@
 >
   {{- partial "head.html" . -}}
   {{- $hasToc := (strings.Contains .TableOfContents "<li>") -}}
+  {{- $hasSidebar := (site.GetPage "section" .Section).Pages -}}
 
-  <body class="{{- if $hasToc -}}has-toc{{- end -}}">
+  <body
+    class="{{ if $hasToc -}}has-toc{{- end }} {{ if $hasSidebar -}} has-sidebar{{- end }}"
+  >
     {{- partial "header.html" . -}}
     {{- partial "sidebar.html" . -}}
 

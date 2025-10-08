@@ -1,14 +1,29 @@
 body {
   display: grid;
   grid-template-areas:
-    "header header"
-    "sidebar main";
-  grid-template-columns: 20rem 1fr;
+    "header"
+    "main";
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
 }
 
 body.has-toc {
+  grid-template-areas:
+    "header header"
+    "main toc";
+  grid-template-columns: 1fr 16rem;
+}
+
+body.has-sidebar {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar main";
+  grid-template-columns: 20rem 1fr;
+}
+
+body.has-toc.has-sidebar {
   grid-template-areas:
     "header header header"
     "sidebar main toc";
@@ -18,18 +33,32 @@ body.has-toc {
 @media (max-width: 64rem) {
   body {
     grid-template-areas:
-      "header header"
-      "sidebar main";
-    grid-template-columns: 20rem 1fr;
+      "header"
+      "main";
+    grid-template-columns: 1fr;
   }
 
   body.has-toc {
     grid-template-areas:
       "header header"
-      "sidebar toc"
-      "sidebar main";
-    grid-template-columns: 20rem 1fr;
-    grid-template-rows: auto auto 1fr;
+      "main toc";
+    grid-template-columns: 1fr 16rem;
+    grid-template-rows: auto 1fr;
+  }
+
+  body.has-sidebar {
+    grid-template-areas:
+      "header"
+      "main"
+      "sidebar";
+    grid-template-columns: 1fr;
+  }
+
+  body.has-toc.has-sidebar {
+    grid-template-areas:
+      "header header"
+      "main toc";
+    grid-template-columns: 1fr 16rem;
   }
 }
 
@@ -42,6 +71,15 @@ body.has-toc {
   }
 
   body.has-toc {
+    grid-template-areas:
+      "header"
+      "toc"
+      "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  body.has-toc.has-sidebar {
     grid-template-areas:
       "header"
       "toc"
