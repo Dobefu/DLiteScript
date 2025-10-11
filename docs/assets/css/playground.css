@@ -77,8 +77,8 @@
 }
 
 .playground__run-indicator::after {
+  background-color: var(--color-input-border);
   background-size: contain;
-  background: var(--color-input-border);
   mask: url("/icons/caret-down.svg") no-repeat center;
   mask-size: 0;
 }
