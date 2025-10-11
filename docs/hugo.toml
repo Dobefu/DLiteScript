@@ -22,11 +22,6 @@ printUnusedTemplates = true
 
 [menus]
   [[menus.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
-
-  [[menus.main]]
     name = 'Playground'
     pageRef = '/playground'
     weight = 20
