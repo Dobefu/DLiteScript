@@ -1,6 +1,8 @@
 .playground {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  min-height: 0;
 }
 
 .playground__actions {
@@ -12,15 +14,30 @@
   border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 
+.playground__container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .playground__textarea {
   border-radius: var(--border-radius-sm) 0 0 0;
+  font-family: monospace;
+  font-size: 1rem;
+  height: 75%;
+  min-height: 8rem;
+  overflow: auto;
 }
 
 .playground__output {
   border: 1px solid var(--color-input-border);
   border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  flex: 1;
   font-family: monospace;
+  font-size: 1rem;
   min-height: 6rem;
+  overflow: auto;
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 

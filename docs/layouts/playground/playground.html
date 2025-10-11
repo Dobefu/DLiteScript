@@ -8,8 +8,10 @@
       <button class="playground__run-btn">Run code</button>
     </div>
 
-    <textarea class="playground__textarea"></textarea>
-    <div class="playground__output"></div>
+    <div class="playground__container">
+      <textarea class="playground__textarea"></textarea>
+      <div class="playground__output"></div>
+    </div>
   </div>
 
   {{- $wasm_path := resources.Get "/playground/DLiteScript-playground-wasm" -}}
