@@ -5,7 +5,7 @@
 
   <div class="playground">
     <div class="playground__actions">
-      <button class="playground__run-btn">Run code</button>
+      <button class="playground__run-btn" disabled>Run code</button>
     </div>
 
     <div class="playground__container">
@@ -15,19 +15,30 @@
     </div>
   </div>
 
+  {{- $worker_opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/playground-worker.js"
+    "format" "cjs"
+  -}}
+
   {{- $wasm_path := resources.Get "/playground/DLiteScript-playground-wasm" -}}
+  {{- $worker_path := resources.Match "playground/js/worker/*.js" | resources.Concat "js/playground-worker.js" | js.Build $worker_opts | fingerprint -}}
 
-  <script>playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"</script>
+  <script>
+    playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"
+    playgroundWorkerPath = "{{- $worker_path.RelPermalink -}}"
+  </script>
 
-  {{- $opts := dict
+  {{- $script_opts := dict
     "minify" (not hugo.IsDevelopment)
     "sourceMap" (cond hugo.IsDevelopment "external" "")
     "targetPath" "js/playground.js"
     "format" "cjs"
   -}}
 
-  {{- with (resources.Match "playground/js/*.js") | resources.Concat "js/playground.js" -}}
-    {{- with . | js.Build $opts -}}
+  {{- with (resources.Match "playground/js/playground.js") | resources.Concat "js/playground.js" -}}
+    {{- with . | js.Build $script_opts -}}
       {{- if hugo.IsDevelopment -}}
         <script defer src="{{- .RelPermalink -}}" type="module"></script>
       {{- else -}}
