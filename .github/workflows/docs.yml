@@ -68,6 +68,11 @@ jobs:
           key: hugo_docs-${{ github.run_id }}
           restore-keys: hugo_docs-
 
+      - name: Build the Playground WASM binary
+        run: |
+          cd assets/playground
+          GOOS=js GOARCH=wasm go build
+
       - name: Build the site
         run: |
           hugo \

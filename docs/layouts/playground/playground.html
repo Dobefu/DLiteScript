@@ -1,11 +1,43 @@
 {{- define "main" -}}
   <h1>{{- .Title -}}</h1>
 
-  <div class="playground">
-    <textarea class="playground__textarea"></textarea>
+  {{- .Content -}}
 
-    <button class="playground__run-btn">Run code</button>
+  <div class="playground">
+    <div class="playground__actions">
+      <button class="playground__run-btn">Run code</button>
+    </div>
+
+    <textarea class="playground__textarea"></textarea>
+    <div class="playground__output"></div>
   </div>
 
-  {{- .Content -}}
+  {{- $wasm_path := resources.Get "/playground/DLiteScript-playground-wasm" -}}
+
+  <script>playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"</script>
+
+  {{- $opts := dict
+    "minify" (not hugo.IsDevelopment)
+    "sourceMap" (cond hugo.IsDevelopment "external" "")
+    "targetPath" "js/playground.js"
+    "format" "cjs"
+  -}}
+
+  {{- with (resources.Match "playground/js/*.js") | resources.Concat "js/playground.js" -}}
+    {{- with . | js.Build $opts -}}
+      {{- if hugo.IsDevelopment -}}
+        <script defer src="{{- .RelPermalink -}}" type="module"></script>
+      {{- else -}}
+        {{- with . | fingerprint -}}
+          <script
+            crossorigin="anonymous"
+            defer
+            integrity="{{- .Data.Integrity -}}"
+            src="{{- .RelPermalink -}}"
+            type="module"
+          ></script>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

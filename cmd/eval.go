@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/Dobefu/DLiteScript/internal/scriptrunner"
+	"github.com/Dobefu/DLiteScript/scriptrunner"
 	"github.com/spf13/cobra"
 )
 

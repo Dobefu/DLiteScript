@@ -31,7 +31,8 @@ input,
 button,
 textarea,
 select {
-  font: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 p,

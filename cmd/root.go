@@ -8,7 +8,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/Dobefu/DLiteScript/internal/scriptrunner"
+	"github.com/Dobefu/DLiteScript/scriptrunner"
 )
 
 var rootCmd = &cobra.Command{ //nolint:exhaustruct

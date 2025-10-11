@@ -1,37 +1,29 @@
 .playground {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
 }
 
-.playground__textarea {
-  background: var(--color-input-background);
-  border: 1px solid var(--color-input-border);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-input-foreground);
-  min-height: 8rem;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  resize: vertical;
+.playground__actions {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .playground__run-btn {
-  background: var(--color-button-background);
-  border: 1px solid var(--color-button-border);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-button-foreground);
-  cursor: pointer;
-  font-weight: 600;
-  padding: var(--spacing-xs) var(--spacing-lg);
+  border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
 }
 
-.playground__run-btn:hover {
-  background: var(--color-button-background--hover);
-  border: 1px solid var(--color-button-border--hover);
-  color: var(--color-button-foreground--hover);
+.playground__textarea {
+  border-radius: var(--border-radius-sm) 0 0 0;
 }
 
-.playground__run-btn:active {
-  background: var(--color-button-background--active);
-  border: 1px solid var(--color-button-border--active);
-  color: var(--color-button-foreground--active);
+.playground__output {
+  border: 1px solid var(--color-input-border);
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  font-family: monospace;
+  min-height: 6rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.playground__output.has-error {
+  color: var(--color-error);
 }
