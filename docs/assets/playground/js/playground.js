@@ -50,7 +50,15 @@
 
         worker.removeEventListener("message", msgHandler);
 
-        const result = JSON.parse(e.data.data);
+        let result;
+
+        try {
+          result = JSON.parse(e.data.data);
+        } catch (_e) {
+          result = {
+            error: "Script execution error",
+          };
+        }
 
         runIndicator.classList.add("is-animating");
 
@@ -67,6 +75,8 @@
           output.innerText = result.error;
         } else if ("buffer" in result) {
           output.innerText = result.buffer;
+        } else {
+          output.innerText = "<no output>";
         }
       };
 
