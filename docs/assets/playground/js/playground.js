@@ -54,7 +54,9 @@
 
         try {
           result = JSON.parse(e.data.data);
-        } catch (_e) {
+        } catch (error) {
+          console.error(error);
+
           result = {
             error: "Script execution error",
           };
