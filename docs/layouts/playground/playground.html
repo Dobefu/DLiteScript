@@ -26,8 +26,8 @@
   {{- $worker_path := resources.Match "playground/js/worker/*.js" | resources.Concat "js/playground-worker.js" | js.Build $worker_opts | fingerprint -}}
 
   <script>
-    playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"
-    playgroundWorkerPath = "{{- $worker_path.RelPermalink -}}"
+    let playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"
+    let playgroundWorkerPath = "{{- $worker_path.RelPermalink -}}"
   </script>
 
   {{- $script_opts := dict
