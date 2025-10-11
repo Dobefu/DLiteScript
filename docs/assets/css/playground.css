@@ -12,6 +12,15 @@
 
 .playground__run-btn {
   border-radius: var(--border-radius-sm) var(--border-radius-sm) 0 0;
+  border-block-end: 0;
+}
+
+.playground__run-btn:not([disabled]):hover {
+  border-block-end: 0;
+}
+
+.playground__run-btn:not([disabled]):active {
+  border-block-end: 0;
 }
 
 .playground__container {
@@ -39,8 +48,63 @@
   min-height: 6rem;
   overflow: auto;
   padding: var(--spacing-xs) var(--spacing-sm);
+  position: relative;
+}
+
+.playground__run-indicator {
+  position: relative;
+}
+
+.playground__run-indicator::before {
+  background: var(--color-heading);
+}
+
+.playground__run-indicator::before,
+.playground__run-indicator::after {
+  border-radius: 50%;
+  box-shadow: var(--shadow-lg);
+  content: "";
+  inset-inline-start: 50%;
+  padding: 0;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.playground__run-indicator.is-animating::before,
+.playground__run-indicator.is-animating::after {
+  animation: run-indicator .2s linear;
+}
+
+.playground__run-indicator::after {
+  background-size: contain;
+  background: var(--color-input-border);
+  mask: url("/icons/caret-down.svg") no-repeat center;
+  mask-size: 0;
 }
 
 .playground__output.has-error {
   color: var(--color-error);
+}
+
+@keyframes run-indicator {
+  0% {
+    inset-block-start: -1rem;
+    mask-size: var(--spacing-sm);
+    opacity: 0;
+    padding: var(--spacing-sm);
+  }
+
+  50% {
+    mask-size: var(--spacing-lg);
+    opacity: 1;
+    padding: var(--spacing-md);
+  }
+
+  100% {
+    inset-block-start: 1rem;
+    mask-size: var(--spacing-sm);
+    opacity: 0;
+    padding: var(--spacing-sm);
+  }
 }

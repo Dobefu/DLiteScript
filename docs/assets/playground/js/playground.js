@@ -13,13 +13,25 @@
         for (const playground of playgrounds) {
           const textarea = playground.querySelector(".playground__textarea");
           const runBtn = playground.querySelector(".playground__run-btn");
+          const runIndicator = playground.querySelector(
+            ".playground__run-indicator",
+          );
           const output = playground.querySelector(".playground__output");
 
           runBtn.addEventListener("click", () => {
-            output.innerHTML = "";
+            runBtn.setAttribute("disabled", "");
+            output.innerHTML = "Running...";
             output.classList.remove("has-error");
 
             result = JSON.parse(runString(textarea.value ?? ""));
+            runIndicator.classList.add("is-animating");
+
+            setTimeout(() => {
+              runIndicator.classList.remove("is-animating");
+              runBtn.removeAttribute("disabled");
+            }, 200);
+
+            output.innerText = "";
 
             if ("error" in result) {
               output.classList.add("has-error");
