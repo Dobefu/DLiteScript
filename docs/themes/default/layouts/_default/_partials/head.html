@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width">
   <meta name="theme-color" content="{{ site.Params.themeColor }}">
 
-  {{- $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) -}}
+  {{- $title := cond .IsHome .Title (printf "%s | %s" .Title site.Title) -}}
   {{- $description := .Description | default site.Params.description -}}
   {{- $image := .Params.image | default "/favicon.ico" | absURL -}}
 
