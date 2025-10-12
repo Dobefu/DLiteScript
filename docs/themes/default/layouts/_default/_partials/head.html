@@ -17,6 +17,7 @@
   <meta property="og:description" content="{{ $description }}">
   <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
   <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:locale" content="{{ .Site.LanguageCode }}">
   <meta property="og:site_name" content="{{ site.Title }}">
   <meta property="og:image" content="{{ $image }}">
 
