@@ -1,0 +1,31 @@
+version: "2"
+linters:
+  enable:
+    - errcheck
+    - exhaustive
+    - exhaustruct
+    - forbidigo
+    - gocognit
+    - gocritic
+    - godot
+    - gosec
+    - govet
+    - ineffassign
+    - misspell
+    - nlreturn
+    - paralleltest
+    - perfsprint
+    - prealloc
+    - predeclared
+    - reassign
+    - revive
+    - sloglint
+    - staticcheck
+    - unconvert
+    - unused
+    - wrapcheck
+  settings:
+    gocognit:
+      min-complexity: 15
+    perfsprint:
+      strconcat: false
