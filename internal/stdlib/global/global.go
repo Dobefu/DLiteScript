@@ -10,8 +10,9 @@ const packageName = ""
 // GetGlobalFunctions returns the global functions for the standard library.
 func GetGlobalFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"printf": getPrintfFunction(),
-		"dump":   getDumpFunction(),
-		"exit":   getExitFunction(),
+		"printf":  getPrintfFunction(),
+		"sprintf": getSprintfFunction(),
+		"dump":    getDumpFunction(),
+		"exit":    getExitFunction(),
 	}
 }
