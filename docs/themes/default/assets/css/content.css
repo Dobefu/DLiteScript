@@ -53,6 +53,11 @@ mark {
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 
+pre,
+code {
+  font-size: .9rem;
+}
+
 .footnote-ref {
   text-decoration: none;
 }
