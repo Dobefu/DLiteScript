@@ -1,9 +1,9 @@
-if (typeof globalThis.playgroundWasmPath === "undefined") {
-  throw new Error("playgroundWasmPath is not defined");
+if (globalThis.playgroundWasmPath === undefined) {
+  throw new TypeError("playgroundWasmPath is not defined");
 }
 
-if (typeof globalThis.playgroundWorkerPath === "undefined") {
-  throw new Error("playgroundWorkerPath is not defined");
+if (globalThis.playgroundWorkerPath === undefined) {
+  throw new TypeError("playgroundWorkerPath is not defined");
 }
 
 (() => {
