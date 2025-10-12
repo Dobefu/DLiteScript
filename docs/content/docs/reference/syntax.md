@@ -1,7 +1,7 @@
 +++
 title = 'Syntax'
 linkTitle = 'Syntax'
-description = 'Lexical structure and syntax of DLiteScript.'
+description = 'Logical structure and syntax of the DLiteScript programming language.'
 weight = -1
 draft = false
 +++
@@ -152,10 +152,10 @@ Single-line comments start with `//`.
 
 ### Special Operators
 
-| Operator | Description     |
-| -------- | --------------- |
-| `...`    | Spread operator |
-| `[]`     | Index operator  |
+| Operator | Description                                        |
+| -------- | -------------------------------------------------- |
+| `...`    | Spread operator  |
+| `[]`     | Index operator                      |
 
 ## Statements
 
