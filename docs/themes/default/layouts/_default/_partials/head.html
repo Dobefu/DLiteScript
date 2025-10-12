@@ -1,17 +1,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>
-    {{- if .IsHome -}}
-      {{- site.Title -}}
-    {{- else -}}
-      {{- printf "%s | %s" .Title site.Title -}}
-    {{- end -}}
-  </title>
-  <meta name="description" content="{{ .Description }}">
+  <meta name="theme-color" content="{{ site.Params.themeColor }}">
+
+  {{- $title := cond .IsHome site.Title (printf "%s | %s" .Title site.Title) -}}
+  {{- $description := .Description | default site.Params.description -}}
+  {{- $image := .Params.image | default "/favicon.ico" | absURL -}}
+
+  <title>{{ $title }}</title>
+  <meta name="description" content="{{ $description }}">
 
   <link rel="canonical" href="{{ .Permalink }}">
   <link rel="manifest" href="{{ .Site.BaseURL }}manifest.webmanifest">
+
+  <meta property="og:title" content="{{ $title }}">
+  <meta property="og:description" content="{{ $description }}">
+  <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:image" content="{{ $image }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ $title }}">
+  <meta name="twitter:description" content="{{ $description }}">
+  <meta name="twitter:image" content="{{ $image }}">
 
   {{- partialCached "head/css.html" . -}}
 </head>
