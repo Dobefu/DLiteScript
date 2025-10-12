@@ -34,3 +34,11 @@ textarea {
   padding: var(--spacing-xs) var(--spacing-sm);
   resize: vertical;
 }
+
+select {
+  background: var(--color-input-background);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-input-foreground);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}

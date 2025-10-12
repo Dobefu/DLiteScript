@@ -33,6 +33,79 @@ if (globalThis.playgroundWorkerPath === undefined) {
     return { worker, abortController };
   }
 
+  /**
+   * @param {HTMLSelectElement} preset
+   * @param {HTMLTextAreaElement} textarea
+   */
+  function initPreset(preset, textarea) {
+    preset.prepend(new Option("FizzBuzz", "fizzbuzz"));
+    preset.prepend(new Option("Hello World", "hello"));
+
+    const presetStorageKey = "playground-preset";
+    const savedPreset = localStorage.getItem(presetStorageKey);
+
+    if (savedPreset) {
+      preset.value = savedPreset;
+    } else {
+      preset.value = preset.options[0].value;
+    }
+
+    const codeStorageKey = "playground-code";
+
+    textarea.addEventListener("input", () => {
+      preset.value = "custom";
+      localStorage.setItem(presetStorageKey, "custom");
+      localStorage.setItem(codeStorageKey, textarea.value);
+    });
+
+    preset.addEventListener("change", () => {
+      localStorage.setItem(presetStorageKey, preset.value);
+
+      switch (preset.value) {
+        case "hello":
+          textarea.value = `printf("Hello, World!")`;
+          break;
+
+        case "fizzbuzz":
+          textarea.value = `for var i from 1 to 100 {
+  var buf string = ""
+
+  if i % 3 == 0 {
+    buf += "Fizz"
+  }
+
+  if i % 5 == 0 {
+    buf += "Buzz"
+  }
+
+  if buf == "" {
+    buf = sprintf("%g", i)
+  }
+
+  printf("%s\\n", buf)
+}`;
+
+          break;
+
+        case "custom":
+          const savedCode = localStorage.getItem(codeStorageKey);
+
+          if (savedCode) {
+            textarea.value = savedCode;
+          } else {
+            localStorage.setItem(codeStorageKey, textarea.value);
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    preset.dispatchEvent(new Event("change"));
+  }
+
   const playgrounds = document.querySelectorAll(".playground");
 
   for (const playground of playgrounds) {
@@ -47,16 +120,16 @@ if (globalThis.playgroundWorkerPath === undefined) {
       continue;
     }
 
-    const storageKey = `playground-code`;
-    const savedCode = localStorage.getItem(storageKey);
+    /** @type {HTMLSelectElement | null} */
+    const preset = playground.querySelector(".playground__preset");
 
-    if (savedCode) {
-      textarea.value = savedCode;
+    if (!preset) {
+      console.error("Preset not found");
+
+      continue;
     }
 
-    textarea.addEventListener("input", () => {
-      localStorage.setItem(storageKey, textarea.value);
-    });
+    initPreset(preset, textarea);
 
     /** @type {HTMLButtonElement | null} */
     const runBtn = playground.querySelector(".playground__run-btn");

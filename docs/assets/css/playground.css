@@ -7,7 +7,19 @@
 
 .playground__actions {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  justify-content: space-between;
+  margin-block-end: -1px;
+  z-index: 1;
+}
+
+.playground__preset {
+  border-block-end: 0;
+  border-end-end-radius: 0;
+  border-end-start-radius: 0;
+  flex: 1;
+  max-width: 20rem;
 }
 
 .playground__run-btn {
@@ -31,7 +43,7 @@
 }
 
 .playground__textarea {
-  border-radius: var(--border-radius-sm) 0 0 0;
+  border-radius: 0;
   font-family: monospace;
   font-size: 1rem;
   height: 75%;
