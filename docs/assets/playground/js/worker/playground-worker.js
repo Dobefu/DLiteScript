@@ -5,19 +5,32 @@
    * @param {MessageEvent} e
    */
   self.addEventListener("message", (e) => {
-    switch (e.data.method) {
+    if (typeof e.data !== "object" || e.data === null) {
+      console.error("Invalid data", e.data);
+
+      return;
+    }
+
+    /**
+     * @type {object}
+     * @property {string|undefined} method
+     * @property {string|undefined} data
+     */
+    const data = e.data;
+
+    switch (data.method) {
       case "init":
-        postMessage(init(e.data.data));
+        postMessage(init(data.data));
 
         break;
 
       case "run":
-        postMessage(run(e.data.data));
+        postMessage(run(data.data));
 
         break;
 
       default:
-        console.log(e.data);
+        console.error("Unknown method", data.method);
     }
   });
 
