@@ -9,6 +9,8 @@ draft = false
 
 DLiteScript is a delightfully simple scripting language, built to be very easy to learn and pick up.
 The syntax resembles that of Go, and takes inspiration from many other languages.
+Though the syntax is very simple, it is still a statically typed language.
+This helps catch errors at the time of writing, instead of at runtime.
 
 ## Philosophy
 
