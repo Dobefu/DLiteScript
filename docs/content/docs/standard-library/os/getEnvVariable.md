@@ -1,7 +1,7 @@
 +++
 title = 'os.getEnvVariable'
 linkTitle = 'getEnvVariable'
-description = 'Retrieves the value of an environment variable.'
+description = 'Retrieve the value of an environment variable. Read system environment variables for configuration and runtime settings. Part of the os namespace.'
 weight = 0
 draft = false
 +++

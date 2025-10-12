@@ -1,7 +1,7 @@
 +++
 title = 'arrays.slice'
 linkTitle = 'slice'
-description = 'Extracts a portion of an array.'
+description = 'Extract a part of an array by start and end index. Return a new array with elements from the range without changing the original. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

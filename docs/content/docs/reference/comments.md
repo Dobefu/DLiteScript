@@ -1,7 +1,7 @@
 +++
 title = 'Comments'
 linkTitle = 'Comments'
-description = 'Comment syntax in DLiteScript.'
+description = 'DLiteScript comment syntax including single-line and inline comments. Best practices for documenting your code effectively with examples.'
 weight = 0
 draft = false
 +++

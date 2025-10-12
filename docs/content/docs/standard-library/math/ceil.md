@@ -1,7 +1,7 @@
 +++
 title = 'math.ceil'
 linkTitle = 'ceil'
-description = 'Rounds a number up to the nearest integer.'
+description = 'Round a number up to the nearest integer. Calculate the smallest integer greater than or equal to the given number value. Part of the math namespace.'
 weight = 0
 draft = false
 +++

@@ -1,7 +1,7 @@
 +++
 title = 'math.max'
 linkTitle = 'max'
-description = 'Returns the larger of two numbers.'
+description = 'Find the larger of two numbers. Compare two number values and return the maximum value for mathematical calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

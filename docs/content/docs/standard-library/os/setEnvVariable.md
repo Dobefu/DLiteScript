@@ -1,7 +1,7 @@
 +++
 title = 'os.setEnvVariable'
 linkTitle = 'setEnvVariable'
-description = 'Sets the value of an environment variable.'
+description = 'Set or modify an environment variable. Update system environment variables for configuration and runtime settings during execution. Part of the os namespace.'
 weight = 0
 draft = false
 +++

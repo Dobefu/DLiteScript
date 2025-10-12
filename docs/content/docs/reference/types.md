@@ -1,7 +1,7 @@
 +++
 title = 'Types'
 linkTitle = 'Types'
-description = 'The available data types in the DLiteScript programming language.'
+description = 'DLiteScript data types including number, string, bool, arrays, any, error, and null. Learn static typing and type conversion with examples.'
 weight = 0
 draft = false
 +++

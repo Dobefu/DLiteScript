@@ -1,7 +1,7 @@
 +++
 title = 'Variables and Constants'
 linkTitle = 'Variables'
-description = 'Variable and constant declarations in DLiteScript.'
+description = 'DLiteScript variable and constant declarations including syntax, scoping rules, type annotations, shadowing, and naming conventions with examples.'
 weight = 0
 draft = false
 +++

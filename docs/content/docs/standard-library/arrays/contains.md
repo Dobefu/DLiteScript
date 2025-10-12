@@ -1,7 +1,7 @@
 +++
 title = 'arrays.contains'
 linkTitle = 'contains'
-description = 'Checks if an array contains a specific value.'
+description = 'Check if an array contains a specific value. Return true if the value exists in the array, false otherwise. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

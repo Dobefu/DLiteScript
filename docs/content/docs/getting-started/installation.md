@@ -1,6 +1,6 @@
 +++
 title = 'Installation'
-description = 'Installation instructions for DLiteScript.'
+description = 'Install DLiteScript on Windows, macOS, and Linux. Download prebuilt binaries or build it from source with step-by-step instructions.'
 weight = 0
 draft = false
 +++

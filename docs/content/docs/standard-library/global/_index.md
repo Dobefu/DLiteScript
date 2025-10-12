@@ -1,7 +1,7 @@
 +++
 title = 'Global Functions'
 linkTitle = 'Global Functions'
-description = 'Global functions available without a namespace prefix.'
+description = 'Global functions including printf, sprintf, dump, and exit. Core functions are available for common operations without a namespace prefix.'
 weight = -1
 draft = false
 +++

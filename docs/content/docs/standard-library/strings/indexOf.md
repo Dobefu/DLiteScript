@@ -1,7 +1,7 @@
 +++
 title = 'strings.indexOf'
 linkTitle = 'indexOf'
-description = 'Returns the index of the first occurrence of a substring.'
+description = 'Find the index position of the first substring occurrence. Return the starting position of text in a string, or -1 if not found. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

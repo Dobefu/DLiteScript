@@ -1,7 +1,7 @@
 +++
 title = 'arrays.push'
 linkTitle = 'push'
-description = 'Adds one or more elements to the end of an array.'
+description = 'Add one or more elements to the end of an array. Append multiple values to an array and return the modified array. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

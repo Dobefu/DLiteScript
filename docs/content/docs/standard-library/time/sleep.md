@@ -1,7 +1,7 @@
 +++
 title = 'time.sleep'
 linkTitle = 'sleep'
-description = 'Pauses execution for a specified number of seconds.'
+description = 'Pause script execution for a specified number of seconds. Delay program execution for rate limiting or scheduled operations. Part of the time namespace.'
 weight = 0
 draft = false
 +++

@@ -1,7 +1,7 @@
 +++
 title = 'arrays.sortNumbers'
 linkTitle = 'sortNumbers'
-description = 'Sorts a number array in ascending order.'
+description = 'Sort a number array in ascending order. Arrange number array elements from smallest to largest and return the sorted array. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

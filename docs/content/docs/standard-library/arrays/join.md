@@ -1,7 +1,7 @@
 +++
 title = 'arrays.join'
 linkTitle = 'join'
-description = 'Joins array elements into a string with a delimiter.'
+description = 'Join array elements into a single string with a custom delimiter. Concatenate array values with separator between each element. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

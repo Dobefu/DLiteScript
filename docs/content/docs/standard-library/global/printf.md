@@ -1,7 +1,7 @@
 +++
 title = 'printf'
 linkTitle = 'printf'
-description = 'Prints a formatted string to standard output.'
+description = 'Print formatted strings to standard output. Output text with format specifiers for numbers, strings, and booleans to the console. Part of the global namespace.'
 weight = 0
 draft = false
 +++

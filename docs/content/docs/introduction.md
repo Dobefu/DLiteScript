@@ -1,6 +1,6 @@
 +++
 title = 'Introduction'
-description = 'An introduction to the DLiteScript language.'
+description = 'Introduction to DLiteScript, a delightfully simple statically-typed scripting language. Learn the philosophy, features, and design principles.'
 weight = -100
 draft = false
 +++

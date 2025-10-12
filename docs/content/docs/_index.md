@@ -1,6 +1,6 @@
 +++
 title = 'Documentation'
-description = 'Documentation for the DLiteScript language.'
+description = 'Complete DLiteScript documentation. Learn the language syntax, data types, functions, control flow, and the standard library with examples.'
 weight = 0
 draft = false
 +++

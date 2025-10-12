@@ -1,7 +1,7 @@
 +++
 title = 'strings.replaceAll'
 linkTitle = 'replaceAll'
-description = 'Replaces all occurrences of a substring.'
+description = 'Replace all occurrences of a substring. Find and substitute all matching text patterns in strings for global replacements. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

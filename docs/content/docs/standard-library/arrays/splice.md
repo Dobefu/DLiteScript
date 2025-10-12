@@ -1,7 +1,7 @@
 +++
 title = 'arrays.splice'
 linkTitle = 'splice'
-description = 'Removes or replaces elements in an array.'
+description = 'Remove or replace elements in an array. Modify array by removing elements at index and inserting new values at that position. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

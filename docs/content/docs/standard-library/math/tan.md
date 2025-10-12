@@ -1,7 +1,7 @@
 +++
 title = 'math.tan'
 linkTitle = 'tan'
-description = 'Returns the tangent of an angle in radians.'
+description = 'Calculate the tangent of an angle in radians. Return the trigonometric tangent value for mathematical and geometric calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

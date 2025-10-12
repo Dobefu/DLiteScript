@@ -1,7 +1,7 @@
 +++
 title = 'math.sqrt'
 linkTitle = 'sqrt'
-description = 'Returns the square root of a number.'
+description = 'Calculate the square root of a number. Return the square root value for mathematical calculations and geometric formulas. Part of the math namespace.'
 weight = 0
 draft = false
 +++

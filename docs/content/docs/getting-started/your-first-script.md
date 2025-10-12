@@ -1,7 +1,7 @@
 +++
 title = 'Your First Script'
 linkTitle = 'Your First Script'
-description = 'Instructions for creating your first script using DLiteScript.'
+description = 'Write and run your first DLiteScript program. Create a simple Hello World script and learn the basics of the language syntax step by step.'
 weight = 0
 draft = false
 +++

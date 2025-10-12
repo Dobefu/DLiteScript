@@ -1,7 +1,7 @@
 +++
 title = 'strings.find'
 linkTitle = 'find'
-description = 'Finds the first occurrence of a substring.'
+description = 'Find the first occurrence of a substring. Search for text patterns in strings and return the matching substring or empty string. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

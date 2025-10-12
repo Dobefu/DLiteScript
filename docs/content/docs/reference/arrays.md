@@ -1,7 +1,7 @@
 +++
 title = 'Arrays'
 linkTitle = 'Arrays'
-description = 'Array literals and operations in DLiteScript.'
+description = 'DLiteScript arrays including creation, indexing, modification, iteration, spread operator, and built-in array functions for common operations with examples.'
 weight = 0
 draft = false
 +++

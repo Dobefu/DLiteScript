@@ -1,7 +1,7 @@
 +++
 title = 'math.min'
 linkTitle = 'min'
-description = 'Returns the smaller of two numbers.'
+description = 'Find the smaller of two numbers. Compare two number values and return the minimum value for mathematical calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

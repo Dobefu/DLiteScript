@@ -1,7 +1,7 @@
 +++
 title = 'arrays.reverse'
 linkTitle = 'reverse'
-description = 'Reverses the order of elements in an array.'
+description = 'Reverse the order of elements in an array. Flip array elements from last to first and return the reversed array. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

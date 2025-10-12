@@ -1,7 +1,7 @@
 +++
 title = 'arrays.sortStrings'
 linkTitle = 'sortStrings'
-description = 'Sorts a string array alphabetically.'
+description = 'Sort a string array alphabetically. Arrange string array elements in alphabetical order from A to Z and return the sorted array. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

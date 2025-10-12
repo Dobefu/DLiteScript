@@ -1,7 +1,7 @@
 +++
 title = 'math.abs'
 linkTitle = 'abs'
-description = 'Returns the absolute value of a number.'
+description = 'Return the absolute value of a number. Calculate the non-negative value of any number, removing the sign for maths operations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

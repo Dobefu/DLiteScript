@@ -1,7 +1,7 @@
 +++
 title = 'math.log'
 linkTitle = 'log'
-description = 'Returns the natural logarithm of a number.'
+description = 'Calculate the natural logarithm (base e) of a number. Return the logarithmic value for mathematical and scientific calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

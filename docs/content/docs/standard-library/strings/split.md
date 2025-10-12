@@ -1,7 +1,7 @@
 +++
 title = 'strings.split'
 linkTitle = 'split'
-description = 'Splits a string into an array using a delimiter.'
+description = 'Split a string into an array using a delimiter. Divide text into parts based on separator for array processing and parsing. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

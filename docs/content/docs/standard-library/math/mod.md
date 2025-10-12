@@ -1,7 +1,7 @@
 +++
 title = 'math.mod'
 linkTitle = 'mod'
-description = 'Returns the remainder of division.'
+description = 'Calculate the remainder of division. Return the modulo value when dividing two numbers for mathematical operations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

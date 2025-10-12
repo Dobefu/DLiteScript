@@ -1,7 +1,7 @@
 +++
 title = 'Imports'
 linkTitle = 'Imports'
-description = 'Import statements and module system in DLiteScript.'
+description = 'DLiteScript import system and module organization. Learn how to import files, use aliases, handle paths, and organize code with examples.'
 weight = 0
 draft = false
 +++

@@ -1,7 +1,7 @@
 +++
 title = 'strings.toUpper'
 linkTitle = 'toUpper'
-description = 'Converts a string to uppercase.'
+description = 'Convert a string to uppercase. Transform all lowercase letters to uppercase for formatting and text normalization operations. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

@@ -1,7 +1,7 @@
 +++
 title = 'Syntax'
 linkTitle = 'Syntax'
-description = 'Logical structure and syntax of the DLiteScript programming language.'
+description = 'DLiteScript syntax reference covering identifiers, reserved keywords, literals, arithmetic and logical operators, comments, and code structure with examples.'
 weight = -1
 draft = false
 +++

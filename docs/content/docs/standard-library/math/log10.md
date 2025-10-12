@@ -1,7 +1,7 @@
 +++
 title = 'math.log10'
 linkTitle = 'log10'
-description = 'Returns the base-10 logarithm of a number.'
+description = 'Calculate the base-10 logarithm of a number. Return the common logarithmic value for mathematical and scientific calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

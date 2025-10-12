@@ -1,7 +1,7 @@
 +++
 title = 'dump'
 linkTitle = 'dump'
-description = 'Outputs the value and type of arguments for debugging.'
+description = 'Output the value and type of variables for debugging. Display detailed variable information including data types. Part of the global namespace.'
 weight = 0
 draft = false
 +++

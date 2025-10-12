@@ -1,7 +1,7 @@
 +++
 title = 'time.now'
 linkTitle = 'now'
-description = 'Returns the current Unix timestamp in seconds.'
+description = 'Get the current Unix timestamp in seconds. Return the current time as seconds since epoch for time calculations and logging. Part of the time namespace.'
 weight = 0
 draft = false
 +++

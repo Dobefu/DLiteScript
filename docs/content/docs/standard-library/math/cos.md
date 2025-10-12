@@ -1,7 +1,7 @@
 +++
 title = 'math.cos'
 linkTitle = 'cos'
-description = 'Returns the cosine of an angle in radians.'
+description = 'Calculate the cosine of an angle in radians. Return the trigonometric cosine value for mathematical and geometric calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

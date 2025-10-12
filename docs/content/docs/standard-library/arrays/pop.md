@@ -1,7 +1,7 @@
 +++
 title = 'arrays.pop'
 linkTitle = 'pop'
-description = 'Removes and returns the last element from an array.'
+description = 'Remove and return the last element from an array. Modify the array by removing its final element and return the removed value. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

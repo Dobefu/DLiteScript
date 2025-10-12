@@ -1,7 +1,7 @@
 +++
 title = 'exit'
 linkTitle = 'exit'
-description = 'Terminates the program with an exit code.'
+description = 'Terminate a program with a custom exit code. Stop script execution immediately with success or error status for shell integration. Part of the global namespace.'
 weight = 0
 draft = false
 +++

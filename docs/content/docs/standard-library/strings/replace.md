@@ -1,7 +1,7 @@
 +++
 title = 'strings.replace'
 linkTitle = 'replace'
-description = 'Replaces the first occurrence of a substring.'
+description = 'Replace the first occurrence of a substring. Find and substitute text patterns in strings for single replacements. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

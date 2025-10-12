@@ -1,7 +1,7 @@
 +++
 title = 'strings.has'
 linkTitle = 'has'
-description = 'Checks if a string contains a substring.'
+description = 'Check if a string contains a specific substring. Test for text presence within strings for validation and conditional logic. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

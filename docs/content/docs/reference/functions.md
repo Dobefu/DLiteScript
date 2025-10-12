@@ -1,7 +1,7 @@
 +++
 title = 'Functions'
 linkTitle = 'Functions'
-description = 'Function declarations and calls in DLiteScript.'
+description = 'DLiteScript functions including declarations, parameters, return values, variadic functions, recursion, scoping, and function calls with examples.'
 weight = 0
 draft = false
 +++

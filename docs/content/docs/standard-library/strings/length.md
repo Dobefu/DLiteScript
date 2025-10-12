@@ -1,7 +1,7 @@
 +++
 title = 'strings.length'
 linkTitle = 'length'
-description = 'Returns the length of a string.'
+description = 'Get the character length of a string. Return the number of characters in a text value for validation and string operations. Part of the strings namespace.'
 weight = 0
 draft = false
 +++

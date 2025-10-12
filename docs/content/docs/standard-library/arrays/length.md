@@ -1,7 +1,7 @@
 +++
 title = 'arrays.length'
 linkTitle = 'length'
-description = 'Returns the number of elements in an array.'
+description = 'Get the number of elements in an array. Return the array size as a number for iteration and validation. Part of the arrays namespace.'
 weight = 0
 draft = false
 +++

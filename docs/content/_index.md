@@ -1,7 +1,7 @@
 +++
 title = 'DLiteScript'
 linkTitle = 'Home'
-description = 'A delightfully simple scripting language.'
+description = 'DLiteScript is a delightfully simple scripting language with syntax inspired by Go. Easy to learn, powerful error handling, and comprehensive tooling.'
 weight = 0
 draft = false
 +++

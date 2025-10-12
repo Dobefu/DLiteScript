@@ -1,7 +1,7 @@
 +++
 title = 'math.pow'
 linkTitle = 'pow'
-description = 'Raises a number to a power.'
+description = 'Raise a number to a specified power. Calculate exponential values by raising base number to exponent for mathematical calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

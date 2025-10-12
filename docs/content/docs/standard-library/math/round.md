@@ -1,7 +1,7 @@
 +++
 title = 'math.round'
 linkTitle = 'round'
-description = 'Rounds a number to the nearest integer.'
+description = 'Round a number to the nearest integer. Calculate the closest whole number value using standard rounding rules for calculations. Part of the math namespace.'
 weight = 0
 draft = false
 +++

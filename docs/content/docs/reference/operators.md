@@ -1,7 +1,7 @@
 +++
 title = 'Operators'
 linkTitle = 'Operators'
-description = 'Operators and expressions in DLiteScript.'
+description = 'DLiteScript operators including arithmetic, comparison, logical, assignment, and special operators like spread and index operators with examples.'
 weight = 0
 draft = false
 +++

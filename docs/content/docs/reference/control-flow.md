@@ -1,7 +1,7 @@
 +++
 title = 'Control Flow'
 linkTitle = 'Control Flow'
-description = 'Control flow statements and loops in DLiteScript.'
+description = 'DLiteScript control flow including if-else statements, for loops, range loops, break and continue statements. Program flow control with examples.'
 weight = 0
 draft = false
 +++
