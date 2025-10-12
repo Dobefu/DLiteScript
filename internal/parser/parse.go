@@ -108,6 +108,27 @@ func (p *Parser) handleStatementEnd(
 			break
 		}
 
+		if nextToken.TokenType == token.TokenTypeComment {
+			token, _ := p.GetNextToken()
+			comments = append(comments, &ast.CommentLiteral{
+				Value: token.Atom,
+				Range: ast.Range{
+					Start: ast.Position{
+						Offset: token.StartPos,
+						Line:   p.line,
+						Column: p.column,
+					},
+					End: ast.Position{
+						Offset: token.EndPos,
+						Line:   p.line,
+						Column: p.column + (token.EndPos - token.StartPos),
+					},
+				},
+			})
+
+			continue
+		}
+
 		if nextToken.TokenType == token.TokenTypeNewline {
 			_, _ = p.GetNextToken()
 			newlineCount++
