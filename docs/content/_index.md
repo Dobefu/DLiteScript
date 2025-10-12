@@ -12,4 +12,9 @@ draft = false
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Dobefu_DLiteScript)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Dobefu/DLiteScript)](https://goreportcard.com/report/github.com/Dobefu/DLiteScript)
 
-A delightfully simple scripting language.
+DLiteScript is a delightfully simple scripting language,
+built to be very easy to learn and pick up.
+
+The syntax resembles that of Go, and takes inspiration from many other languages.
+Though the syntax is very simple, it is still a statically typed language.
+This helps catch errors at the time of writing, instead of at runtime.
