@@ -38,6 +38,7 @@ if (globalThis.playgroundWorkerPath === undefined) {
    * @param {HTMLTextAreaElement} textarea
    */
   function initPreset(preset, textarea) {
+    preset.prepend(new Option("Fibonacci", "fibonacci"));
     preset.prepend(new Option("FizzBuzz", "fizzbuzz"));
     preset.prepend(new Option("Hello World", "hello"));
 
@@ -64,6 +65,21 @@ if (globalThis.playgroundWorkerPath === undefined) {
       switch (preset.value) {
         case "hello":
           textarea.value = `printf("Hello, World!")`;
+          break;
+
+        case "fibonacci":
+          textarea.value = `func fib(n number) number {
+  if n <= 1 {
+    return n
+  }
+
+  return fib(n - 1) + fib(n - 2)
+}
+
+for var i to 10 {
+  printf("fib(%g) = %g\\n", i, fib(i))
+}`;
+
           break;
 
         case "fizzbuzz":
