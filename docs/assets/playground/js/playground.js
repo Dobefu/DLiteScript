@@ -47,6 +47,17 @@ if (globalThis.playgroundWorkerPath === undefined) {
       continue;
     }
 
+    const storageKey = `playground-code`;
+    const savedCode = localStorage.getItem(storageKey);
+
+    if (savedCode) {
+      textarea.value = savedCode;
+    }
+
+    textarea.addEventListener("input", () => {
+      localStorage.setItem(storageKey, textarea.value);
+    });
+
     /** @type {HTMLButtonElement | null} */
     const runBtn = playground.querySelector(".playground__run-btn");
 
