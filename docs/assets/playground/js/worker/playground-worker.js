@@ -5,6 +5,12 @@
    * @param {MessageEvent} e
    */
   self.addEventListener("message", (e) => {
+    if (e.origin !== "" && e.origin !== self.location.origin) {
+      console.error("Invalid origin", e.origin);
+
+      return;
+    }
+
     if (typeof e.data !== "object" || e.data === null) {
       console.error("Invalid data", e.data);
 
