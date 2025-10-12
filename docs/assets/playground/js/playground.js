@@ -1,16 +1,24 @@
 (() => {
   "use strict";
 
+  /**
+   * @param {HTMLButtonElement} runBtn
+   * @returns {Worker}
+   */
+  function createWorker(runBtn) {
+    const worker = new Worker(playgroundWorkerPath);
+    worker.postMessage({ method: "init", data: playgroundWasmPath });
+
+    worker.onmessage = () => {
+      runBtn.removeAttribute("disabled", "");
+    };
+
+    return worker;
+  }
+
   const playgrounds = document.querySelectorAll(".playground");
 
   for (const playground of playgrounds) {
-    let worker = new Worker(playgroundWorkerPath);
-    worker.postMessage({ method: "init", data: playgroundWasmPath });
-
-    globalThis.addEventListener("beforeunload", () => {
-      worker.terminate();
-    });
-
     let isRunning = false;
 
     const textarea = playground.querySelector(".playground__textarea");
@@ -20,23 +28,21 @@
     );
     const output = playground.querySelector(".playground__output");
 
-    worker.onmessage = () => {
-      runBtn.removeAttribute("disabled", "");
-    };
+    let worker = createWorker(runBtn);
+
+    globalThis.addEventListener("beforeunload", () => {
+      worker.terminate();
+    });
 
     runBtn.addEventListener("click", () => {
       if (isRunning) {
         worker.terminate();
+        worker = createWorker(runBtn);
+
         runBtn.setAttribute("disabled", "");
         isRunning = false;
         runBtn.innerText = "Run code";
         output.innerText = "Cancelled";
-
-        worker = new Worker(playgroundWorkerPath);
-        worker.postMessage({ method: "init", data: playgroundWasmPath });
-        worker.onmessage = () => {
-          runBtn.removeAttribute("disabled", "");
-        };
 
         return;
       }
@@ -47,6 +53,9 @@
       output.innerText = "Running...";
       output.classList.remove("has-error");
 
+      /**
+       * @param {MessageEvent} e
+       */
       const msgHandler = (e) => {
         if (e.data.method !== "result") {
           return;
