@@ -1,4 +1,6 @@
-p {
+p,
+ol,
+ul {
   margin-block-end: var(--spacing-sm);
 }
 
@@ -55,7 +57,7 @@ mark {
 
 pre,
 code {
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .footnote-ref {
