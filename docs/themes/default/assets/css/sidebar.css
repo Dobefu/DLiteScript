@@ -33,7 +33,7 @@
   z-index: 1;
 }
 
-.sidebar__close {
+button.sidebar__close {
   background: none;
   border: none;
   cursor: pointer;
@@ -44,7 +44,13 @@
   width: calc(1.5rem + var(--spacing-md) * 2);
 }
 
-.sidebar__close::before {
+button.sidebar__close:hover,
+button.sidebar__close:active {
+  background: none;
+  border: 0;
+}
+
+button.sidebar__close::before {
   background-color: var(--color-sidebar-foreground);
   mask: url("/icons/x.svg") no-repeat center;
   content: "";
@@ -71,7 +77,7 @@
     transform: translateX(0);
   }
 
-  .sidebar__close {
+  button.sidebar__close {
     display: block;
   }
 }

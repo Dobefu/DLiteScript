@@ -12,7 +12,7 @@
   z-index: 10;
 }
 
-.header__menu--toggle {
+button.header__menu--toggle {
   background: none;
   border: none;
   cursor: pointer;
@@ -23,7 +23,13 @@
   width: 1.5rem;
 }
 
-.header__menu--toggle::before {
+button.header__menu--toggle:hover,
+button.header__menu--toggle:active {
+  background: none;
+  border: 0;
+}
+
+button.header__menu--toggle::before {
   background-color: var(--color-header-foreground);
   mask: url("/icons/menu.svg") no-repeat center;
   content: "";
@@ -33,7 +39,7 @@
 }
 
 @media (max-width: 64rem) {
-  .header__menu--toggle {
+  button.header__menu--toggle {
     display: block;
   }
 }
