@@ -4,7 +4,7 @@
   /**
    * @param {MessageEvent} e
    */
-  onmessage = (e) => {
+  self.addEventListener("message", (e) => {
     switch (e.data.method) {
       case "init":
         postMessage(init(e.data.data));
@@ -19,7 +19,7 @@
       default:
         console.log(e.data);
     }
-  };
+  });
 
   /**
    * @param {string} playgroundWasmPath
@@ -36,7 +36,9 @@
         go.run(result.instance);
       });
 
-    return {};
+    return {
+      method: "init",
+    };
   }
 
   /**
@@ -44,9 +46,18 @@
    * @returns {object}
    */
   function run(code) {
+    /** @type {object} */
+    let result;
+
+    try {
+      result = globalThis.runString(code);
+    } catch (error) {
+      result = error.message
+    }
+
     return {
       method: "result",
-      data: globalThis.runString(code),
+      data: result,
     };
   }
 })();

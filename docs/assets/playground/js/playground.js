@@ -1,19 +1,36 @@
+if (typeof globalThis.playgroundWasmPath === "undefined") {
+  throw new Error("playgroundWasmPath is not defined");
+}
+
+if (typeof globalThis.playgroundWorkerPath === "undefined") {
+  throw new Error("playgroundWorkerPath is not defined");
+}
+
 (() => {
   "use strict";
 
   /**
    * @param {HTMLButtonElement} runBtn
-   * @returns {Worker}
+   * @returns {{worker: Worker, abortController: AbortController}}
    */
   function createWorker(runBtn) {
     const worker = new Worker(globalThis.playgroundWorkerPath);
+    const abortController = new AbortController();
+
+    /**
+     * @param {MessageEvent} e
+     */
+    worker.addEventListener("message", (e) => {
+      if (e.data.method !== "init") {
+        return;
+      }
+
+      runBtn.removeAttribute("disabled");
+    }, { signal: abortController.signal });
+
     worker.postMessage({ method: "init", data: globalThis.playgroundWasmPath });
 
-    worker.onmessage = () => {
-      runBtn.removeAttribute("disabled");
-    };
-
-    return worker;
+    return { worker, abortController };
   }
 
   const playgrounds = document.querySelectorAll(".playground");
@@ -59,16 +76,18 @@
       continue;
     }
 
-    let worker = createWorker(runBtn);
+    let { worker, abortController } = createWorker(runBtn);
 
     globalThis.addEventListener("beforeunload", () => {
+      abortController.abort();
       worker.terminate();
     });
 
     runBtn.addEventListener("click", () => {
       if (isRunning) {
+        abortController.abort();
         worker.terminate();
-        worker = createWorker(runBtn);
+        ({ worker, abortController } = createWorker(runBtn));
 
         runBtn.setAttribute("disabled", "");
         isRunning = false;
@@ -91,8 +110,6 @@
         if (e.data.method !== "result") {
           return;
         }
-
-        worker.removeEventListener("message", msgHandler);
 
         let result;
 
@@ -126,7 +143,11 @@
         }
       };
 
-      worker.addEventListener("message", msgHandler);
+      worker.addEventListener("message", msgHandler, {
+        signal: abortController.signal,
+        once: true,
+      });
+
       worker.postMessage({ method: "run", data: textarea.value ?? "" });
     });
   }
