@@ -25,5 +25,7 @@
   <meta name="twitter:description" content="{{ $description }}">
   <meta name="twitter:image" content="{{ $image }}">
 
+  {{- partial "head/jsonld.html" (dict "page" . "description" $description "image" $image) -}}
+
   {{- partialCached "head/css.html" . -}}
 </head>

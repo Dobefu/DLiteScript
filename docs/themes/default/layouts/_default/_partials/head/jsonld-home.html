@@ -1,0 +1,50 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.BaseURL }}#website",
+      "url": "{{ site.BaseURL }}",
+      "name": "{{ site.Title }}",
+      "description": "{{ site.Params.description }}",
+      "publisher": {
+        "@id": "{{ site.BaseURL }}#organization"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "{{ site.BaseURL }}#software",
+      "name": "{{ site.Title }}",
+      "description": "{{ site.Params.description }}",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": ["Windows", "macOS", "Linux"],
+      "url": "{{ site.BaseURL }}",
+      "softwareVersion": "1.0",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "programmingLanguage": {
+        "@type": "ComputerLanguage",
+        "name": "DLiteScript"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "{{ site.BaseURL }}#organization",
+      "name": "{{ site.Title }}",
+      "url": "{{ site.BaseURL }}",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "{{ .image }}"
+      },
+      "sameAs": [
+        "{{ site.Params.socialLinks.github }}"
+      ]
+    }
+  ]
+}
+</script>
+

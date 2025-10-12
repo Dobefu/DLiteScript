@@ -1,0 +1,6 @@
+{{- if .page.IsHome -}}
+  {{- partial "head/jsonld-home.html" (dict "page" .page "image" .image) -}}
+{{- else -}}
+  {{- partial "head/jsonld-page.html" (dict "page" .page "description" .description "image" .image) -}}
+{{- end -}}
+
