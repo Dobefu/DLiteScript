@@ -49,7 +49,7 @@ func getSprintfFunction() function.Info {
 			},
 		},
 		true,
-		func(e function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
+		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			format, _ := args[0].AsString()
 			format = strings.ReplaceAll(format, "%d", "%f")
 
