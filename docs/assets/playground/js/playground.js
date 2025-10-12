@@ -7,6 +7,10 @@
     let worker = new Worker(playgroundWorkerPath);
     worker.postMessage({ method: "init", data: playgroundWasmPath });
 
+    globalThis.addEventListener("beforeunload", () => {
+      worker.terminate();
+    });
+
     let isRunning = false;
 
     const textarea = playground.querySelector(".playground__textarea");
