@@ -179,6 +179,12 @@ func (p *Parser) getReturnTypes() ([]string, error) {
 		return nil, err
 	}
 
+	if nextToken.TokenType == token.TokenTypeLBrace {
+		p.tokenIdx--
+
+		return []string{}, nil
+	}
+
 	if nextToken.TokenType == token.TokenTypeLParen {
 		returnTypes, err := p.parseReturnTypes(token.TokenTypeRParen)
 

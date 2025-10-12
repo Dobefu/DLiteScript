@@ -18,6 +18,43 @@ func TestParseFunctionDeclaration(t *testing.T) {
 		expected ast.ExprNode
 	}{
 		{
+			name: "no return type",
+			input: []*token.Token{
+				{Atom: "greet", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 5},
+				{Atom: "(", TokenType: token.TokenTypeLParen, StartPos: 5, EndPos: 6},
+				{Atom: ")", TokenType: token.TokenTypeRParen, StartPos: 6, EndPos: 7},
+				{Atom: "{", TokenType: token.TokenTypeLBrace, StartPos: 7, EndPos: 8},
+				{Atom: "return", TokenType: token.TokenTypeReturn, StartPos: 8, EndPos: 14},
+				{Atom: "}", TokenType: token.TokenTypeRBrace, StartPos: 14, EndPos: 15},
+			},
+			expected: &ast.FuncDeclarationStatement{
+				Name: "greet",
+				Args: []ast.FuncParameter{},
+				Body: &ast.BlockStatement{
+					Statements: []ast.ExprNode{
+						&ast.ReturnStatement{
+							Values:    []ast.ExprNode{},
+							NumValues: 0,
+							Range: ast.Range{
+								Start: ast.Position{Offset: 8, Line: 0, Column: 0},
+								End:   ast.Position{Offset: 14, Line: 0, Column: 0},
+							},
+						},
+					},
+					Range: ast.Range{
+						Start: ast.Position{Offset: 7, Line: 0, Column: 0},
+						End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+					},
+				},
+				ReturnValues:    []string{},
+				NumReturnValues: 0,
+				Range: ast.Range{
+					Start: ast.Position{Offset: 0, Line: 0, Column: 0},
+					End:   ast.Position{Offset: 15, Line: 0, Column: 0},
+				},
+			},
+		},
+		{
 			name: "simple",
 			input: []*token.Token{
 				{Atom: "add", TokenType: token.TokenTypeIdentifier, StartPos: 0, EndPos: 3},
