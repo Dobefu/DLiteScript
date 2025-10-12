@@ -1,6 +1,9 @@
 (() => {
   "use strict";
 
+  /**
+   * @param {MessageEvent} e
+   */
   onmessage = (e) => {
     switch (e.data.method) {
       case "init":
@@ -18,8 +21,12 @@
     }
   };
 
+  /**
+   * @param {string} playgroundWasmPath
+   * @returns {object}
+   */
   function init(playgroundWasmPath) {
-    const go = new Go();
+    const go = new globalThis.Go();
 
     WebAssembly.instantiateStreaming(
       fetch(playgroundWasmPath),
@@ -32,10 +39,14 @@
     return {};
   }
 
+  /**
+   * @param {string} code
+   * @returns {object}
+   */
   function run(code) {
     return {
       method: "result",
-      data: runString(code),
+      data: globalThis.runString(code),
     };
   }
 })();

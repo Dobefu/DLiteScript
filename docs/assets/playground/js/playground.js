@@ -6,11 +6,11 @@
    * @returns {Worker}
    */
   function createWorker(runBtn) {
-    const worker = new Worker(playgroundWorkerPath);
-    worker.postMessage({ method: "init", data: playgroundWasmPath });
+    const worker = new Worker(globalThis.playgroundWorkerPath);
+    worker.postMessage({ method: "init", data: globalThis.playgroundWasmPath });
 
     worker.onmessage = () => {
-      runBtn.removeAttribute("disabled", "");
+      runBtn.removeAttribute("disabled");
     };
 
     return worker;
@@ -21,12 +21,43 @@
   for (const playground of playgrounds) {
     let isRunning = false;
 
+    /** @type {HTMLTextAreaElement | null} */
     const textarea = playground.querySelector(".playground__textarea");
+
+    if (!textarea) {
+      console.error("Textarea not found");
+
+      continue;
+    }
+
+    /** @type {HTMLButtonElement | null} */
     const runBtn = playground.querySelector(".playground__run-btn");
+
+    if (!runBtn) {
+      console.error("Run button not found");
+
+      continue;
+    }
+
+    /** @type {HTMLDivElement | null} */
     const runIndicator = playground.querySelector(
       ".playground__run-indicator",
     );
+
+    if (!runIndicator) {
+      console.error("Run indicator not found");
+
+      continue;
+    }
+
+    /** @type {HTMLDivElement | null} */
     const output = playground.querySelector(".playground__output");
+
+    if (!output) {
+      console.error("Output element not found");
+
+      continue;
+    }
 
     let worker = createWorker(runBtn);
 
