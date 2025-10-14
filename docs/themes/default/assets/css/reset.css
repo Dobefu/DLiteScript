@@ -24,7 +24,7 @@ body {
   color: var(--color-foreground);
   font-family: sans-serif;
   height: 100%;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 input,
