@@ -1,7 +1,7 @@
 baseURL = 'https://dlitescript.com'
 languageCode = 'en-US'
 title = 'DLiteScript'
-theme = 'default'
+theme = 'plume'
 
 disableHugoGeneratorInject = true
 disableKinds = ['taxonomy', 'term']
