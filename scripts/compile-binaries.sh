@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
-# Exit on error.
 set -e
-
-# Navigate to the root of the project.
 cd "$(dirname "$0")/.."
 
-# Create the output directory if it doesn't already exist.
 mkdir -p output
 
-# Set the target platforms.
 PLATFORMS=(
     "darwin-x64:darwin:amd64"
     "darwin-arm64:darwin:arm64"

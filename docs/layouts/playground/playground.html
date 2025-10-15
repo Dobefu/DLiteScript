@@ -28,6 +28,10 @@
   {{- $wasm_path := resources.Get "/playground/DLiteScript-playground-wasm" -}}
   {{- $worker_path := resources.Match "playground/js/worker/*.js" | resources.Concat "js/playground-worker.js" | js.Build $worker_opts | fingerprint -}}
 
+  {{- if not $wasm_path -}}
+    {{- errorf "WASM file not found: /playground/DLiteScript-playground-wasm. Please build it first by running `./scripts/build-wasm.sh`." -}}
+  {{- end -}}
+
   <script>
     globalThis.playgroundWasmPath = "{{- $wasm_path.RelPermalink -}}"
     globalThis.playgroundWorkerPath = "{{- $worker_path.RelPermalink -}}"
