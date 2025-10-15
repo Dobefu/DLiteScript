@@ -40,6 +40,7 @@
   --color-table-foreground: #171717;
   --color-mark-background: #e5e7eb;
   --color-mark-foreground: #171717;
+  --color-success: #32743f;
   --color-error: #e7000b;
 
   --color-chroma-background: #f8fafc;
@@ -117,6 +118,7 @@
     --color-table-foreground: #f8fafc;
     --color-mark-background: #262626;
     --color-mark-foreground: #f8fafc;
+    --color-success: #56c16b;
     --color-error: #e7000b;
 
     --color-chroma-background: #171717;
