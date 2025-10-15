@@ -4,6 +4,8 @@
   <meta name="theme-color" content="{{ site.Params.themeColor }}">
   <link rel="icon" href="/favicon.ico" sizes="any">
 
+  {{- partialCached "head/preload.html" . -}}
+
   {{- $title := cond .IsHome .Title (printf "%s | %s" .Title site.Title) -}}
   {{- $description := .Description | default site.Params.description -}}
   {{- $image := .Params.image | default "/favicon.ico" | absURL -}}
