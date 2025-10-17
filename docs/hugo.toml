@@ -9,6 +9,7 @@ enableEmoji = true
 enableGitInfo = true
 enableRobotsTXT = true
 newContentEditor = 'nvim'
+printI18nWarnings = true
 printUnusedTemplates = true
 
 [params]
