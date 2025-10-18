@@ -37,7 +37,7 @@ printUnusedTemplates = true
     dir = ':cacheDir/images'
 
 [outputs]
-  home = ['html', 'rss', 'webappmanifest']
+  home = ['html', 'rss', 'webappmanifest', 'json']
 
 [security]
   [security.exec]
