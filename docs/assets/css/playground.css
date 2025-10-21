@@ -85,7 +85,7 @@
 
 .playground__run-indicator.is-animating::before,
 .playground__run-indicator.is-animating::after {
-  animation: run-indicator .2s linear;
+  animation: run-indicator 0.2s linear;
 }
 
 .playground__run-indicator::after {
