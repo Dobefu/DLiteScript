@@ -68,7 +68,7 @@
 }
 
 .playground__run-indicator::before {
-  background: var(--color-heading);
+  background: var(--color-primary);
 }
 
 .playground__run-indicator::before,
