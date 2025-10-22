@@ -11,7 +11,6 @@
      * @param {KeyboardEvent} e
      */
     ide.addEventListener("keydown", (e) => {
-      console.log(wasEscapePressed);
       switch (e.key) {
         case "Tab":
           if (!wasEscapePressed) {
