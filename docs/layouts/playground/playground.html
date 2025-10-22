@@ -44,7 +44,7 @@
     "format" "cjs"
   -}}
 
-  {{- with (resources.Match "playground/js/playground.js") | resources.Concat "js/playground.js" -}}
+  {{- with (resources.Match "playground/js/*.js") | resources.Concat "js/playground.js" -}}
     {{- with . | js.Build $script_opts -}}
       {{- if hugo.IsDevelopment -}}
         <script defer src="{{- .RelPermalink -}}" type="module"></script>

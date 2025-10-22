@@ -20,13 +20,17 @@ if (globalThis.playgroundWorkerPath === undefined) {
     /**
      * @param {MessageEvent} e
      */
-    worker.addEventListener("message", (e) => {
-      if (e.data.method !== "init") {
-        return;
-      }
+    worker.addEventListener(
+      "message",
+      (e) => {
+        if (e.data.method !== "init") {
+          return;
+        }
 
-      runBtn.removeAttribute("disabled");
-    }, { signal: abortController.signal });
+        runBtn.removeAttribute("disabled");
+      },
+      { signal: abortController.signal },
+    );
 
     worker.postMessage({ method: "init", data: globalThis.playgroundWasmPath });
 
@@ -157,9 +161,7 @@ for var i to 10 {
     }
 
     /** @type {HTMLDivElement | null} */
-    const runIndicator = playground.querySelector(
-      ".playground__run-indicator",
-    );
+    const runIndicator = playground.querySelector(".playground__run-indicator");
 
     if (!runIndicator) {
       console.error("Run indicator not found");
