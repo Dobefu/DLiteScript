@@ -1,6 +1,6 @@
 module github.com/Dobefu/DLiteScript
 
-go 1.24.6
+go 1.25.3
 
 require github.com/spf13/cobra v1.10.1
 
