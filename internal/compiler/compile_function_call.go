@@ -56,9 +56,9 @@ func (c *Compiler) compileFunctionCall(fc *ast.FunctionCall) error {
 }
 
 func (c *Compiler) addToFunctionPool(name string) int {
-	index, exists := c.functionMap[name]
+	index, hasIndex := c.functionMap[name]
 
-	if exists {
+	if hasIndex {
 		return index
 	}
 

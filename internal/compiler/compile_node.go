@@ -33,6 +33,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.AssignmentStatement:
 		return c.compileAssignmentStatement(n)
 
+	case *ast.BlockStatement:
+		return c.compileBlockStatement(n)
+
 	case *ast.CommentLiteral, *ast.NewlineLiteral:
 		return nil
 

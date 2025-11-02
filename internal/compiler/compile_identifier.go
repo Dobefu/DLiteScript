@@ -7,9 +7,18 @@ import (
 )
 
 func (c *Compiler) compileIdentifier(id *ast.Identifier) error {
-	addr, exists := c.variableMap[id.Value]
+	var addr uint64
+	var hasAddr bool
 
-	if !exists {
+	for i := len(c.variableScopes) - 1; i >= 0; i-- {
+		addr, hasAddr = c.variableScopes[i][id.Value]
+
+		if hasAddr {
+			break
+		}
+	}
+
+	if !hasAddr {
 		return fmt.Errorf("undefined variable: %s", id.Value)
 	}
 

@@ -12,9 +12,18 @@ func (c *Compiler) compileAssignmentStatement(as *ast.AssignmentStatement) error
 		return errors.New("assignment statement has no left side")
 	}
 
-	addr, exists := c.variableMap[as.Left.Value]
+	var addr uint64
+	var hasAddr bool
 
-	if !exists {
+	for i := len(c.variableScopes) - 1; i >= 0; i-- {
+		addr, hasAddr = c.variableScopes[i][as.Left.Value]
+
+		if hasAddr {
+			break
+		}
+	}
+
+	if !hasAddr {
 		return fmt.Errorf("undefined variable: %s", as.Left.Value)
 	}
 

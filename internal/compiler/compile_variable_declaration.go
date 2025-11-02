@@ -5,11 +5,18 @@ import (
 )
 
 func (c *Compiler) compileVariableDeclaration(vd *ast.VariableDeclaration) error {
-	addr, exists := c.variableMap[vd.Name]
+	currentScope := c.variableScopes[len(c.variableScopes)-1]
+	addr, hasAddress := currentScope[vd.Name]
 
-	if !exists {
-		addr = uint64(len(c.variableMap))
-		c.variableMap[vd.Name] = addr
+	if !hasAddress {
+		var numVars uint64
+
+		for _, scope := range c.variableScopes {
+			numVars += uint64(len(scope))
+		}
+
+		addr = numVars
+		currentScope[vd.Name] = addr
 	}
 
 	if vd.Value != nil {

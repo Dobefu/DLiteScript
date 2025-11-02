@@ -610,9 +610,9 @@ func TestDeclareLoopVariable(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			_, exists := evaluator.outerScope[test.node.DeclaredVariable]
+			_, hasScopedValue := evaluator.outerScope[test.node.DeclaredVariable]
 
-			if !exists {
+			if !hasScopedValue {
 				t.Fatalf(
 					"variable \"%s\" not found in outerScope",
 					test.node.DeclaredVariable,

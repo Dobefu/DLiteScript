@@ -20,20 +20,20 @@ type Compiler struct {
 	functionPool []string
 	// The index map of the function in the function pool.
 	functionMap map[string]int
-	// Variable storage: maps variable names to memory addresses.
-	variableMap map[string]uint64
+	// Variable storage stack of scopes.
+	variableScopes []map[string]uint64
 }
 
 // NewCompiler creates a new compiler.
 func NewCompiler() *Compiler {
 	return &Compiler{
-		bytecode:     make([]byte, 0),
-		regCounter:   0,
-		constPool:    make([]string, 0),
-		constPoolMap: make(map[string]int),
-		functionPool: make([]string, 0),
-		functionMap:  make(map[string]int),
-		variableMap:  make(map[string]uint64),
+		bytecode:       make([]byte, 0),
+		regCounter:     0,
+		constPool:      make([]string, 0),
+		constPoolMap:   make(map[string]int),
+		functionPool:   make([]string, 0),
+		functionMap:    make(map[string]int),
+		variableScopes: []map[string]uint64{make(map[string]uint64)},
 	}
 }
 

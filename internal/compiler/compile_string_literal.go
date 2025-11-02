@@ -11,9 +11,9 @@ func (c *Compiler) compileStringLiteral(s *ast.StringLiteral) error {
 }
 
 func (c *Compiler) addToConstPool(str string) int {
-	index, exists := c.constPoolMap[str]
+	index, hasIndex := c.constPoolMap[str]
 
-	if exists {
+	if hasIndex {
 		return index
 	}
 
