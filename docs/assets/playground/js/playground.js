@@ -67,11 +67,13 @@ if (globalThis.playgroundWorkerPath === undefined) {
       localStorage.setItem(presetStorageKey, preset.value);
 
       switch (preset.value) {
-        case "hello":
+        case "hello": {
           textarea.value = `printf("Hello, World!")`;
-          break;
 
-        case "fibonacci":
+          break;
+        }
+
+        case "fibonacci": {
           textarea.value = `func fib(n number) number {
   if n <= 1 {
     return n
@@ -85,8 +87,9 @@ for var i to 10 {
 }`;
 
           break;
+        }
 
-        case "fizzbuzz":
+        case "fizzbuzz": {
           textarea.value = `for var i from 1 to 100 {
   var buf string = ""
 
@@ -106,8 +109,9 @@ for var i to 10 {
 }`;
 
           break;
+        }
 
-        case "custom":
+        case "custom": {
           const savedCode = localStorage.getItem(codeStorageKey);
 
           if (savedCode) {
@@ -117,6 +121,7 @@ for var i to 10 {
           }
 
           break;
+        }
 
         default:
           break;
