@@ -186,8 +186,17 @@ func (rt *vmRuntime) createHostCallHandler(out io.Writer) vm.HostCallHandler {
 		args := make([]int64, numArgs)
 
 		for i := range numArgs {
-			regIndex := (arg1Reg + i) & vm.NumRegistersMask
-			args[i] = registers[regIndex]
+			registerIndex := (arg1Reg + i) & vm.NumRegistersMask
+
+			if registerIndex >= vm.NumRegisters {
+				return 0, fmt.Errorf(
+					"invalid register index: %d >= %d",
+					registerIndex,
+					vm.NumRegisters-1,
+				)
+			}
+
+			args[i] = registers[registerIndex] // #nosec: G115
 		}
 
 		return rt.callFunction(functionName, args, registers, out)
