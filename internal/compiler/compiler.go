@@ -8,10 +8,18 @@ import (
 
 // Compiler is the compiler for DLiteScript.
 type Compiler struct {
-	bytecode     []byte
-	regCounter   byte
-	constPool    []string
+	// The bytecode of the program.
+	bytecode []byte
+	// The register counter.
+	regCounter byte
+	// The constant pool.
+	constPool []string
+	// The index map of the constant in the constant pool.
 	constPoolMap map[string]int
+	// The function pool.
+	functionPool []string
+	// The index map of the function in the function pool.
+	functionMap map[string]int
 }
 
 // NewCompiler creates a new compiler.
@@ -21,6 +29,8 @@ func NewCompiler() *Compiler {
 		regCounter:   0,
 		constPool:    make([]string, 0),
 		constPoolMap: make(map[string]int),
+		functionPool: make([]string, 0),
+		functionMap:  make(map[string]int),
 	}
 }
 
@@ -43,6 +53,7 @@ func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 	program := make([]byte, 0)
 	program = append(program, c.bytecode[:instructionsStart]...)
 	program = append(program, c.serializeConstPool()...)
+	program = append(program, c.serializeFunctionPool()...)
 	program = append(program, c.bytecode[instructionsStart:instructionsEnd]...)
 
 	return program, nil

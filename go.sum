@@ -1,5 +1,7 @@
 github.com/Dobefu/vee-em v0.0.0-20251101124117-3820494dcc56 h1:tpqFKaILINK/JjXAsg8vkb205h8vzRoBbUZM5q5gIvc=
 github.com/Dobefu/vee-em v0.0.0-20251101124117-3820494dcc56/go.mod h1:W8c6SFAQ1yMvyM++Qwt+8rFpUOfY4qGeZph2JMGmFho=
+github.com/Dobefu/vee-em v0.0.0-20251102094055-77b5620b2f95 h1:qMd1bR5f3dA+DO2114z9T1ILdmXiM8PphEEB8R4GPfw=
+github.com/Dobefu/vee-em v0.0.0-20251102094055-77b5620b2f95/go.mod h1:W8c6SFAQ1yMvyM++Qwt+8rFpUOfY4qGeZph2JMGmFho=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
@@ -8,5 +10,7 @@ github.com/spf13/cobra v1.10.1 h1:lJeBwCfmrnXthfAupyUTzJ/J4Nc1RsHC/mSRU2dll/s=
 github.com/spf13/cobra v1.10.1/go.mod h1:7SmJGaTHFVBY0jW4NXGluQoLvhqFQM+6XSKD+P4XaB0=
 github.com/spf13/pflag v1.0.9 h1:9exaQaMOCwffKiiiYk6/BndUBv+iRViNW+4lEMi0PvY=
 github.com/spf13/pflag v1.0.9/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
+github.com/spf13/pflag v1.0.10 h1:4EBh2KAYBwaONj6b2Ye1GiHfwjqyROoF4RwYO+vPwFk=
+github.com/spf13/pflag v1.0.10/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
