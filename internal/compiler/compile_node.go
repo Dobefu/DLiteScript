@@ -9,6 +9,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.NumberLiteral:
 		return c.compileNumberLiteral(n)
 
+	case *ast.StringLiteral:
+		return c.compileStringLiteral(n)
+
 	case *ast.BinaryExpr:
 		return c.compileBinaryExpr(n)
 

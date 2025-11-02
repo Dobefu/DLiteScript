@@ -8,15 +8,19 @@ import (
 
 // Compiler is the compiler for DLiteScript.
 type Compiler struct {
-	bytecode   []byte
-	regCounter byte
+	bytecode     []byte
+	regCounter   byte
+	constPool    []string
+	constPoolMap map[string]int
 }
 
 // NewCompiler creates a new compiler.
 func NewCompiler() *Compiler {
 	return &Compiler{
-		bytecode:   make([]byte, 0),
-		regCounter: 0,
+		bytecode:     make([]byte, 0),
+		regCounter:   0,
+		constPool:    make([]string, 0),
+		constPoolMap: make(map[string]int),
 	}
 }
 
@@ -24,6 +28,7 @@ func NewCompiler() *Compiler {
 func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 	// Add the magic header.
 	c.bytecode = append(c.bytecode, []byte("DLS\x01")...)
+	instructionsStart := len(c.bytecode)
 
 	err := c.compileNode(node)
 
@@ -33,5 +38,12 @@ func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 
 	c.bytecode = append(c.bytecode, byte(vm.OpcodeHalt))
 
-	return c.bytecode, nil
+	instructionsEnd := len(c.bytecode)
+
+	program := make([]byte, 0)
+	program = append(program, c.bytecode[:instructionsStart]...)
+	program = append(program, c.serializeConstPool()...)
+	program = append(program, c.bytecode[instructionsStart:instructionsEnd]...)
+
+	return program, nil
 }
