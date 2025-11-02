@@ -3,7 +3,7 @@ module github.com/Dobefu/DLiteScript
 go 1.25.3
 
 require (
-	github.com/Dobefu/vee-em v0.0.0-20251102094055-77b5620b2f95
+	github.com/Dobefu/vee-em v0.0.0-20251102095339-c814c29ef2fd
 	github.com/spf13/cobra v1.10.1
 )
 
