@@ -12,6 +12,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.BinaryExpr:
 		return c.compileBinaryExpr(n)
 
+	case *ast.StatementList:
+		return c.compileStatementList(n)
+
 	default:
 		return nil
 	}

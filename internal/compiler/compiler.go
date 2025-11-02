@@ -22,9 +22,6 @@ func NewCompiler() *Compiler {
 
 // Compile compiles the given AST node into bytecode.
 func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
-	c.bytecode = make([]byte, 16)
-	c.regCounter = 0
-
 	// Add the magic header.
 	c.bytecode = append(c.bytecode, []byte("DLS\x01")...)
 
