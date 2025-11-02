@@ -15,6 +15,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.StatementList:
 		return c.compileStatementList(n)
 
+	case *ast.CommentLiteral, *ast.NewlineLiteral:
+		return nil
+
 	default:
 		return nil
 	}
