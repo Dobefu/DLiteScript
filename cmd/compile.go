@@ -85,7 +85,7 @@ func runCompileCmd(cmd *cobra.Command, args []string) {
 		outputPath = fmt.Sprintf("%s.dlc", args[0][:len(args[0])-len(ext)])
 	}
 
-	err = os.WriteFile(outputPath, bytecode, 0644)
+	err = os.WriteFile(outputPath, bytecode, 0600)
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to write bytecode: %s", err.Error()))
