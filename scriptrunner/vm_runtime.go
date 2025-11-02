@@ -171,7 +171,12 @@ func (rt *vmRuntime) run(out io.Writer) error {
 }
 
 func (rt *vmRuntime) createHostCallHandler(out io.Writer) vm.HostCallHandler {
-	return func(functionIndex int64, arg1Reg uint64, numArgs uint64, registers [32]int64) (int64, error) {
+	return func(
+		functionIndex int64,
+		arg1Reg uint64,
+		numArgs uint64,
+		registers [32]int64,
+	) (int64, error) {
 		if functionIndex < 0 || int(functionIndex) >= len(rt.functionPool) {
 			return 0, fmt.Errorf(
 				"invalid function index: %d < 0 or %d >= %d",
@@ -236,7 +241,19 @@ func (rt *vmRuntime) callPrintf(args []int64, out io.Writer) (int64, error) {
 
 	format := rt.constPool[formatIndex]
 
-	var formatArgs []any
+	formatArgs := rt.parseFormatString(format, args)
+
+	_, err := fmt.Fprintf(out, format, formatArgs...)
+
+	if err != nil {
+		return 0, fmt.Errorf("failed to format string: %s", err.Error())
+	}
+
+	return 0, nil
+}
+
+func (rt *vmRuntime) parseFormatString(format string, args []int64) []any {
+	formatArgs := make([]any, 0)
 	formatIdx := 0
 
 	for i := 1; i < len(args); i++ {
@@ -244,16 +261,20 @@ func (rt *vmRuntime) callPrintf(args []int64, out io.Writer) (int64, error) {
 
 		isStringSpec := false
 
+	getFormatSpecifier:
 		for j := formatIdx; j < len(format)-1; j++ {
-			if format[j] == '%' && format[j+1] == 's' {
-				isStringSpec = true
-				formatIdx = j + 2
+			if format[j] == '%' {
+				switch format[j+1] {
+				case 's':
+					isStringSpec = true
+					formatIdx = j + 2
 
-				break
-			} else if format[j] == '%' {
-				formatIdx = j + 2
+					break getFormatSpecifier
+				default:
+					formatIdx = j + 2
 
-				break
+					break getFormatSpecifier
+				}
 			}
 		}
 
@@ -264,11 +285,5 @@ func (rt *vmRuntime) callPrintf(args []int64, out io.Writer) (int64, error) {
 		}
 	}
 
-	_, err := fmt.Fprintf(out, format, formatArgs...)
-
-	if err != nil {
-		return 0, fmt.Errorf("failed to format string: %s", err.Error())
-	}
-
-	return 0, nil
+	return formatArgs
 }
