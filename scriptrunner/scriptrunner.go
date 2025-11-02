@@ -2,6 +2,7 @@
 package scriptrunner
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -17,6 +18,21 @@ type ScriptRunner struct {
 	OutFile io.Writer
 
 	result string
+}
+
+// ReadFileFromArgs reads a file from the arguments and returns its content.
+func (r *ScriptRunner) ReadFileFromArgs(args []string) (string, error) {
+	if len(args) == 0 {
+		return "", errors.New("no file specified")
+	}
+
+	fileContent, err := os.ReadFile(args[0])
+
+	if err != nil {
+		return "", fmt.Errorf("failed to read file: %s", err.Error())
+	}
+
+	return string(fileContent), nil
 }
 
 // RunString executes a DLiteScript script from a string.

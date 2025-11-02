@@ -2,12 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"log/slog"
 	"os"
 
 	"github.com/Dobefu/DLiteScript/internal/formatter"
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
+	"github.com/Dobefu/DLiteScript/scriptrunner"
 	"github.com/spf13/cobra"
 )
 
@@ -29,14 +31,19 @@ func init() {
 }
 
 func runFmtCmd(_ *cobra.Command, args []string) {
-	if len(args) == 0 {
-		slog.Error("no file specified")
-		setExitCode(1)
+	var outfile io.Writer = os.Stdout
 
-		return
+	isQuiet, _ := rootCmd.Flags().GetBool("quiet")
+
+	if isQuiet {
+		outfile = io.Discard
 	}
 
-	fileContent, err := os.ReadFile(args[0])
+	runner := &scriptrunner.ScriptRunner{
+		OutFile: outfile,
+	}
+
+	fileContent, err := runner.ReadFileFromArgs(args)
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to read file: %s", err.Error()))
@@ -45,7 +52,7 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 		return
 	}
 
-	t := tokenizer.NewTokenizer(string(fileContent))
+	t := tokenizer.NewTokenizer(fileContent)
 	tokens, err := t.Tokenize()
 
 	if err != nil {
