@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Dobefu/DLiteScript/internal/ast"
 	"github.com/Dobefu/DLiteScript/internal/evaluator"
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
@@ -33,6 +34,25 @@ func (r *ScriptRunner) ReadFileFromArgs(args []string) (string, error) {
 	}
 
 	return string(fileContent), nil
+}
+
+// ParseString parses a string to an AST.
+func (r *ScriptRunner) ParseString(str string) (ast.ExprNode, error) {
+	t := tokenizer.NewTokenizer(str)
+	tokens, err := t.Tokenize()
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to tokenize string: %s", err.Error())
+	}
+
+	p := parser.NewParser(tokens)
+	ast, err := p.Parse()
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse string: %s", err.Error())
+	}
+
+	return ast, nil
 }
 
 // RunString executes a DLiteScript script from a string.

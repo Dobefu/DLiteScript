@@ -7,8 +7,6 @@ import (
 	"os"
 
 	"github.com/Dobefu/DLiteScript/internal/formatter"
-	"github.com/Dobefu/DLiteScript/internal/parser"
-	"github.com/Dobefu/DLiteScript/internal/tokenizer"
 	"github.com/Dobefu/DLiteScript/scriptrunner"
 	"github.com/spf13/cobra"
 )
@@ -52,18 +50,7 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 		return
 	}
 
-	t := tokenizer.NewTokenizer(fileContent)
-	tokens, err := t.Tokenize()
-
-	if err != nil {
-		slog.Error(fmt.Sprintf("failed to tokenize file: %s", err.Error()))
-		setExitCode(1)
-
-		return
-	}
-
-	p := parser.NewParser(tokens)
-	ast, err := p.Parse()
+	ast, err := runner.ParseString(fileContent)
 
 	if err != nil {
 		slog.Error(fmt.Sprintf("failed to parse file: %s", err.Error()))
