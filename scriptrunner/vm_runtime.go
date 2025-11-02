@@ -263,18 +263,20 @@ func (rt *vmRuntime) parseFormatString(format string, args []int64) []any {
 
 	getFormatSpecifier:
 		for j := formatIdx; j < len(format)-1; j++ {
-			if format[j] == '%' {
-				switch format[j+1] {
-				case 's':
-					isStringSpec = true
-					formatIdx = j + 2
+			if format[j] != '%' {
+				continue
+			}
 
-					break getFormatSpecifier
-				default:
-					formatIdx = j + 2
+			switch format[j+1] {
+			case 's':
+				isStringSpec = true
+				formatIdx = j + 2
 
-					break getFormatSpecifier
-				}
+				break getFormatSpecifier
+			default:
+				formatIdx = j + 2
+
+				break getFormatSpecifier
 			}
 		}
 
