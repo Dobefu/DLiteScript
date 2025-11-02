@@ -35,6 +35,9 @@ func (c *Compiler) compileBinaryExpr(b *ast.BinaryExpr) error {
 	case token.TokenTypeOperationDiv:
 		return c.emitDiv(destReg, leftRegister, rightRegister)
 
+	case token.TokenTypeOperationMod:
+		return c.emitMod(destReg, leftRegister, rightRegister)
+
 	default:
 		return nil
 	}
