@@ -264,6 +264,7 @@ func (rt *vmRuntime) parseFormatString(format string, args []int64) []any {
 		argValue := args[i]
 
 		isStringSpec := false
+		isBoolSpec := false
 
 	getFormatSpecifier:
 		for j := formatIdx; j < len(format)-1; j++ {
@@ -277,6 +278,13 @@ func (rt *vmRuntime) parseFormatString(format string, args []int64) []any {
 				formatIdx = j + 2
 
 				break getFormatSpecifier
+
+			case 't':
+				isBoolSpec = true
+				formatIdx = j + 2
+
+				break getFormatSpecifier
+
 			default:
 				formatIdx = j + 2
 
@@ -284,9 +292,14 @@ func (rt *vmRuntime) parseFormatString(format string, args []int64) []any {
 			}
 		}
 
-		if isStringSpec && argValue >= 0 && int(argValue) < len(rt.constPool) {
+		switch {
+		case isStringSpec && argValue >= 0 && int(argValue) < len(rt.constPool):
 			formatArgs = append(formatArgs, rt.constPool[argValue])
-		} else {
+
+		case isBoolSpec:
+			formatArgs = append(formatArgs, argValue != 0)
+
+		case argValue >= 0:
 			formatArgs = append(formatArgs, float64(argValue))
 		}
 	}
