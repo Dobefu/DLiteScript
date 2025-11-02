@@ -22,18 +22,21 @@ type Compiler struct {
 	functionMap map[string]int
 	// Variable storage stack of scopes.
 	variableScopes []map[string]uint64
+	// The start position of instructions in bytecode.
+	instructionsStart int
 }
 
 // NewCompiler creates a new compiler.
 func NewCompiler() *Compiler {
 	return &Compiler{
-		bytecode:       make([]byte, 0),
-		regCounter:     0,
-		constPool:      make([]string, 0),
-		constPoolMap:   make(map[string]int),
-		functionPool:   make([]string, 0),
-		functionMap:    make(map[string]int),
-		variableScopes: []map[string]uint64{make(map[string]uint64)},
+		bytecode:          make([]byte, 0),
+		regCounter:        0,
+		constPool:         make([]string, 0),
+		constPoolMap:      make(map[string]int),
+		functionPool:      make([]string, 0),
+		functionMap:       make(map[string]int),
+		variableScopes:    []map[string]uint64{make(map[string]uint64)},
+		instructionsStart: 0,
 	}
 }
 
@@ -41,7 +44,7 @@ func NewCompiler() *Compiler {
 func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 	// Add the magic header.
 	c.bytecode = append(c.bytecode, []byte("DLS\x01")...)
-	instructionsStart := len(c.bytecode)
+	c.instructionsStart = len(c.bytecode)
 
 	err := c.compileNode(node)
 
@@ -54,10 +57,10 @@ func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 	instructionsEnd := len(c.bytecode)
 
 	program := make([]byte, 0)
-	program = append(program, c.bytecode[:instructionsStart]...)
+	program = append(program, c.bytecode[:c.instructionsStart]...)
 	program = append(program, c.serializeConstPool()...)
 	program = append(program, c.serializeFunctionPool()...)
-	program = append(program, c.bytecode[instructionsStart:instructionsEnd]...)
+	program = append(program, c.bytecode[c.instructionsStart:instructionsEnd]...)
 
 	return program, nil
 }
