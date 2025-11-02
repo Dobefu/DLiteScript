@@ -16,6 +16,10 @@ type vmRuntime struct {
 	program      []byte
 }
 
+const (
+	errUnexpectedEndOfBytecode = "unexpected end of bytecode: %d > %d"
+)
+
 func (rt *vmRuntime) loadBytecode(bytecode []byte) error {
 	if len(bytecode) < 4 {
 		return errors.New("bytecode too short")
@@ -57,7 +61,7 @@ func (rt *vmRuntime) deserializeConstPool(
 ) ([]string, int, error) {
 	if offset+8 > len(bytecode) {
 		return nil, 0, fmt.Errorf(
-			"unexpected end of bytecode: %d > %d",
+			errUnexpectedEndOfBytecode,
 			offset+8,
 			len(bytecode),
 		)
@@ -71,7 +75,7 @@ func (rt *vmRuntime) deserializeConstPool(
 	for range count {
 		if offset+8 > len(bytecode) {
 			return nil, 0, fmt.Errorf(
-				"unexpected end of bytecode: %d > %d",
+				errUnexpectedEndOfBytecode,
 				offset+8,
 				len(bytecode),
 			)
@@ -90,7 +94,7 @@ func (rt *vmRuntime) deserializeConstPool(
 
 		if (offset + int(length)) > len(bytecode) {
 			return nil, 0, fmt.Errorf(
-				"unexpected end of bytecode: %d > %d",
+				errUnexpectedEndOfBytecode,
 				offset+int(length),
 				len(bytecode),
 			)
@@ -110,7 +114,7 @@ func (rt *vmRuntime) deserializeFunctionPool(
 ) ([]string, int, error) {
 	if offset+8 > len(bytecode) {
 		return nil, 0, fmt.Errorf(
-			"unexpected end of bytecode: %d > %d",
+			errUnexpectedEndOfBytecode,
 			offset+8,
 			len(bytecode),
 		)
@@ -124,7 +128,7 @@ func (rt *vmRuntime) deserializeFunctionPool(
 	for range count {
 		if offset+8 > len(bytecode) {
 			return nil, 0, fmt.Errorf(
-				"unexpected end of bytecode: %d > %d",
+				errUnexpectedEndOfBytecode,
 				offset+8,
 				len(bytecode),
 			)
@@ -143,7 +147,7 @@ func (rt *vmRuntime) deserializeFunctionPool(
 
 		if offset+int(length) > len(bytecode) {
 			return nil, 0, fmt.Errorf(
-				"unexpected end of bytecode: %d > %d",
+				errUnexpectedEndOfBytecode,
 				offset+int(length),
 				len(bytecode),
 			)
