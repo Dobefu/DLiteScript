@@ -99,10 +99,10 @@ func (r *MissingReturn) formatReturnTypes(returnTypes []string) string {
 
 	for i, returnType := range returnTypes {
 		if i > 0 {
-			result += ", "
+			result = fmt.Sprintf("%s, ", result)
 		}
 
-		result += returnType
+		result = fmt.Sprintf("%s%s", result, returnType)
 	}
 
 	return result
