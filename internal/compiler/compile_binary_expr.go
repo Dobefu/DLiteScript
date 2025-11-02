@@ -12,14 +12,16 @@ func (c *Compiler) compileBinaryExpr(b *ast.BinaryExpr) error {
 		return err
 	}
 
-	leftRegister := c.regCounter - 1
+	leftRegister := c.getLastRegister()
+
 	err = c.compileNode(b.Right)
 
 	if err != nil {
 		return err
 	}
 
-	rightRegister := c.regCounter - 1
+	rightRegister := c.getLastRegister()
+
 	destReg := c.incrementRegCounter()
 
 	switch b.Operator.TokenType {

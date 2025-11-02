@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
+	vm "github.com/Dobefu/vee-em"
 )
 
 func (c *Compiler) compileFunctionCall(fc *ast.FunctionCall) error {
@@ -14,6 +15,8 @@ func (c *Compiler) compileFunctionCall(fc *ast.FunctionCall) error {
 	}
 
 	functionIndex := c.addToFunctionPool(functionName)
+	argCount := len(fc.Arguments)
+	argResultRegisters := make([]byte, 0, argCount)
 
 	for _, arg := range fc.Arguments {
 		err := c.compileNode(arg)
@@ -21,12 +24,35 @@ func (c *Compiler) compileFunctionCall(fc *ast.FunctionCall) error {
 		if err != nil {
 			return err
 		}
+
+		resultRegister := c.getLastRegister()
+		argResultRegisters = append(argResultRegisters, resultRegister)
 	}
 
-	argCount := len(fc.Arguments)
-	firstArgReg := c.regCounter - byte(argCount)
+	arg1Register := c.incrementRegCounter()
 
-	return c.emitFunctionCall(functionIndex, firstArgReg, byte(argCount))
+	for i, srcRegister := range argResultRegisters {
+		destRegister := (arg1Register + byte(i)) % vm.NumRegisters
+
+		if destRegister == srcRegister {
+			continue
+		}
+
+		err := c.emitLoadRegister(destRegister, srcRegister)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	c.regCounter = (arg1Register + byte(argCount)) % vm.NumRegisters
+	err := c.emitFunctionCall(functionIndex, arg1Register, byte(argCount))
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *Compiler) addToFunctionPool(name string) int {

@@ -75,10 +75,50 @@ func (r *ScriptRunner) RunScript(file string) (byte, error) {
 		return 1, fmt.Errorf("failed to read file: %s", err.Error())
 	}
 
-	return r.RunString(string(fileContent), file)
+	fileHeader := fileContent[:4]
+
+	if string(fileHeader) != "DLS\x01" {
+		return r.RunString(string(fileContent), file)
+	}
+
+	return r.RunBytecode(fileContent)
 }
 
 // Output returns the result of the execution.
 func (r *ScriptRunner) Output() string {
 	return r.result
+}
+
+// RunBytecode executes compiled DLiteScript bytecode.
+func (r *ScriptRunner) RunBytecode(bytecode []byte) (byte, error) {
+	rt := &vmRuntime{
+		constPool:    make([]string, 0),
+		functionPool: make([]string, 0),
+		program:      make([]byte, 0),
+	}
+
+	err := rt.loadBytecode(bytecode)
+
+	if err != nil {
+		return 1, fmt.Errorf("failed to load bytecode: %s", err.Error())
+	}
+
+	err = rt.run(r.OutFile)
+
+	if err != nil {
+		return 1, fmt.Errorf("failed to run bytecode: %s", err.Error())
+	}
+
+	return 0, nil
+}
+
+// RunCompiledScript executes a compiled DLiteScript file.
+func (r *ScriptRunner) RunCompiledScript(file string) (byte, error) {
+	bytecode, err := os.ReadFile(filepath.Clean(file))
+
+	if err != nil {
+		return 1, fmt.Errorf("failed to read bytecode file: %s", err.Error())
+	}
+
+	return r.RunBytecode(bytecode)
 }
