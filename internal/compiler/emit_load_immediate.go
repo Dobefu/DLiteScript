@@ -11,7 +11,7 @@ func (c *Compiler) emitLoadImmediate(dest byte, value int64) error {
 	c.bytecode = append(c.bytecode, dest)
 
 	valBytes := make([]byte, 8)
-	binary.BigEndian.PutUint64(valBytes, uint64(value))
+	binary.BigEndian.PutUint64(valBytes, uint64(value)) // #nosec: G115
 	c.bytecode = append(c.bytecode, valBytes...)
 
 	return nil
