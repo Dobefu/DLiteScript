@@ -30,6 +30,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.Identifier:
 		return c.compileIdentifier(n)
 
+	case *ast.AssignmentStatement:
+		return c.compileAssignmentStatement(n)
+
 	case *ast.CommentLiteral, *ast.NewlineLiteral:
 		return nil
 
