@@ -24,6 +24,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.VariableDeclaration:
 		return c.compileVariableDeclaration(n)
 
+	case *ast.ConstantDeclaration:
+		return c.compileConstantDeclaration(n)
+
 	case *ast.CommentLiteral, *ast.NewlineLiteral:
 		return nil
 
