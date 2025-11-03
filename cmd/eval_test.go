@@ -30,7 +30,7 @@ func TestEvalCmd(t *testing.T) {
 			err := evalCmd.ValidateArgs([]string{test.input})
 
 			if err != nil {
-				t.Fatalf("Expected no error, got: \"%s\"", err.Error())
+				t.Fatalf("expected no error, got: \"%s\"", err.Error())
 			}
 
 			evalCmd.SetArgs([]string{test.input})
