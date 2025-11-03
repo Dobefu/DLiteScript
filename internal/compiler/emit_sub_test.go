@@ -7,7 +7,7 @@ import (
 	vm "github.com/Dobefu/vee-em"
 )
 
-func TestEmitAdd(t *testing.T) {
+func TestEmitSub(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -18,18 +18,18 @@ func TestEmitAdd(t *testing.T) {
 		expected []byte
 	}{
 		{
-			name:     "add (0 + 0)",
+			name:     "sub (0 - 0)",
 			dest:     0,
 			src1:     0,
 			src2:     0,
-			expected: []byte{byte(vm.OpcodeAdd), 0, 0, 0},
+			expected: []byte{byte(vm.OpcodeSub), 0, 0, 0},
 		},
 		{
-			name:     "add (1 + 1)",
+			name:     "sub (1 - 1)",
 			dest:     0,
 			src1:     1,
 			src2:     1,
-			expected: []byte{byte(vm.OpcodeAdd), 0, 1, 1},
+			expected: []byte{byte(vm.OpcodeSub), 0, 1, 1},
 		},
 	}
 
@@ -38,7 +38,7 @@ func TestEmitAdd(t *testing.T) {
 			t.Parallel()
 
 			c := NewCompiler()
-			err := c.emitAdd(test.dest, test.src1, test.src2)
+			err := c.emitSub(test.dest, test.src1, test.src2)
 
 			if err != nil {
 				t.Fatalf("Expected no error, got: \"%s\"", err.Error())
