@@ -10,10 +10,10 @@ const packageName = "io"
 // GetIOFunctions returns the io functions for the standard library.
 func GetIOFunctions() map[string]function.Info {
 	return map[string]function.Info{
-		"readFile":   readFileFunction(),
-		"writeFile":  writeFileFunction(),
-		"exists":     existsFunction(),
-		"deleteFile": deleteFileFunction(),
-		"deleteDir":  deleteDirFunction(),
+		"readFileString": getReadFileStringFunction(),
+		"writeFile":      getWriteFileFunction(),
+		"exists":         getExistsFunction(),
+		"deleteFile":     getDeleteFileFunction(),
+		"deleteDir":      getDeleteDirFunction(),
 	}
 }
