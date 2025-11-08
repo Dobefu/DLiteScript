@@ -32,13 +32,13 @@ func getReadFileStringFunction() function.Info {
 				Name:        "path",
 				Description: "The path for the file that should be read.",
 			},
+		},
+		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "value",
 				Description: "The content of the given file, or empty string if not found.",
 			},
-		},
-		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
