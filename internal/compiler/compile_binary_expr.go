@@ -52,6 +52,9 @@ func (c *Compiler) compileBinaryExpr(b *ast.BinaryExpr) error {
 	case token.TokenTypeGreaterThanOrEqual:
 		return c.compileComparison(destReg, leftRegister, rightRegister, token.TokenTypeGreaterThanOrEqual)
 
+	case token.TokenTypeLessThan:
+		return c.compileComparison(destReg, leftRegister, rightRegister, token.TokenTypeLessThan)
+
 	default:
 		return nil
 	}
