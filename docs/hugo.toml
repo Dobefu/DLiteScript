@@ -15,8 +15,8 @@ printUnusedTemplates = true
 [params]
   shortName = 'DLiteScript'
   description = 'A delightfully simple scripting language.'
-  backgroundColor = '#ffffff'
-  themeColor = '#000000'
+  backgroundColor = '#0a0a0a'
+  themeColor = '#60a5fa'
 
   [params.socialLinks]
     github = 'https://github.com/Dobefu/DLiteScript'
