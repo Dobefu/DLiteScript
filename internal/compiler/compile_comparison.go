@@ -38,6 +38,9 @@ func (c *Compiler) compileComparison(
 
 	case token.TokenTypeGreaterThanOrEqual:
 		err = c.emitJmpImmediateIfGreaterOrEqual(jumpOffset)
+
+	case token.TokenTypeLessThan:
+		err = c.emitJmpImmediateIfLess(jumpOffset)
 	}
 
 	if err != nil {
