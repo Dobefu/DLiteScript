@@ -1,15 +1,47 @@
-# DLiteScript
+<p align="center">
+    <img
+        align="center"
+        alt="Logo"
+        aria-hidden="true"
+        src="/media/logo.svg"
+        width="64"
+    />
+</p>
 
-[![Go Version](https://img.shields.io/github/go-mod/go-version/Dobefu/DLiteScript)](https://go.dev/)
-[![License](https://img.shields.io/github/license/Dobefu/DLiteScript)](https://go.dev/)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Dobefu_DLiteScript)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=coverage)](https://sonarcloud.io/summary/overall?id=Dobefu_DLiteScript)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Dobefu/DLiteScript)](https://goreportcard.com/report/github.com/Dobefu/DLiteScript)
+<h1 align="center">DLiteScript</h1>
+
+<p align="center">A delightfully simple scripting language.</p>
+
+<p align="center">
+    <a href="https://go.dev/">
+        <img
+            alt="Go Version"
+            src="https://img.shields.io/github/go-mod/go-version/Dobefu/DLiteScript"
+        /></a>
+    <a href="https://go.dev/">
+        <img
+            alt="License"
+            src="https://img.shields.io/github/license/Dobefu/DLiteScript"
+        /></a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Dobefu_DLiteScript">
+        <img
+            alt="Quality Gate Status"
+            src="https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=alert_status"
+        /></a>
+    <a href="https://sonarcloud.io/summary/overall?id=Dobefu_DLiteScript">
+        <img
+            alt="Coverage"
+            src="https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=coverage"
+        /></a>
+    <a href="https://goreportcard.com/report/github.com/Dobefu/DLiteScript">
+        <img
+            alt="Go Report Card"
+            src="https://goreportcard.com/badge/github.com/Dobefu/DLiteScript"
+        /></a>
+    </p>
 
 > [!WARNING]
 > This repository is still a work-in-progress. It is nowhere near production-ready.
-
-A delightfully simple scripting language.
 
 ## Table of Contents
 
