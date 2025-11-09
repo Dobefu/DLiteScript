@@ -61,6 +61,9 @@ func (c *Compiler) compileBinaryExpr(b *ast.BinaryExpr) error {
 	case token.TokenTypeLogicalAnd:
 		return c.compileLogicalAnd(destReg, leftRegister, rightRegister)
 
+	case token.TokenTypeLogicalOr:
+		return c.compileLogicalOr(destReg, leftRegister, rightRegister)
+
 	default:
 		return nil
 	}
