@@ -40,6 +40,9 @@ func (c *Compiler) compileBinaryExpr(b *ast.BinaryExpr) error {
 	case token.TokenTypeOperationMod:
 		return c.emitMod(destReg, leftRegister, rightRegister)
 
+	case token.TokenTypeEqual:
+		return c.compileComparison(destReg, leftRegister, rightRegister, token.TokenTypeEqual)
+
 	default:
 		return nil
 	}
