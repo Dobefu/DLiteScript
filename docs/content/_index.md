@@ -12,6 +12,7 @@ toc = false
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Dobefu_DLiteScript)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Dobefu_DLiteScript&metric=coverage)](https://sonarcloud.io/summary/overall?id=Dobefu_DLiteScript)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Dobefu/DLiteScript)](https://goreportcard.com/report/github.com/Dobefu/DLiteScript)
+[![Discord](https://dcbadge.limes.pink/api/server/KBAykpBgXR?style=flat)](https://discord.gg/KBAykpBgXR)
 
 ## What is DLiteScript?
 
