@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"github.com/Dobefu/DLiteScript/internal/token"
+	vm "github.com/Dobefu/vee-em"
 )
 
 func (c *Compiler) compileComparison(
@@ -17,6 +18,18 @@ func (c *Compiler) compileComparison(
 	}
 
 	err = c.emitCMP(leftReg, rightReg)
+
+	if err != nil {
+		return err
+	}
+
+	jumpOffset := c.getCurrentOffset() +
+		vm.GetInstructionLen(vm.OpcodeJmpImmediate)
+
+	switch op {
+	case token.TokenTypeEqual:
+		err = c.emitJmpImmediateIfEqual(jumpOffset)
+	}
 
 	if err != nil {
 		return err
