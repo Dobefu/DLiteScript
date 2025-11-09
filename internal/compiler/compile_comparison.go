@@ -29,6 +29,9 @@ func (c *Compiler) compileComparison(
 	switch op {
 	case token.TokenTypeEqual:
 		err = c.emitJmpImmediateIfEqual(jumpOffset)
+
+	case token.TokenTypeNotEqual:
+		err = c.emitJmpImmediateIfNotEqual(jumpOffset)
 	}
 
 	if err != nil {
