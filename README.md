@@ -38,6 +38,11 @@
             alt="Go Report Card"
             src="https://goreportcard.com/badge/github.com/Dobefu/DLiteScript"
         /></a>
+    <a href="https://discord.gg/KBAykpBgXR">
+        <img
+            alt="Discord"
+            src="https://dcbadge.limes.pink/api/server/KBAykpBgXR?style=flat"
+        /></a>
     </p>
 
 > [!WARNING]
