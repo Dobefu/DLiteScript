@@ -21,7 +21,7 @@ func getWriteFileFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.writeFile("secrets.txt", "this language is awesome!") // writes "this language is awesome! to "secrets.txt" or something" to`, packageName),
+				fmt.Sprintf(`%s.writeFile("secrets.txt", "this language is awesome!") // writes "this language is awesome!" to "secrets.txt" or something`, packageName),
 			},
 		},
 		packageName,
