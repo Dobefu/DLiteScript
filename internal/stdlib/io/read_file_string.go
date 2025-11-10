@@ -14,7 +14,7 @@ func getReadFileStringFunction() function.Info {
 		function.Documentation{
 			Name:        "readFileString",
 			Description: "Reads the content of a file and returns it as a string.",
-			Since:       "v0.1.2",
+			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
 				Description:  "",
