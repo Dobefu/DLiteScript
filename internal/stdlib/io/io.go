@@ -12,6 +12,8 @@ func GetIOFunctions() map[string]function.Info {
 	return map[string]function.Info{
 		"readFileString": getReadFileStringFunction(),
 		"writeFile":      getWriteFileFunction(),
+		"appendFile":     getAppendFileFunction(),
+		"createFile":     getCreateFileFunction(),
 		"exists":         getExistsFunction(),
 		"deleteFile":     getDeleteFileFunction(),
 		"deleteDir":      getDeleteDirFunction(),
