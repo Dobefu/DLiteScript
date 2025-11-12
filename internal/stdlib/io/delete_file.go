@@ -1,0 +1,68 @@
+package io
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/Dobefu/DLiteScript/internal/datatype"
+	"github.com/Dobefu/DLiteScript/internal/datavalue"
+	"github.com/Dobefu/DLiteScript/internal/function"
+)
+
+func getDeleteFileFunction() function.Info {
+	return function.MakeFunction(
+		function.Documentation{
+			Name:        "deleteFile",
+			Description: "Deletes the given file.",
+			Since:       "v0.2.0",
+			DeprecationInfo: function.DeprecationInfo{
+				IsDeprecated: false,
+				Description:  "",
+				Version:      "",
+			},
+			Examples: []string{
+				fmt.Sprintf(`%s.deleteFile("bad.txt") // deletes the given file called "bad.txt" or something`, packageName),
+			},
+		},
+		packageName,
+		function.FunctionTypeFixed,
+		[]function.ArgInfo{
+			{
+				Type:        datatype.DataTypeString,
+				Name:        "path",
+				Description: "The path for the file that should be deleted.",
+			},
+		},
+		[]function.ArgInfo{
+			{
+				Type:        datatype.DataTypeString,
+				Name:        "error",
+				Description: "An error, if the file cannot be deleted.",
+			},
+		},
+		true,
+		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
+			path, _ := args[0].AsString()
+
+			exists := getExistsFunction()
+			result, err := exists.Handler(
+				nil,
+				[]datavalue.Value{
+					datavalue.String(path),
+				},
+			)
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			if result.Bool {
+				err := os.Remove(path)
+				if err != nil {
+					return datavalue.Error(err)
+				}
+				return datavalue.Error(nil)
+			}
+			return datavalue.Error(fmt.Errorf("File %v does not exist", path))
+		},
+	)
+}
