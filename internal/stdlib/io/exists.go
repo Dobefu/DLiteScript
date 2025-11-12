@@ -14,7 +14,7 @@ func getExistsFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "exists",
-			Description: "Returns whether the given file exists or not.",
+			Description: "Returns whether the given file/dir exists or not.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -31,19 +31,19 @@ func getExistsFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "path",
-				Description: "The path for the file that should be checked whether it exists or not.",
+				Description: "The path for the file/dir that should be checked whether it exists or not.",
 			},
 		},
 		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeBool,
 				Name:        "state",
-				Description: "The bool for whether the file exists or not",
+				Description: "The bool for whether the file/dir exists or not",
 			},
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the state of the file cannot be determined.",
+				Description: "An error, if the state of the file/dir cannot be determined.",
 			},
 		},
 		true,
