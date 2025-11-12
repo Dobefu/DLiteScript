@@ -14,6 +14,7 @@ func GetIOFunctions() map[string]function.Info {
 		"writeFile":      getWriteFileFunction(),
 		"appendFile":     getAppendFileFunction(),
 		"createFile":     getCreateFileFunction(),
+		"createDir":      getCreateDirFunction(),
 		"exists":         getExistsFunction(),
 		"deleteFile":     getDeleteFileFunction(),
 		"deleteDir":      getDeleteDirFunction(),
