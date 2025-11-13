@@ -50,11 +50,17 @@ func getExistsFunction() function.Info {
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			path, _ := args[0].AsString()
 
-			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-				return datavalue.Bool(false)
+			_, err := os.Stat(path)
+
+			if err == nil {
+				return datavalue.Tuple(datavalue.Bool(true), datavalue.Null())
 			}
 
-			return datavalue.Bool(true)
+			if errors.Is(err, os.ErrNotExist) {
+				return datavalue.Tuple(datavalue.Bool(false), datavalue.Null())
+			}
+
+			return datavalue.Tuple(datavalue.Bool(false), datavalue.Error(err))
 		},
 	)
 }

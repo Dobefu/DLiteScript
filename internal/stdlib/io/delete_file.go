@@ -55,16 +55,24 @@ func getDeleteFileFunction() function.Info {
 				return datavalue.Error(err)
 			}
 
-			if result.Bool {
-				err := os.Remove(path)
-				if err != nil {
-					return datavalue.Error(err)
-				}
+			resultTuple, _ := result.AsTuple()
+			fileExists, err := resultTuple[0].AsBool()
 
-				return datavalue.Error(nil)
+			if err != nil {
+				return datavalue.Error(err)
 			}
 
-			return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			if !fileExists {
+				return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			}
+
+			err = os.Remove(path)
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			return datavalue.Error(nil)
 		},
 	)
 }

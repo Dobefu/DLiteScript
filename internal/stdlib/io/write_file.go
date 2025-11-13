@@ -61,14 +61,24 @@ func getWriteFileFunction() function.Info {
 				return datavalue.Error(err)
 			}
 
-			if result.Bool {
-				err := os.WriteFile(path, []byte(content), 0600)
-				if err != nil {
-					return datavalue.Error(err)
-				}
+			resultTuple, _ := result.AsTuple()
+			fileExists, err := resultTuple[0].AsBool()
+
+			if err != nil {
+				return datavalue.Error(err)
 			}
 
-			return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			if !fileExists {
+				return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			}
+
+			err = os.WriteFile(path, []byte(content), 0600)
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			return datavalue.Error(nil)
 		},
 	)
 }

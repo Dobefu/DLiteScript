@@ -61,20 +61,31 @@ func getAppendFileFunction() function.Info {
 				return datavalue.Error(err)
 			}
 
-			if result.Bool {
-				// #nosec G304
-				oldContent, err := os.ReadFile(path)
-				if err != nil {
-					return datavalue.Error(err)
-				}
-				content = string(oldContent) + content
-				err = os.WriteFile(path, []byte(content), 0600)
-				if err != nil {
-					return datavalue.Error(err)
-				}
+			resultTuple, _ := result.AsTuple()
+			fileExists, err := resultTuple[0].AsBool()
+
+			if err != nil {
+				return datavalue.Error(err)
 			}
 
-			return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			if !fileExists {
+				return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+			}
+
+			oldContent, err := os.ReadFile(path) // #nosec G304
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			content = string(oldContent) + content
+			err = os.WriteFile(path, []byte(content), 0600)
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			return datavalue.Error(nil)
 		},
 	)
 }

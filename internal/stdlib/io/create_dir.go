@@ -54,16 +54,25 @@ func getCreateDirFunction() function.Info {
 			if err != nil {
 				return datavalue.Error(err)
 			}
-			if !result.Bool {
-				err := os.MkdirAll(path, 0700)
-				if err != nil {
-					return datavalue.Error(err)
-				}
 
-				return datavalue.Error(nil)
+			resultTuple, _ := result.AsTuple()
+			dirExists, err := resultTuple[0].AsBool()
+
+			if err != nil {
+				return datavalue.Error(err)
 			}
 
-			return datavalue.Error(fmt.Errorf("directory %v already exists", path))
+			if dirExists {
+				return datavalue.Error(fmt.Errorf("directory %v already exists", path))
+			}
+
+			err = os.MkdirAll(path, 0700)
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			return datavalue.Error(nil)
 		},
 	)
 }

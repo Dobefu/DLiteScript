@@ -29,7 +29,11 @@ func TestGetExistsFunction(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected no error from handler, got: %v", err)
 	}
-	if result.Bool == false {
+
+	resultTuple, _ := result.AsTuple()
+	fileExists, _ := resultTuple[0].AsBool()
+
+	if !fileExists {
 		t.Fatalf("expected true from func, but got false")
 	}
 

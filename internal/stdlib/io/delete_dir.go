@@ -55,16 +55,25 @@ func getDeleteDirFunction() function.Info {
 				return datavalue.Error(err)
 			}
 
-			if result.Bool {
-				err := os.RemoveAll(path)
-				if err != nil {
-					return datavalue.Error(err)
-				}
+			resultTuple, _ := result.AsTuple()
+			dirExists, err := resultTuple[0].AsBool()
 
-				return datavalue.Error(nil)
+			if err != nil {
+				return datavalue.Error(err)
 			}
 
-			return datavalue.Error(fmt.Errorf("directory %v does not exist", path))
+			if !dirExists {
+				return datavalue.Error(fmt.Errorf("directory %v does not exist", path))
+			}
+
+			err = os.RemoveAll(path)
+
+			if err != nil {
+				return datavalue.Error(err)
+			}
+
+			return datavalue.Error(nil)
+
 		},
 	)
 }
