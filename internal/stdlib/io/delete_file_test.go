@@ -11,7 +11,7 @@ func TestGetDeleteFileFunction(t *testing.T) {
 	t.Parallel()
 
 	fileName := "test.txt"
-	if err := os.WriteFile(fileName, []byte(""), 0644); err != nil {
+	if err := os.WriteFile(fileName, []byte(""), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
 

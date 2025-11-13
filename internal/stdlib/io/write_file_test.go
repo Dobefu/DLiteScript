@@ -12,7 +12,7 @@ func TestGetWriteFileFunction(t *testing.T) {
 
 	fileName := "data.txt"
 	content := "This is a simple test text, nothing more."
-	if err := os.WriteFile(fileName, []byte("This should not see light."), 0644); err != nil {
+	if err := os.WriteFile(fileName, []byte("This should not see light."), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
 	defer os.Remove(fileName)

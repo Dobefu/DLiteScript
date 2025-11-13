@@ -11,7 +11,7 @@ func TestGetDeleteDirFunction(t *testing.T) {
 	t.Parallel()
 
 	folderName := "test_folder"
-	if err := os.MkdirAll(folderName, 0644); err != nil {
+	if err := os.MkdirAll(folderName, 0600); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
 	}
 

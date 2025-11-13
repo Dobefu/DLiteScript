@@ -12,7 +12,7 @@ func TestGetExistsFunction(t *testing.T) {
 
 	fileName := "data.txt"
 	expectedContent := "This is a simple test text, nothing more."
-	if err := os.WriteFile(fileName, []byte(expectedContent), 0644); err != nil {
+	if err := os.WriteFile(fileName, []byte(expectedContent), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
 
