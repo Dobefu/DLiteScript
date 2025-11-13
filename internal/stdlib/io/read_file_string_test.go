@@ -2,6 +2,7 @@ package io
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -10,7 +11,8 @@ import (
 func TestGetReadFileStringFunction(t *testing.T) {
 	t.Parallel()
 
-	fileName := "data.txt"
+	tempDir := t.TempDir()
+	fileName := filepath.Join(tempDir, "data.txt")
 	expectedContent := "This is a simple test text, nothing more."
 	if err := os.WriteFile(fileName, []byte(expectedContent), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)

@@ -2,6 +2,7 @@ package io
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -10,10 +11,11 @@ import (
 func TestGetAppendFileFunction(t *testing.T) {
 	t.Parallel()
 
-	fileName := "data.txt"
+	tempDir := t.TempDir()
+	fileName := filepath.Join(tempDir, "data.txt")
 	content := "\nThis is a simple test text, nothing more."
 	defaultContent := "This should remain undisturbed."
-	if err := os.WriteFile(fileName, []byte(defaultContent), 0644); err != nil {
+	if err := os.WriteFile(fileName, []byte(defaultContent), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
 

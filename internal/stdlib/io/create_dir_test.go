@@ -2,7 +2,7 @@ package io
 
 import (
 	"os"
-	"strings"
+	"path/filepath"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -11,8 +11,10 @@ import (
 func TestGetCreateDirFunction(t *testing.T) {
 	t.Parallel()
 
-	folderName := "this\\is\\a\\test\\folder"
-	if err := os.MkdirAll(folderName, 0750); err != nil {
+	tempDir := t.TempDir()
+	folderName := filepath.Join(tempDir, "this\\is\\a\\test\\folder")
+	parentFolderName := filepath.Join(tempDir, "this")
+	if err := os.MkdirAll(folderName, 0600); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
 	}
 
@@ -32,8 +34,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 		t.Fatal("expected error from func, but got nil")
 	}
 
-	splitFolder := strings.Split(folderName, "\\")
-	err = os.RemoveAll(splitFolder[0])
+	err = os.RemoveAll(parentFolderName)
 	if err != nil {
 		t.Fatalf("unable to delete folders with `os.RemoveAll`")
 	}
@@ -51,7 +52,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 		t.Fatalf("expected no error from func, but got: %v", result.Error)
 	}
 
-	err = os.RemoveAll(splitFolder[0])
+	err = os.RemoveAll(parentFolderName)
 	if err != nil {
 		t.Fatalf("unable to delete folders with `os.RemoveAll`")
 	}

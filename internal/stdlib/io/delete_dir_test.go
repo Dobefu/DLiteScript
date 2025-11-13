@@ -2,6 +2,7 @@ package io
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -10,7 +11,8 @@ import (
 func TestGetDeleteDirFunction(t *testing.T) {
 	t.Parallel()
 
-	folderName := "test_folder"
+	tempDir := t.TempDir()
+	folderName := filepath.Join(tempDir, "test_folder")
 	if err := os.MkdirAll(folderName, 0600); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
 	}
