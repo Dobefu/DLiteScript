@@ -41,6 +41,9 @@ func TestGetDeleteFileFunction(t *testing.T) {
 			datavalue.String(fileName),
 		},
 	)
+	if err != nil {
+		t.Fatalf("expected no error from handler, got: %v", err)
+	}
 
 	if result.Error == nil {
 		t.Fatal("expected error from func, but got nil")

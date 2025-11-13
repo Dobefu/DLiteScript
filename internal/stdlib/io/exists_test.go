@@ -46,6 +46,10 @@ func TestGetExistsFunction(t *testing.T) {
 			datavalue.String(fileName),
 		},
 	)
+	if err != nil {
+		t.Fatalf("expected no error from handler, got: %v", err)
+	}
+
 	if result.Bool == true {
 		t.Fatalf("expected false from func, but got true")
 	}

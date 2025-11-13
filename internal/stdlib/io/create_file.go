@@ -62,6 +62,7 @@ func getCreateFileFunction() function.Info {
 				}
 				return datavalue.Error(nil)
 			}
+
 			return datavalue.Error(fmt.Errorf("File %v already exists", path))
 		},
 	)

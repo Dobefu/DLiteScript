@@ -38,7 +38,7 @@ func TestGetAppendFileFunction(t *testing.T) {
 		t.Fatalf("unable to read file: %v", err)
 	}
 
-	expectedData := string(defaultContent) + content
+	expectedData := defaultContent + content
 	if string(data) != expectedData {
 		t.Fatalf("content of file does not match the content that was expected")
 	}

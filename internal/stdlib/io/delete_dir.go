@@ -62,6 +62,7 @@ func getDeleteDirFunction() function.Info {
 				}
 				return datavalue.Error(nil)
 			}
+
 			return datavalue.Error(fmt.Errorf("Folder %v does not exist", path))
 		},
 	)
