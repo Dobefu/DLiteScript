@@ -12,7 +12,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 	t.Parallel()
 
 	tempDir := t.TempDir()
-	folderName := filepath.Join(tempDir, "this\\is\\a\\test\\folder")
+	folderName := filepath.Join(tempDir, "this", "is", "a", "test", "folder")
 	parentFolderName := filepath.Join(tempDir, "this")
 	if err := os.MkdirAll(folderName, 0600); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
