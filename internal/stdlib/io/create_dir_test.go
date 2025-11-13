@@ -12,10 +12,10 @@ func TestGetCreateDirFunction(t *testing.T) {
 	t.Parallel()
 
 	tempDir := t.TempDir()
-	folderName := filepath.Join(tempDir, "this", "is", "a", "test", "folder")
-	parentFolderName := filepath.Join(tempDir, "this")
-	if err := os.MkdirAll(folderName, 0700); err != nil {
-		t.Fatalf("unable to create folder %s: %v", folderName, err)
+	dirName := filepath.Join(tempDir, "this", "is", "a", "test", "directory")
+	parentDirName := filepath.Join(tempDir, "this")
+	if err := os.MkdirAll(dirName, 0700); err != nil {
+		t.Fatalf("unable to create directory %s: %v", dirName, err)
 	}
 
 	getCreateDirFunc := getCreateDirFunction()
@@ -23,7 +23,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 	result, err := getCreateDirFunc.Handler(
 		nil,
 		[]datavalue.Value{
-			datavalue.String(folderName),
+			datavalue.String(dirName),
 		},
 	)
 	if err != nil {
@@ -34,9 +34,9 @@ func TestGetCreateDirFunction(t *testing.T) {
 		t.Fatal("expected error from func, but got nil")
 	}
 
-	err = os.RemoveAll(parentFolderName)
+	err = os.RemoveAll(parentDirName)
 	if err != nil {
-		t.Fatalf("unable to delete folders with `os.RemoveAll`")
+		t.Fatalf("unable to delete directories with `os.RemoveAll`")
 	}
 
 	getCreateDirFunc = getCreateDirFunction()
@@ -44,7 +44,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 	result, err = getCreateDirFunc.Handler(
 		nil,
 		[]datavalue.Value{
-			datavalue.String(folderName),
+			datavalue.String(dirName),
 		},
 	)
 	if err != nil {
@@ -55,8 +55,8 @@ func TestGetCreateDirFunction(t *testing.T) {
 		t.Fatalf("expected no error from func, but got: %v", result.Error)
 	}
 
-	err = os.RemoveAll(parentFolderName)
+	err = os.RemoveAll(parentDirName)
 	if err != nil {
-		t.Fatalf("unable to delete folders with `os.RemoveAll`")
+		t.Fatalf("unable to delete directories with `os.RemoveAll`")
 	}
 }

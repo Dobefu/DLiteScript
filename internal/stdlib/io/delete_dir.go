@@ -30,14 +30,14 @@ func getDeleteDirFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "path",
-				Description: "The path for the folder that should be deleted.",
+				Description: "The path for the directory that should be deleted.",
 			},
 		},
 		[]function.ArgInfo{
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the folder cannot be deleted.",
+				Description: "An error, if the directory cannot be deleted.",
 			},
 		},
 		true,
@@ -64,7 +64,7 @@ func getDeleteDirFunction() function.Info {
 				return datavalue.Error(nil)
 			}
 
-			return datavalue.Error(fmt.Errorf("folder %v does not exist", path))
+			return datavalue.Error(fmt.Errorf("directory %v does not exist", path))
 		},
 	)
 }
