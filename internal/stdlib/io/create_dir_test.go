@@ -12,7 +12,7 @@ func TestGetCreateDirFunction(t *testing.T) {
 	t.Parallel()
 
 	folderName := "this\\is\\a\\test\\folder"
-	if err := os.MkdirAll(folderName, 0644); err != nil {
+	if err := os.MkdirAll(folderName, 0750); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
 	}
 
@@ -33,7 +33,10 @@ func TestGetCreateDirFunction(t *testing.T) {
 	}
 
 	splitFolder := strings.Split(folderName, "\\")
-	os.RemoveAll(splitFolder[0])
+	err = os.RemoveAll(splitFolder[0])
+	if err != nil {
+		t.Fatalf("unable to delete folders with `os.RemoveAll`")
+	}
 
 	getCreateDirFunc = getCreateDirFunction()
 
@@ -48,5 +51,8 @@ func TestGetCreateDirFunction(t *testing.T) {
 		t.Fatalf("expected no error from func, but got: %v", result.Error)
 	}
 
-	os.RemoveAll(splitFolder[0])
+	err = os.RemoveAll(splitFolder[0])
+	if err != nil {
+		t.Fatalf("unable to delete folders with `os.RemoveAll`")
+	}
 }

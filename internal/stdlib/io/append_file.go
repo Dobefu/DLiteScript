@@ -62,12 +62,13 @@ func getAppendFileFunction() function.Info {
 			}
 
 			if result.Bool {
+				// #nosec G304
 				oldContent, err := os.ReadFile(path)
 				if err != nil {
 					return datavalue.Error(err)
 				}
 				content = string(oldContent) + content
-				err = os.WriteFile(path, []byte(content), 0644)
+				err = os.WriteFile(path, []byte(content), 0600)
 				if err != nil {
 					return datavalue.Error(err)
 				}

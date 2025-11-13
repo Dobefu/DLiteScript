@@ -56,7 +56,7 @@ func getCreateFileFunction() function.Info {
 			}
 
 			if !result.Bool {
-				err := os.WriteFile(path, []byte(""), 0644)
+				err := os.WriteFile(path, []byte(""), 0600)
 				if err != nil {
 					return datavalue.Error(err)
 				}

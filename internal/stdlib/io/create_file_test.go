@@ -31,7 +31,10 @@ func TestGetCreateFileFunction(t *testing.T) {
 		t.Fatal("expected error from func, but got nil")
 	}
 
-	os.Remove(fileName)
+	err = os.Remove(fileName)
+	if err != nil {
+		t.Fatalf("unable to delete file with `os.Remove`")
+	}
 
 	getCreateFileFunc = getCreateFileFunction()
 
@@ -46,5 +49,8 @@ func TestGetCreateFileFunction(t *testing.T) {
 		t.Fatalf("expected no error from func, but got: %v", result.Error)
 	}
 
-	os.Remove(fileName)
+	err = os.Remove(fileName)
+	if err != nil {
+		t.Fatalf("unable to delete file with `os.Remove`")
+	}
 }
