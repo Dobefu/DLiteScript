@@ -13,7 +13,7 @@ func TestGetDeleteDirFunction(t *testing.T) {
 
 	tempDir := t.TempDir()
 	folderName := filepath.Join(tempDir, "test_folder")
-	if err := os.MkdirAll(folderName, 0600); err != nil {
+	if err := os.MkdirAll(folderName, 0700); err != nil {
 		t.Fatalf("unable to create folder %s: %v", folderName, err)
 	}
 

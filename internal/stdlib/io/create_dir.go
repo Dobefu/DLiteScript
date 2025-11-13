@@ -55,7 +55,7 @@ func getCreateDirFunction() function.Info {
 				return datavalue.Error(err)
 			}
 			if !result.Bool {
-				err := os.MkdirAll(path, 0600)
+				err := os.MkdirAll(path, 0700)
 				if err != nil {
 					return datavalue.Error(err)
 				}
