@@ -53,6 +53,7 @@ func getExistsFunction() function.Info {
 			if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 				return datavalue.Bool(false)
 			}
+
 			return datavalue.Bool(true)
 		},
 	)
