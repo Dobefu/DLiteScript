@@ -63,7 +63,7 @@ func getCreateDirFunction() function.Info {
 				return datavalue.Error(nil)
 			}
 
-			return datavalue.Error(fmt.Errorf("Folder %v already exists", path))
+			return datavalue.Error(fmt.Errorf("folder %v already exists", path))
 		},
 	)
 }

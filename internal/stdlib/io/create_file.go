@@ -60,10 +60,11 @@ func getCreateFileFunction() function.Info {
 				if err != nil {
 					return datavalue.Error(err)
 				}
+
 				return datavalue.Error(nil)
 			}
 
-			return datavalue.Error(fmt.Errorf("File %v already exists", path))
+			return datavalue.Error(fmt.Errorf("file %v already exists", path))
 		},
 	)
 }
