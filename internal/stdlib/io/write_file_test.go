@@ -17,7 +17,6 @@ func TestGetWriteFileFunction(t *testing.T) {
 	if err := os.WriteFile(fileName, []byte("This should not see light."), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
-	defer os.Remove(fileName)
 
 	getWriteFileFunc := getWriteFileFunction()
 
@@ -32,11 +31,17 @@ func TestGetWriteFileFunction(t *testing.T) {
 		t.Fatalf("expected no error from handler, got: %v", err)
 	}
 
+	//#nosec G304
 	data, err := os.ReadFile(fileName)
 	if err != nil {
 		t.Fatalf("unable to read file: %v", err)
 	}
 	if string(data) != content {
 		t.Fatalf("content of file does not match the content that should have been written to the file.")
+	}
+
+	err = os.Remove(fileName)
+	if err != nil {
+		t.Fatalf("unable to delete file with `os.Remove`")
 	}
 }

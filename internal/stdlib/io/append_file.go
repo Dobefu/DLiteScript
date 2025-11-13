@@ -73,6 +73,7 @@ func getAppendFileFunction() function.Info {
 					return datavalue.Error(err)
 				}
 			}
+
 			return datavalue.Error(fmt.Errorf("File %v does not exist", path))
 		},
 	)

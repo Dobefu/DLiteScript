@@ -17,7 +17,6 @@ func TestGetReadFileStringFunction(t *testing.T) {
 	if err := os.WriteFile(fileName, []byte(expectedContent), 0600); err != nil {
 		t.Fatalf("unable to create / write to file %s: %v", fileName, err)
 	}
-	defer os.Remove(fileName)
 
 	getReadFileStringFunc := getReadFileStringFunction()
 
@@ -38,5 +37,10 @@ func TestGetReadFileStringFunction(t *testing.T) {
 
 	if actualContent != expectedContent {
 		t.Fatalf("expected file content to be %q, got %q", expectedContent, actualContent)
+	}
+
+	err = os.Remove(fileName)
+	if err != nil {
+		t.Fatalf("unable to delete file with `os.Remove`")
 	}
 }

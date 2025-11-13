@@ -49,6 +49,7 @@ func getReadFileStringFunction() function.Info {
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			path, _ := args[0].AsString()
 
+			//#nosec G304
 			value, err := os.ReadFile(path)
 			if err != nil {
 				return datavalue.Error(err)

@@ -32,6 +32,7 @@ func TestGetAppendFileFunction(t *testing.T) {
 		t.Fatalf("expected no error from handler, got: %v", err)
 	}
 
+	//#nosec G304
 	data, err := os.ReadFile(fileName)
 	if err != nil {
 		t.Fatalf("unable to read file: %v", err)

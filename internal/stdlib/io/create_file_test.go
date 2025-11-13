@@ -46,6 +46,9 @@ func TestGetCreateFileFunction(t *testing.T) {
 			datavalue.String(fileName),
 		},
 	)
+	if err != nil {
+		t.Fatalf("expected no error from handler, got: %v", err)
+	}
 
 	if result.Error != nil {
 		t.Fatalf("expected no error from func, but got: %v", result.Error)

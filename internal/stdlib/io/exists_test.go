@@ -33,7 +33,10 @@ func TestGetExistsFunction(t *testing.T) {
 		t.Fatalf("expected true from func, but got false")
 	}
 
-	os.Remove(fileName)
+	err = os.Remove(fileName)
+	if err != nil {
+		t.Fatalf("unable to delete file with `os.Remove`")
+	}
 
 	getExistsFunc = getExistsFunction()
 
