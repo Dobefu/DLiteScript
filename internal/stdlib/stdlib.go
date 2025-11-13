@@ -7,6 +7,7 @@ import (
 
 	stdlibarrays "github.com/Dobefu/DLiteScript/internal/stdlib/arrays"
 	stdliberrors "github.com/Dobefu/DLiteScript/internal/stdlib/errors"
+	stdlibio "github.com/Dobefu/DLiteScript/internal/stdlib/io"
 	stdlibmath "github.com/Dobefu/DLiteScript/internal/stdlib/math"
 	stdlibos "github.com/Dobefu/DLiteScript/internal/stdlib/os"
 	stdlibstrings "github.com/Dobefu/DLiteScript/internal/stdlib/strings"
@@ -40,6 +41,9 @@ func init() {
 	}
 	functionRegistry["os"] = function.PackageInfo{
 		Functions: stdlibos.GetOSFunctions(),
+	}
+	functionRegistry["io"] = function.PackageInfo{
+		Functions: stdlibio.GetIOFunctions(),
 	}
 }
 

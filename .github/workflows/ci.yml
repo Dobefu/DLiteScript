@@ -44,6 +44,7 @@ jobs:
           go test "./..." -coverprofile="coverage.out" -covermode=count -json > test-report.out
 
       - name: SonarQube Scan
+        if: github.event_name != 'pull_request'
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
