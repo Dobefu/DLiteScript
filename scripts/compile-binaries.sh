@@ -11,9 +11,9 @@ PLATFORMS=(
     "linux-x64:linux:amd64"
     "linux-arm:linux:arm"
     "linux-arm64:linux:arm64"
-    "win32-x64:windows:amd64"
-    "win32-arm:windows:arm"
-    "win32-arm64:windows:arm64"
+    "win32-x64.exe:windows:amd64"
+    "win32-arm.exe:windows:arm"
+    "win32-arm64.exe:windows:arm64"
 )
 
 # Build the DLiteScript binary for all platforms.
