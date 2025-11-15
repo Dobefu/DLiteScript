@@ -1,0 +1,19 @@
+func tree(n number) {
+    for var i to n {
+        for var space to n-i {
+            printf(" ")
+        }
+        for var asterisk to i*2 {
+            printf("*")
+        }
+        printf("\n")
+    }
+    for var j to 1 {
+        for var space to n {
+            printf(" ")
+        }
+        printf("|\n")
+    }
+}
+
+tree(6)
