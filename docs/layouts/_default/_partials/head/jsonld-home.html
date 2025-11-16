@@ -8,6 +8,7 @@
         "url": "{{ site.BaseURL }}",
         "name": "{{ site.Title }}",
         "description": "{{ site.Params.description }}",
+        "inLanguage": "{{ site.LanguageCode }}",
         "publisher": {
           "@id": "{{ site.BaseURL }}#organization"
         }
@@ -29,6 +30,9 @@
         "programmingLanguage": {
           "@type": "ComputerLanguage",
           "name": "DLiteScript"
+        },
+        "author": {
+          "@id": "{{ site.BaseURL }}#organization"
         }
       },
       {
@@ -38,9 +42,15 @@
         "url": "{{ site.BaseURL }}",
         "logo": {
           "@type": "ImageObject",
-          "url": "{{ .image }}"
+          "url": "{{ .image }}",
+          "width": 512,
+          "height": 512
         },
-        "sameAs": ["{{ site.Params.socialLinks.github }}"]
+        "sameAs": [
+          {{- if site.Params.socialLinks.github -}}
+          "{{ site.Params.socialLinks.github }}"
+          {{- end -}}
+        ]
       }
     ]
   }

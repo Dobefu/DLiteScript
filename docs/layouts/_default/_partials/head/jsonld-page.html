@@ -8,8 +8,13 @@
         "headline": "{{ .page.Title }}",
         "description": "{{ .description }}",
         "url": "{{ .page.Permalink }}",
+        "inLanguage": "{{ site.LanguageCode }}",
+        {{- if .page.PublishDate -}}
         "datePublished": "{{ .page.PublishDate.Format "2006-01-02T15:04:05Z07:00" }}",
+        {{- end -}}
+        {{- if .page.Lastmod -}}
         "dateModified": "{{ .page.Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+        {{- end -}}
         "wordCount": {{ .page.WordCount }},
         "timeRequired": "PT{{ .page.ReadingTime }}M",
         "author": {
@@ -22,6 +27,16 @@
         },
         "isPartOf": {
           "@id": "{{ site.BaseURL }}#website"
+        },
+        {{- if .page.Section -}}
+        "articleSection": "{{ .page.Section }}",
+        {{- end -}}
+        {{- if .page.Params.tags -}}
+        "keywords": "{{ delimit .page.Params.tags ", " }}",
+        {{- end -}}
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "{{ .page.Permalink }}"
         }
       },
       {{- if or .page.Parent (not .page.IsHome) -}}
@@ -67,7 +82,9 @@
         "url": "{{ site.BaseURL }}",
         "logo": {
           "@type": "ImageObject",
-          "url": "{{ .image }}"
+          "url": "{{ .image }}",
+          "width": 512,
+          "height": 512
         },
         "sameAs": [
           "{{ site.Params.socialLinks.github }}"

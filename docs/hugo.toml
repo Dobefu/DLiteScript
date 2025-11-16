@@ -14,7 +14,8 @@ printUnusedTemplates = true
 
 [params]
   shortName = 'DLiteScript'
-  description = 'A delightfully simple scripting language.'
+  description = 'DLiteScript is a delightfully simple scripting language with syntax inspired by Go, among other languages. Easy to learn, powerful error handling, and comprehensive tooling.'
+  author = 'DLiteScript'
   backgroundColor = '#0a0a0a'
   themeColor = '#60a5fa'
 
@@ -40,6 +41,13 @@ printUnusedTemplates = true
   changefreq = 'monthly'
   priority = 0.5
   filename = 'sitemap.xml'
+
+[outputFormats]
+  [outputFormats.sitemap]
+    mediaType = 'application/xml'
+    baseName = 'sitemap'
+    isPlainText = true
+    notAlternative = true
 
 [outputs]
   home = ['html', 'rss', 'webappmanifest', 'json']
