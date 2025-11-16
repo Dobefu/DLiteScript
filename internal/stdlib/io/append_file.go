@@ -13,7 +13,7 @@ func getAppendFileFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "appendFile",
-			Description: "Appends data to the given file.",
+			Description: "Appends data to a given file without replacing the original content.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getAppendFileFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.appendFile("secrets.txt", "this language is awesome!") // appends "this language is awesome! to "secrets.txt" or something without replacing the original content.`, packageName),
+				fmt.Sprintf(`%s.appendFile("data.txt", "This is a new line.") // Appends "This is a new line." to "data.txt"`, packageName),
 			},
 		},
 		packageName,
