@@ -14,7 +14,7 @@ func getExistsFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "exists",
-			Description: "Returns whether the given file/dir exists or not.",
+			Description: "Returns a tuple with a bool and an error based on whether the given file/dir exists or not.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -22,7 +22,7 @@ func getExistsFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.exists("crazy.txt"") // returns a bool based on whether "crazy.txt" exists or not`, packageName),
+				fmt.Sprintf(`%s.exists("data.txt"") // returns a tuple with a bool and an error based on whether "data.txt" exists or not`, packageName),
 			},
 		},
 		packageName,
@@ -38,12 +38,12 @@ func getExistsFunction() function.Info {
 			{
 				Type:        datatype.DataTypeBool,
 				Name:        "state",
-				Description: "The bool for whether the file/dir exists or not",
+				Description: "The bool for whether the file/dir exists or not.",
 			},
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the state of the file/dir cannot be determined.",
+				Description: "An error, if the existence of the file/dir cannot be determined.",
 			},
 		},
 		true,
