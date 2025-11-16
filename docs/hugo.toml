@@ -15,6 +15,7 @@ printUnusedTemplates = true
 [params]
   shortName = 'DLiteScript'
   description = 'DLiteScript is a delightfully simple scripting language with syntax inspired by Go, among other languages. Easy to learn, powerful error handling, and comprehensive tooling.'
+  keywords = 'DLiteScript, scripting language, programming, Go, statically typed'
   author = 'DLiteScript'
   backgroundColor = '#0a0a0a'
   themeColor = '#60a5fa'
