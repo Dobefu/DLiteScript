@@ -13,7 +13,7 @@ func getReadFileStringFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "readFileString",
-			Description: "Reads the content of a file and returns it as a string.",
+			Description: "Reads the content of a file and returns it as a string. Returns an error if the file does not exist.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getReadFileStringFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.readFileString("names.txt") // returns the raw content of the given file as a string"`, packageName),
+				fmt.Sprintf(`%s.readFileString("data.txt") // returns the raw content of the given file as a string or an error if the file does not exist`, packageName),
 			},
 		},
 		packageName,
@@ -37,12 +37,12 @@ func getReadFileStringFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "value",
-				Description: "The content of the given file, or empty string if not found.",
+				Description: "The content of the given file as a string, or an error if the file does not exist.",
 			},
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the content of the given file cannot be read or returned as a string.",
+				Description: "An error, if the content of the given file cannot be read or the file does not exist.",
 			},
 		},
 		true,
