@@ -13,7 +13,7 @@ func getDeleteFileFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "deleteFile",
-			Description: "Deletes the given file.",
+			Description: "Deletes the given file. Returns an error if the file does not exist.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getDeleteFileFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.deleteFile("bad.txt") // deletes the given file called "bad.txt" or something`, packageName),
+				fmt.Sprintf(`%s.deleteFile("data.txt") // deletes the given file called "data.txt"`, packageName),
 			},
 		},
 		packageName,
@@ -37,7 +37,7 @@ func getDeleteFileFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the file cannot be deleted.",
+				Description: "An error, if the file cannot be deleted or does not exist.",
 			},
 		},
 		true,
@@ -51,6 +51,7 @@ func getDeleteFileFunction() function.Info {
 					datavalue.String(path),
 				},
 			)
+
 			if err != nil {
 				return datavalue.Error(err)
 			}
