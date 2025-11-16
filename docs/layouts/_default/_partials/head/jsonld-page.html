@@ -39,16 +39,21 @@
           "@id": "{{ .page.Permalink }}"
         }
       },
-      {{- if or .page.Parent (not .page.IsHome) -}}
+      {{- if not .page.IsHome -}}
       {
         "@type": "BreadcrumbList",
         "@id": "{{ .page.Permalink }}#breadcrumb",
         "itemListElement": [
           {{- $pages := slice -}}
+          {{- $home := site.Home -}}
           {{- $current := .page -}}
 
-          {{- range $i, $e := .page.Ancestors.Reverse -}}
-            {{- $pages = $pages | append $e -}}
+          {{- $pages = $pages | append $home -}}
+
+          {{- range $e := .page.Ancestors.Reverse -}}
+            {{- if not $e.IsHome -}}
+              {{- $pages = $pages | append $e -}}
+            {{- end -}}
           {{- end -}}
 
           {{- $pages = $pages | append $current -}}
