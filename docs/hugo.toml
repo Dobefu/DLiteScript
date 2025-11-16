@@ -36,6 +36,11 @@ printUnusedTemplates = true
   [caches.images]
     dir = ':cacheDir/images'
 
+[sitemap]
+  changefreq = 'monthly'
+  priority = 0.5
+  filename = 'sitemap.xml'
+
 [outputs]
   home = ['html', 'rss', 'webappmanifest', 'json']
 
