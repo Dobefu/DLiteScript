@@ -13,7 +13,7 @@ func getCreateDirFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "createDir",
-			Description: "Creates an empty directory.",
+			Description: "Creates an empty directory. Returns an error if the directory already exists.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getCreateDirFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.createDir("memes") // creates an empty directory called "memes" or something`, packageName),
+				fmt.Sprintf(`%s.createDir("data") // creates an empty directory called "data"`, packageName),
 			},
 		},
 		packageName,
@@ -37,7 +37,7 @@ func getCreateDirFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the directory cannot be created.",
+				Description: "An error, if the directory cannot be created or already exists.",
 			},
 		},
 		true,
@@ -51,6 +51,7 @@ func getCreateDirFunction() function.Info {
 					datavalue.String(path),
 				},
 			)
+
 			if err != nil {
 				return datavalue.Error(err)
 			}
