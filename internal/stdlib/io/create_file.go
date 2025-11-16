@@ -13,7 +13,7 @@ func getCreateFileFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "createFile",
-			Description: "Creates an empty file.",
+			Description: "Creates an empty file. Returns an error if the file already exists.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getCreateFileFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.createFile("awesome.txt") // creates an empty file called "awesome.txt" or something`, packageName),
+				fmt.Sprintf(`%s.createFile("data.txt") // creates an empty file called "data.txt"`, packageName),
 			},
 		},
 		packageName,
@@ -37,7 +37,7 @@ func getCreateFileFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the file cannot be created.",
+				Description: "An error, if the file cannot be created or already exists.",
 			},
 		},
 		true,
