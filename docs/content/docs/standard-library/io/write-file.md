@@ -1,5 +1,5 @@
 +++
-title = 'writeFile'
+title = 'io.writeFile'
 linkTitle = 'writeFile'
 description = 'Writes data to the given file. Returns an error if the file does not exist. Part of the io namespace.'
 weight = 0

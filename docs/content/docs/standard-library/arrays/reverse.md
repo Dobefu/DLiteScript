@@ -15,4 +15,3 @@ var arr []number = [1, 2, 3, 4, 5]
 arr = arrays.reverse(arr)
 printf("%s\n", arr) // [5, 4, 3, 2, 1]
 ```
-

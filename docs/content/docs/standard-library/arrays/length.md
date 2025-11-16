@@ -14,4 +14,3 @@ Returns the number of elements in an array.
 var arr []number = [1, 2, 3, 4, 5]
 printf("%g\n", arrays.length(arr)) // 5
 ```
-

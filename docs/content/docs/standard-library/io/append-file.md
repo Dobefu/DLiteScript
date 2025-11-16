@@ -1,5 +1,5 @@
 +++
-title = 'appendFile'
+title = 'io.appendFile'
 linkTitle = 'appendFile'
 description = 'Appends data to a given file without replacing the original content. Part of the io namespace.'
 weight = 0

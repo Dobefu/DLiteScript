@@ -1,5 +1,5 @@
 +++
-title = 'exists'
+title = 'io.exists'
 linkTitle = 'exists'
 description = 'Returns a tuple with a bool and an error based on whether the given file/dir exists or not. Part of the io namespace.'
 weight = 0

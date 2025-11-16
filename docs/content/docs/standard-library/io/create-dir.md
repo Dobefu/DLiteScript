@@ -1,5 +1,5 @@
 +++
-title = 'createDir'
+title = 'io.createDir'
 linkTitle = 'createDir'
 description = 'Creates an empty directory. Returns an error if the directory already exists. Part of the io namespace.'
 weight = 0

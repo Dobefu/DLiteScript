@@ -14,4 +14,3 @@ Joins array elements into a string with a delimiter.
 var arr []string = ["a", "b", "c"]
 printf("%s\n", arrays.join(arr, ", ")) // a, b, c
 ```
-

@@ -1,5 +1,5 @@
 +++
-title = 'readFileString'
+title = 'io.readFileString'
 linkTitle = 'readFileString'
 description = 'Reads the content of a file and returns it as a string. Returns an error if the file does not exist. Part of the io namespace.'
 weight = 0
