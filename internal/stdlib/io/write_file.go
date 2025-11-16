@@ -13,7 +13,7 @@ func getWriteFileFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "writeFile",
-			Description: "Writes data to the given file.",
+			Description: "Writes data to the given file. Returns an error if the file does not exist.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getWriteFileFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.writeFile("secrets.txt", "this language is awesome!") // writes "this language is awesome!" to "secrets.txt" or something`, packageName),
+				fmt.Sprintf(`%s.writeFile("data.txt", "This is a new line.") // writes "This is a new line." to "data.txt"`, packageName),
 			},
 		},
 		packageName,
@@ -42,7 +42,7 @@ func getWriteFileFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the file does not exist or cannot be written to.",
+				Description: "An error, if the file cannot be written to or does not exist.",
 			},
 		},
 		true,
