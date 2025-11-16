@@ -13,7 +13,7 @@ func getDeleteDirFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
 			Name:        "deleteDir",
-			Description: "Deletes the given directory.",
+			Description: "Deletes the given directory. Returns an error if the directory does not exist.",
 			Since:       "v0.2.0",
 			DeprecationInfo: function.DeprecationInfo{
 				IsDeprecated: false,
@@ -21,7 +21,7 @@ func getDeleteDirFunction() function.Info {
 				Version:      "",
 			},
 			Examples: []string{
-				fmt.Sprintf(`%s.deleteDir("bad_memes") // deletes the given directory called "bad_memes" or something`, packageName),
+				fmt.Sprintf(`%s.deleteDir("data") // deletes the given directory called "data"`, packageName),
 			},
 		},
 		packageName,
@@ -37,7 +37,7 @@ func getDeleteDirFunction() function.Info {
 			{
 				Type:        datatype.DataTypeString,
 				Name:        "error",
-				Description: "An error, if the directory cannot be deleted.",
+				Description: "An error, if the directory cannot be deleted or does not exist.",
 			},
 		},
 		true,
@@ -73,7 +73,6 @@ func getDeleteDirFunction() function.Info {
 			}
 
 			return datavalue.Error(nil)
-
 		},
 	)
 }
