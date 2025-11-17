@@ -65,6 +65,9 @@ func (h *Handler) Handle(
 	case "textDocument/signatureHelp":
 		return h.handleSignatureHelp(params)
 
+	case "textDocument/completion":
+		return h.handleCompletion(params)
+
 	case "shutdown":
 		return h.handleShutdown()
 
