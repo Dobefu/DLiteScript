@@ -60,9 +60,14 @@
 
 ## Features
 
-- **Static typing**: Explicit types with types like `string`, `number`, and `bool`
-- **No magic**: All functionality is visible and explicit
-- **LSP support**: Language Server Protocol for IDE integration
+- Static typing
+- No magic
+- LSP support
+- Built-in formatter
+- Built-in REPL
+- Full support for [VSCode](https://github.com/Dobefu/vscode-dlitescript)
+- Full support for [Neovim](https://github.com/Dobefu/nvim-dlitescript)
+- Extensive [Documentation](https://dlitescript.com) with an online [playground](https://dlitescript.com/playground/)
 
 ## Quick Start
 
