@@ -49,7 +49,6 @@ printUnusedTemplates = true
   [outputFormats.sitemap]
     mediaType = 'application/xml'
     baseName = 'sitemap'
-    isPlainText = true
     notAlternative = true
 
 [outputs]
