@@ -19,6 +19,8 @@ printUnusedTemplates = true
   author = 'DLiteScript'
   backgroundColor = '#0a0a0a'
   themeColor = '#60a5fa'
+  repositoryContentDir = 'https://github.com/Dobefu/DliteScript/tree/main/docs/content'
+  showEditLink = true
 
   [params.socialLinks]
     github = 'https://github.com/Dobefu/DLiteScript'
