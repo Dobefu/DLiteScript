@@ -14,9 +14,9 @@ Download the latest release for your platform from [GitHub releases](https://git
 - **Linux (ARM32)**: `dlitescript-linux-arm`
 - **Linux (ARM64)**: `dlitescript-linux-arm64`
 - **Linux (x64)**: `dlitescript-linux-x64`
-- **Windows (ARM32)**: `dlitescript-win32-arm`
-- **Windows (ARM64)**: `dlitescript-win32-arm64`
-- **Windows (x64)**: `dlitescript-win32-x64`
+- **Windows (ARM32)**: `dlitescript-win32-arm.exe`
+- **Windows (ARM64)**: `dlitescript-win32-arm64.exe`
+- **Windows (x64)**: `dlitescript-win32-x64.exe`
 
 ### Installation Steps
 
@@ -39,7 +39,7 @@ Download the latest release for your platform from [GitHub releases](https://git
    For Windows:
 
    ```powershell {linenos=false}
-   Move-Item dlitescript-win32-x64 $env:USERPROFILE\bin\dlitescript
+   Move-Item dlitescript-win32-x64.exe $env:USERPROFILE\bin\dlitescript.exe
    ```
 
 4. Run DLiteScript:
