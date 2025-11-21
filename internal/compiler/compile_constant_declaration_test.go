@@ -34,7 +34,7 @@ func TestCompileConstantDeclaration(t *testing.T) {
 				},
 			},
 			expected: []byte{
-				byte(vm.OpcodeLoadImmediate), 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				byte(vm.OpcodeLoadImmediate), 0, 0, 0, 0, 0, 0, 0, 0, 3,
 				byte(vm.OpcodeLoadImmediate), 1, 0, 0, 0, 0, 0, 0, 0, 0,
 				byte(vm.OpcodeStoreMemory), 0, 1,
 			},

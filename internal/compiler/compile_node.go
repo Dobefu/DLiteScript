@@ -12,6 +12,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 	case *ast.BoolLiteral:
 		return c.compileBoolLiteral(n)
 
+	case *ast.NullLiteral:
+		return c.compileNullLiteral(n)
+
 	case *ast.StringLiteral:
 		return c.compileStringLiteral(n)
 
@@ -20,6 +23,9 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 
 	case *ast.PrefixExpr:
 		return c.compilePrefixExpr(n)
+
+	case *ast.SpreadExpr:
+		return c.compileSpreadExpr(n)
 
 	case *ast.StatementList:
 		return c.compileStatementList(n)
@@ -53,6 +59,12 @@ func (c *Compiler) compileNode(node ast.ExprNode) error {
 
 	case *ast.ContinueStatement:
 		return c.compileContinueStatement(n)
+
+	case *ast.FuncDeclarationStatement:
+		return c.compileFuncDeclarationStatement(n)
+
+	case *ast.ReturnStatement:
+		return c.compileReturnStatement(n)
 
 	case *ast.CommentLiteral, *ast.NewlineLiteral:
 		return nil

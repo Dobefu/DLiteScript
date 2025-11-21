@@ -247,8 +247,6 @@ func (c *Compiler) compileRangeLoop(node *ast.ForStatement) error {
 	return nil
 }
 
-// --- Helpers ---
-
 func (c *Compiler) loadLoopVariable(addr uint64) (byte, error) {
 	addrRegister := c.incrementRegCounter()
 	err := c.emitLoadImmediate(addrRegister, int64(addr)) // #nosec: G115
