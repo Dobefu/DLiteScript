@@ -14,8 +14,7 @@ func (c *Compiler) compileIfStatement(node *ast.IfStatement) error {
 	}
 
 	conditionRegister := c.getLastRegister()
-	jmpIfZeroPos := c.getCurrentOffset()
-	err = c.emitJmpImmediateIfZero(conditionRegister, 0)
+	jmpIfZeroPos, err := c.emitJmpImmediateIfZero(conditionRegister, 0)
 
 	if err != nil {
 		return err
@@ -30,9 +29,7 @@ func (c *Compiler) compileIfStatement(node *ast.IfStatement) error {
 	var elseOffset uint64
 
 	if node.ElseBlock != nil {
-		jmpEndPos := c.getCurrentOffset()
-
-		err = c.emitJmpImmediate(0)
+		jmpEndPos, err := c.emitJmpImmediate(0)
 
 		if err != nil {
 			return err
@@ -42,8 +39,7 @@ func (c *Compiler) compileIfStatement(node *ast.IfStatement) error {
 
 		addrBytes := make([]byte, 8)
 		binary.BigEndian.PutUint64(addrBytes, elseOffset)
-		jmpIfZeroBytecodePos := c.instructionsStart + int(jmpIfZeroPos) // #nosec: G115
-		copy(c.bytecode[jmpIfZeroBytecodePos+2:jmpIfZeroBytecodePos+10], addrBytes)
+		copy(c.bytecode[jmpIfZeroPos:jmpIfZeroPos+8], addrBytes)
 
 		err = c.compileNode(node.ElseBlock)
 
@@ -55,8 +51,7 @@ func (c *Compiler) compileIfStatement(node *ast.IfStatement) error {
 
 		addrBytes = make([]byte, 8)
 		binary.BigEndian.PutUint64(addrBytes, endOffset)
-		jmpEndBytecodePos := c.instructionsStart + int(jmpEndPos) // #nosec: G115
-		copy(c.bytecode[jmpEndBytecodePos+1:jmpEndBytecodePos+9], addrBytes)
+		copy(c.bytecode[jmpEndPos:jmpEndPos+8], addrBytes)
 
 		return nil
 	}
@@ -65,8 +60,7 @@ func (c *Compiler) compileIfStatement(node *ast.IfStatement) error {
 
 	addrBytes := make([]byte, 8)
 	binary.BigEndian.PutUint64(addrBytes, elseOffset)
-	jmpIfZeroBytecodePos := c.instructionsStart + int(jmpIfZeroPos) // #nosec: G115
-	copy(c.bytecode[jmpIfZeroBytecodePos+2:jmpIfZeroBytecodePos+10], addrBytes)
+	copy(c.bytecode[jmpIfZeroPos:jmpIfZeroPos+8], addrBytes)
 
 	return nil
 }

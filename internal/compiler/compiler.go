@@ -22,8 +22,17 @@ type Compiler struct {
 	functionMap map[string]int
 	// Variable storage stack of scopes.
 	variableScopes []map[string]uint64
+	// Loop stack for break/continue support.
+	loopStack []loopInfo
 	// The start position of instructions in bytecode.
 	instructionsStart int
+}
+
+type loopInfo struct {
+	breakAddr       uint64
+	continueAddr    uint64
+	breakPatches    []int
+	continuePatches []int
 }
 
 // NewCompiler creates a new compiler.
@@ -36,6 +45,7 @@ func NewCompiler() *Compiler {
 		functionPool:      make([]string, 0),
 		functionMap:       make(map[string]int),
 		variableScopes:    []map[string]uint64{make(map[string]uint64)},
+		loopStack:         make([]loopInfo, 0),
 		instructionsStart: 0,
 	}
 }

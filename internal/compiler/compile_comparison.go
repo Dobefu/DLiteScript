@@ -24,26 +24,27 @@ func (c *Compiler) compileComparison(
 	}
 
 	jumpOffset := c.getCurrentOffset() +
-		vm.GetInstructionLen(vm.OpcodeJmpImmediate)
+		vm.GetInstructionLen(vm.OpcodeJmpImmediateIfNotEqual) +
+		vm.GetInstructionLen(vm.OpcodeLoadImmediate)
 
 	switch op {
 	case token.TokenTypeEqual:
-		err = c.emitJmpImmediateIfEqual(jumpOffset)
+		_, err = c.emitJmpImmediateIfNotEqual(jumpOffset)
 
 	case token.TokenTypeNotEqual:
-		err = c.emitJmpImmediateIfNotEqual(jumpOffset)
+		_, err = c.emitJmpImmediateIfEqual(jumpOffset)
 
 	case token.TokenTypeGreaterThan:
-		err = c.emitJmpImmediateIfGreater(jumpOffset)
+		_, err = c.emitJmpImmediateIfLessOrEqual(jumpOffset)
 
 	case token.TokenTypeGreaterThanOrEqual:
-		err = c.emitJmpImmediateIfGreaterOrEqual(jumpOffset)
+		_, err = c.emitJmpImmediateIfLess(jumpOffset)
 
 	case token.TokenTypeLessThan:
-		err = c.emitJmpImmediateIfLess(jumpOffset)
+		_, err = c.emitJmpImmediateIfGreaterOrEqual(jumpOffset)
 
 	case token.TokenTypeLessThanOrEqual:
-		err = c.emitJmpImmediateIfLessOrEqual(jumpOffset)
+		_, err = c.emitJmpImmediateIfGreater(jumpOffset)
 	}
 
 	if err != nil {

@@ -15,7 +15,7 @@ func (c *Compiler) compileLogicalOr(
 		vm.GetInstructionLen(vm.OpcodeLoadImmediate) +
 		vm.GetInstructionLen(vm.OpcodeJmpImmediate)
 
-	err := c.emitJmpImmediateIfNotZero(leftReg, trueLabel)
+	_, err := c.emitJmpImmediateIfNotZero(leftReg, trueLabel)
 
 	if err != nil {
 		return err
@@ -26,7 +26,7 @@ func (c *Compiler) compileLogicalOr(
 		vm.GetInstructionLen(vm.OpcodeLoadImmediate) +
 		vm.GetInstructionLen(vm.OpcodeJmpImmediate)
 
-	err = c.emitJmpImmediateIfNotZero(rightReg, trueLabel)
+	_, err = c.emitJmpImmediateIfNotZero(rightReg, trueLabel)
 
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (c *Compiler) compileLogicalOr(
 		vm.GetInstructionLen(vm.OpcodeJmpImmediate) +
 		vm.GetInstructionLen(vm.OpcodeLoadImmediate)
 
-	err = c.emitJmpImmediate(endLabel)
+	_, err = c.emitJmpImmediate(endLabel)
 
 	if err != nil {
 		return err
