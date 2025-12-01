@@ -192,6 +192,7 @@ func TestTokenize(t *testing.T) {
 			input: "//\n",
 			expected: []*token.Token{
 				{Atom: "//", TokenType: token.TokenTypeComment},
+				{Atom: "\n", TokenType: token.TokenTypeNewline},
 			},
 		},
 		{

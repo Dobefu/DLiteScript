@@ -29,12 +29,13 @@ func (t *Tokenizer) handleSlashSign(startPos int) (*token.Token, error) {
 		comment.WriteString("/")
 
 		for !t.isEOF {
-			next, _ = t.GetNext()
+			next, _ = t.Peek()
 
 			if next == '\n' {
 				break
 			}
 
+			next, _ = t.GetNext()
 			comment.WriteRune(next)
 		}
 
