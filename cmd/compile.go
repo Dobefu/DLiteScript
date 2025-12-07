@@ -34,7 +34,14 @@ func init() {
 func runCompileCmd(cmd *cobra.Command, args []string) {
 	var outfile io.Writer = os.Stdout
 
-	isQuiet, _ := rootCmd.Flags().GetBool("quiet")
+	isQuiet, err := rootCmd.Flags().GetBool("quiet")
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("failed to write bytecode: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
 
 	if isQuiet {
 		outfile = io.Discard
