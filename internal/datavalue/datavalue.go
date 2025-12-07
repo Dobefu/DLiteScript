@@ -570,19 +570,19 @@ func (v Value) IsTruthy() bool {
 	switch v.DataType {
 	case
 		datatype.DataTypeBool:
-		boolVal, _ := v.AsBool()
+		boolVal, _ := v.AsBool() // This cannot return an error.
 
 		return boolVal
 
 	case
 		datatype.DataTypeNumber:
-		numVal, _ := v.AsNumber()
+		numVal, _ := v.AsNumber() // This cannot return an error.
 
 		return numVal != 0
 
 	case
 		datatype.DataTypeString:
-		strVal, _ := v.AsString()
+		strVal, _ := v.AsString() // This cannot return an error.
 
 		return strVal != ""
 
