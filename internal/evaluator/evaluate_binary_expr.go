@@ -213,7 +213,7 @@ func (e *Evaluator) evaluateArithmeticBinaryExprNumber(
 }
 
 func (e *Evaluator) getBinaryExprValueAsBool(
-	leftValue datavalue.Value,
+	leftValue,
 	rightValue datavalue.Value,
 ) (bool, bool, error) {
 	leftBool, err := leftValue.AsBool()
@@ -238,7 +238,7 @@ func (e *Evaluator) getBinaryExprValueAsBool(
 }
 
 func (e *Evaluator) getBinaryExprValueAsNumber(
-	leftValue datavalue.Value,
+	leftValue,
 	rightValue datavalue.Value,
 ) (float64, float64, error) {
 	leftNumber, err := leftValue.AsNumber()
@@ -263,7 +263,7 @@ func (e *Evaluator) getBinaryExprValueAsNumber(
 }
 
 func (e *Evaluator) getBinaryExprValueAsString(
-	leftValue datavalue.Value,
+	leftValue,
 	rightValue datavalue.Value,
 ) (string, string, error) {
 	leftString, err := leftValue.AsString()
