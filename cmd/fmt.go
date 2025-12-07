@@ -31,7 +31,14 @@ func init() {
 func runFmtCmd(_ *cobra.Command, args []string) {
 	var outfile io.Writer = os.Stdout
 
-	isQuiet, _ := rootCmd.Flags().GetBool("quiet")
+	isQuiet, err := rootCmd.Flags().GetBool("quiet")
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("could not parse flag: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
 
 	if isQuiet {
 		outfile = io.Discard
@@ -62,5 +69,12 @@ func runFmtCmd(_ *cobra.Command, args []string) {
 	formatter := formatter.New()
 	formattedCode := formatter.Format(ast)
 
-	_, _ = fmt.Fprintln(os.Stdout, formattedCode)
+	_, err = fmt.Fprintln(os.Stdout, formattedCode)
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("could not write formatted code: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
 }
