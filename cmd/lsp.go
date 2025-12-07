@@ -22,14 +22,20 @@ func init() {
 }
 
 func runLSPCmd(cmd *cobra.Command, _ []string) {
-	isDebugMode, _ := cmd.Flags().GetBool("debug")
+	isDebugMode, err := cmd.Flags().GetBool("debug")
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("could not parse flag: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
 
 	handler := lsp.NewHandler(isDebugMode)
 	server := lsp.NewServer(handler)
 
 	slog.Info("Starting DLiteScript LSP server...")
 
-	var err error
 	code, err := server.Start()
 	setExitCode(code)
 
