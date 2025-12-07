@@ -19,7 +19,11 @@ func (p *Parser) parseBreakStatement() (ast.ExprNode, error) {
 
 	if nextToken.TokenType == token.TokenTypeNumber &&
 		!strings.Contains(nextToken.Atom, ".") {
-		_, _ = p.GetNextToken()
+		_, err := p.GetNextToken()
+
+		if err != nil {
+			return nil, err
+		}
 
 		breakCount, err := strconv.Atoi(nextToken.Atom)
 
