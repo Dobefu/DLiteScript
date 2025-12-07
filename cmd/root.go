@@ -48,7 +48,15 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	isQuiet, _ := cmd.Flags().GetBool("quiet")
+	isQuiet, err := cmd.Flags().GetBool("quiet")
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("could not parse flag: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
+
 	var outfile io.Writer = os.Stdout
 
 	if isQuiet {
@@ -59,7 +67,6 @@ func runRootCmd(cmd *cobra.Command, args []string) {
 		OutFile: outfile,
 	}
 
-	var err error
 	code, err := runner.RunScript(args[0])
 	setExitCode(code)
 
