@@ -372,7 +372,7 @@ func TestOutput(t *testing.T) {
 
 func BenchmarkEvaluate(b *testing.B) {
 	for b.Loop() {
-		_, _ = NewEvaluator(io.Discard).Evaluate(
+		_, err := NewEvaluator(io.Discard).Evaluate(
 			&ast.BinaryExpr{
 				Left: &ast.NumberLiteral{
 					Value: "1",
@@ -430,5 +430,9 @@ func BenchmarkEvaluate(b *testing.B) {
 				},
 			},
 		)
+
+		if err != nil {
+			continue
+		}
 	}
 }
