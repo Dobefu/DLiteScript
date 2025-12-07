@@ -51,13 +51,17 @@ func TestParseBinaryExpr(t *testing.T) {
 
 	for _, test := range tests {
 		to := tokenizer.NewTokenizer(test.input)
-		tokens, _ := to.Tokenize()
+		tokens, err := to.Tokenize()
+
+		if err != nil {
+			t.Fatalf("could not tokenize: %s", err.Error())
+		}
 
 		parser := NewParser(tokens)
 		result, err := parser.Parse()
 
 		if err != nil {
-			t.Errorf("expected no error, got \"%v\"", err)
+			t.Errorf("expected no error, got \"%s\"", err.Error())
 
 			continue
 		}
@@ -147,7 +151,7 @@ func BenchmarkParseBinaryExpr(b *testing.B) {
 	for b.Loop() {
 		p := NewParser([]*token.Token{})
 
-		_, _ = p.parseBinaryExpr(
+		_, err := p.parseBinaryExpr(
 			&token.Token{
 				Atom:      "1",
 				TokenType: token.TokenTypeOperationAdd,
@@ -158,5 +162,9 @@ func BenchmarkParseBinaryExpr(b *testing.B) {
 			nil,
 			0,
 		)
+
+		if err != nil {
+			continue
+		}
 	}
 }
