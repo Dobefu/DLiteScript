@@ -53,7 +53,11 @@ func TestParseContinueStatement(t *testing.T) {
 			parser := NewParser(test.input)
 
 			if len(test.input) > 1 {
-				_, _ = parser.GetNextToken()
+				_, err := parser.GetNextToken()
+
+				if err != nil {
+					t.Fatalf("could not get next token: %s", err.Error())
+				}
 			}
 
 			expr, err := parser.parseContinueStatement()
@@ -119,7 +123,11 @@ func TestParseContinueStatementErr(t *testing.T) {
 			parser := NewParser(test.input)
 
 			if len(test.input) > 1 {
-				_, _ = parser.GetNextToken()
+				_, err := parser.GetNextToken()
+
+				if err != nil {
+					t.Fatalf("could not get next token: %s", err.Error())
+				}
 			}
 
 			_, err := parser.parseContinueStatement()
