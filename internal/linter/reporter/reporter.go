@@ -4,6 +4,7 @@ package reporter
 import (
 	"fmt"
 	"io"
+	"log/slog"
 )
 
 // Reporter represents a reporter for linting issues.
@@ -42,17 +43,25 @@ func (r *Reporter) PrintIssues(filename string) {
 	}
 
 	if len(r.issues) == 0 {
-		_, _ = fmt.Fprintf(r.outFile, "No issues found in %s\n", filename)
+		_, err := fmt.Fprintf(r.outFile, "No issues found in %s\n", filename)
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
 
 		return
 	}
 
-	_, _ = fmt.Fprintf(r.outFile, "Linting %s:\n", filename)
+	_, err := fmt.Fprintf(r.outFile, "Linting %s:\n", filename)
+
+	if err != nil {
+		slog.Error(err.Error())
+	}
 
 	for _, issue := range r.issues {
 		pos := issue.Range.Start
 
-		_, _ = fmt.Fprintf(r.outFile, "%s:%d:%d: %s: %s (%s)\n",
+		_, err = fmt.Fprintf(r.outFile, "%s:%d:%d: %s: %s (%s)\n",
 			filename,
 			pos.Line+1,
 			pos.Column+1,
@@ -60,5 +69,9 @@ func (r *Reporter) PrintIssues(filename string) {
 			issue.Message,
 			issue.Rule,
 		)
+
+		if err != nil {
+			slog.Error(err.Error())
+		}
 	}
 }
