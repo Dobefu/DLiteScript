@@ -20,7 +20,7 @@ func (e *errWriter) Write(_ []byte) (n int, err error) {
 	return 0, errors.New("write error")
 }
 
-func (e *errWriter) Error(_ []byte) string {
+func (e *errWriter) Error() string {
 	return "write error"
 }
 
