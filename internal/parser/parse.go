@@ -102,7 +102,11 @@ func (p *Parser) handleStatementEnd(
 	newlineCount := 0
 
 	for !p.isEOF {
-		nextToken, _ := p.PeekNextToken()
+		nextToken, err := p.PeekNextToken()
+
+		if err != nil {
+			return nil, err
+		}
 
 		if endToken != nil && nextToken.TokenType == *endToken {
 			break
@@ -110,6 +114,7 @@ func (p *Parser) handleStatementEnd(
 
 		if nextToken.TokenType == token.TokenTypeComment {
 			token, _ := p.GetNextToken()
+
 			comments = append(comments, &ast.CommentLiteral{
 				Value: token.Atom,
 				Range: ast.Range{
@@ -246,10 +251,19 @@ func (p *Parser) handleOptionalNewlines() []ast.ExprNode {
 	newlineCount := 0
 
 	for !p.isEOF {
-		peek, _ := p.PeekNextToken()
+		peek, err := p.PeekNextToken()
+
+		if err != nil {
+			return nil
+		}
 
 		if peek.TokenType == token.TokenTypeNewline {
-			_, _ = p.GetNextToken()
+			_, err = p.GetNextToken()
+
+			if err != nil {
+				continue
+			}
+
 			newlineCount++
 
 			continue
