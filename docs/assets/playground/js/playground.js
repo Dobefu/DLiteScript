@@ -68,13 +68,13 @@ if (globalThis.playgroundWorkerPath === undefined) {
 
       switch (preset.value) {
         case "hello": {
-          textarea.value = `printf("Hello, World!")`;
+          textarea.value = String.raw`printf("Hello, World!")`;
 
           break;
         }
 
         case "fibonacci": {
-          textarea.value = `func fib(n number) number {
+          textarea.value = String.raw`func fib(n number) number {
   if n <= 1 {
     return n
   }
@@ -83,14 +83,14 @@ if (globalThis.playgroundWorkerPath === undefined) {
 }
 
 for var i to 10 {
-  printf("fib(%g) = %g\\n", i, fib(i))
+  printf("fib(%g) = %g\n", i, fib(i))
 }`;
 
           break;
         }
 
         case "fizzbuzz": {
-          textarea.value = `for var i from 1 to 100 {
+          textarea.value = String.raw`for var i from 1 to 100 {
   var buf string = ""
 
   if i % 3 == 0 {
@@ -105,7 +105,7 @@ for var i to 10 {
     buf = sprintf("%g", i)
   }
 
-  printf("%s\\n", buf)
+  printf("%s\n", buf)
 }`;
 
           break;
