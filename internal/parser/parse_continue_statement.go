@@ -19,7 +19,12 @@ func (p *Parser) parseContinueStatement() (ast.ExprNode, error) {
 
 	if nextToken.TokenType == token.TokenTypeNumber &&
 		!strings.Contains(nextToken.Atom, ".") {
-		_, _ = p.GetNextToken()
+		_, err = p.GetNextToken()
+
+		if err != nil {
+			return nil, err
+		}
+
 		continueCount, err := strconv.Atoi(nextToken.Atom)
 
 		if err != nil {
