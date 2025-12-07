@@ -4,11 +4,7 @@ import (
 	vm "github.com/Dobefu/vee-em"
 )
 
-func (c *Compiler) compileLogicalOr(
-	destReg byte,
-	leftReg byte,
-	rightReg byte,
-) error {
+func (c *Compiler) compileLogicalOr(destReg, leftReg, rightReg byte) error {
 	trueLabel := c.getCurrentOffset() +
 		vm.GetInstructionLen(vm.OpcodeJmpImmediateIfNotZero) +
 		vm.GetInstructionLen(vm.OpcodeJmpImmediateIfNotZero) +
