@@ -109,7 +109,7 @@ func TestEvaluateImportStatement(t *testing.T) {
 	}
 }
 
-func TestEvaluateImportStatementErr(t *testing.T) {
+func TestEvaluateImportStatementErr(t *testing.T) { // nolint: gocognit
 	t.Parallel()
 
 	tests := []struct {
@@ -227,7 +227,12 @@ func TestEvaluateImportStatementErr(t *testing.T) {
 
 				defer func() { _ = os.Remove(tempFile.Name()) }()
 
-				_, _ = tempFile.WriteString(test.content)
+				_, err = tempFile.WriteString(test.content)
+
+				if err != nil {
+					t.Fatalf("could not write to file: %s", err.Error())
+				}
+
 				_ = tempFile.Close()
 
 				test.input.Path.Value = filepath.Base(tempFile.Name())
