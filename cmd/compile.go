@@ -37,7 +37,7 @@ func runCompileCmd(cmd *cobra.Command, args []string) {
 	isQuiet, err := rootCmd.Flags().GetBool("quiet")
 
 	if err != nil {
-		slog.Error(fmt.Sprintf("failed to write bytecode: %s", err.Error()))
+		slog.Error(fmt.Sprintf("could not parse flag: %s", err.Error()))
 		setExitCode(1)
 
 		return
@@ -79,7 +79,14 @@ func runCompileCmd(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	outputPath, _ := cmd.Flags().GetString("output")
+	outputPath, err := cmd.Flags().GetString("output")
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("could not parse flag: %s", err.Error()))
+		setExitCode(1)
+
+		return
+	}
 
 	if outputPath == "" {
 		ext := filepath.Ext(args[0])
