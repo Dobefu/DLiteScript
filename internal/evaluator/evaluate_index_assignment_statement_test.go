@@ -12,7 +12,7 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-func TestEvaluateIndexAssignmentStatement(t *testing.T) {
+func TestEvaluateIndexAssignmentStatement(t *testing.T) { // nolint: gocognit
 	t.Parallel()
 
 	tests := []struct {
@@ -122,9 +122,17 @@ func TestEvaluateIndexAssignmentStatement(t *testing.T) {
 					t.Fatalf("expected no error, got: %s", err.Error())
 				}
 
-				num, _ = array[0].AsNumber()
+				num, err = array[0].AsNumber()
+
+				if err != nil {
+					t.Fatalf("cannot parse number: %s", err.Error())
+				}
 			} else {
-				num, _ = result.Value.AsNumber()
+				num, err = result.Value.AsNumber()
+
+				if err != nil {
+					t.Fatalf("cannot parse number: %s", err.Error())
+				}
 			}
 
 			if num != test.expected {
