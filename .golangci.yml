@@ -4,6 +4,7 @@ linters:
     - asciicheck
     - bodyclose
     - canonicalheader
+    - dupword
     - errcheck
     - errname
     - exhaustive
