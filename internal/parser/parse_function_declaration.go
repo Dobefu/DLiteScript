@@ -207,8 +207,7 @@ func (p *Parser) getReturnTypes() ([]string, error) {
 		return nil, err
 	}
 
-	returnTypes := make([]string, 0)
-	returnTypes = append(returnTypes, dataType)
+	returnTypes := []string{dataType}
 
 	return p.parseReturnTypes(token.TokenTypeLBrace, returnTypes...)
 }
