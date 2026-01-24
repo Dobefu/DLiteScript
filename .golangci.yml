@@ -1,7 +1,10 @@
 version: "2"
 linters:
   enable:
+    - bodyclose
+    - canonicalheader
     - errcheck
+    - errname
     - exhaustive
     - exhaustruct
     - forbidigo

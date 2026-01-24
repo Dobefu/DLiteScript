@@ -11,9 +11,9 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-type errWriter struct{}
+type writerError struct{}
 
-func (f *errWriter) Write(_ []byte) (n int, err error) {
+func (f *writerError) Write(_ []byte) (n int, err error) {
 	return 0, errors.New("write error")
 }
 
@@ -143,7 +143,7 @@ func TestScriptRunnerErr(t *testing.T) {
 		{
 			name:       "write error",
 			hasReadErr: false,
-			outFile:    &errWriter{},
+			outFile:    &writerError{},
 			script:     `1 + 1`,
 			expected:   "failed to write to output file: write error",
 		},
