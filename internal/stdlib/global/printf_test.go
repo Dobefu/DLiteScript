@@ -88,11 +88,11 @@ func TestGetPrintfFunction(t *testing.T) {
 			input: []datavalue.Value{
 				datavalue.String("test %s %d"),
 				datavalue.Tuple(
-					datavalue.String("test"),
+					datavalue.String("string"),
 					datavalue.Number(1),
 				),
 			},
-			expected: "test test 1",
+			expected: "test string 1",
 		},
 		{
 			name: "array argument",

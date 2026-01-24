@@ -27,15 +27,15 @@ func TestCalculateLineCountAndLengths(t *testing.T) {
 		},
 		{
 			name:                "multiple lines",
-			input:               "test\ntest",
+			input:               "test\nstring",
 			expectedLineCount:   2,
-			expectedLineLengths: []int{4, 4},
+			expectedLineLengths: []int{4, 5},
 		},
 		{
 			name:                "multiple lines with trailing newline",
-			input:               "test\ntest\n",
+			input:               "test\nstrign\n",
 			expectedLineCount:   3,
-			expectedLineLengths: []int{4, 4},
+			expectedLineLengths: []int{4, 5},
 		},
 	}
 
