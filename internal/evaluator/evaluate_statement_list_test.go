@@ -162,7 +162,7 @@ func TestEvaluateStatementListErr(t *testing.T) {
 					End:   ast.Position{Offset: 5, Line: 0, Column: 0},
 				},
 			},
-			outFile:  &errWriter{},
+			outFile:  &writerError{},
 			expected: "write error",
 		},
 	}

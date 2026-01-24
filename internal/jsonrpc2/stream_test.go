@@ -98,9 +98,9 @@ func TestStreamErr(t *testing.T) {
 	}
 }
 
-type errWriter struct{}
+type writerError struct{}
 
-func (e *errWriter) Write(p []byte) (n int, err error) {
+func (e *writerError) Write(p []byte) (n int, err error) {
 	if strings.Contains(string(p), "Content-Length: 0") {
 		return 0, errors.New("write content length error")
 	}
@@ -136,7 +136,7 @@ func TestStreamWriteMessageErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			stream := NewStream(strings.NewReader(test.input), &errWriter{})
+			stream := NewStream(strings.NewReader(test.input), &writerError{})
 			err := stream.WriteMessage([]byte(test.input))
 
 			if err == nil {

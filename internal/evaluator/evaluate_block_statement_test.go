@@ -14,13 +14,13 @@ func (d *discardWriter) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-type errWriter struct{}
+type writerError struct{}
 
-func (e *errWriter) Write(_ []byte) (n int, err error) {
+func (e *writerError) Write(_ []byte) (n int, err error) {
 	return 0, errors.New("write error")
 }
 
-func (e *errWriter) Error() string {
+func (e *writerError) Error() string {
 	return "write error"
 }
 
@@ -128,7 +128,7 @@ func TestEvaluateBlockStatementErr(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
-			ev := NewEvaluator(&errWriter{})
+			ev := NewEvaluator(&writerError{})
 			ev.buf.WriteString("test")
 			_, err := ev.evaluateBlockStatement(test.input)
 
