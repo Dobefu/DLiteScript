@@ -120,9 +120,11 @@ func (r *REPL) showHelp() {
 }
 
 func (r *REPL) processInput(line string) {
-	if strings.HasSuffix(line, "\\") {
+	cutSuffix, isCut := strings.CutSuffix(line, "\\")
+
+	if isCut {
 		if r.isMultiline {
-			r.buf.WriteString(strings.TrimSuffix(line, "\\"))
+			r.buf.WriteString(cutSuffix)
 			r.buf.WriteString("\n")
 
 			return
