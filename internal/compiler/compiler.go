@@ -82,8 +82,7 @@ func (c *Compiler) Compile(node ast.ExprNode) ([]byte, error) {
 
 	instructionsEnd := len(c.bytecode)
 
-	program := make([]byte, 0)
-	program = append(program, c.bytecode[:c.instructionsStart]...)
+	program := c.bytecode[:c.instructionsStart]
 	program = append(program, c.serializeConstPool()...)
 	program = append(program, c.serializeFunctionPool()...)
 	program = append(program, c.bytecode[c.instructionsStart:instructionsEnd]...)
