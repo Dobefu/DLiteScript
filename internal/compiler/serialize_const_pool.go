@@ -5,11 +5,9 @@ import (
 )
 
 func (c *Compiler) serializeConstPool() []byte {
-	pool := make([]byte, 0)
-
 	numBytes := make([]byte, 8)
 	binary.BigEndian.PutUint64(numBytes, uint64(len(c.constPool)))
-	pool = append(pool, numBytes...)
+	pool := numBytes
 
 	for _, str := range c.constPool {
 		lengthBytes := make([]byte, 8)
