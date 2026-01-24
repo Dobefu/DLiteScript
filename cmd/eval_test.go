@@ -37,8 +37,8 @@ func TestEvalCmd(t *testing.T) {
 			_ = evalCmd.Flags().Set("quiet", "true")
 			runEvalCmd(evalCmd, []string{test.input})
 
-			if getExitCode() != 0 {
-				t.Fatalf("expected exit code 0, got %d", getExitCode())
+			if exitCode() != 0 {
+				t.Fatalf("expected exit code 0, got %d", exitCode())
 			}
 		})
 	}
@@ -88,7 +88,7 @@ func TestEvalCmdErr(t *testing.T) {
 			evalCmd.SetArgs(input)
 			runEvalCmd(evalCmd, input)
 
-			if getExitCode() == 0 {
+			if exitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})

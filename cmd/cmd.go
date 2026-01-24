@@ -3,16 +3,16 @@ package cmd
 
 import "sync/atomic"
 
-var exitCode atomic.Uint32
+var _exitCode atomic.Uint32
 
 func setExitCode(code byte) {
-	exitCode.Store(uint32(code))
+	_exitCode.Store(uint32(code))
 }
 
-func getExitCode() byte {
-	return byte(exitCode.Load())
+func exitCode() byte {
+	return byte(_exitCode.Load())
 }
 
 func resetExitCode() {
-	exitCode.Store(0)
+	_exitCode.Store(0)
 }

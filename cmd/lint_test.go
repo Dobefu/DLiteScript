@@ -36,8 +36,8 @@ func TestLintCmd(t *testing.T) {
 			lintCmd.SetArgs([]string{test.input})
 			runLintCmd(lintCmd, []string{test.input})
 
-			if getExitCode() != 0 {
-				t.Fatalf("Expected exit code 0, got %d", getExitCode())
+			if exitCode() != 0 {
+				t.Fatalf("Expected exit code 0, got %d", exitCode())
 			}
 		})
 	}
@@ -99,7 +99,7 @@ func TestLintCmdErr(t *testing.T) {
 			lintCmd.SetArgs(input)
 			runLintCmd(lintCmd, input)
 
-			if getExitCode() == 0 {
+			if exitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})

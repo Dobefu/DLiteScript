@@ -36,8 +36,8 @@ func TestFmtCmd(t *testing.T) {
 			fmtCmd.SetArgs([]string{test.input})
 			runFmtCmd(fmtCmd, []string{test.input})
 
-			if getExitCode() != 0 {
-				t.Fatalf("Expected exit code 0, got %d", getExitCode())
+			if exitCode() != 0 {
+				t.Fatalf("Expected exit code 0, got %d", exitCode())
 			}
 		})
 	}
@@ -95,7 +95,7 @@ func TestFmtCmdErr(t *testing.T) {
 			fmtCmd.SetArgs(input)
 			runFmtCmd(fmtCmd, input)
 
-			if getExitCode() == 0 {
+			if exitCode() == 0 {
 				t.Fatalf("expected non-zero exit code, got 0")
 			}
 		})

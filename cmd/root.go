@@ -37,7 +37,7 @@ func Execute() byte {
 		setExitCode(1)
 	}
 
-	return getExitCode()
+	return exitCode()
 }
 
 func runRootCmd(cmd *cobra.Command, args []string) {

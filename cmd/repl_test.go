@@ -15,7 +15,7 @@ func TestReplCmd(t *testing.T) {
 
 	runReplCmd(replCmd, nil)
 
-	if getExitCode() != 0 {
-		t.Fatalf("Expected exit code 0, got %d", getExitCode())
+	if exitCode() != 0 {
+		t.Fatalf("Expected exit code 0, got %d", exitCode())
 	}
 }

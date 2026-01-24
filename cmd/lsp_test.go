@@ -15,7 +15,7 @@ func TestLSPCmd(t *testing.T) {
 
 	runLSPCmd(lspCmd, nil)
 
-	if getExitCode() == 0 {
-		t.Fatalf("Expected non-zero exit code, got %d", getExitCode())
+	if exitCode() == 0 {
+		t.Fatalf("Expected non-zero exit code, got %d", exitCode())
 	}
 }
