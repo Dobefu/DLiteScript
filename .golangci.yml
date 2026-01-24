@@ -7,6 +7,7 @@ linters:
     - errname
     - exhaustive
     - exhaustruct
+    - exptostd
     - forbidigo
     - gocognit
     - gocritic
@@ -15,6 +16,7 @@ linters:
     - govet
     - ineffassign
     - misspell
+    - modernize
     - nlreturn
     - paralleltest
     - perfsprint
@@ -22,9 +24,11 @@ linters:
     - predeclared
     - reassign
     - revive
+    - tagliatelle
     - sloglint
     - staticcheck
     - unconvert
+    - unqueryvet
     - unused
     - wrapcheck
   settings:
