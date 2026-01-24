@@ -4,11 +4,6 @@ on:
   push:
     branches: ["main"]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -27,6 +22,10 @@ jobs:
       GO_VERSION: 1.24.6
       HUGO_VERSION: 0.150.0
       TZ: Europe/Amsterdam
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -98,6 +97,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
