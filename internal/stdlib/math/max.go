@@ -1,12 +1,15 @@
 package math
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
+
+var errMaxRequiresAtLeast2Args = errors.New("max requires at least 2 arguments")
 
 func getMaxFunction() function.Info {
 	return function.MakeFunction(
@@ -53,7 +56,8 @@ func getMaxFunction() function.Info {
 				return datavalue.Tuple(
 					datavalue.Null(),
 					datavalue.Errorf(
-						"max requires at least 2 arguments, got %d",
+						"%w, got %d",
+						errMaxRequiresAtLeast2Args,
 						len(args),
 					),
 				)
