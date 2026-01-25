@@ -68,7 +68,7 @@ func TestHandleSignatureHelpErr(t *testing.T) {
 
 			_, jsonErr := handler.handleSignatureHelp(test.params)
 
-			if jsonErr == nil {
+			if jsonErr == nil { // nolint: staticcheck
 				t.Fatalf("expected error, got nil")
 			}
 

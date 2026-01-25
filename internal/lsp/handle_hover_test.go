@@ -163,7 +163,7 @@ func TestHandleHoverErr(t *testing.T) {
 
 			_, jsonErr := handler.handleHover(test.params)
 
-			if jsonErr == nil {
+			if jsonErr == nil { // nolint: staticcheck
 				t.Fatalf("expected error, got nil")
 			}
 
