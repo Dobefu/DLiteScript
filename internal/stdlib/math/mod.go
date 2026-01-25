@@ -10,6 +10,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
+var errModByZero = errors.New("cannot mod by zero")
+
 func getModFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
@@ -64,7 +66,7 @@ func getModFunction() function.Info {
 			if math.IsNaN(result) {
 				return datavalue.Tuple(
 					datavalue.Null(),
-					datavalue.Error(errors.New("cannot mod by zero")),
+					datavalue.Error(errModByZero),
 				)
 			}
 

@@ -1,7 +1,6 @@
 package math
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -40,7 +39,7 @@ func TestGetModFunction(t *testing.T) {
 			exponent: datavalue.Number(0),
 			expected: datavalue.Tuple(
 				datavalue.Number(0),
-				datavalue.Error(errors.New("cannot mod by zero")),
+				datavalue.Error(errModByZero),
 			),
 		},
 	}
