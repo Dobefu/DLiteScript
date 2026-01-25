@@ -1,6 +1,8 @@
 package lsptypes
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -136,7 +138,7 @@ func TestDocumentErr(t *testing.T) {
 		name       string
 		doc        Document
 		targetLine int
-		expected   string
+		expected   error
 	}{
 		{
 			name: "line out of range",
@@ -147,7 +149,7 @@ func TestDocumentErr(t *testing.T) {
 				LineLengths: []int{4},
 			},
 			targetLine: 1,
-			expected:   "line 1 is out of range",
+			expected:   fmt.Errorf("%w: 1", errLineOutOfRange),
 		},
 	}
 
@@ -161,13 +163,13 @@ func TestDocumentErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if err.Error() != test.expected {
+			if errors.Is(err, test.expected) {
 				t.Fatalf("expected error to be \"%s\", got \"%s\"", test.expected, err)
 			}
 
 			_, err = test.doc.GetLine(test.targetLine)
 
-			if err.Error() != test.expected {
+			if errors.Is(err, test.expected) {
 				t.Fatalf("expected error to be \"%s\", got \"%s\"", test.expected, err)
 			}
 
@@ -176,7 +178,7 @@ func TestDocumentErr(t *testing.T) {
 				Character: 0,
 			})
 
-			if err.Error() != test.expected {
+			if errors.Is(err, test.expected) {
 				t.Fatalf("expected error to be \"%s\", got \"%s\"", test.expected, err)
 			}
 		})

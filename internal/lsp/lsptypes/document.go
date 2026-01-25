@@ -1,8 +1,11 @@
 package lsptypes
 
 import (
+	"errors"
 	"fmt"
 )
+
+var errLineOutOfRange = errors.New("line is out of range")
 
 // Document represents a document.
 type Document struct {
@@ -14,7 +17,7 @@ type Document struct {
 
 func (d *Document) isValidLine(line int) error {
 	if line < 0 || line >= d.NumLines {
-		return fmt.Errorf("line %d is out of range", line)
+		return fmt.Errorf("%w: %d", errLineOutOfRange, line)
 	}
 
 	return nil
