@@ -8,6 +8,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
+var errWrite = errors.New("write error")
+
 type discardWriter struct{}
 
 func (d *discardWriter) Write(p []byte) (n int, err error) {
@@ -17,7 +19,7 @@ func (d *discardWriter) Write(p []byte) (n int, err error) {
 type writerError struct{}
 
 func (e *writerError) Write(_ []byte) (n int, err error) {
-	return 0, errors.New("write error")
+	return 0, errWrite
 }
 
 func (e *writerError) Error() string {
