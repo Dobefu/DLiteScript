@@ -10,6 +10,9 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
+var errTest = errors.New("test")
+var errTest2 = errors.New("test2")
+
 func TestDatavalueNull(t *testing.T) {
 	t.Parallel()
 
@@ -331,7 +334,7 @@ func TestDatavalueAny(t *testing.T) {
 func TestDatavalueError(t *testing.T) {
 	t.Parallel()
 
-	value := Error(errors.New("test"))
+	value := Error(errTest)
 
 	if value.DataType != datatype.DataTypeError {
 		t.Errorf("expected DataTypeError, got '%v'", value.DataType)
@@ -1128,19 +1131,19 @@ func TestDatavalueEquals(t *testing.T) {
 		},
 		{
 			name:        "two errors with same error",
-			value:       Error(errors.New("test")),
-			other:       Error(errors.New("test")),
+			value:       Error(errTest),
+			other:       Error(errTest),
 			shouldMatch: true,
 		},
 		{
 			name:        "two errors with left nil",
 			value:       Error(nil),
-			other:       Error(errors.New("test2")),
+			other:       Error(errTest2),
 			shouldMatch: false,
 		},
 		{
 			name:        "two errors with right nil",
-			value:       Error(errors.New("test")),
+			value:       Error(errTest),
 			other:       Error(nil),
 			shouldMatch: false,
 		},
