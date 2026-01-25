@@ -10,6 +10,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
 
+var errArrayContainsNonNumbers = errors.New("array contains non-numbers")
+
 func getSortNumbersFunction() function.Info {
 	return function.MakeFunction(
 		function.Documentation{
@@ -58,7 +60,7 @@ func getSortNumbersFunction() function.Info {
 				if err != nil {
 					return datavalue.Tuple(
 						datavalue.Null(),
-						datavalue.Error(errors.New("array contains non-numbers")),
+						datavalue.Error(errArrayContainsNonNumbers),
 					)
 				}
 			}
