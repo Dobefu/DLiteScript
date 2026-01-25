@@ -63,7 +63,7 @@ func getDeleteDirFunction() function.Info {
 			}
 
 			if !dirExists {
-				return datavalue.Error(fmt.Errorf("directory %v does not exist", path))
+				return datavalue.Errorf("directory %v does not exist", path)
 			}
 
 			err = os.RemoveAll(path)
