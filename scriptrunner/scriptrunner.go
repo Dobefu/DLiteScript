@@ -14,6 +14,18 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
 )
 
+var errNoFile = errors.New("no file specified")
+var errFailedToReadFile = errors.New("failed to read file")
+var errFailedToTokenizeString = errors.New("failed to tokenize string")
+var errFailedToTokenizeFile = errors.New("failed to tokenize file")
+var errFailedToParseString = errors.New("failed to parse string")
+var errFailedToParseFile = errors.New("failed to parse file")
+var errFailedToEvaluateFile = errors.New("failed to evaluate file")
+var errFailedToWriteToOutputFile = errors.New("failed to write to output file")
+var errFailedToLoadBytecode = errors.New("failed to load bytecode")
+var errFailedToRunBytecode = errors.New("failed to run bytecode")
+var errFailedToReadBytecodeFile = errors.New("failed to read bytecode file")
+
 // ScriptRunner handles the execution of DLiteScript files.
 type ScriptRunner struct {
 	OutFile io.Writer
@@ -24,13 +36,13 @@ type ScriptRunner struct {
 // ReadFileFromArgs reads a file from the arguments and returns its content.
 func (r *ScriptRunner) ReadFileFromArgs(args []string) (string, error) {
 	if len(args) == 0 {
-		return "", errors.New("no file specified")
+		return "", errNoFile
 	}
 
 	fileContent, err := os.ReadFile(args[0])
 
 	if err != nil {
-		return "", fmt.Errorf("failed to read file: %s", err.Error())
+		return "", fmt.Errorf("%q: %w", errFailedToReadFile, err)
 	}
 
 	return string(fileContent), nil
@@ -42,14 +54,14 @@ func (r *ScriptRunner) ParseString(str string) (ast.ExprNode, error) {
 	tokens, err := t.Tokenize()
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to tokenize string: %s", err.Error())
+		return nil, fmt.Errorf("%q: %w", errFailedToTokenizeString, err)
 	}
 
 	p := parser.NewParser(tokens)
 	ast, err := p.Parse()
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse string: %s", err.Error())
+		return nil, fmt.Errorf("%q: %w", errFailedToParseString, err)
 	}
 
 	return ast, nil
@@ -61,14 +73,14 @@ func (r *ScriptRunner) RunString(str string, filePath ...string) (byte, error) {
 	tokens, err := t.Tokenize()
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to tokenize file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToTokenizeFile, err)
 	}
 
 	p := parser.NewParser(tokens)
 	ast, err := p.Parse()
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to parse file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToParseFile, err)
 	}
 
 	e := evaluator.NewEvaluator(r.OutFile)
@@ -80,7 +92,7 @@ func (r *ScriptRunner) RunString(str string, filePath ...string) (byte, error) {
 	result, err := e.Evaluate(ast)
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to evaluate file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToEvaluateFile, err)
 	}
 
 	r.result = e.Output()
@@ -93,7 +105,7 @@ func (r *ScriptRunner) RunString(str string, filePath ...string) (byte, error) {
 	_, err = fmt.Fprint(r.OutFile, r.result)
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to write to output file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToWriteToOutputFile, err)
 	}
 
 	if result.IsExitResult() {
@@ -108,7 +120,7 @@ func (r *ScriptRunner) RunScript(file string) (byte, error) {
 	fileContent, err := os.ReadFile(filepath.Clean(file))
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to read file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToReadFile, err)
 	}
 
 	fileHeader := fileContent[:4]
@@ -136,13 +148,13 @@ func (r *ScriptRunner) RunBytecode(bytecode []byte) (byte, error) {
 	err := rt.loadBytecode(bytecode)
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to load bytecode: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToLoadBytecode, err)
 	}
 
 	err = rt.run(r.OutFile)
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to run bytecode: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToRunBytecode, err)
 	}
 
 	return 0, nil
@@ -153,7 +165,7 @@ func (r *ScriptRunner) RunCompiledScript(file string) (byte, error) {
 	bytecode, err := os.ReadFile(filepath.Clean(file))
 
 	if err != nil {
-		return 1, fmt.Errorf("failed to read bytecode file: %s", err.Error())
+		return 1, fmt.Errorf("%q: %w", errFailedToReadBytecodeFile, err)
 	}
 
 	return r.RunBytecode(bytecode)

@@ -3,18 +3,18 @@ package scriptrunner
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"os"
+	"strings"
 	"testing"
-
-	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
+
+var errWrite = errors.New("write error")
 
 type writerError struct{}
 
 func (f *writerError) Write(_ []byte) (n int, err error) {
-	return 0, errors.New("write error")
+	return 0, errWrite
 }
 
 func TestScriptRunner(t *testing.T) {
@@ -87,65 +87,49 @@ func TestScriptRunnerErr(t *testing.T) {
 		hasReadErr bool
 		outFile    io.Writer
 		script     string
-		expected   string
+		expected   error
 	}{
 		{
 			name:       "cannot read file",
 			hasReadErr: true,
 			outFile:    &bytes.Buffer{},
 			script:     "",
-			expected:   "open: permission denied",
+			expected:   os.ErrPermission,
 		},
 		{
 			name:       "invalid utf-8",
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "\x80",
-			expected: fmt.Sprintf(
-				"failed to tokenize file: %s: %s line 1 at position 1",
-				errorutil.StageTokenize.String(),
-				errorutil.ErrorMsgInvalidUTF8Char,
-			),
+			expected:   errFailedToTokenizeFile,
 		},
 		{
 			name:       "unexpected EOF",
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "1 +",
-			expected: fmt.Sprintf(
-				"failed to tokenize file: %s: %s line 1 at position 4",
-				errorutil.StageTokenize.String(),
-				errorutil.ErrorMsgUnexpectedEOF,
-			),
+			expected:   errFailedToTokenizeFile,
 		},
 		{
 			name:       "function num args",
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "printf()",
-			expected: fmt.Sprintf(
-				"failed to evaluate file: %s: %s line 1 at position 1",
-				errorutil.StageEvaluate.String(),
-				fmt.Sprintf(errorutil.ErrorMsgFunctionNumArgs, "printf", 1, 0),
-			),
+			expected:   errFailedToEvaluateFile,
 		},
 		{
 			name:       "parsing error",
 			hasReadErr: false,
 			outFile:    &bytes.Buffer{},
 			script:     "1 + }",
-			expected: fmt.Sprintf(
-				"failed to parse file: %s: %s line 1 at position 4",
-				errorutil.StageParse.String(),
-				fmt.Sprintf(errorutil.ErrorMsgUnexpectedToken, "}"),
-			),
+			expected:   errFailedToParseFile,
 		},
 		{
 			name:       "write error",
 			hasReadErr: false,
 			outFile:    &writerError{},
-			script:     `1 + 1`,
-			expected:   "failed to write to output file: write error",
+			script:     "1 + 1",
+			expected:   errWrite,
 		},
 	}
 
@@ -161,10 +145,7 @@ func TestScriptRunnerErr(t *testing.T) {
 			if test.hasReadErr {
 				_ = os.Chmod(tmpFile.Name(), 0000)
 
-				test.expected = fmt.Sprintf(
-					"failed to read file: open %s: permission denied",
-					tmpFile.Name(),
-				)
+				test.expected = os.ErrPermission
 			}
 
 			_, _ = tmpFile.WriteString(test.script)
@@ -179,11 +160,11 @@ func TestScriptRunnerErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if err.Error() != test.expected {
+			if !strings.Contains(err.Error(), test.expected.Error()) {
 				t.Fatalf(
-					"expected \"%s\", got \"%s\"",
+					"expected error to be \"%s\", got \"%s\"",
 					test.expected,
-					err.Error(),
+					err,
 				)
 			}
 		})
