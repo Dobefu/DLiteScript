@@ -78,12 +78,10 @@ func getSubstringFunction() function.Info {
 			if start >= strLen {
 				return datavalue.Tuple(
 					datavalue.String(""),
-					datavalue.Error(
-						fmt.Errorf(
-							"start index out of bounds: %d >= %d",
-							start,
-							strLen,
-						),
+					datavalue.Errorf(
+						"start index out of bounds: %d >= %d",
+						start,
+						strLen,
 					),
 				)
 			}
@@ -94,11 +92,9 @@ func getSubstringFunction() function.Info {
 				if end <= start {
 					return datavalue.Tuple(
 						datavalue.String(""),
-						datavalue.Error(
-							fmt.Errorf(
-								"negative length results in empty string: length %d",
-								length,
-							),
+						datavalue.Errorf(
+							"negative length results in empty string: length %d",
+							length,
 						),
 					)
 				}
@@ -116,12 +112,10 @@ func getSubstringFunction() function.Info {
 
 				return datavalue.Tuple(
 					datavalue.String(str[start:end]),
-					datavalue.Error(
-						fmt.Errorf(
-							"length exceeds string bounds: requested %d, available %d",
-							length,
-							end-start,
-						),
+					datavalue.Errorf(
+						"length exceeds string bounds: requested %d, available %d",
+						length,
+						end-start,
 					),
 				)
 			}
