@@ -64,7 +64,7 @@ func getCreateDirFunction() function.Info {
 			}
 
 			if dirExists {
-				return datavalue.Error(fmt.Errorf("directory %v already exists", path))
+				return datavalue.Errorf("directory %v already exists", path)
 			}
 
 			err = os.MkdirAll(path, 0700)
