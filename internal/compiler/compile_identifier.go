@@ -19,7 +19,7 @@ func (c *Compiler) compileIdentifier(id *ast.Identifier) error {
 	}
 
 	if !hasAddr {
-		return fmt.Errorf("undefined variable: %s", id.Value)
+		return fmt.Errorf("%w: %s", errUndefinedVar, id.Value)
 	}
 
 	addrReg := c.incrementRegCounter()
