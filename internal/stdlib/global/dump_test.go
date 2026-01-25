@@ -9,6 +9,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 )
 
+var errTest = errors.New("test")
+
 func TestDump(t *testing.T) {
 	t.Parallel()
 
@@ -95,7 +97,7 @@ func TestDump(t *testing.T) {
 		{
 			name: "error value",
 			input: []datavalue.Value{
-				datavalue.Error(errors.New("test")),
+				datavalue.Error(errTest),
 			},
 			expected: "error: test\n",
 		},
