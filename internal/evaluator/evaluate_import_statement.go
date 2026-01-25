@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"errors"
 	"fmt"
 	"maps"
 	"os"
@@ -12,6 +13,11 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
 )
+
+var errFailedToReadImportedFile = errors.New("failed to read imported file")
+var errFailedToTokenizeImportedFile = errors.New("failed to tokenize imported file")
+var errFailedToParseImportedFile = errors.New("failed to parse imported file")
+var errFailedToEvaluateImportedFile = errors.New("failed to evaluate imported file")
 
 // evaluateImportStatement evaluates an import statement.
 func (e *Evaluator) evaluateImportStatement(
@@ -42,7 +48,8 @@ func (e *Evaluator) evaluateImportStatement(
 
 	if err != nil {
 		return nil, fmt.Errorf(
-			"failed to read imported file '%s': %s",
+			"%w '%s': %s",
+			errFailedToReadImportedFile,
 			path,
 			err.Error(),
 		)
@@ -53,7 +60,8 @@ func (e *Evaluator) evaluateImportStatement(
 
 	if err != nil {
 		return nil, fmt.Errorf(
-			"failed to tokenize imported file '%s': %s",
+			"%w '%s': %s",
+			errFailedToTokenizeImportedFile,
 			path, err.Error(),
 		)
 	}
@@ -63,7 +71,8 @@ func (e *Evaluator) evaluateImportStatement(
 
 	if err != nil {
 		return nil, fmt.Errorf(
-			"failed to parse imported file '%s': %s",
+			"%w '%s': %s",
+			errFailedToParseImportedFile,
 			path, err.Error(),
 		)
 	}
@@ -77,7 +86,8 @@ func (e *Evaluator) evaluateImportStatement(
 
 	if err != nil {
 		return nil, fmt.Errorf(
-			"failed to evaluate imported file '%s': %s",
+			"%w '%s': %s",
+			errFailedToEvaluateImportedFile,
 			path, err.Error(),
 		)
 	}
