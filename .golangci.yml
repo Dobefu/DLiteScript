@@ -9,6 +9,7 @@ linters:
     - containedctx
     - contextcheck
     - copyloopvar
+    - decorder
     - dupword
     - errcheck
     - errname
