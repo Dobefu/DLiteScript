@@ -69,7 +69,7 @@ func getWriteFileFunction() function.Info {
 			}
 
 			if !fileExists {
-				return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+				return datavalue.Errorf("file %v does not exist", path)
 			}
 
 			err = os.WriteFile(path, []byte(content), 0600)
