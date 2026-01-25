@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"errors"
 	"fmt"
 	"math"
 
@@ -11,6 +12,10 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 	"github.com/Dobefu/DLiteScript/internal/token"
 )
+
+var errCouldNotGetBinaryExprAsBool = errors.New("could not get binary expr value as bool")
+var errCouldNotGetBinaryExprAsNumber = errors.New("could not get binary expr value as number")
+var errCouldNotGetBinaryExprAsString = errors.New("could not get binary expr value as string")
 
 func (e *Evaluator) evaluateBinaryExpr(
 	node *ast.BinaryExpr,
@@ -220,8 +225,9 @@ func (e *Evaluator) getBinaryExprValueAsBool(
 
 	if err != nil {
 		return false, false, fmt.Errorf(
-			"could not get binary expr value as bool: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsBool,
+			err,
 		)
 	}
 
@@ -229,8 +235,9 @@ func (e *Evaluator) getBinaryExprValueAsBool(
 
 	if err != nil {
 		return false, false, fmt.Errorf(
-			"could not get binary expr value as bool: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsBool,
+			err,
 		)
 	}
 
@@ -245,8 +252,9 @@ func (e *Evaluator) getBinaryExprValueAsNumber(
 
 	if err != nil {
 		return 0, 0, fmt.Errorf(
-			"could not get binary expr value as number: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsNumber,
+			err,
 		)
 	}
 
@@ -254,8 +262,9 @@ func (e *Evaluator) getBinaryExprValueAsNumber(
 
 	if err != nil {
 		return 0, 0, fmt.Errorf(
-			"could not get binary expr value as number: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsNumber,
+			err,
 		)
 	}
 
@@ -270,8 +279,9 @@ func (e *Evaluator) getBinaryExprValueAsString(
 
 	if err != nil {
 		return "", "", fmt.Errorf(
-			"could not get binary expr value as string: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsString,
+			err,
 		)
 	}
 
@@ -279,8 +289,9 @@ func (e *Evaluator) getBinaryExprValueAsString(
 
 	if err != nil {
 		return "", "", fmt.Errorf(
-			"could not get binary expr value as string: %s",
-			err.Error(),
+			"%w: %w",
+			errCouldNotGetBinaryExprAsString,
+			err,
 		)
 	}
 
