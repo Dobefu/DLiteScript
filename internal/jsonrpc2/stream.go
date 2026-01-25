@@ -10,6 +10,9 @@ import (
 	"strings"
 )
 
+var errNoContentLenHeader = errors.New("no Content-Length header found")
+var errInvalidContentLen = errors.New("invalid content length")
+
 // Handler represents a JSON-RPC handler.
 type Handler interface {
 	Handle(method string, params json.RawMessage) (json.RawMessage, *Error)
@@ -66,11 +69,11 @@ func (s *Stream) ReadMessage() ([]byte, error) {
 	}
 
 	if !hasContentLength {
-		return nil, errors.New("no Content-Length header found")
+		return nil, errNoContentLenHeader
 	}
 
 	if contentLength <= 0 {
-		return nil, errors.New("invalid content length")
+		return nil, errInvalidContentLen
 	}
 
 	buf := make([]byte, contentLength)
