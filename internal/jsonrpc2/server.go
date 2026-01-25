@@ -8,6 +8,13 @@ import (
 	"log/slog"
 )
 
+var errNilHandler = errors.New("nil handler provided")
+var errCouldNotHandleMsg = errors.New("could not handle message")
+var errCouldNotSendResp = errors.New("could not send response")
+var errCouldNotMarshalResp = errors.New("could not marshal response")
+var errCouldNotMarshalError = errors.New("could not marshal error")
+var errCouldNotMarshalErrorResp = errors.New("could not marshal error response")
+
 // Server represents the JSON-RPC server.
 type Server struct {
 	stream  *Stream
@@ -21,7 +28,7 @@ func NewServer(
 	writer io.Writer,
 ) (*Server, error) {
 	if handler == nil {
-		return nil, errors.New("nil handler provided")
+		return nil, errNilHandler
 	}
 
 	stream := NewStream(reader, writer)
@@ -61,7 +68,7 @@ func (s *Server) handleMessage(msg []byte) error {
 	if err != nil {
 		_ = s.sendError(req.ID, ErrorCodeParseError, err.Error(), nil)
 
-		return fmt.Errorf("could not unmarshal message: %s", err)
+		return fmt.Errorf("could not unmarshal message: %w", err)
 	}
 
 	result, handleErr := s.handler.Handle(req.Method, req.Params)
@@ -70,10 +77,10 @@ func (s *Server) handleMessage(msg []byte) error {
 		err = s.sendError(req.ID, handleErr.Code, handleErr.Message, handleErr.Data)
 
 		if err != nil {
-			return fmt.Errorf("could not send error: %s", err)
+			return fmt.Errorf("could not send error: %w", err)
 		}
 
-		return fmt.Errorf("could not handle message: %s", handleErr.Message)
+		return fmt.Errorf("%w: %s", errCouldNotHandleMsg, handleErr.Message)
 	}
 
 	if req.ID.IsNull() || result == nil {
@@ -83,7 +90,7 @@ func (s *Server) handleMessage(msg []byte) error {
 	err = s.sendResponse(req.ID, result)
 
 	if err != nil {
-		return fmt.Errorf("could not send response: %s", err)
+		return fmt.Errorf("%w: %w", errCouldNotSendResp, err)
 	}
 
 	return nil
@@ -94,7 +101,7 @@ func (s *Server) sendResponse(id RequestID, result json.RawMessage) error {
 	data, err := json.Marshal(res)
 
 	if err != nil {
-		return fmt.Errorf("could not marshal response: %w", err)
+		return fmt.Errorf("%w: %w", errCouldNotMarshalResp, err)
 	}
 
 	return s.stream.WriteMessage(data)
@@ -110,14 +117,14 @@ func (s *Server) sendError(
 	errData, err := json.Marshal(errObj)
 
 	if err != nil {
-		return fmt.Errorf("could not marshal error: %w", err)
+		return fmt.Errorf("%w: %w", errCouldNotMarshalError, err)
 	}
 
 	resp := NewErrorResponse(errData, id)
 	respData, err := json.Marshal(resp)
 
 	if err != nil {
-		return fmt.Errorf("could not marshal error response: %w", err)
+		return fmt.Errorf("%w: %w", errCouldNotMarshalErrorResp, err)
 	}
 
 	return s.stream.WriteMessage(respData)
