@@ -69,7 +69,7 @@ func getAppendFileFunction() function.Info {
 			}
 
 			if !fileExists {
-				return datavalue.Error(fmt.Errorf("file %v does not exist", path))
+				return datavalue.Errorf("file %v does not exist", path)
 			}
 
 			oldContent, err := os.ReadFile(path) // #nosec G304
