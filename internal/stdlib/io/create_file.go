@@ -63,7 +63,7 @@ func getCreateFileFunction() function.Info {
 			}
 
 			if fileExists {
-				return datavalue.Error(fmt.Errorf("file %v already exists", path))
+				return datavalue.Errorf("file %v already exists", path)
 			}
 
 			err = os.WriteFile(path, []byte(""), 0600)
