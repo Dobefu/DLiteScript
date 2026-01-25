@@ -12,6 +12,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
+var errTestHandler = errors.New("test handler error")
+
 func TestEvaluateIdentifier(t *testing.T) {
 	t.Parallel()
 
@@ -208,7 +210,7 @@ func TestEvaluateIdentifierErr(t *testing.T) {
 			if test.name == "identifier handler error" {
 				identifierRegistry["ERROR"] = identifierInfo{
 					handler: func() (datavalue.Value, error) {
-						return datavalue.Null(), errors.New("test handler error")
+						return datavalue.Null(), errTestHandler
 					},
 				}
 			}
