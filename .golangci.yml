@@ -12,6 +12,7 @@ linters:
     - decorder
     - dogsled
     - dupword
+    - durationcheck
     - errcheck
     - errname
     - exhaustive
