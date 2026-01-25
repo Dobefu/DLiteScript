@@ -212,6 +212,21 @@ func Error(e error) Value {
 	}
 }
 
+// Errorf creates a new formatted error value.
+func Errorf(e string, args ...any) Value {
+	return Value{
+		DataType: datatype.DataTypeError,
+
+		Num:    0,
+		Str:    "",
+		Bool:   false,
+		Func:   nil,
+		Values: nil,
+		Error:  fmt.Errorf(e, args...),
+		Any:    nil,
+	}
+}
+
 // Any creates a new any value.
 func Any(a any) Value {
 	return Value{
