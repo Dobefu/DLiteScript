@@ -1,12 +1,15 @@
 package math
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/datatype"
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
 	"github.com/Dobefu/DLiteScript/internal/function"
 )
+
+var errMinRequiresAtLeast2Args = errors.New("min requires at least 2 arguments")
 
 func getMinFunction() function.Info {
 	return function.MakeFunction(
@@ -53,7 +56,8 @@ func getMinFunction() function.Info {
 				return datavalue.Tuple(
 					datavalue.Null(),
 					datavalue.Errorf(
-						"min requires at least 2 arguments, got %d",
+						"%w, got %d",
+						errMinRequiresAtLeast2Args,
 						len(args),
 					),
 				)

@@ -1,7 +1,6 @@
 package math
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/datavalue"
@@ -20,7 +19,7 @@ func TestGetMinFunction(t *testing.T) {
 			input: []datavalue.Value{},
 			expected: datavalue.Tuple(
 				datavalue.Null(),
-				datavalue.Error(errors.New("min requires at least 2 arguments, got 0")),
+				datavalue.Errorf("%w, got 0", errMinRequiresAtLeast2Args),
 			),
 		},
 		{
