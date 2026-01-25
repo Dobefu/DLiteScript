@@ -1241,7 +1241,7 @@ func TestDatavalueIsTruthy(t *testing.T) {
 		},
 		{
 			name:     "error",
-			input:    Error(errors.New("test")),
+			input:    Error(errTest),
 			expected: true,
 		},
 		{
