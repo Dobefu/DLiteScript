@@ -6,6 +6,9 @@ import (
 	"testing"
 )
 
+var errWriteContentLen = errors.New("write content length error")
+var errWriteMsg = errors.New("write message error")
+
 func TestStream(t *testing.T) {
 	t.Parallel()
 
@@ -102,14 +105,14 @@ type writerError struct{}
 
 func (e *writerError) Write(p []byte) (n int, err error) {
 	if strings.Contains(string(p), "Content-Length: 0") {
-		return 0, errors.New("write content length error")
+		return 0, errWriteContentLen
 	}
 
 	if strings.Contains(string(p), "Content-Length: ") {
 		return len(p), nil
 	}
 
-	return 0, errors.New("write message error")
+	return 0, errWriteMsg
 }
 
 func TestStreamWriteMessageErr(t *testing.T) {
