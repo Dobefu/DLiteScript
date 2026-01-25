@@ -52,11 +52,9 @@ func getMinFunction() function.Info {
 			if len(args) < 2 {
 				return datavalue.Tuple(
 					datavalue.Null(),
-					datavalue.Error(
-						fmt.Errorf(
-							"min requires at least 2 arguments, got %d",
-							len(args),
-						),
+					datavalue.Errorf(
+						"min requires at least 2 arguments, got %d",
+						len(args),
 					),
 				)
 			}
