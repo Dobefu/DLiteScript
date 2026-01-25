@@ -7,9 +7,12 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/ast"
 )
 
+var errAssignmentStmtNoLeftSide = errors.New("assignment statement has no left side")
+var errUndefinedVar = errors.New("undefined variable")
+
 func (c *Compiler) compileAssignmentStatement(as *ast.AssignmentStatement) error {
 	if as.Left == nil {
-		return errors.New("assignment statement has no left side")
+		return errAssignmentStmtNoLeftSide
 	}
 
 	var addr uint64
@@ -24,7 +27,7 @@ func (c *Compiler) compileAssignmentStatement(as *ast.AssignmentStatement) error
 	}
 
 	if !hasAddr {
-		return fmt.Errorf("undefined variable: %s", as.Left.Value)
+		return fmt.Errorf("%w: %s", errUndefinedVar, as.Left.Value)
 	}
 
 	err := c.compileNode(as.Right)
