@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -10,10 +11,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
-const (
-	// ErrMsgCouldNotEvaluateForStatement occurs when a for statement cannot be evaluated.
-	ErrMsgCouldNotEvaluateForStatement = "could not evaluate for statement: %s"
-)
+var errCouldNotEvaluateForStatement = errors.New("could not evaluate for statement")
+var errCouldNotIncrementLoopVariable = errors.New("could not increment loop variable")
 
 func (e *Evaluator) evaluateForStatement(
 	node *ast.ForStatement,
@@ -143,8 +142,9 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			ErrMsgCouldNotEvaluateForStatement,
-			err.Error(),
+			"%w: %w",
+			errCouldNotEvaluateForStatement,
+			err,
 		)
 	}
 
@@ -152,8 +152,9 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			ErrMsgCouldNotEvaluateForStatement,
-			err.Error(),
+			"%w: %w",
+			errCouldNotEvaluateForStatement,
+			err,
 		)
 	}
 
@@ -161,8 +162,9 @@ func (e *Evaluator) evaluateNodeCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			ErrMsgCouldNotEvaluateForStatement,
-			err.Error(),
+			"%w: %w",
+			errCouldNotEvaluateForStatement,
+			err,
 		)
 	}
 
@@ -204,8 +206,9 @@ func (e *Evaluator) evaluateForCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			ErrMsgCouldNotEvaluateForStatement,
-			err.Error(),
+			"%w: %w",
+			errCouldNotEvaluateForStatement,
+			err,
 		)
 	}
 
@@ -213,8 +216,9 @@ func (e *Evaluator) evaluateForCondition(
 
 	if err != nil {
 		return false, fmt.Errorf(
-			ErrMsgCouldNotEvaluateForStatement,
-			err.Error(),
+			"%w: %w",
+			errCouldNotEvaluateForStatement,
+			err,
 		)
 	}
 
@@ -273,7 +277,7 @@ func (e *Evaluator) incrementLoopVariable(node *ast.ForStatement) error {
 	currentValue, err := currentVar.GetValue().AsNumber()
 
 	if err != nil {
-		return fmt.Errorf("could not increment loop variable: %s", err.Error())
+		return fmt.Errorf("%w: %w", errCouldNotIncrementLoopVariable, err)
 	}
 
 	newVarValue := &Variable{

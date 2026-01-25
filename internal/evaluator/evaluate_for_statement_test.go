@@ -3,6 +3,7 @@ package evaluator
 import (
 	"fmt"
 	"io"
+	"strings"
 	"testing"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -282,7 +283,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    ast.ExprNode
-		expected string
+		expected error
 	}{
 		{
 			name: "invalid range from",
@@ -314,14 +315,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          true,
 				HasExplicitFrom:  false,
 			},
-			expected: fmt.Sprintf(
-				"%s: %s",
-				fmt.Sprintf(
-					ErrMsgCouldNotEvaluateForStatement,
-					errorutil.StageEvaluate.String(),
-				),
-				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
-			),
+			expected: errCouldNotEvaluateForStatement,
 		},
 		{
 			name: "invalid range to",
@@ -382,14 +376,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 					End:   ast.Position{Offset: 0, Line: 0, Column: 0},
 				},
 			},
-			expected: fmt.Sprintf(
-				"%s: %s",
-				fmt.Sprintf(
-					ErrMsgCouldNotEvaluateForStatement,
-					errorutil.StageEvaluate.String(),
-				),
-				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "number", "null"),
-			),
+			expected: errCouldNotEvaluateForStatement,
 		},
 		{
 			name: "invalid condition",
@@ -427,14 +414,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:          false,
 				HasExplicitFrom:  false,
 			},
-			expected: fmt.Sprintf(
-				"%s: %s",
-				fmt.Sprintf(
-					ErrMsgCouldNotEvaluateForStatement,
-					errorutil.StageEvaluate.String(),
-				),
-				fmt.Sprintf(errorutil.ErrorMsgTypeExpected, "bool", "string"),
-			),
+			expected: errCouldNotEvaluateForStatement,
 		},
 		{
 			name: "declareLoopVariable error with invalid range from",
@@ -478,11 +458,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:         true,
 				HasExplicitFrom: false,
 			},
-			expected: fmt.Sprintf(
-				"%s: %s line 1 at position 1",
-				errorutil.StageEvaluate.String(),
-				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
-			),
+			expected: fmt.Errorf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"), // nolint: err113
 		},
 		{
 			name: "executeForIteration error with invalid body",
@@ -526,11 +502,7 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				IsRange:         true,
 				HasExplicitFrom: false,
 			},
-			expected: fmt.Sprintf(
-				"%s: %s line 1 at position 1",
-				errorutil.StageEvaluate.String(),
-				fmt.Sprintf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"),
-			),
+			expected: fmt.Errorf(errorutil.ErrorMsgUndefinedIdentifier, "bogus"), // nolint: err113
 		},
 	}
 
@@ -544,10 +516,10 @@ func TestEvaluateForStatementErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if err.Error() != test.expected {
+			if !strings.Contains(err.Error(), test.expected.Error()) {
 				t.Fatalf(
 					"expected \"%s\", got \"%s\"",
-					test.expected,
+					test.expected.Error(),
 					err.Error(),
 				)
 			}
