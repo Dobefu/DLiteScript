@@ -11,6 +11,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/errorutil"
 )
 
+var errScan = errors.New("scan error")
+
 type errReader struct {
 	err error
 }
@@ -90,7 +92,7 @@ func TestRunErr(t *testing.T) {
 	t.Parallel()
 
 	// Trigger a scan error
-	repl := NewREPL(io.Discard, &errReader{err: errors.New("scan error")})
+	repl := NewREPL(io.Discard, &errReader{err: errScan})
 	err := repl.Run()
 
 	if err == nil {

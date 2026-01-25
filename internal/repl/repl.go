@@ -3,6 +3,7 @@ package repl
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -12,6 +13,8 @@ import (
 	"github.com/Dobefu/DLiteScript/internal/parser"
 	"github.com/Dobefu/DLiteScript/internal/tokenizer"
 )
+
+var errScanner = errors.New("scanner error")
 
 // REPL represents a REPL for DLiteScript.
 type REPL struct {
@@ -65,7 +68,7 @@ func (r *REPL) Run() error {
 	err := scanner.Err()
 
 	if err != nil {
-		return fmt.Errorf("scanner error: %s", err.Error())
+		return fmt.Errorf("%w: %w", errScanner, err)
 	}
 
 	return nil
