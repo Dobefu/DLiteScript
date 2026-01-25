@@ -167,7 +167,7 @@ func TestHandleHoverErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if jsonErr.Message != test.expected {
+			if jsonErr.Message != test.expected { // nolint: staticcheck
 				t.Fatalf("expected error message \"%s\", got \"%s\"", test.expected, jsonErr.Message)
 			}
 

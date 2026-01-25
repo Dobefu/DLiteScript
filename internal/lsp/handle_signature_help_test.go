@@ -72,7 +72,7 @@ func TestHandleSignatureHelpErr(t *testing.T) {
 				t.Fatalf("expected error, got nil")
 			}
 
-			if jsonErr.Code != jsonrpc2.ErrorCodeInvalidParams {
+			if jsonErr.Code != jsonrpc2.ErrorCodeInvalidParams { // nolint: staticcheck
 				t.Fatalf("expected error code %d, got %d", jsonrpc2.ErrorCodeInvalidParams, jsonErr.Code)
 			}
 		})
