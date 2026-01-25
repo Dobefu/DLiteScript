@@ -10,25 +10,31 @@ import (
 	vm "github.com/Dobefu/vee-em"
 )
 
+var errBytecodeTooShort = errors.New("bytecode too short")
+var errInvalidMagicHeader = errors.New("invalid magic header")
+var errUnexpectedEndOfBytecode = errors.New("unexpected end of bytecode")
+var errLenExceedsMaxIntVal = errors.New("length exceeds maximum int value")
+var errInvalidFuncIdx = errors.New("invalid function index")
+var errInvalidRegIdx = errors.New("invalid register index")
+var errInvalidFormatStrIdx = errors.New("invalid format string index")
+var errUnknownFunction = errors.New("unknown function")
+var errFailedToFormatStr = errors.New("failed to format string")
+
 type vmRuntime struct {
 	constPool    []string
 	functionPool []string
 	program      []byte
 }
 
-const (
-	errUnexpectedEndOfBytecode = "unexpected end of bytecode: %d > %d"
-)
-
 func (rt *vmRuntime) loadBytecode(bytecode []byte) error {
 	if len(bytecode) < 4 {
-		return errors.New("bytecode too short")
+		return errBytecodeTooShort
 	}
 
 	magicHeader := bytecode[:4]
 
 	if string(magicHeader) != "DLS\x01" {
-		return fmt.Errorf("invalid magic header: %s", string(magicHeader))
+		return fmt.Errorf("%w: %s", errInvalidMagicHeader, string(magicHeader))
 	}
 
 	offset := 4
@@ -61,6 +67,7 @@ func (rt *vmRuntime) deserializeConstPool(
 ) ([]string, int, error) {
 	if offset+8 > len(bytecode) {
 		return nil, 0, fmt.Errorf(
+			"%w: %d > %d",
 			errUnexpectedEndOfBytecode,
 			offset+8,
 			len(bytecode),
@@ -75,6 +82,7 @@ func (rt *vmRuntime) deserializeConstPool(
 	for range count {
 		if offset+8 > len(bytecode) {
 			return nil, 0, fmt.Errorf(
+				"%w: %d > %d",
 				errUnexpectedEndOfBytecode,
 				offset+8,
 				len(bytecode),
@@ -86,7 +94,8 @@ func (rt *vmRuntime) deserializeConstPool(
 
 		if length > math.MaxInt {
 			return nil, 0, fmt.Errorf(
-				"length exceeds maximum int value: %d > %d",
+				"%w: %d > %d",
+				errLenExceedsMaxIntVal,
 				length,
 				math.MaxInt,
 			)
@@ -94,8 +103,9 @@ func (rt *vmRuntime) deserializeConstPool(
 
 		if (offset + int(length)) > len(bytecode) {
 			return nil, 0, fmt.Errorf(
+				"%w: %d > %d",
 				errUnexpectedEndOfBytecode,
-				offset+int(length),
+				offset+8,
 				len(bytecode),
 			)
 		}
@@ -114,6 +124,7 @@ func (rt *vmRuntime) deserializeFunctionPool(
 ) ([]string, int, error) {
 	if offset+8 > len(bytecode) {
 		return nil, 0, fmt.Errorf(
+			"%w: %d > %d",
 			errUnexpectedEndOfBytecode,
 			offset+8,
 			len(bytecode),
@@ -128,6 +139,7 @@ func (rt *vmRuntime) deserializeFunctionPool(
 	for range count {
 		if offset+8 > len(bytecode) {
 			return nil, 0, fmt.Errorf(
+				"%w: %d > %d",
 				errUnexpectedEndOfBytecode,
 				offset+8,
 				len(bytecode),
@@ -139,7 +151,8 @@ func (rt *vmRuntime) deserializeFunctionPool(
 
 		if length > math.MaxInt {
 			return nil, 0, fmt.Errorf(
-				"length exceeds maximum int value: %d > %d",
+				"%w: %d > %d",
+				errLenExceedsMaxIntVal,
 				length,
 				math.MaxInt,
 			)
@@ -147,8 +160,9 @@ func (rt *vmRuntime) deserializeFunctionPool(
 
 		if offset+int(length) > len(bytecode) {
 			return nil, 0, fmt.Errorf(
+				"%w: %d > %d",
 				errUnexpectedEndOfBytecode,
-				offset+int(length),
+				offset+8,
 				len(bytecode),
 			)
 		}
@@ -168,7 +182,7 @@ func (rt *vmRuntime) run(out io.Writer) error {
 	err := v.Run()
 
 	if err != nil {
-		return fmt.Errorf("failed to run bytecode: %s", err.Error())
+		return fmt.Errorf("%w: %q", errFailedToRunBytecode, err)
 	}
 
 	return nil
@@ -183,7 +197,8 @@ func (rt *vmRuntime) createHostCallHandler(out io.Writer) vm.HostCallHandler {
 	) (int64, error) {
 		if functionIndex < 0 || int(functionIndex) >= len(rt.functionPool) {
 			return 0, fmt.Errorf(
-				"invalid function index: %d < 0 or %d >= %d",
+				"%w: %d < 0 or %d >= %d",
+				errInvalidFuncIdx,
 				functionIndex,
 				functionIndex,
 				len(rt.functionPool),
@@ -199,7 +214,8 @@ func (rt *vmRuntime) createHostCallHandler(out io.Writer) vm.HostCallHandler {
 
 			if registerIndex >= vm.NumRegisters {
 				return 0, fmt.Errorf(
-					"invalid register index: %d >= %d",
+					"%w: %d >= %d",
+					errInvalidRegIdx,
 					registerIndex,
 					vm.NumRegisters-1,
 				)
@@ -223,7 +239,7 @@ func (rt *vmRuntime) callFunction(
 		return rt.callPrintf(args, out)
 
 	default:
-		return 0, fmt.Errorf("unknown function: %s", name)
+		return 0, fmt.Errorf("%w: %s", errUnknownFunction, name)
 	}
 }
 
@@ -236,7 +252,8 @@ func (rt *vmRuntime) callPrintf(args []int64, out io.Writer) (int64, error) {
 
 	if formatIndex < 0 || int(formatIndex) >= len(rt.constPool) {
 		return 0, fmt.Errorf(
-			"invalid format string index: %d < 0 or %d >= %d",
+			"%w: %d < 0 or %d >= %d",
+			errInvalidFormatStrIdx,
 			formatIndex,
 			formatIndex,
 			len(rt.constPool),
@@ -250,7 +267,7 @@ func (rt *vmRuntime) callPrintf(args []int64, out io.Writer) (int64, error) {
 	_, err := fmt.Fprintf(out, format, formatArgs...)
 
 	if err != nil {
-		return 0, fmt.Errorf("failed to format string: %s", err.Error())
+		return 0, fmt.Errorf("%w: %w", errFailedToFormatStr, err)
 	}
 
 	return 0, nil
