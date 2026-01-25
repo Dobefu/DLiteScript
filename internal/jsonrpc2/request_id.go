@@ -2,8 +2,11 @@ package jsonrpc2
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
+
+var errInvalidJSONInReqID = errors.New("invalid JSON in RequestID")
 
 // RequestID represents a JSON-RPC request ID.
 type RequestID struct {
@@ -24,7 +27,7 @@ func (r *RequestID) MarshalJSON() ([]byte, error) {
 	}
 
 	if !json.Valid(r.value) {
-		return nil, fmt.Errorf("invalid JSON in RequestID: '%s'", string(r.value))
+		return nil, fmt.Errorf("%w: '%s'", errInvalidJSONInReqID, string(r.value))
 	}
 
 	return r.value, nil
