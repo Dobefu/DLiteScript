@@ -57,11 +57,9 @@ func getSqrtFunction() function.Info {
 			if math.IsNaN(sqrt) {
 				return datavalue.Tuple(
 					datavalue.Null(),
-					datavalue.Error(
-						fmt.Errorf(
-							"cannot calculate square root of negative number: %f",
-							num,
-						),
+					datavalue.Errorf(
+						"cannot calculate square root of negative number: %f",
+						num,
 					),
 				)
 			}
