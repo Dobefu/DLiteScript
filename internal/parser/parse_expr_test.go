@@ -89,7 +89,8 @@ func TestParseExprErr(t *testing.T) {
 			},
 			recursionDepth: 1_000_000,
 			expected: fmt.Sprintf(
-				"maximum recursion depth of (%d) exceeded",
+				"%s: %d",
+				errMaxRecursionDepth.Error(),
 				maxRecursionDepth,
 			),
 		},

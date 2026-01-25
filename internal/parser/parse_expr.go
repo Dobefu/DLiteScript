@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Dobefu/DLiteScript/internal/ast"
@@ -10,6 +11,8 @@ import (
 
 const maxRecursionDepth = 10_000
 
+var errMaxRecursionDepth = errors.New("maximum recursion depth exceeded")
+
 func (p *Parser) parseExpr(
 	currentToken *token.Token,
 	leftExpr ast.ExprNode,
@@ -17,10 +20,7 @@ func (p *Parser) parseExpr(
 	recursionDepth int,
 ) (ast.ExprNode, error) {
 	if recursionDepth > maxRecursionDepth {
-		return nil, fmt.Errorf(
-			"maximum recursion depth of (%d) exceeded",
-			maxRecursionDepth,
-		)
+		return nil, fmt.Errorf("%w: %d", errMaxRecursionDepth, maxRecursionDepth)
 	}
 
 	if leftExpr == nil {
