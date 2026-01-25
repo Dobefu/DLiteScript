@@ -10,6 +10,7 @@ linters:
     - contextcheck
     - copyloopvar
     - decorder
+    - dogsled
     - dupword
     - errcheck
     - errname
