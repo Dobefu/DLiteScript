@@ -15,7 +15,7 @@ var evalCmd = &cobra.Command{ //nolint:exhaustruct
 	Aliases: []string{"ev"},
 	Args: cobra.PositionalArgs(func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			return fmt.Errorf("usage: %s <expression>", cmd.CommandPath())
+			return fmt.Errorf("usage: %s <expression>", cmd.CommandPath()) // nolint: err113
 		}
 
 		return nil
