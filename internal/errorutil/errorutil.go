@@ -143,7 +143,7 @@ func (e *Error) Error() string {
 
 // Unwrap returns the error message without any additional information.
 func (e *Error) Unwrap() error {
-	return errors.New(string(e.msg))
+	return errors.New(string(e.msg)) // nolint: err113
 }
 
 // Position gets the position of the error.

@@ -222,7 +222,7 @@ func Errorf(e string, args ...any) Value {
 		Bool:   false,
 		Func:   nil,
 		Values: nil,
-		Error:  fmt.Errorf(e, args...),
+		Error:  fmt.Errorf(e, args...), // nolint: err113
 		Any:    nil,
 	}
 }

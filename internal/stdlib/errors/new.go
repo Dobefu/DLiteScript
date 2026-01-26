@@ -38,7 +38,7 @@ func getNewFunction() function.Info {
 		func(_ function.EvaluatorInterface, args []datavalue.Value) datavalue.Value {
 			message, _ := args[0].AsString()
 
-			return datavalue.Error(errors.New(message))
+			return datavalue.Error(errors.New(message)) // nolint: err113
 		},
 	)
 }
